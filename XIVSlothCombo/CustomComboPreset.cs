@@ -1913,101 +1913,101 @@ namespace XIVSlothComboPlugin
         #region SUMMONER
 
         [ConflictingCombos(SummonerMainComboFeature, SummonerRuinIVMobilityFeature)]
-        [CustomComboInfo("Enable Single Target (毁灭1)", "Enables changing Single-Target Combo (毁灭 I).", SMN.JobID, 0, "毁灭 420 Feature", "毁灭ation is come")]
+        [CustomComboInfo("启动单体连击(毁灭)", "启动该特性后，毁灭将会被替换为其他合适的单体连击技能", SMN.JobID, 0, "毁灭 420 Feature", "毁灭ation is come")]
         SummonerMainComboFeatureRuin1 = 16999,
 
         [ConflictingCombos(SummonerMainComboFeatureRuin1)]
-        [CustomComboInfo("Enable Single Target (毁灭III)", "Enables changing Single-Target Combo (毁灭 III).", SMN.JobID, 0, "毁灭 7 Feature", "毁灭ation is come... again?")]
+        [CustomComboInfo("启动单体连击(毁荡)", "启动该特性后，毁荡将会被替换为其他合适的单体连击技能", SMN.JobID, 0, "毁灭 7 Feature", "毁灭ation is come... again?")]
         SummonerMainComboFeature = 17000,
 
-        [CustomComboInfo("Enable AOE", "Enables changing AOE Combo (Tri-Disaster)", SMN.JobID, 0, "", "Can't deal with dungeons on your own? Fear not.")]
+        [CustomComboInfo("启动群体连击", "启动该特性后，三重灾祸将会被替换为其他合适的群体连击技能", SMN.JobID, 0, "", "Can't deal with dungeons on your own? Fear not.")]
         SummonerAOEComboFeature = 17001,
 
-        [CustomComboInfo("Single Target Demi Feature", "Replaces Astral Impulse/Fountain of 火炎 with Enkindle/Deathflare/Rekindle when appropriate.", SMN.JobID, 0, "Demi Dingus Feature", "Can't tell the difference between a Bahamut and a Phoenix?\nWe know.")]
+        [CustomComboInfo("单体亚灵神（龙神/不死鸟）特性", "亚灵神显现期间，星极脉冲/灵泉之炎会在恰当的时刻替换为龙神迸发/不死鸟迸发/死星核爆/苏生之炎", SMN.JobID, 0, "Demi Dingus Feature", "不知道巴哈姆特和凤凰有啥区别？\n没关系，我知道。")]
         SummonerSingleTargetDemiFeature = 17002,
 
         [ParentCombo(SummonerAOEComboFeature)]
-        [CustomComboInfo("AOE Demi Feature", "Replaces Astral 核爆/Brand of Purgatory with Enkindle/Deathflare/Rekindle when appropriate.", SMN.JobID, 0, "BRRRR", "Upgrade!")]
+        [CustomComboInfo("单体亚灵神（龙神/不死鸟）特性", "亚灵神显现期间，星极核爆/炼狱之炎会在恰当的时刻替换为龙神迸发/不死鸟迸发/死星核爆/苏生之炎", SMN.JobID, 0, "BRRRR", "Upgrade!")]
         SummonerAOEDemiFeature = 17003,
 
-        [CustomComboInfo("Egi Attacks Feature", "Replaces 毁灭I/毁灭 III (Depending On Enabled Combo) and Tri-Disaster with Egi attacks. Will not work without enabling Single Target and/or AOE.", SMN.JobID, 0, "Eggy-bread", "No idea when you're in burst phase?\nHint: It's all the time, really")]
+        [CustomComboInfo("宝石耀特性", "在三神召唤期间，毁灭/毁荡/三重灾祸自动替换成宝石耀。只有启用了单体或群体连击后才有效（下同）。", SMN.JobID, 0, "Eggy-bread", "No idea when you're in burst phase?\nHint: It's all the time, really")]
         SummonerEgiAttacksFeature = 17004,
 
-        [CustomComboInfo("Garuda Slipstream Feature", "Adds Slipstream on 毁灭I/毁灭 III/Tri-disaster.", SMN.JobID, 0, "Slipstream", "2 Fast 2 Furious")]
+        [CustomComboInfo("螺旋气流特性", "在风神召唤时，毁灭/毁荡/三重灾祸自动替换为螺旋气流", SMN.JobID, 0, "螺旋气流", "2 Fast 2 Furious")]
         SummonerGarudaUniqueFeature = 17005,
 
-        [CustomComboInfo("Ifrit Cyclone Feature", "Adds Crimson Cyclone/Crimson Strike on 毁灭I/毁灭 III/Tri-disaster.", SMN.JobID, 0, "Fists of Fury", "Show MNK how it's done, will ya?")]
+        [CustomComboInfo("深红旋风/深红强袭特性", "在火神召唤时，毁灭/毁荡/三重灾祸自动替换为深红旋风/深红强袭", SMN.JobID, 0, "Fists of Fury", "Show MNK how it's done, will ya?")]
         SummonerIfritUniqueFeature = 17006,
 
-        [CustomComboInfo("Titan 山崩 Feature", "Adds Mountain Buster on 毁灭I/毁灭 III/Tri-disaster.", SMN.JobID, 0, "Mountain, BUSTA", "Bring the mountain to Mohammed, as they say")]
+        [CustomComboInfo("山崩特性", "在土神召唤时，毁灭/毁荡/三重灾祸自动替换为山崩", SMN.JobID, 0, "Mountain, BUSTA", "Bring the mountain to Mohammed, as they say")]
         SummonerTitanUniqueFeature = 17007,
 
-        [CustomComboInfo("ED 溃烂爆发", "Change Fester into Energy Drain when our of 以太超流 stacks.", SMN.JobID, 0, "溃烂爆发ing", "溃烂爆发ing? Go take a shower, bro")]
+        [CustomComboInfo("能量吸收+溃烂爆发合并特性", "在以太超流的档数为零时，溃烂爆发自动替换为能量吸收", SMN.JobID, 0, "溃烂爆发ing", "溃烂爆发ing? Go take a shower, bro")]
         SummonerEDFesterCombo = 17008,
 
-        [CustomComboInfo("ES 痛苦核爆", "Change Painflare into Energy Siphon when out of 以太超流 stacks.", SMN.JobID, 0, "Old age", "I sometimes get a painflare in my middle-back, too.")]
+        [CustomComboInfo("能量抽取+痛苦核爆合并特性", "在以太超流的档数为零时，痛苦核爆自动替换为能量抽取", SMN.JobID, 0, "Old age", "I sometimes get a painflare in my middle-back, too.")]
         SummonerESPainflareCombo = 17009,
 
 
         // BONUS TWEAKS
-        [CustomComboInfo("Carbuncle Reminder Feature", "Reminds you always to summon Carbuncle by replacing 毁灭 (Carbuncle Summon Reminder Feature).", SMN.JobID, 0, "Rabbit Reminder", "C'mon. You had ONE job.")]
+        [CustomComboInfo("宝石兽自动召唤", "在尚未召唤宝石兽时，将毁灭自动替换为召唤宝石兽。妈妈再也不用担心我开场放不出龙神了。", SMN.JobID, 0, "Rabbit Reminder", "C'mon. You had ONE job.")]
         SummonerCarbuncleSummonFeature = 17010,
 
-        [CustomComboInfo("毁灭 4 On 毁灭3 Combo Feature", "Adds 毁灭4 on main 毁灭I/毁灭III combo feature when there are currently no summons being active.", SMN.JobID, 0, "毁灭 -> 毁灭 -> 毁灭", "毁灭 this, ruin that. Can't you see I'm busy ruining the plugin?!")]
+        [CustomComboInfo("毁绝特性（单体）", "当所有召唤兽都在冷却时，将毁绝加入毁灭/毁荡的连击", SMN.JobID, 0, "毁灭 -> 毁灭 -> 毁灭", "毁灭 this, ruin that. Can't you see I'm busy ruining the plugin?!")]
         SummonerRuin4ToRuin3Feature = 17011,
 
-        [CustomComboInfo("毁灭 4 On Tri-disaster Feature", "Adds 毁灭4 on main Tridisaster combo feature when there are currently no summons being active.", SMN.JobID, 0, "", "More 毁灭 this, more ruin that! Now in sharing size!")]
-        SummonerRuin4ToTridisasterFeature = 17012,
+        [CustomComboInfo("毁绝特性（群体）", "当所有召唤兽都在冷却时，将毁绝加入三重灾祸的连击", SMN.JobID, 0, "", "More 毁灭 this, more ruin that! Now in sharing size!")]
+        SummonerRuin4To三重灾祸Feature = 17012,
 
         [ParentCombo(SummonerEDFesterCombo)]
-        [CustomComboInfo("Ruin IV Fester/Pain核爆 Feature", "Change Fester/Pain核爆 into Ruin IV when out of Aetherflow stacks, ED/ES is on cooldown, and 毁灭 IV is up.", SMN.JobID, 0, "溃烂爆发ing Painflare", "Just take some Advil for that, or see the doc?")]
+        [CustomComboInfo("毁绝特性（溃烂爆发/痛苦核爆）", "当以太超流的档数为零，且能量吸收/能量抽取在CD，且毁绝触发时，将溃烂爆发/痛苦核爆自动替换为毁绝", SMN.JobID, 0, "溃烂爆发ing Painflare", "Just take some Advil for that, or see the doc?")]
         SummonerFesterPainflareRuinFeature = 17013,
 
         [ParentCombo(SummonerEDFesterCombo)]
-        [CustomComboInfo("Lazy 溃烂爆发 Feature", "Adds ED/溃烂爆发 during (AstralImpulse).\n. Will only ED during Phoenix phase in order to save it 溃烂爆发 for burst in bahamut", SMN.JobID, 0, "I don't read descriptions -", "Why is 溃烂爆发 Not working properly?")]
+        [CustomComboInfo("自动溃烂爆发特性", "将能量吸收/溃烂爆发加入到星极脉冲中。\n. 在不死鸟召唤期间，将只释放能量吸收，从而保留溃烂爆发到龙神召唤期间打爆发", SMN.JobID, 0, "I don't read descriptions -", "Why is 溃烂爆发 Not working properly?")]
         SummonerLazyFesterFeature = 17014,
 
         [ConflictingCombos(SimpleSummonerOption2)]
-        [CustomComboInfo("One Button Rotation Feature", "Summoner Single Target One Button Rotation (Single Target) on 毁灭1/毁灭3.(Titan>Garuda>Ifrit) ", SMN.JobID, 0, "", "We'll play the game for you. Shush, now")]
+        [CustomComboInfo("一键单体循环", "将不死鸟召唤和三神召唤按照土神>风神>火神的顺序在合适的时机加入到毁灭/毁荡", SMN.JobID, 0, "", "We'll play the game for you. Shush, now")]
         SimpleSummoner = 17015,
 
-        [CustomComboInfo("One Button AoE Rotation Feature", "Summoner AoE One Button Rotation (AoE) on Tridisaster", SMN.JobID, 0, "", "We'll play the game for you. Shush, now")]
+        [CustomComboInfo("一键群体循环", "将不死鸟召唤和三神召唤按照土神>风神>火神的顺序在合适的时机加入到三重灾祸", SMN.JobID, 0, "", "We'll play the game for you. Shush, now")]
         SimpleAoESummoner = 17016,
 
         [ParentCombo(SimpleSummoner)]
-        [CustomComboInfo("灼热之光 Rotation Option", "Adds 灼热之光 to Simple Summoner Rotation, Single Target", SMN.JobID, 0, "My eyes!", "I can't see!")]
+        [CustomComboInfo("灼热之光加入循环（单体）", "将灼热之光加入到一键单体循环中", SMN.JobID, 0, "My eyes!", "I can't see!")]
         BuffOnSimpleSummoner = 17017,
 
         [ParentCombo(SimpleAoESummoner)]
-        [CustomComboInfo("灼热之光 AoE Option", "Adds 灼热之光 to Simple Summoner Rotation, AoE", SMN.JobID, 0, "Our Eyes!", "Yay, we're all legally blind!")]
+        [CustomComboInfo("灼热之光加入循环（群体）", "将灼热之光加入到一键群体循环中", SMN.JobID, 0, "Our Eyes!", "Yay, we're all legally blind!")]
         BuffOnSimpleAoESummoner = 17018,
 
-        [CustomComboInfo("DemiReminderFeature", "Adds Only Demi Summons on 毁灭III (So you can still choose your Egis but never forget to summon Demis) ", SMN.JobID, 0, "Chad Kroeger Demi Feature", "This is how, you remind me, of what I really am")]
+        [CustomComboInfo("亚灵神（龙神/不死鸟）自动召唤（单体）", "仅用亚灵神（龙神/不死鸟）召唤替换毁荡（这样你依然可以自己手动选择三神的召唤顺序，但永远都不会忘记召唤亚灵神）", SMN.JobID, 0, "Chad Kroeger Demi Feature", "This is how, you remind me, of what I really am")]
         SummonerDemiSummonsFeature = 17019,
 
-        [CustomComboInfo("DemiReminderAoEFeature", "Adds Only Demi Summons on TriDisaster (So you can still choose your Egis but never forget to summon Demis) ", SMN.JobID, 0, "Nickelback Demi Feature", "Oh fuck, the whole band is here! Run!")]
+        [CustomComboInfo("亚灵神（龙神/不死鸟）自动召唤（群体）", "仅用亚灵神（龙神/不死鸟）召唤三重灾祸（这样你依然可以自己手动选择三神的召唤顺序，但永远都不会忘记召唤亚灵神）", SMN.JobID, 0, "Nickelback Demi Feature", "Oh fuck, the whole band is here! Run!")]
         SummonerDemiAoESummonsFeature = 17020,
 
         [ConflictingCombos(SummonerMainComboFeatureRuin1)]
-        [CustomComboInfo("毁灭 III mobility", "Allows you to cast 毁灭 III while 毁灭 IV is unavailable for mobility reasons. Shows up as 毁灭 I.\nWill break combos with 毁灭 I. Might break combos with 毁灭 IV.", SMN.JobID, 0, "", "Don't you have enough mobility as it is?\nThis isn't Ranged DPS, y'know.")]
+        [CustomComboInfo("毁荡机动型特性", "在没有毁绝的情况下，考虑到机动性的原因，允许你用毁绝释放毁荡。毁绝图标将变为毁灭。\n毁灭的连击会被破坏，毁绝的连击可能被破坏。", SMN.JobID, 0, "", "Don't you have enough mobility as it is?\nThis isn't Ranged DPS, y'know.")]
         SummonerRuinIVMobilityFeature = 17021,
 
         [ConflictingCombos(SummonerSwiftcastFeatureIfrit)]
-        [CustomComboInfo("Swiftcast Garuda Option", "Always swiftcasts Slipstream if available.", SMN.JobID, 0, "No Raising for me!", "Always slips swiftstream, sometimes")]
+        [CustomComboInfo("即刻风神特性", "在有即刻咏唱时，螺旋气流前将会自动插入即刻咏唱", SMN.JobID, 0, "No Raising for me!", "Always slips swiftstream, sometimes")]
         SummonerSwiftcastFeatureGaruda = 17022,
 
         [ConflictingCombos(SummonerSwiftcastFeatureGaruda)]
-        [CustomComboInfo("Swiftcast Ifrit Option", "Always swiftcasts 2nd Ruby Rite if available.", SMN.JobID, 0, "No Raising for you!", "Always cancels the Ifrit phase entirely, doing nothing instead.")]
+        [CustomComboInfo("即刻火神特性", "在有即刻咏唱时，第二个红宝石之仪前将会自动插入即刻咏唱", SMN.JobID, 0, "No Raising for you!", "Always cancels the Ifrit phase entirely, doing nothing instead.")]
         SummonerSwiftcastFeatureIfrit = 17023,
 
         [ConflictingCombos(SimpleSummoner)]
-        [CustomComboInfo("One Button Rotation Feature Option2 ", "Same feature as One Button Rotation Feature but Garuda>Titan>Ifrit .", SMN.JobID, 0, "The Egi Shuffle", "You just had to be different, didn't you?")]
+        [CustomComboInfo("一键循环特性2", "其他内容与一键循环均一致，只不过召唤顺序变为风神>土神>火神。", SMN.JobID, 0, "The Egi Shuffle", "You just had to be different, didn't you?")]
         SimpleSummonerOption2 = 17024,
 
-        [CustomComboInfo("Prevent 毁灭4 Waste Feature", "Puts 毁灭4 Above anything if Further毁灭 about to expire and there is no Demi present.", SMN.JobID, 0, "", "Waste not, want not")]
+        [CustomComboInfo("防止毁绝浪费特性", "如果毁绝预备效果即将过期，则将毁绝的优先级放到其他技能之前（除非现在是亚灵神显现期间）", SMN.JobID, 0, "", "Waste not, want not")]
         SummonerRuin4WastePrevention = 17025,
 
-        [CustomComboInfo("Rekindle Feature", "Adds Rekindle onto the main 毁灭1 or 毁灭3 combo. Requires other features to work.", SMN.JobID, 0, "Tinderbox", "Remember making those fires in runescape? Yeah. That.")]
+        [CustomComboInfo("苏生之炎特性", "将苏生之炎加入到毁灭/毁荡的连击中，需要开启其他特性才能生效。", SMN.JobID, 0, "Tinderbox", "Remember making those fires in runescape? Yeah. That.")]
         SummonerRekindlePhoenix = 17026,
 
         #endregion
