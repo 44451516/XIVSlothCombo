@@ -2091,60 +2091,60 @@ namespace XIVSlothComboPlugin
         // ====================================================================================
         #region WHITE MAGE
 
-        [CustomComboInfo("Solace into Misery", "Replaces 安慰之心 with Afflatus Misery when Misery is ready to be used", WHM.JobID, 0, "Misery", "I'd be miserable too if this were one of my DPS options.")]
+        [CustomComboInfo("安慰之心-苦难之心", "当苦难之心可用时，将安慰之心替换为苦难之心", WHM.JobID, 0, "Misery", "I'd be miserable too if this were one of my DPS options.")]
         WhiteMageSolaceMiseryFeature = 19000,
 
-        [CustomComboInfo("Rapture into Misery", "Replaces 狂喜之心 with Afflatus Misery when Misery is ready to be used", WHM.JobID, 0, "Misery, but with freinds", "Let's cry together!")]
+        [CustomComboInfo("狂喜之心-苦难之心", "当苦难之心可用时，将狂喜之心替换为苦难之心", WHM.JobID, 0, "Misery, but with freinds", "Let's cry together!")]
         WhiteMageRaptureMiseryFeature = 19001,
 
-        [CustomComboInfo("治疗 2 to 治疗 Level Sync", "Changes 治疗 2 to 治疗 when below level 30 in synced content.", WHM.JobID, 0, "Weenie 治疗", "Bet you forgot 治疗 1 existed for a sec, huh")]
+        [CustomComboInfo("治疗技能等级同步", "当等级同步在30级以下时，将救疗替换为治疗", WHM.JobID, 0, "Weenie 治疗", "Bet you forgot 治疗 1 existed for a sec, huh")]
         WhiteMageCureFeature = 19002,
 
-        [CustomComboInfo("Afflatus Feature", "Changes 治疗 2 into Afflatus Solace, and 医治 into Afflatus Rapture, when lilies are up.", WHM.JobID, 0, "Inflatus Feature", "Pumps you full of air. Boing!")]
+        [CustomComboInfo("治疗百合状态", "当拥有治疗百合时，将救疗替换为安慰之心，医治替换为狂喜之心", WHM.JobID, 0, "Inflatus Feature", "Pumps you full of air. Boing!")]
         WhiteMageAfflatusFeature = 19003,
 
         [ConflictingCombos(WHMAlternativeRaise)]
-        [CustomComboInfo("WHM 复活 Feature", "Changes Swiftcast to 复活", WHM.JobID, 0, "What you're really here for", "You're the best at this. You got this.")]
+        [CustomComboInfo("白魔复活特性", "将即刻咏唱替换为复活", WHM.JobID, 0, "What you're really here for", "You're the best at this. You got this.")]
         WHMRaiseFeature = 19004,
 
         [ConflictingCombos(WHMRaiseFeature)]
-        [CustomComboInfo("WHM 复活 Feature alternative", "复活 Becomes Swiftcast when Swiftcast is available. Thin air feature also applies to this if enabled.", WHM.JobID, 0, "Look up!", "It's this, but that.")]
+        [CustomComboInfo("白魔复活特性替代", "当即刻咏唱可用时，将复活替换为即刻咏唱。如果启用，无中生有特性也适用于此。", WHM.JobID, 0, "Look up!", "It's this, but that.")]
         WHMAlternativeRaise = 19015,
 
-        [CustomComboInfo("DoT on 闪耀3 Feature", "Adds DoT on 闪耀3 when DoT is not preset on about to expire and when you are inCombat (You can still prepull 闪耀)", WHM.JobID, 0, "Weak", "WHM DPS rotation too much?")]
+        [CustomComboInfo("DoT-闪耀特性", "当你处在战斗状态，且目标没有Dot效果或效果即将到期时，将DoT替换至闪耀上(你仍然可以预读闪耀)", WHM.JobID, 0, "Weak", "WHM DPS rotation too much?")]
         WHMDotMainComboFeature = 19005,
 
         [ParentCombo(WHMDotMainComboFeature)]
-        [CustomComboInfo("Lucid Dreaming Feature", "Adds Lucid dreaming to the DPS feature when below set MP value.", WHM.JobID, 0, "Dream within a Dream", "Awake, yet wholly asleep")]
+        [CustomComboInfo("醒梦特性", "当魔力低于设定值时，将醒梦加入输出循环中", WHM.JobID, 0, "Dream within a Dream", "Awake, yet wholly asleep")]
         WHMLucidDreamingFeature = 19006,
 
-        [CustomComboInfo("医治 Feature", "Replaces 医治2 whenever you are under 医治2 regen with 医治1", WHM.JobID, 0, "Big Brain AoE Heals", "God bless us all, eh")]
+        [CustomComboInfo("医治特性", "当你处于医济状态下时，将医济替换为医治", WHM.JobID, 0, "Big Brain AoE Heals", "God bless us all, eh")]
         WHMMedicaFeature = 19007,
 
         [ParentCombo(WHMDotMainComboFeature)]
-        [CustomComboInfo("Presence Of Mind Feature", "Adds Presence of mind as oGCD onto main DPS Feature(闪耀3)", WHM.JobID, 0, "", "This would imply you're actually paying attention.")]
+        [CustomComboInfo("神速咏唱特性", "在闪耀中插入神速咏唱", WHM.JobID, 0, "", "This would imply you're actually paying attention.")]
         WHMPresenceOfMindFeature = 19008,
 
         [ParentCombo(WHMDotMainComboFeature)]
-        [CustomComboInfo("法令 Feature", "Adds 法令 as oGCD onto main DPS Feature(Glare3)", WHM.JobID, 0, "", "Size 'em up, knock 'em down")]
+        [CustomComboInfo("法令特性", "在闪耀中插入法令", WHM.JobID, 0, "", "Size 'em up, knock 'em down")]
         WHMAssizeFeature = 19009,
 
         [ParentCombo(WHMMedicaFeature)]
-        [CustomComboInfo("Afflatus Misery On 医治 Feature", "Adds Afflatus Misery onto the 医治 Feature", WHM.JobID, 0, "", "Ah, back to beinig miserable.")]
+        [CustomComboInfo("苦难之心-医济", "将医济替换为苦难之心", WHM.JobID, 0, "", "Ah, back to beinig miserable.")]
         WhiteMageAfflatusMiseryMedicaFeature = 19010,
 
         [ParentCombo(WHMMedicaFeature)]
-        [CustomComboInfo("Afflatus Rapture On 医治 Feature", "Adds Afflatus Rapture onto the 医治 Feature", WHM.JobID, 0, "CRapture", "The final days are upon us!")]
+        [CustomComboInfo("狂喜之心-医济", "将医济替换为狂喜之心", WHM.JobID, 0, "CRapture", "The final days are upon us!")]
         WhiteMageAfflatusRaptureMedicaFeature = 19011,
 
-        [CustomComboInfo("苦难之心 Feature", "Changes 治疗 2 into Afflatus Misery.", WHM.JobID, 0, "", "治疗s? Who needs 'em?")]
+        [CustomComboInfo("苦难之心特性", "将救疗替换为苦难之心", WHM.JobID, 0, "", "治疗s? Who needs 'em?")]
         WhiteMageAfflatusMiseryCure2Feature = 19012,
 
         [ParentCombo(WHMDotMainComboFeature)]
-        [CustomComboInfo("Remove DoT From 闪耀3 Feature", "Removes DoT from DPS feature", WHM.JobID, 0, "I'm an idiot", "Yes, one serving of less DPS, please.")]
+        [CustomComboInfo("闪耀特性中移除DoT", "移除替换为DoT的特性", WHM.JobID, 0, "I'm an idiot", "Yes, one serving of less DPS, please.")]
         WHMRemoveDotFromDPSFeature = 19013,
 
-        [CustomComboInfo("Thin Air 复活 Feature", "Adds Thin Air to the WHM 复活 Feature/Alternative Feature", WHM.JobID, 0, "", "I can hardly breathe as it is!")]
+        [CustomComboInfo("无中生有-复活特性", "为白魔复活特性/替代 添加插入无中生有", WHM.JobID, 0, "", "I can hardly breathe as it is!")]
         WHMThinAirFeature = 19014,
 
         #endregion
