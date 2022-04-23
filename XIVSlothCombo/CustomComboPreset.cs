@@ -367,16 +367,16 @@ namespace XIVSlothComboPlugin
         SimpleBardFeature = 3009,
 
         [ParentCombo(SimpleBardFeature)]
-        [CustomComboInfo("Simple Dot选项", "如果目标身上不存在风/毒dot，开启此选项会在连击中加入风/毒箭。", BRD.JobID, 0, "", "Dot是啥？能吃吗？")]
+        [CustomComboInfo("简易Dot选项", "如果目标身上不存在风/毒dot，开启此选项会在连击中加入风/毒箭。", BRD.JobID, 0, "", "Dot是啥？能吃吗？")]
         SimpleDoTOption = 3010,
 
         [ParentCombo(SimpleBardFeature)]
-        [CustomComboInfo("Simple唱歌选项", "在连击中加入三首歌循环。", BRD.JobID, 0, "Sing-song",
+        [CustomComboInfo("简易唱歌选项", "在连击中加入三首歌循环。", BRD.JobID, 0, "Sing-song",
             "Look, a raid contribution feature!\nShame nobody will thank you for it")]
         SimpleSongOption = 3011,
 
         [ParentCombo(BardoGCDAoEFeature)]
-        [CustomComboInfo("唱歌选项 AoE Feature", "在AOE连击中加入三首歌循环。", BRD.JobID, 0, "", "Get your MIDI files ready, it's song time.")]
+        [CustomComboInfo("唱歌选项 AoE", "在AOE连击中加入三首歌循环。", BRD.JobID, 0, "", "Get your MIDI files ready, it's song time.")]
         BardSongsFeature = 3012,
 
         [CustomComboInfo("Buff技能设置", "将猛者强击/战斗之声整合至纷乱箭。", BRD.JobID, 0, "", "你被强化了，快送！")]
@@ -391,7 +391,7 @@ namespace XIVSlothComboPlugin
         BardSimpleAoEFeature = 3015,
 
         [ParentCombo(BardSimpleAoEFeature)]
-        [CustomComboInfo("唱歌选项 AoE Feature", "插入三首歌循环。", BRD.JobID, 0, "", "Wow. You're performing to a crowd now, huh")]
+        [CustomComboInfo("唱歌选项AoE特性", "插入三首歌循环。", BRD.JobID, 0, "", "Wow. You're performing to a crowd now, huh")]
         SimpleAoESongOption = 3016,
 
         [ParentCombo(SimpleBardFeature)]
@@ -1005,11 +1005,11 @@ namespace XIVSlothComboPlugin
         GunbreakerInterruptFeature = 7016,
 
         [ParentCombo(GunbreakerMainComboCDsGroup)]
-        [CustomComboInfo("血壤整合到主连击", "Adds 血壤 to main combo when ammo is 0.", GNB.JobID, 0)]
+        [CustomComboInfo("血壤整合到主连击", "当晶壤为0时将血壤整合到主连击。", GNB.JobID, 0)]
         GunbreakerBloodfestonST = 7014,
 
         [ParentCombo(GunbreakerSolidBarrelCombo)]
-        [CustomComboInfo("无情整合到主连击", "Adds 无情 to main combo when at full ammo.", GNB.JobID, 0)]
+        [CustomComboInfo("无情整合到主连击", "当晶壤满时将无情整合到主连击。", GNB.JobID, 0)]
         GunbreakerNoMercyonST = 7018,
 
         [ParentCombo(GunbreakerGnashingFangOnMain)]
@@ -1679,163 +1679,123 @@ namespace XIVSlothComboPlugin
         #endregion
         // ====================================================================================
         #region SAGE
-       #region SAGE
 
-        [CustomComboInfo("Soteria into 心关 Feature", "Soteria turns into 心关 when not active or Soteria is on-cooldown.", SGE.JobID, 0, "Spoopy into Kpoopy", "Don't forget your danc- uh, heal partner!")]
         [CustomComboInfo("奶伴设置", "当未使用心关或拯救处于冷却状态时，替换拯救为心关。", SGE.JobID, 0, "Spoopy into Kpoopy", "Don't forget your danc- uh, heal partner!")]
         SageKardiaFeature = 14000,
 
-        [CustomComboInfo("根素 Feature###SGENormal", "Replaces 白牛清汁, 灵橡清汁, Ixochole and 坚角清汁 with Rhizomata when Addersgall is empty.", SGE.JobID, 0, "根素to", "Can't quite manage that gauge? Neither can we.")]
         [CustomComboInfo("根素设置###SGENormal", "当蛇胆为0时，替换白牛清汁/灵橡清汁/寄生清汁/坚角清汁为根素。", SGE.JobID, 0, "Rhizomatato", "Can't quite manage that gauge? Neither can we.")]
         SageRhizomataFeature = 14001,
 
-        [CustomComboInfo("Taurochole into 灵橡清汁 Feature", "Replaces Taurochole with 灵橡清汁 when Taurochole is on cooldown.", SGE.JobID, 0, "This for that", "They do the same thing, really. If you close your eyes.")]
         [CustomComboInfo("单体治疗设置", "当白牛清汁处于冷却状态时，替换白牛清汁为灵橡清汁。", SGE.JobID, 0, "This for that", "They do the same thing, really. If you close your eyes.")]
         SageTauroDruoFeature = 14002,
 
-        [CustomComboInfo("发炎 into X Feature", "Does nothing on it's own, must choose any/all sub-features!", SGE.JobID, 0, "", "发炎balls.")]
         [CustomComboInfo("发炎设置", "单独启用此选项无任何效果，请根据需要开启相应子选项。", SGE.JobID, 0, "", "发炎balls.")]
         SagePhlegmaFeature = 14031,
 
             [ParentCombo(SagePhlegmaFeature)]
-            [CustomComboInfo("发炎 into Toxikon Feature", "发炎 turns into Toxikon when you are out of 发炎 charges and have Addersting.\nTakes priority over the 发炎 into Dyskrasia Feature.", SGE.JobID, 0, "", "Changes 发炎 to Toxikon, purely because the name is awful.")]
+            [CustomComboInfo("发炎替换选项1", "当发炎或蛇刺消耗完毕时，替换发炎为箭毒。\n此选项优先级高于选项2。", SGE.JobID, 0, "", "Changes 发炎 to 箭毒, purely because the name is awful.")]
             SagePhlegmaToxikonFeature = 14003,
-        [ParentCombo(SagePhlegmaFeature)]
-        [CustomComboInfo("发炎替换选项1", "当发炎或蛇刺消耗完毕时，替换发炎为箭毒。\n此选项优先级高于选项2。", SGE.JobID, 0, "", "Changes 发炎 to 箭毒, purely because the name is awful.")]
-        SagePhlegmaToxikonFeature = 14003,
 
             [ParentCombo(SagePhlegmaFeature)]
-            [CustomComboInfo("发炎 into Dyskrasia Feature", "发炎 turns into Dyskrasia when you are out of charges.", SGE.JobID, 0, "", "Again, 发炎 is the worst skill name in the game. GET RID!")]
+            [CustomComboInfo("发炎替换选项2", "当发炎消耗完毕时，替换发炎为失衡。", SGE.JobID, 0, "", "Again, 发炎 is the worst skill name in the game. GET RID!")]
             SagePhlegmaDyskrasiaFeature = 14004,
-        [ParentCombo(SagePhlegmaFeature)]
-        [CustomComboInfo("发炎替换选项2", "当发炎消耗完毕时，替换发炎为失衡。", SGE.JobID, 0, "", "Again, 发炎 is the worst skill name in the game. GET RID!")]
-        SagePhlegmaDyskrasiaFeature = 14004,
 
-        [CustomComboInfo("注药 DPS Feature", "Adds Eukrasia and Eukrasian 注药 on one combo button.", SGE.JobID, 0, "", "Oh look, you're basically WHM now!")]
         [CustomComboInfo("输出设置", "均衡注药整合为一键。", SGE.JobID, 0, "", "Oh look, you're basically WHM now!")]
         SageDPSFeature = 14005,
 
             [ParentCombo(SageDPSFeature)]
-            [CustomComboInfo("Fine Tune 注药", "Input some values to your liking.", SGE.JobID, 0, "", "NERD")]
+            [CustomComboInfo("均衡注药设置", "自定义设置用于自动判断是否需要使用dot的目标HP。", SGE.JobID, 0, "", "NERD")]
             SageDPSFeatureAdvTest = 14009,
-        [ParentCombo(SageDPSFeature)]
-        [CustomComboInfo("均衡注药设置", "自定义设置用于自动判断是否需要使用dot的目标HP。", SGE.JobID, 0, "", "NERD")]
-        SageDPSFeatureAdvTest = 14009,
 
             [ParentCombo(SageDPSFeature)]
-            [CustomComboInfo("Lucid Dreaming Option", "Adds Lucid Dreaming into the 注药 DPS feature at slider value or less.", SGE.JobID, 0, "Muh piety", "Never run out of steam!")]
+            [CustomComboInfo("醒梦", "当mp低于设定值时自动插入醒梦。", SGE.JobID, 0, "Muh piety", "Never run out of steam!")]
             SageLucidFeature = 14006,
-        [ParentCombo(SageDPSFeature)]
-        [CustomComboInfo("醒梦", "当mp低于设定值时自动插入醒梦。", SGE.JobID, 0, "Muh piety", "Never run out of steam!")]
-        SageLucidFeature = 14006,
 
         [ConflictingCombos(SageAlternateEgeiroFeature)]
-        [CustomComboInfo("Swiftcast into 复苏 Feature", "Changes Swiftcast to 复苏 when under the effect of Swiftcast.", SGE.JobID, 0, "Swiftcast to Swiftcast", "GET BACK TO DOING DAMAGE")]
         [CustomComboInfo("即刻复苏1", "使用即刻咏唱后，替换即刻咏唱为复苏。", SGE.JobID, 0, "Swiftcast to Swiftcast", "GET BACK TO DOING DAMAGE")]
         SageEgeiroFeature = 14007,
 
         [ConflictingCombos(SageEgeiroFeature)]
-        [CustomComboInfo("复苏 into Swiftcast Feature", "Changes Egiero to Swiftcast when Swiftcast is available.", SGE.JobID, 0, "复活 to 复活", "Swaps your raise with WHM's raise.\nDoesn't work any more. You're welcome")]
         [CustomComboInfo("即刻复苏2", "当即刻咏唱可用时，替换复苏为即刻咏唱。", SGE.JobID, 0, "复活 to 复活", "Swaps your raise with WHM's raise.\nDoesn't work any more. You're welcome")]
         SageAlternateEgeiroFeature = 14008,
 
         [ConflictingCombos(SageRhizomataFeature, SageTauroDruoFeature)]
-        [CustomComboInfo("Sage Single Target Heal Feature", "Changes 天辉gnosis. You must target a party member (including yourself) for some features to work.", SGE.JobID, 0)]
         [CustomComboInfo("单体治疗技能设置", "通过改变诊断技能。必须选中队友或自己以下设置才能生效。", SGE.JobID, 0)]
         SageSingleTargetHealFeature = 14011,
 
         [ConflictingCombos(SageRhizomataFeature, SageTauroDruoFeature)]
-        [CustomComboInfo("Sage AoE Heal Feature", "Changes 预后. Customize your AoE healing to your liking", SGE.JobID, 0)]
         [CustomComboInfo("群体治疗技能设置", "通过改变预后技能。自定义群体治疗技能。", SGE.JobID, 0)]
         SageAoEHealFeature = 14012,
 
         [ParentCombo(SageSingleTargetHealFeature)]
-        [CustomComboInfo("Apply 心关", "Applies 心关 to your target if it's not applied to anyone else.", SGE.JobID, 0)]
         [CustomComboInfo("心关", "如果心关从未使用过，则对选中目标使用心关。", SGE.JobID, 0)]
         AutoApplyKardia = 14013,
 
         [ParentCombo(SageSingleTargetHealFeature)]
-        [CustomComboInfo("Eukrasian 天辉gnosis Feature", "天辉gnosis becomes Eukrasian 天辉gnosis if the shield is not applied to the target.", SGE.JobID, 0)]
         [CustomComboInfo("均衡诊断设置", "当所选目标没有盾值时，替换诊断为均衡诊断。", SGE.JobID, 0)]
         CustomEukrasianDiagnosisFeature = 14014,
 
         [ParentCombo(SageSingleTargetHealFeature)]
-        [CustomComboInfo("Custom 拯救 Feature", "Applies 拯救 when the selected target is at or above the set HP percentage.", SGE.JobID, 0)]
         [CustomComboInfo("自定义拯救设置", "当所选目标HP百分比在设定值以上时，对其使用拯救。", SGE.JobID, 0)]
         CustomSoteriaFeature = 14015,
         
         [ParentCombo(SageSingleTargetHealFeature)]
-        [CustomComboInfo("Custom 活化 Feature", "Applies 活化 when the selected target is at or above the set HP percentage.", SGE.JobID, 0)]
         [CustomComboInfo("自定义活化设置", "当所选目标HP百分比在设定值以上时，对其使用活化。", SGE.JobID, 0)]
         CustomZoeFeature = 14016,
 
         [ParentCombo(SageSingleTargetHealFeature)]
-        [CustomComboInfo("Custom 消化 Feature", "Triggers 消化 if a shield is present and the selected target is at or above the set HP percentage.", SGE.JobID, 0)]
         [CustomComboInfo("自定义消化设置", "当所选目标存在盾值且HP百分比在设定值以上时，激活消化。", SGE.JobID, 0)]
         CustomPepsisFeature = 14017,
 
         [ParentCombo(SageSingleTargetHealFeature)]
-        [CustomComboInfo("Custom 白牛清汁 Feature", "Adds 白牛清汁 when the selected target is at or above the set HP percentage.", SGE.JobID, 0)]
         [CustomComboInfo("自定义白牛清汁设置", "当所选目标HP百分比在设定值以上时，插入白牛清汁。", SGE.JobID, 0)]
         CustomTaurocholeFeature = 14018,
 
         [ParentCombo(SageSingleTargetHealFeature)]
-        [CustomComboInfo("Custom 输血 Feature", "Adds 输血 when the selected target is at or above the set HP percentage.", SGE.JobID, 0)]
         [CustomComboInfo("自定义输血设置", "当所选目标HP百分比在设定值以上时，插入输血。", SGE.JobID, 0)]
         CustomHaimaFeature = 14019,
 
         [ParentCombo(SageSingleTargetHealFeature)]
-        [CustomComboInfo("Custom 根素 Feature###SGEST", "Adds 根素 when Addersgall is 0###SGEST", SGE.JobID, 0)]
         [CustomComboInfo("自定义根素设置###SGEST", "当蛇胆数为0时，插入根素。###SGEST", SGE.JobID, 0)]
         RhizomataFeature = 14020,
         
         [ParentCombo(SageSingleTargetHealFeature)]
-        [CustomComboInfo("Custom 混合 Feature", "Applies 混合 when the selected target is at or above the set HP percentage.", SGE.JobID, 0)]
         [CustomComboInfo("自定义混合设置", "当所选目标HP百分比在设定值以上时，对其使用混合。", SGE.JobID, 0)]
         CustomKrasisFeature = 14021,
 
         [ParentCombo(SageAoEHealFeature)]
-        [CustomComboInfo("自生 Feature", "Adds 自生.", SGE.JobID, 0)]
         [CustomComboInfo("自生设置", "自动插入自生。", SGE.JobID, 0)]
         PhysisFeature = 14022,
 
         [ParentCombo(SageAoEHealFeature)]
-        [CustomComboInfo("Eukrasian 预后 Feature", "预后 becomes Eukrasian 预后 if the shield is not applied.", SGE.JobID, 0)]
         [CustomComboInfo("均衡预后设置", "当没有盾值时，替换预后为均衡预后。", SGE.JobID, 0)]
         EukrasianPrognosisFeature = 14023,
 
         [ParentCombo(SageAoEHealFeature)]
-        [CustomComboInfo("整体论 Feature", "Adds 整体论.", SGE.JobID, 0)]
         [CustomComboInfo("整体论设置", "自动插入整体论。", SGE.JobID, 0)]
         HolosFeature = 14024,
 
         [ParentCombo(SageAoEHealFeature)]
-        [CustomComboInfo("泛输血 Feature", "Adds 泛输血.", SGE.JobID, 0)]
         [CustomComboInfo("泛输血设置", "自动插入泛输血。", SGE.JobID, 0)]
         PanhaimaFeature = 14025,
 
         [ParentCombo(SageAoEHealFeature)]
-        [CustomComboInfo("消化 Feature", "Triggers 消化 if a shield is present.", SGE.JobID, 0)]
         [CustomComboInfo("消化设置", "当盾值存在时激活消化。", SGE.JobID, 0)]
         PepsisFeature = 14026,
 
         [ParentCombo(SageAoEHealFeature)]
-        [CustomComboInfo("寄生清汁 Feature", "Adds 寄生清汁", SGE.JobID, 0)]
         [CustomComboInfo("寄生清汁设置", "自动插入寄生清汁。", SGE.JobID, 0)]
         IxocholeFeature = 14027,
 
         [ParentCombo(SageAoEHealFeature)]
-        [CustomComboInfo("坚角清汁 Feature", "Adds 坚角清汁", SGE.JobID, 0)]
         [CustomComboInfo("坚角清汁设置", "自动插入坚角清汁。", SGE.JobID, 0)]
         KeracholeFeature = 14028,
 
         [ParentCombo(SageAoEHealFeature)]
-        [CustomComboInfo("根素 Feature###SGEAOE", "Adds 根素 when Addersgall is 0###SGEAOE", SGE.JobID, 0)]
         [CustomComboInfo("根素设置###SGEAOE", "当蛇胆数为0时自动插入根素。###SGEAOE", SGE.JobID, 0)]
         RhizomataFeatureAoE = 14029,
 
         [ParentCombo(SageSingleTargetHealFeature)]
-        [CustomComboInfo("灵橡清汁 Feature", "Adds 灵橡清汁 when the selected target is at or above the set HP percentage.", SGE.JobID, 0)]
         [CustomComboInfo("灵橡清汁设置", "当所选目标HP百分比在设定值以上时，自动插入灵橡清汁。", SGE.JobID, 0)]
         CustomDruocholeFeature = 14030,
                 
