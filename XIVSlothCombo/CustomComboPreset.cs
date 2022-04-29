@@ -427,204 +427,204 @@ namespace XIVSlothComboPlugin
 
         // Single Target Multibutton Section
         [ConflictingCombos(DancerSimpleFeature, DancerSimpleAoEFeature)]
-        [CustomComboInfo("Single Target Multibutton", "Change 瀑泻 into procs and combos as available.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("单体目标整合", "替换瀑泻为对应触发连击。", DNC.JobID, 0, "", "")]
         DancerSingleTargetMultibutton = 4000,
 
         [ParentCombo(DancerSingleTargetMultibutton)]
-        [CustomComboInfo("ST Esprit Overcap Option", "Adds Saber Dance to the 瀑泻 combo if you are at 85 or more Esprit.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("单体目标伶俐防溢出设置", "当拥有85点或以上伶俐时，将剑舞加入到瀑泻连击中。", DNC.JobID, 0, "", "")]
         DancerEspritOvercapSTFeature = 4001,
 
         [ParentCombo(DancerEspritOvercapSTFeature)]
-        [CustomComboInfo("ST Instant Saber Option", "Adds Saber Dance to the 瀑泻 combo if you have at least 50 Esprit.\nOverrides 'ST Esprit Overcap Option'.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("单体目标剑舞即用设置", "当拥有50点伶俐时，将剑舞加入到瀑泻连击中。\n覆写'单体目标伶俐防溢出设置'。", DNC.JobID, 0, "", "")]
         DancerEspritOvercapSTInstantOption = 4002,
 
         [ParentCombo(DancerSingleTargetMultibutton)]
-        [CustomComboInfo("扇舞·序 Overcap Protection", "Adds Fan Dance 1 onto 瀑泻 when Fourfold Feathers are full.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("幻扇溢出保护", "当幻扇层数满时，将扇舞·序加入到瀑泻连击中。", DNC.JobID, 0, "", "")]
         DancerFanDanceMainComboOvercapFeature = 4003,
 
         [ParentCombo(DancerSingleTargetMultibutton)]
-        [CustomComboInfo("Fan Dance On 瀑泻 Feature", "Adds Fan Dance 3/4 onto 瀑泻 when available.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("扇舞替换瀑泻", "当扇舞·急/扇舞·终可用时自动替换瀑泻。", DNC.JobID, 0, "", "")]
         DancerFanDance34OnMainComboFeature = 4004,
 
 
         // AoE Multibutton Section
         [ConflictingCombos(DancerSimpleFeature, DancerSimpleAoEFeature)]
-        [CustomComboInfo("AoE Multibutton", "Change 风车 into procs and combos as available.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("AoE整合", "替换风车为对应触发连击。", DNC.JobID, 0, "", "")]
         DancerAoEMultibutton = 4010,
 
         [ParentCombo(DancerAoEMultibutton)]
-        [CustomComboInfo("AoE Esprit Overcap Option", "Adds Saber Dance to the 风车 combo if you are at 85 or more Esprit.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("AoE伶俐防溢出设置", "当拥有85点或以上伶俐时，将剑舞加入到风车连击中。", DNC.JobID, 0, "", "")]
         DancerEspritOvercapAoEFeature = 4011,
 
         [ParentCombo(DancerEspritOvercapAoEFeature)]
-        [CustomComboInfo("AoE Instant Saber Option", "Adds Saber Dance to the 风车 combo if you have at least 50 Esprit.\nOverrides 'AoE Esprit Overcap Option'.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("AoE剑舞即用设置", "当拥有50点伶俐时，将剑舞加入到风车连击中。\n覆写'AoE伶俐防溢出设置'。.", DNC.JobID, 0, "", "")]
         DancerEspritOvercapAoEInstantOption = 4012,
 
         [ParentCombo(DancerAoEMultibutton)]
-        [CustomComboInfo("AoE 扇舞·序 Overcap Protection", "Adds Fan Dance 2 onto 风车 when Fourfold Feathers are full.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("AoE幻扇溢出保护", "当幻扇层数满时，将扇舞·破加入到风车连击中。", DNC.JobID, 0, "", "")]
         DancerFanDanceAoEComboOvercapFeature = 4013,
 
         [ParentCombo(DancerAoEMultibutton)]
-        [CustomComboInfo("AoE Fan Dance On 风车 Feature", "Adds FanDance 3/4 Onto 风车 When available.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("AoE扇舞替换风车", "当扇舞·急/扇舞·终可用时自动替换风车。", DNC.JobID, 0, "", "")]
         DancerFanDanceOnAoEComboFeature = 4014,
 
 
         // Dance Features Section (SS/TS)
-        [CustomComboInfo("Dance Features", "Features and options involving 标准舞步 and Technical Step.\nCollapsing this category does NOT disable the features inside.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("跳舞功能", "标准舞步和技巧舞步相关功能与设置\n折叠此选项不会关闭其中的功能。", DNC.JobID, 0, "", "")]
         DancerMenuDanceFeatures = 4020,
 
         [ParentCombo(DancerMenuDanceFeatures)]
         [ConflictingCombos(DancerCombinedDanceFeature, DancerDanceComboCompatibility)]
-        [CustomComboInfo("Dance Step Combo", "Change 标准舞步 and Technical Step into each dance step while dancing.\nWorks with Simple Dancer and Simple Dancer AoE.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("跳舞连击", "跳舞时将标准舞步和技巧舞步替换为对应的舞步技能。\n与'单体一键连击'和'AoE一键连击'兼容", DNC.JobID, 0, "", "")]
         DancerDanceStepCombo = 4021,
 
         [ParentCombo(DancerMenuDanceFeatures)]
         [ConflictingCombos(DancerDanceStepCombo, DancerDanceComboCompatibility, DancerSimpleFeature, DancerSimpleAoEFeature)]
-        [CustomComboInfo("Combined Dance Feature", "Standard And Technical Dance on one button (SS). Standard > Technical. This combos out into Tillana and 流星舞.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("舞步整合", "将标准舞步与机巧舞步整合为一个技能。标准舞步>技巧舞步。 此连击后接续提拉纳和流星舞.", DNC.JobID, 0, "", "")]
         DancerCombinedDanceFeature = 4022,
 
         [ParentCombo(DancerCombinedDanceFeature)]
-        [CustomComboInfo("进攻之探戈 Plus Option", "Adds 进攻之探戈 right after Technical finish.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("进攻之探戈附加设置", "在技巧舞步结束后接续进攻之探戈。", DNC.JobID, 0, "", "")]
         DancerDevilmentOnCombinedDanceFeature = 4023,
 
         [ParentCombo(DancerCombinedDanceFeature)]
-        [CustomComboInfo("百花争艳 Plus Option", "Adds 百花争艳 to the Combined Dance Feature.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("百花争艳附加设置", "将百花争艳加入到舞步整合。", DNC.JobID, 0, "", "")]
         DancerFlourishOnCombinedDanceFeature = 4024,
 
         [ParentCombo(DancerMenuDanceFeatures)]
         [ConflictingCombos(DancerDanceStepCombo, DancerCombinedDanceFeature, DancerSimpleFeature, DancerSimpleAoEFeature)]
-        [CustomComboInfo("Custom Dance Step Feature",
-        "Change custom actions into dance steps while dancing." +
-        "\nThis helps ensure you can still dance with combos on, without using auto dance." +
-        "\nYou can change the respective actions by inputting action IDs below for each dance step." +
-        "\nThe defaults are Cascade, Flourish, Fan Dance and Fan Dance II. If set to 0, they will reset to these actions." +
-        "\nYou can get Action IDs with Garland Tools by searching for the action and clicking the cog.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("自定义舞步功能",
+        "自定义在跳舞时变为舞步技能的技能。" +
+        "\n此功能可以让你开启了其他连击选项时仍然可以自己跳舞。" +
+        "\n你可以通过输入技能ID来改变对应的舞步技能。" +
+        "\n默认替换为瀑泻,百花争艳,扇舞·序,扇舞·破. 设置为0时会重置为这些技能。" +
+        "\n你可以在Garland Tools找到技能的ID。", DNC.JobID, 0, "", "")]
         DancerDanceComboCompatibility = 4025,
 
 
         // Flourishing Features Section
         [ConflictingCombos(DancerSimpleFeature, DancerSimpleAoEFeature)]
-        [CustomComboInfo("百花争艳ing Features", "Features and options involving Fourfold Feathers and 百花争艳.\nCollapsing this category does NOT disable the features inside.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("百花争艳期间功能", "幻扇和百花争艳相关功能与设置\n折叠此选项不会关闭其中的功能。", DNC.JobID, 0, "", "")]
         DancerMenuFlourishingFeatures = 4030,
 
         [ParentCombo(DancerMenuFlourishingFeatures)]
         [ConflictingCombos(DancerSimpleFeature, DancerSimpleAoEFeature)]
-        [CustomComboInfo("百花争艳 Proc Saver Feature", "Change 百花争艳 into any available Feather-generating procs before using.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("百花争艳触发保护", "任意已触发技能可用时将百花争艳替换为对应已触发技能。(对称投掷、非对称投掷、扇舞·急预备、扇舞·终预备)", DNC.JobID, 0, "", "")]
         DancerFlourishProcFeature = 4031,
 
         [ParentCombo(DancerFlourishProcFeature)]
-        [CustomComboInfo("Proc Saver 扇舞·序 Option", "Include 扇舞·序 3 & 4 in the proc saver during weave-windows.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("触发保护扇舞设置", "将扇舞·急与扇舞·终加入到触发保护。?", DNC.JobID, 0, "", "")]
         DancerFlourishProcFanDanceWeaveOption = 4032,
 
 
         // Fan Dance Combo Features Section
         [ParentCombo(DancerMenuFlourishingFeatures)]
         [ConflictingCombos(DancerSimpleFeature, DancerSimpleAoEFeature)]
-        [CustomComboInfo("扇舞·序 Combo Features", "Options for 扇舞·序 combos. 扇舞·序 3 takes priority over 扇舞·序 4.\nCollapsing this category disables the options inside.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("扇舞连击功能", "扇舞·序连击设置。扇舞·急优先级高于扇舞·终。\n折叠此选项不会关闭其中的功能。", DNC.JobID, 0, "", "")]
         DancerFanDanceComboFeatures = 4033,
 
         [ParentCombo(DancerFanDanceComboFeatures)]
-        [CustomComboInfo("扇舞·序 1 -> 3", "Changes 扇舞·序 1 to 扇舞·序 3 when available.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("扇舞·序 -> 扇舞·急", "当可用时，将扇舞·序替换为扇舞·急。", DNC.JobID, 0, "", "")]
         DancerFanDance1_3Combo = 4034,
 
         [ParentCombo(DancerFanDanceComboFeatures)]
-        [CustomComboInfo("扇舞·序 1 -> 4", "Changes 扇舞·序 1 to 扇舞·序 4 when available.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("扇舞·序 -> 扇舞·终", "当可用时，将扇舞·序替换为扇舞·终。", DNC.JobID, 0, "", "")]
         DancerFanDance1_4Combo = 4035,
 
         [ParentCombo(DancerFanDanceComboFeatures)]
-        [CustomComboInfo("扇舞·序 2 -> 3", "Changes 扇舞·序 2 to 扇舞·序 3 when available.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("扇舞·破 -> 扇舞·急", "当可用时，将扇舞·破替换为扇舞·急。", DNC.JobID, 0, "", "")]
         DancerFanDance2_3Combo = 4036,
 
         [ParentCombo(DancerFanDanceComboFeatures)]
-        [CustomComboInfo("扇舞·序 2 -> 4", "Changes 扇舞·序 2 to 扇舞·序 4 when available.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("扇舞·破 -> 扇舞·终", "当可用时，将扇舞·破替换为扇舞·终。", DNC.JobID, 0, "", "")]
         DancerFanDance2_4Combo = 4037,
 
         [ConflictingCombos(DancerSimpleFeature, DancerSimpleAoEFeature)]
-        [CustomComboInfo("进攻之探戈 to Starfall Feature", "Change 进攻之探戈 into Starfall Dance after use.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("进攻之探戈 -> 流星舞", "使用完进攻之探戈后将其替换为流星舞。", DNC.JobID, 0, "", "")]
         DancerDevilmentFeature = 4038,
 
 
         // Simple Dancer Section
         [ConflictingCombos(DancerSingleTargetMultibutton, DancerAoEMultibutton, DancerCombinedDanceFeature, DancerDanceComboCompatibility, DancerMenuFlourishingFeatures, DancerDevilmentFeature)]
-        [CustomComboInfo("Simple Dancer (Single Target)", "BETA - Single button, single target dancer. Includes songs, flourishes and overprotections.\nConflicts with all other non-simple toggles, except 'Dance Step Combo'\nUse at your own risk!", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("单体一键连击", "测试版 - 单体目标，一键连击。 包含跳舞，进攻之探戈，触发/溢出保护。\n与除了'跳舞连击'外的所有单体连击冲突\n后果自负!", DNC.JobID, 0, "", "")]
         DancerSimpleFeature = 4050,
 
         [ParentCombo(DancerSimpleFeature)]
-        [CustomComboInfo("Simple Interrupt", "Includes an interrupt in the rotation (if your current target can be interrupted).", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("简易中断", "在循环中加入中断(伤头)(如果当前目标可被打断)。", DNC.JobID, 0, "", "")]
         DancerSimpleInterruptFeature = 4051,
 
         [ParentCombo(DancerSimpleFeature)]
-        [CustomComboInfo("Simple 标准舞步", "Includes 标准舞步 in the rotation.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("简易标准舞步", "将标准舞步加入循环。", DNC.JobID, 0, "", "")]
         DancerSimpleStandardFeature = 4052,
 
         [ParentCombo(DancerSimpleFeature)]
-        [CustomComboInfo("Simple 技巧舞步", "Includes 技巧舞步 in the rotation.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("简易技巧舞步", "将技巧舞步加入循环。", DNC.JobID, 0, "", "")]
         DancerSimpleTechnicalFeature = 4053,
 
         [ParentCombo(DancerSimpleFeature)]
-        [CustomComboInfo("Simple Tech 进攻之探戈", "Includes 进攻之探戈 in the rotation (during Technical Finish).", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("简易技巧进攻之探戈", "将进攻之探戈加入循环(技巧舞步结束状态下)。", DNC.JobID, 0, "", "")]
         DancerSimpleDevilmentFeature = 4054,
 
         [ParentCombo(DancerSimpleFeature)]
-        [CustomComboInfo("Simple 百花争艳", "Includes 百花争艳 in the rotation.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("简易百花争艳", "将百花争艳加入循环。", DNC.JobID, 0, "", "")]
         DancerSimpleFlourishFeature = 4055,
 
         [ParentCombo(DancerSimpleFeature)]
-        [CustomComboInfo("Simple Feathers", "Includes Feather usage in the rotation.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("简易幻扇", "将幻扇的使用加入循环。", DNC.JobID, 0, "", "")]
         DancerSimpleFeatherFeature = 4056,
 
         [ParentCombo(DancerSimpleFeature)]
-        [CustomComboInfo("Simple Feather Pooling", "Makes the rotation only use feathers when you have more than 3, or when you're under the effects of 技巧舞步.", DNC.JobID, 0, "")]
+        [CustomComboInfo("简易幻扇囤积", "只在幻扇层数大于3或技巧舞步状态下使用消耗幻扇层数的技能。", DNC.JobID, 0, "")]
         DancerSimpleFeatherPoolingFeature = 4057,
 
         [ParentCombo(DancerSimpleFeature)]
-        [CustomComboInfo("Simple Panic Heals", "Includes 治疗之华尔兹 and Second Wind in the rotation when available and below 30 and 50 percent HP, respectively.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("简易紧急恢复", "当血量低于30%或50%时对应的使用治疗之华尔兹或内丹。", DNC.JobID, 0, "", "")]
         DancerSimplePanicHealsFeature = 4058,
 
         [ParentCombo(DancerSimpleFeature)]
-        [CustomComboInfo("Simple 即兴表演", "Includes 即兴表演 in the rotation when available.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("简易即兴表演", "当即兴表演可用时将其加入循环。", DNC.JobID, 0, "", "")]
         DancerSimpleImprovFeature = 4059,
 
 
         // Simple Dancer AoE Section
         [ConflictingCombos(DancerSingleTargetMultibutton, DancerAoEMultibutton, DancerCombinedDanceFeature, DancerDanceComboCompatibility, DancerMenuFlourishingFeatures, DancerDevilmentFeature)]
-        [CustomComboInfo("Simple Dancer (AoE)", "BETA - Single button aoe dancer, including songs, flourishes and overprotections.\nConflicts with all other non-simple toggles, except 'Dance Step Combo'.\nUse at your own risk!", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("AoE一键连击", "测试版 - AoE，一键连击。 包含跳舞，进攻之探戈，触发/溢出保护。\n与除了'跳舞连击'外的所有AoE连击冲突。\n后果自负!", DNC.JobID, 0, "", "")]
         DancerSimpleAoEFeature = 4070,
 
         [ParentCombo(DancerSimpleAoEFeature)]
-        [CustomComboInfo("Simple AoE Interrupt", "Includes an interrupt in the AoE rotation (if your current target can be interrupted).", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("简易AoE中断", "在AoE循环中加入中断(伤头)(如果当前目标可被打断)。", DNC.JobID, 0, "", "")]
         DancerSimpleAoEInterruptFeature = 4071,
 
         [ParentCombo(DancerSimpleAoEFeature)]
-        [CustomComboInfo("Simple AoE 标准舞步", "Includes 标准舞步 in the AoE rotation.", DNC.JobID, 0, "")]
+        [CustomComboInfo("简易AoE标准舞步", "将标准舞步加入AoE循环。", DNC.JobID, 0, "")]
         DancerSimpleAoEStandardFeature = 4072,
 
         [ParentCombo(DancerSimpleAoEFeature)]
-        [CustomComboInfo("Simple AoE 技巧舞步", "Includes 技巧舞步 in the AoE rotation.", DNC.JobID, 0, "")]
+        [CustomComboInfo("简易AoE技巧舞步", "将技巧舞步加入AoE循环。", DNC.JobID, 0, "")]
         DancerSimpleAoETechnicalFeature = 4073,
 
         [ParentCombo(DancerSimpleAoEFeature)]
-        [CustomComboInfo("Simple AoE Tech 进攻之探戈", "Includes 进攻之探戈 in the AoE rotation (during Technical Finish).", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("简易AoE技巧进攻之探戈", "将进攻之探戈加入AoE循环(技巧舞步结束状态下)。", DNC.JobID, 0, "", "")]
         DancerSimpleAoEDevilmentFeature = 4074,
 
         [ParentCombo(DancerSimpleAoEFeature)]
-        [CustomComboInfo("Simple AoE 百花争艳", "Includes 百花争艳 in the AoE rotation.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("简易AoE百花争艳", "将百花争艳加入AoE循环。", DNC.JobID, 0, "", "")]
         DancerSimpleAoEFlourishFeature = 4075,
 
         [ParentCombo(DancerSimpleAoEFeature)]
-        [CustomComboInfo("Simple AoE Feathers", "Includes feather usage in the AoE rotation.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("简易AoE幻扇", "将幻扇的使用加入AoE循环。", DNC.JobID, 0, "", "")]
         DancerSimpleAoEFeatherFeature = 4076,
 
         [ParentCombo(DancerSimpleAoEFeature)]
-        [CustomComboInfo("Simple AoE Feather Pooling", "Makes it so the AoE rotation only uses feathers when you have more than 3.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("简易AoE幻扇囤积", "只在幻扇层数大于3或技巧舞步状态下使用消耗幻扇层数的技能。", DNC.JobID, 0, "", "")]
         DancerSimpleAoEFeatherPoolingFeature = 4077,
 
         [ParentCombo(DancerSimpleAoEFeature)]
-        [CustomComboInfo("Simple AoE Panic Heals", "Includes 治疗之华尔兹 and Second Wind in the rotation when available and below 30 and 50 percent HP, respectively.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("简易AoE紧急恢复", "当血量低于30%或50%时对应的使用治疗之华尔兹或内丹。", DNC.JobID, 0, "", "")]
         DancerSimpleAoEPanicHealsFeature = 4078,
 
         [ParentCombo(DancerSimpleAoEFeature)]
-        [CustomComboInfo("Simple AoE 即兴表演", "Includes 即兴表演 in the AoE rotation when available.", DNC.JobID, 0, "", "")]
+        [CustomComboInfo("简易AoE即兴表演", "当即兴表演可用时将其加入AoE循环。", DNC.JobID, 0, "", "")]
         DancerSimpleAoEImprovFeature = 4079,
 
         #endregion
@@ -650,7 +650,7 @@ namespace XIVSlothComboPlugin
         DeliriumFeature = 5002,
 
         [ParentCombo(DarkStalwartSoulCombo)]
-        [CustomComboInfo("暗血量表溢出特性", "当你的暗血即将溢出时，使用寂灭替换掉刚魂。", DRK.JobID, 0, "", "Hey big spenderrrrr")]
+        [CustomComboInfo("暗血量表溢出特性 SoulCombo", "当你的暗血即将溢出时，使用寂灭替换掉刚魂。", DRK.JobID, 0, "", "Hey big spenderrrrr")]
         DRKOvercapFeature = 5003,
 
         [ParentCombo(DarkMainComboCDsGroup)]
@@ -1023,79 +1023,79 @@ namespace XIVSlothComboPlugin
 
         #endregion
         // ====================================================================================
-        #region MACHINIST
+         #region MACHINIST
 
-        [CustomComboInfo("(Heated) Shot Combo", "Replace either form of 狙击弹 with its combo chain.", MCH.JobID, 0, "Alright, Hotshot -", "Is there really such a thing as a clean shot? Let's find out.")]
+        [CustomComboInfo("(Heated) Shot Combo", "替换狙击弹为连击循环中的任一技能", MCH.JobID, 0, "Alright, 热弹", "是否真的存在一击必杀呢？让我们试试看吧。")]
         MachinistMainCombo = 8000,
 
-        [CustomComboInfo("Overdrive Feature", "Replace 车式浮空炮塔 and Automaton Queen with Overdrive while active.", MCH.JobID, 0, "Drive (2011) Feature", "Insert synthwave soundtrack here.")]
+        [CustomComboInfo("Overdrive Feature", "在技能可用时，将车式浮空炮塔和后式自走人偶转换为超档车式炮塔和超档自走人偶", MCH.JobID, 0, "Drive (2011) Feature", "Insert synthwave soundtrack here.")]
         MachinistOverdriveFeature = 8002,
 
-        [CustomComboInfo("虹吸弹 / Ricochet Feature", "Replace 虹吸弹 and Ricochet with one or the other depending on which has more charges.", MCH.JobID, 0, "Gatling feature", "It's just a lot of bullets, really.")]
+        [CustomComboInfo("虹吸弹 / Ricochet Feature", "将虹吸弹和弹射替换为一个或其他需要更多充电电能的技能.", MCH.JobID, 0, "Gatling feature", "It's just a lot of bullets, really.")]
         MachinistGaussRoundRicochetFeature = 8003,
 
-        [CustomComboInfo("Drill / Air Anchor (热弹) Feature", "Replace Drill and Air Anchor (热弹) with one or the other (or Chainsaw) depending on which is on cooldown.", MCH.JobID, 0, "Multi-tool", "Why does MCH have a drill and a chainsaw? What is this, DoH?")]
+        [CustomComboInfo("Drill / Air Anchor (热弹) Feature", "将钻头和热弹替换成一个或多个需要冷却时使用的技能", MCH.JobID, 0, "Multi-tool", "Why does MCH have a drill and a chainsaw? What is this, DoH?")]
         MachinistHotShotDrillChainsawFeature = 8004,
 
         [ParentCombo(MachinistMainCombo)]
         [ConflictingCombos(MachinistAlternateMainCombo)]
-        [CustomComboInfo("钻头/Air/Chain Saw Feature On Main Combo", "Air Anchor followed by Drill is added onto main combo if you use 整备.\nIf Air Anchor is on cooldown and you use 整备, Chainsaw will be added to main combo instead.", MCH.JobID, 0, "A bit of everything feature", "Don't rub your last two brain-cells together! We got you!")]
+        [CustomComboInfo("钻头/Air/Chain Saw Feature On Main Combo", "如果使用整备，空气锚后的钻头将会被加入到连击循环.\nIf Air Anchor is on cooldown and you use 整备, Chainsaw will be added to main combo instead.", MCH.JobID, 0, "A bit of everything feature", "Don't rub your last two brain-cells together! We got you!")]
         MachinistDrillAirOnMainCombo = 8005,
 
-        [CustomComboInfo("Single Button 热冲击", "Switches 热冲击 to Hypercharge.", MCH.JobID, 0, "So-called '热冲击'", "Basically a large hair-dryer.")]
+        [CustomComboInfo("Single Button 热冲击", "将热冲击转换为充能.", MCH.JobID, 0, "So-called '热冲击'", "Basically a large hair-dryer.")]
         MachinistHeatblastGaussRicochetFeature = 8006,
 
-        [CustomComboInfo("Single Button 自动弩", "Switches 自动弩 to Hypercharge and weaves gauss/rico.", MCH.JobID, 0, "Laser Crossbow", "It's a crossbow, from the future!")]
+        [CustomComboInfo("Single Button 自动弩", "将自动弩转换为超荷和虹吸弹/rico.", MCH.JobID, 0, "Laser Crossbow", "It's a crossbow, from the future!")]
         MachinistAutoCrossBowGaussRicochetFeature = 8018,
 
         [ParentCombo(MachinistMainCombo)]
         [ConflictingCombos(MachinistDrillAirOnMainCombo)]
-        [CustomComboInfo("Alternate 钻头/Air Feature on Main Combo", "Drill/Air/Hotshot Feature is added onto main combo (Note: It will add them onto main combo ONLY if you are under 整备 Buff\nOr Reasemble is on CD (Will do nothing if 整备 is OFF CD)", MCH.JobID, 0, "Gunbreaker feature", "Look at me - I'm the tank now.")]
+        [CustomComboInfo("Alternate 钻头/Air Feature on Main Combo", "钻头/空气锚/热弹被添加到连击循环中（注意：只有当你在整备Buff\n时才会将它们添加到连击循环。（或整备在CD中时不会使用这些技能）\nOr Reasemble is on CD (Will do nothing if 整备 is OFF CD)", MCH.JobID, 0, "Gunbreaker feature", "Look at me - I'm the tank now.")]
         MachinistAlternateMainCombo = 8007,
 
         [ParentCombo(MachinistMainCombo)]
-        [CustomComboInfo("Single Button HeatBlast On Main Combo Option", "Adds Single Button Heatblast onto the main combo when the option is enabled.", MCH.JobID, 0, "Scalp burner", "Dry your hair even faster! Even hotter! Owch!")]
+        [CustomComboInfo("Single Button HeatBlast On Main Combo Option", "当选项可用时，将单体开关热冲击添加到主连击循环中", MCH.JobID, 0, "Scalp burner", "Dry your hair even faster! Even hotter! Owch!")]
         MachinistHeatBlastOnMainCombo = 8008,
 
         [ParentCombo(MachinistMainCombo)]
-        [CustomComboInfo("Battery Overcap Option", "Overcharge protection for your Battery, If you are at 100 battery charge rook/queen will be added to your (Heated) Shot Combo.", MCH.JobID, 0, "Battery", "Isn't battery like, assault? What's wrong with you?")]
+        [CustomComboInfo("Battery Overcap Option", "为您提供电能过量时的电能保护，如果您的电量达到100，则会在您的过热循环中加入炮台/女王。", MCH.JobID, 0, "Battery", "Isn't battery like, assault? What's wrong with you?")]
         MachinistOverChargeOption = 8009,
 
         [ParentCombo(MachinistSpreadShotFeature)]
-        [CustomComboInfo("Battery AOE Overcap Option", "Adds overcharge protection to 散射/Scattergun.", MCH.JobID, 0, "Battery", "Isn't battery like, assault? What's wrong with you?")]
+        [CustomComboInfo("Battery AOE Overcap Option", "为散射/霰弹枪增加了过电量保护。.", MCH.JobID, 0, "Battery", "Isn't battery like, assault? What's wrong with you?")]
         MachinistAoEOverChargeOption = 8010,
 
         [ParentCombo(MachinistSpreadShotFeature)]
-        [CustomComboInfo("虹吸弹 Ricochet on AOE Feature", "Adds 虹吸弹/Ricochet to the AoE combo during Hypercharge.", MCH.JobID, 0, "Ratchet and Clank Feature", "Bouncing off the walls")]
+        [CustomComboInfo("虹吸弹/弹射AOE Feature", "在超荷过程中为AOE连击循环增加虹吸弹/弹射", MCH.JobID, 0, "Ratchet and Clank Feature", "Bouncing off the walls")]
         MachinistAoEGaussRicochetFeature = 8011,
 
         [ParentCombo(MachinistAoEGaussRicochetFeature)]
-        [CustomComboInfo("Always 虹吸弹/Ricochet on AoE Option", "Adds 虹吸弹/Ricochet to the AoE combo outside of Hypercharge windows.", MCH.JobID, 0, "Ratchet and Clank Feature", "Bouncing off the walls")]
+        [CustomComboInfo("Always 虹吸弹/Ricochet on AoE Option", "在超荷窗口之外的AOE连击循环中加入虹吸弹/弹射.", MCH.JobID, 0, "Ratchet and Clank Feature", "Bouncing off the walls")]
         MachinistAoEGaussOption = 8012,
 
         [ConflictingCombos(MachinistRicochetGaussMainCombo)]
         [ParentCombo(MachinistMainCombo)]
-        [CustomComboInfo("Ricochet & 虹吸弹 Feature", "Adds Ricochet and 虹吸弹 to main combo. Will use all charges.", MCH.JobID, 0, "Pew +1", "All the shots, ALL of the time.")]
+        [CustomComboInfo("弹射 & 虹吸弹 Feature", "将弹射和虹吸弹添加到主连击循环中.这将使用所有电能.", MCH.JobID, 0, "Pew +1", "All the shots, ALL of the time.")]
         MachinistRicochetGaussChargesMainCombo = 8017,
 
         [ConflictingCombos(MachinistRicochetGaussChargesMainCombo)]
         [ParentCombo(MachinistMainCombo)]
-        [CustomComboInfo("Ricochet & 虹吸弹 overcap protection option", "Adds Ricochet and 虹吸弹 to main combo. Will leave 1 charge of each.", MCH.JobID, 0, "", "Never run out of bullets again! Or never have too many! Or something!\nBullets!")]
+        [CustomComboInfo("弹射 & 虹吸弹 overcap protection option", "将弹射和虹吸弹添加到主连击循环中.将各留下一个电能.", MCH.JobID, 0, "", "Never run out of bullets again! Or never have too many! Or something!\nBullets!")]
         MachinistRicochetGaussMainCombo = 8013,
 
         [ParentCombo(MachinistMainCombo)]
-        [CustomComboInfo("枪管加热 drift protection feature", "Adds 枪管加热 onto the main combo if heat is between 5-20.", MCH.JobID, 0, "Third Leg", "Adds Barrel Stabiliser when you're in heat. You heard me.")]
+        [CustomComboInfo("枪管加热 drift protection feature", "如果热量在5-20之间，则将枪管加热添加到主连击循环中。", MCH.JobID, 0, "Third Leg", "Adds Barrel Stabiliser when you're in heat. You heard me.")]
         BarrelStabilizerDrift = 8014,
 
         [ParentCombo(MachinistHeatblastGaussRicochetFeature)]
-        [CustomComboInfo("野火 Feature", "Adds Wildfire to the Single Button Heat Blast Feature if Wildfire is off cooldown and you have enough heat for Hypercharge then Hypercharge will be replaced with Wildfire.\nAlso weaves Ricochet/虹吸弹 on Heat Blast when necessary.", MCH.JobID, 0, "PEW", "PEW PEW PEW PEW, AND PEW.\nALSO WEAVES PEW AND PEW.")]
+        [CustomComboInfo("野火 Feature", "在单体目标热冲击功能中加入野火，如果你有足够的热量用于超荷而野火的cd已经转好，那么超荷将被野火取代。\nAlso weaves Ricochet/虹吸弹 on Heat Blast when necessary.", MCH.JobID, 0, "PEW", "PEW PEW PEW PEW, AND PEW.\nALSO WEAVES PEW AND PEW.")]
         MachinistWildfireFeature = 8015,
 
         [ParentCombo(MachinistSpreadShotFeature)]
-        [CustomComboInfo("毒菌Blaster Feature", "Adds 毒菌冲击 to the Spreadshot feature", MCH.JobID, 0, "War crime feature", "This is like uh, some sort of anthrax? Jeez bro. Relax.\nBanned by the Geneva Convention.")]
+        [CustomComboInfo("毒菌冲击 Feature", "在散射的功能中添加毒菌冲击", MCH.JobID, 0, "War crime feature", "This is like uh, some sort of anthrax? Jeez bro. Relax.\nBanned by the Geneva Convention.")]
         MachinistBioblasterFeature = 8016,
 
-        [CustomComboInfo("Barrel Feature", "Adds Barrel Stabalizer to Single Button 热冲击 and Single Button Auto Crossbow Features when below 50 heat and is off cooldown", MCH.JobID, 0, "Hot Cross Bow", "Now multi-purpose!")]
+        [CustomComboInfo("枪管加热 Feature", "当热能低于50且处于冷却状态时，将枪管充能添加到单目标热冲击和单目标自动弩功能中。", MCH.JobID, 0, "Hot Cross Bow", "Now multi-purpose!")]
         MachinistAutoBarrel = 8019,
 
         [ConflictingCombos(MachinistMainCombo)]
@@ -1103,58 +1103,58 @@ namespace XIVSlothComboPlugin
         MachinistSimpleFeature = 8020,
 
         [ParentCombo(MachinistSimpleFeature)]
-        [CustomComboInfo("Simple Interrupt", "Uses interrupt during simple machinist rotation, if applicable.", MCH.JobID, 0, "Simple Interr-", "Excuse me, I wa-")]
+        [CustomComboInfo("简单打断", "如果适用的话，在机工的简单循环中使用打断技能.", MCH.JobID, 0, "Simple Interr-", "Excuse me, I wa-")]
         MachinistSimpleInterrupt = 8021,
 
         [ParentCombo(MachinistSimpleFeature)]
-        [CustomComboInfo("Simple Gadget", "Adds Queen or Rook uses to the feature, based on your current level.\nTry to use Queen at optimal intervals between :55 to :05 windows.", MCH.JobID, 0, "Gadgeteer", "My queen!")]
+        [CustomComboInfo("简单的机工召唤", "根据你目前的等级，增加超档车式炮塔和超档自走人偶的技能.\n试着在:55到:05窗口之间的最佳间隔期使用超档车式炮塔和超档自走人偶.", MCH.JobID, 0, "Gadgeteer", "My queen!")]
         MachinistSimpleGadget = 8022,
 
         [ParentCombo(MachinistSimpleFeature)]
-        [CustomComboInfo("Simple Assembling", "Pairs reassemble uses with the following skills.\nBefore acquiring Drill it will be used with 狙击弹.", MCH.JobID, 0, "Megablox", "It's like Lego bricks! But worse!")]
+        [CustomComboInfo("简单的组装", "整备将与下面的技能一起使用.\n在获得钻头之前，它将使用与狙击弹共用.", MCH.JobID, 0, "Megablox", "It's like Lego bricks! But worse!")]
         MachinistSimpleAssembling = 8023,
 
         [ParentCombo(MachinistSimpleFeature)]
-        [CustomComboInfo("Simple Gauss 弹射", "Adds 虹吸弹 and Ricochet uses to the feature.", MCH.JobID, 0, "", "More bullets!")]
+        [CustomComboInfo("简单的虹吸弹和弹射", "将虹吸弹和弹射加入到循环中.", MCH.JobID, 0, "", "More bullets!")]
         MachinistSimpleGaussRicochet = 8024,
 
         [ParentCombo(MachinistSimpleFeature)]
-        [CustomComboInfo("Simple Wildcharge", "Adds Hypercharge and 野火 uses to the feature.\nIt respects the 8 second rule of Drill, AirAnchor and Chainsaw.", MCH.JobID, 0, "Simply fantastic", "Is it really THAT simple?")]
+        [CustomComboInfo("简单的野火和超荷", "将超荷和野火加入到循环中.\n它遵从钻头、空气锚和链锯的8秒规则.", MCH.JobID, 0, "Simply fantastic", "Is it really THAT simple?")]
         MachinistSimpleWildCharge = 8025,
 
         [ParentCombo(MachinistSimpleFeature)]
-        [CustomComboInfo("Simple Stabilizer", "Adds Barrel Stabilizer to the feature.\nWhen heat < 50 and 野火 is off CD or about to come off CD.", MCH.JobID, 0, "Third Leg", "Reduces recoil when spraying and praying.")]
+        [CustomComboInfo("枪管加热", "将枪管加热加入到循环中.\n当热量小于50并且野火不在CD或者野火CD快要转好了时使用.", MCH.JobID, 0, "Third Leg", "Reduces recoil when spraying and praying.")]
         MachinistSimpleStabilizer = 8026,
 
         [ParentCombo(MachinistSpreadShotFeature)]
-        [CustomComboInfo("超荷", "Adds hypercharge to the AoE.", MCH.JobID, 0, "Sugar Rush", "I'm gonna slap @augporto for putting in so many damn MCH features.\nHow full of witty one-liners do you think I am?!")]
+        [CustomComboInfo("超荷", "将超荷加入到AOE循环中.", MCH.JobID, 0, "Sugar Rush", "I'm gonna slap @augporto for putting in so many damn MCH features.\nHow full of witty one-liners do you think I am?!")]
         MachinistAoEHyperchargeFeature = 8027,
 
-        [CustomComboInfo("Simple Machinist AOE", "散射 turns into Scattergun when lvl 82 or higher, Both turn into 自动弩 when overheated\nand Bioblaster is used first whenever it is off cooldown.", MCH.JobID, 0, "Dungeon go zzzz", "AoE, but you're just not here. Go make a coffee.")]
+        [CustomComboInfo("简单机工AOE", "当等级为82或者更高时将散射转换为霰弹枪, Both turn into 自动弩 when overheated\nand 毒菌冲击 is used first whenever it is off cooldown.", MCH.JobID, 0, "Dungeon go zzzz", "AoE, but you're just not here. Go make a coffee.")]
         MachinistSpreadShotFeature = 8028,
 
         [ParentCombo(MachinistSimpleAssembling)]
-        [CustomComboInfo("钻头","Use 整备 with Drill when available.", MCH.JobID,0,"刺鱼aDrillBreaker","The 钻头 that will pierce the heavens!")]
+        [CustomComboInfo("钻头","当可以的时候整备与钻头一起使用.", MCH.JobID,0,"刺鱼aDrillBreaker","The 钻头 that will pierce the heavens!")]
         MachinistSimpleAssemblingDrill = 8029,
 
         [ParentCombo(MachinistSimpleAssembling)]
-        [CustomComboInfo("空气锚", "Use 整备 with Air Anchor when available.", MCH.JobID, 0, "Air Guitar", "出卡 the tunes!")]
+        [CustomComboInfo("空气锚", "当可以的时候整备与空气锚一起使用.", MCH.JobID, 0, "空气锚", "出卡 the tunes!")]
         MachinistSimpleAssemblingAirAnchor = 8030,
 
         [ParentCombo(MachinistSimpleAssembling)]
-        [CustomComboInfo("回转飞锯", "Use 整备 with Chain Saw when available.", MCH.JobID, 0, "刺鱼a Sauce", "The secret to life.")]
+        [CustomComboInfo("回转飞锯", "当可以的时候整备与回转飞锯一起使用.", MCH.JobID, 0, "刺鱼a Sauce", "The secret to life.")]
         MachinistSimpleAssemblingChainSaw = 8031,
 
         [ParentCombo(MachinistSimpleAssemblingDrill)]
-        [CustomComboInfo("Only use 钻头...", "...when you have max charges of reassemble.", MCH.JobID, 0, "刺鱼aDrillBreaker MAX", "Mow pow in the pew!")]
+        [CustomComboInfo("只使用钻头...", "...当你整备充能是最大值时.", MCH.JobID, 0, "刺鱼aDrillBreaker MAX", "Mow pow in the pew!")]
         MachinistSimpleAssemblingDrillMaxCharges = 8032,
 
         [ParentCombo(MachinistSimpleAssemblingAirAnchor)]
-        [CustomComboInfo("Only use 空气锚...", "...when you have max charges of reassemble.", MCH.JobID, 0, "刺鱼aDrillBreaker MAX", "Mow pow in the pew!")]
+        [CustomComboInfo("只使用空气锚...", "...当你整备充能是最大值时.", MCH.JobID, 0, "刺鱼aDrillBreaker MAX", "Mow pow in the pew!")]
         MachinistSimpleAssemblingAirAnchorMaxCharges = 8033,
 
         [ParentCombo(MachinistSimpleAssemblingChainSaw)]
-        [CustomComboInfo("Only use 回转飞锯...", "...when you have max charges of reassemble.", MCH.JobID, 0, "刺鱼aDrillBreaker MAX", "Mow pow in the pew!")]
+        [CustomComboInfo("只使用回转飞锯...", "...当你整备充能是最大值时.", MCH.JobID, 0, "刺鱼aDrillBreaker MAX", "Mow pow in the pew!")]
         MachinistSimpleAssemblingChainSawMaxCharges = 8034,
 
         #endregion
@@ -1943,7 +1943,7 @@ namespace XIVSlothComboPlugin
         SummonerSingleTargetDemiFeature = 17002,
 
         [ParentCombo(SummonerAOEComboFeature)]
-        [CustomComboInfo("单体亚灵神（龙神/不死鸟）特性", "亚灵神显现期间，星极核爆/炼狱之炎会在恰当的时刻替换为龙神迸发/不死鸟迸发/死星核爆/苏生之炎", SMN.JobID, 0, "BRRRR", "Upgrade!")]
+        [CustomComboInfo("单体亚灵神（龙神/不死鸟）特性 AOE", "亚灵神显现期间，星极核爆/炼狱之炎会在恰当的时刻替换为龙神迸发/不死鸟迸发/死星核爆/苏生之炎", SMN.JobID, 0, "BRRRR", "Upgrade!")]
         SummonerAOEDemiFeature = 17003,
 
         [CustomComboInfo("宝石耀特性", "在三神召唤期间，毁灭/毁荡/三重灾祸自动替换成宝石耀。只有启用了单体或群体连击后才有效（下同）。", SMN.JobID, 0, "Eggy-bread", "No idea when you're in burst phase?\nHint: It's all the time, really")]
