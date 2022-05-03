@@ -281,38 +281,38 @@ namespace XIVSlothComboPlugin
         // ====================================================================================
         #region BLUE MAGE
 
-        [CustomComboInfo("Buffed 苦闷之歌", "Turns 苦闷之歌 into Bristle so SoT is buffed. \nSpells Required: 苦闷之歌.", BLU.JobID)]
+        [CustomComboInfo("苦闷之歌buff强化", "不在蓄力状态时，将苦闷之歌替换为怒发冲冠. \n需要技能：苦闷之歌", BLU.JobID)]
         BluBuffedSoT = 70000,
 
-        [CustomComboInfo("月之笛 Opener", "Puts the Full 月之笛 Opener on 月之笛 or Whistle. \nSpells Required: Whistle, 哔哩哔哩, 月之笛, 正义飞踢, 渔叉三段, 月下彼岸花, Rose of Destruction, 飞翎雨, 怒发冲冠, 冰雪乱舞, 穿甲散弹, 马特拉魔术, 轰雷, 鬼宿脚.", BLU.JobID)]
+        [CustomComboInfo("月之笛起手连击", "将月之笛起手连击替换至月之笛或口笛上. \n需要技能: 口笛, 哔哩哔哩, 月之笛, 正义飞踢, 渔叉三段, 月下彼岸花, 斗灵弹, 飞翎雨, 怒发冲冠, 冰雪乱舞, 穿甲散弹, 马特拉魔术, 轰雷, 鬼宿脚", BLU.JobID)]
         BluOpener = 70001,
 
-        [CustomComboInfo("终极针 Combo", "Turns 终极针 into the buff combo of: Moon Flute, 哔哩哔哩, 口笛, 终极针. Will use any primals off CD before casting 终极针. \nSpells Required: Moon Flute, 哔哩哔哩, 口笛, 终极针", BLU.JobID)]
+        [CustomComboInfo("终极针连击", "将终极针替换成以下技能连击: 月之笛, 哔哩哔哩, 口笛, 终极针 .会在终极针前使用不在CD中的蛮神技 \n需要技能: 月之笛, 哔哩哔哩, 口笛, 终极针", BLU.JobID)]
         BluFinalSting = 70002,
 
         [ParentCombo(BluFinalSting)]
-        [CustomComboInfo("Off CD Primal Additions", "Adds any Primals that are off CD to the 终极针 Combo. \nPrimals Used: Feather Rain, 轰雷, 冰雪乱舞, 正义飞踢, Rose of Destruction. ", BLU.JobID)]
+        [CustomComboInfo("不在CD蛮神技选项", "在终极针连击中加入不在CD中的蛮神技. \n需要蛮神技: 飞翎雨, 轰雷, 冰雪乱舞, 正义飞踢, 斗灵弹. ", BLU.JobID)]
         BluPrimals = 70003,
 
-        [CustomComboInfo("Swiftcasted 天使低语", "Turns 天使低语 to Swiftcast when Swiftcast and 天使低语 are available. \nSpells required: 天使低语 ", BLU.JobID)]
+        [CustomComboInfo("即刻-天使低语", "当即刻咏唱和天使低语可用时，将天使低语替换为即刻咏唱. \n需要技能: 天使低语 ", BLU.JobID)]
         BluRez = 70004,
 
-        [CustomComboInfo("Ram's Voice into 超振动", "Turns Ultravibration into Ram's Voice if Deep 玄冰 isn't on the target. Will swiftcast Ultravibration if available. \nSpells Required: Ram's Voice, 超振动. ", BLU.JobID)]
+        [CustomComboInfo("寒冰咆哮-超振动", "如果目标不在冻结状态，将超振动替换成寒冰咆哮. 如果即刻咏唱可用将会添加进去. \n需要技能: 寒冰咆哮, 超振动. ", BLU.JobID)]
         BluUltravibrate = 70005,
 
-        [CustomComboInfo("Tank Debuff Feature", "Puts 捕食, Off-Guard, Lucid Dreaming, and 臭气 into one button when under Tank Mimicry. \nSpells Required: Devour, Off-Guard, 臭气.", BLU.JobID)]
+        [CustomComboInfo("坦克Debuff特性", "在以太复制：防护状态下时将捕食, 破防, 醒梦和臭气合并为一键. \n需要技能: 捕食, 破防, 臭气.", BLU.JobID)]
         BluDebuffCombo = 70006,
 
-        [CustomComboInfo("Addle/魔法锤 Debuff Feature", "Turns 魔法锤 into Addle when off CD. \nSpells Required: 魔法锤.", BLU.JobID)]
+        [CustomComboInfo("昏乱/魔法锤Debuff特性", "当不在CD时，将魔法锤替换成昏乱. \n需要技能: 魔法锤.", BLU.JobID)]
         BluAddleFeature = 70007,
 
-        [CustomComboInfo("Primal Feature", "Turns 飞翎雨 into any Primals that are off CD. \nSpells Required: 飞翎雨, 轰雷, 斗灵弹, 冰雪乱舞, J Kick. \nWill cause primals to desync from 月之笛 burst phases if used on CD.", BLU.JobID)]
+        [CustomComboInfo("蛮神技特性", "将飞翎雨替换成任一不在CD中的蛮神技. \n需要技能: 飞翎雨, 轰雷, 斗灵弹, 冰雪乱舞, 正义飞踢. \nWill cause primals to desync from 月之笛 burst phases if used on CD.", BLU.JobID)]
         BluPrimalFeature = 70008,
 
-        [CustomComboInfo("Knight's Tour Feature", "Turns Black Knight's Tour or 白骑士之旅 into its counterpart when the enemy is under the effect of the spell's debuff. \nSpells Required: 白骑士之旅, 黑骑士之旅", BLU.JobID)]
+        [CustomComboInfo("骑士之旅特性", "将黑骑士之旅或白骑士之旅替换成当敌人受到咒语减益的影响时，所对应的技能. \n需要技能: 白骑士之旅, 黑骑士之旅", BLU.JobID)]
         BluKnightFeature = 70009,
 
-        [CustomComboInfo("Peripheral Synthesis into 芥末爆弹", "Turns Peripheral Synthesis into 芥末爆弹 when target is under the effect of Lightheaded. \nSpells Required: Peripheral Synthesis, 芥末爆弹.", BLU.JobID)]
+        [CustomComboInfo("生成外设-芥末爆弹", "当目标处于眩晕状态下时，将生成外设替换成芥末爆弹. \n需要技能: 生成外设, 芥末爆弹.", BLU.JobID)]
         BluLightheadedCombo = 70010,
 
 
