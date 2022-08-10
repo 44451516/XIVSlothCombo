@@ -1133,7 +1133,7 @@ public class Translatezh_CN
         //#endregion
         //#region GLOBAL FEATURES
         //#region Global Tank Features
-        {"Global Tank Features","等待翻译"},
+        {"Global Tank Features","通用坦克相关功能"},
         {"Features and options involving shared role actions for Tanks.\nCollapsing this category does NOT disable the features inside.","这个选项并没有什么实际作用"},
         {"Tank: Interrupt Feature","打断 Feature"},
         {"Replaces Low Blow (Stun) with Interject (Interrupt) when the target can be interrupted.\nPLDs can slot Shield Bash to have the feature to work with Shield Bash.","当目标可被打断时，使用插言替换掉下踢。\nPLDs can slot Shield Bash to have the feature to work with Shield Bash."},
@@ -1141,13 +1141,13 @@ public class Translatezh_CN
         {"Prevents the use of Reprisal when target already has the effect by replacing it with Stone.","当目标已被赋予雪仇效果时，将雪仇替换为飞石"},
         //#endregion
         //#region Global Healer Features
-        {"Global Healer Features","等待翻译"},
+        {"Global Healer Features","通用治疗相关功能"},
         {"Features and options involving shared role actions for Healers.\nCollapsing this category does NOT disable the features inside.","这个选项并没有什么实际作用"},
         {"Healer: Raise Feature","复活 Feature"},
         {"Changes the class' Raise Ability into Swiftcast.","即可咏唱替换复活"},
         //#endregion
         //#region Global Magical Ranged Features
-        {"Global Magical Ranged Features","等待翻译"},
+        {"Global Magical Ranged Features","通用法系相关功能"},
         {"Features and options involving shared role actions for Magical Ranged DPS.\nCollapsing this category does NOT disable the features inside.","这个选项并没有什么实际作用"},
         {"Magical Ranged DPS: Double Addle Protection","等待翻译"},
         {"Prevents the use of Addle when target already has the effect by replacing it with Fell Cleave.","等待翻译"},
@@ -1155,13 +1155,13 @@ public class Translatezh_CN
         {"Changes the class' Raise Ability into Swiftcast or Dualcast in the case of RDM.","等待翻译"},
         //#endregion
         //#region Global Melee Features
-        {"Global Melee DPS Features","等待翻译"},
+        {"Global Melee DPS Features","通用近战相关功能"},
         {"Features and options involving shared role actions for Melee DPS.\nCollapsing this category does NOT disable the features inside.","这个选项并没有什么实际作用"},
         {"Melee DPS: Double Feint Protection","等待翻译"},
         {"Prevents the use of Feint when target already has the effect by replacing it with Fire.","等待翻译"},
         //#endregion
         //#region Global Ranged Physical Features
-        {"Global Physical Ranged Features","等待翻译"},
+        {"Global Physical Ranged Features","通用远敏相关功能"},
         {"Features and options involving shared role actions for Physical Ranged DPS.\nCollapsing this category does NOT disable the features inside.","这个选项并没有什么实际作用"},
         {"Physical Ranged DPS: Double Mitigation Protection","等待翻译"},
         //行吟//策动防守之桑巴
@@ -1187,31 +1187,32 @@ public class Translatezh_CN
         {"Astrodyne Weave Option","天体选项"},
         {"Adds Astrodyne when you have 3 seals","等待校对 当你有三个印章时将天体加入循环"},
         {"Crown Card Draw Weave Option","皇冠卡选项"},
-        {"Adds Auto Crown Card Draw","等待翻译"},
-        {"Lord of Crowns Weave Option","等待翻译"},
-        {"Adds Lord Of Crowns","等待翻译"},
+        {"Adds Auto Crown Card Draw","循环加入皇冠卡自动抽取"},
+        {"Lord of Crowns Weave Option","王冠之领主选项"},
+        {"Adds Lord Of Crowns","循环加入打出王冠之领主"},
         //#endregion
         //#region Healing
-        {"Simple Heals (Single Target)","等待翻译"},
-        {"Benefic 2 Downgrade","等待翻译"},
-        {"Changes Benefic 2 to Benefic when Benefic 2 is not unlocked or available.","等待翻译"},
+        {"Simple Heals (Single Target)","简易治疗（单目标）"},
+        {"Benefic 2 Downgrade","福星降级"},
+        {"Changes Benefic 2 to Benefic when Benefic 2 is not unlocked or available.","如果福星还没有解锁，将福星替换为吉星"},
         //#endregion
         //#region Utility
-        {"Alternative Raise Feature","等待翻译"},
+        {"Alternative Raise Feature","复活相关功能"},
         //#endregion
         //#region Cards
-        {"Quick Target Cards","等待翻译"},
-        {"Grabs a suitable target from the party list when you draw a card and targets them for you.","等待翻译"},
-        {"Keep Target Locked","等待翻译"},
-        {"Keeps your target locked until you play the card","等待翻译"},
-        {"Add Tanks/Healers to Auto-Target","等待翻译"},
-        {"Targets a tank or healer if no DPS remain for quick target selection","等待翻译"},
-        {"Redraw Feature","等待翻译"},
-        {"Sets Draw to Redraw if you pull a card with a seal you already have and you can use Redraw.","等待翻译"},
-        {"Target Previous Feature","等待翻译"},
-        {"Once you've played your card, switch back to your previously manually selected target. (May also be who you played the card on)","等待翻译"},
-        {"Target Focus Feature","等待翻译"},
-        {"Once you've played your card, switch back to your focus target.","等待翻译"},
+        {"Quick Target Cards","快速目标发牌"},
+        {"Grabs a suitable target from the party list when you draw a card and targets them for you.","当你抽卡时，为你从小队列表中自动选中一个合适的目标。"},
+        {"Keep Target Locked","保持目标锁定"},
+        {"Keeps your target locked until you play the card","保持目标锁定直到你使用发牌"},
+        {"Add Tanks/Healers to Auto-Target","将坦克和奶妈加入自动发牌目标选择"},
+        {"Targets a tank or healer if no DPS remain for quick target selection","如果没有DPS可选时选择坦克和奶妈"},
+        {"Redraw Feature","重抽相关设置"},
+        {"Sets Draw to Redraw if you pull a card with a seal you already have and you can use Redraw.","当你抽到一张量谱上已有星力的奥秘卡且重抽技能可用时，将抽卡替换为重抽"},
+        {"Target Previous Feature","自动切回前一个目标设置"},
+        {"Once you've played your card, switch back to your previously manually selected target. (May also be who you played the card on)",
+        "当你出完一张奥秘卡后，将回到你之前手动选择的目标。（也可能是你所选择的目标）"},
+        {"Target Focus Feature","焦点相关设置"},
+        {"Once you've played your card, switch back to your focus target.","当你出完一张奥秘卡后，将回到你的焦点目标。"},
         //#endregion
         //#endregion
         //#region BLACK MAGE
@@ -1266,60 +1267,62 @@ public class Translatezh_CN
         {"Use Scathe when moving.","等待翻译"},
         //#endregion
         //#region BLUE MAGE
-        {"Solo Mode","等待翻译"},
+        {"Solo Mode","单人模式"},
         {"Uses Basic Instinct if you're in an instance and on your own.","等待翻译"},
         {"Hydro Pull Setup","等待翻译"},
         {"Uses Hydro Pull before using Ram's Voice.","等待翻译"},
         //#endregion
         //#region BARD
-        {"Simple Bard DoTs","等待翻译"},
-        {"Simple Bard Songs","等待翻译"},
-        {"Simple AoE Bard Song","等待翻译"},
-        {"Simple Buffs","等待翻译"},
-        {"Simple No Waste Mode","等待翻译"},
-        {"Adds enemy health checking on mobs for buffs, dots and songs.\nThey will not be reapplied if less than specified.","等待翻译"},
+        {"Simple Bard DoTs","简易诗人Dots"},
+        {"Simple Bard Songs","简易诗人唱歌"},
+        {"Simple AoE Bard Song","简易诗人唱歌(AOE)"},
+        {"Simple Buffs","简易诗人Buffs"},
+        {"Simple No Waste Mode","简易无浪费模式"},
+        {"Adds enemy health checking on mobs for buffs, dots and songs.\nThey will not be reapplied if less than specified.",
+        "在使用buff，dots和唱歌时，加入敌人血量检测。\n如果血量少于指定值，则不会再次重新应用。"},
         {"Pools Bloodletter charges to allow for optimum burst phases.","等待翻译"},
-        {"Simple Raging Jaws","等待翻译"},
-        {"Opener Only","等待翻译"},
-        {"Until the first auto-refresh you can DoT new targets automatically.","等待翻译"},
+        {"Simple Raging Jaws","简易猛者中续伶牙俐齿"},
+        {"Opener Only","开发者专用"},
+        {"Until the first auto-refresh you can DoT new targets automatically.","等待校对 你可以自动对新目标释放Dots直到第一次自动刷新"},
         {"Exclude Wanderer's Minuet","等待翻译"},
         {"Dont use Wanderer's Minuet.","等待翻译"},
         //#endregion
         //#region DANCER
         //#region Single Target Multibutton
-        {"Single Target Multibutton Feature","等待翻译"},
-        {"Single target combo with Fan Dances and Esprit use.","等待翻译"},
-        {"Adds Saber Dance above the set Esprit threshold.","等待翻译"},
-        {"Adds Fan Dance 1 when Fourfold Feathers are full.","等待翻译"},
-        {"Fan Dance Option","等待翻译"},
-        {"Adds Fan Dance 3/4 when available.","等待翻译"},
+        {"Single Target Multibutton Feature","单目标多按钮"},
+        {"Single target combo with Fan Dances and Esprit use.","使用扇舞与伶俐值的单目标连击"},
+        {"Adds Saber Dance above the set Esprit threshold.","伶俐超过下面设置的数值后，将剑舞加入循环"},
+        {"Adds Fan Dance 1 when Fourfold Feathers are full.","当量谱上幻扇满了后，将扇舞序加入循环"},
+        {"Fan Dance Option","扇舞选项"},
+        {"Adds Fan Dance 3/4 when available.","当扇舞急·扇舞终可用时，加入循环。"},
         //#endregion
         //#region AoE Multibutton
-        {"AoE Multibutton Feature","等待翻译"},
-        {"AoE combo with Fan Dances and Esprit use.","等待翻译"},
-        {"Adds Fan Dance 2 when Fourfold Feathers are full.","等待翻译"},
-        {"AoE Fan Dance Option","等待翻译"},
+        {"AoE Multibutton Feature","AOE多按钮"},
+        {"AoE combo with Fan Dances and Esprit use.","使用扇舞与伶俐值的AOE连击"},
+        {"Adds Fan Dance 2 when Fourfold Feathers are full.","当量谱上幻扇满了后，将扇舞破加入循环"},
+        {"AoE Fan Dance Option","AOE幻扇选项"},
         //#endregion
         //#region Dance Features
         //#region Combined Dance Feature
         //#endregion
         //#endregion
         //#region Flourishing Features
-        {"Flourishing Fan Dance Feature","等待翻译"},
-        {"Replace Flourish with Fan Dance 3 & 4 during weave-windows, when Flourish is on cooldown.","等待翻译"},
+        {"Flourishing Fan Dance Feature","百花齐放中扇舞相关设置"},
+        {"Replace Flourish with Fan Dance 3 & 4 during weave-windows, when Flourish is on cooldown.","在使用百花齐放后的窗口期内，将百花齐放替换为扇舞急·扇舞终"},
         //#endregion
         //#region Fan Dance Combo Features
-        {"Fan Dance Combo Feature","等待翻译"},
-        {"Options for Fan Dance combos. Fan Dance 3 takes priority over Fan Dance 4.","等待翻译"},
+        {"Fan Dance Combo Feature","扇舞连击"},
+        {"Options for Fan Dance combos. Fan Dance 3 takes priority over Fan Dance 4.","扇舞连击相关选项。扇舞急优先于扇舞终"},
         //#endregion
-        {"Dance Step Combo Feature","等待翻译"},
+        {"Dance Step Combo Feature","舞步连击相关"},
         //#region Simple Dancer (Single Target)
-        {"Simple Dancer (Single Target) Feature","等待翻译"},
-        {"Single button, single target. Includes songs, flourishes and overprotections.\nConflicts with all other non-simple toggles, except 'Dance Step Combo'.","等待翻译"},
+        {"Simple Dancer (Single Target) Feature","简易舞者（单目标）"},
+        {"Single button, single target. Includes songs, flourishes and overprotections.\nConflicts with all other non-simple toggles, except 'Dance Step Combo'.",
+        "舞者单目标一键连击。包含唱，跳，Rap，打篮球，百花齐放和溢出保护。几乎与所以其他非一键选项冲突，除了上面的舞步连击"},
         {"Includes an interrupt in the rotation (if applicable to your current target).","等待翻译"},
-        {"Simple Standard Dance Option","等待翻译"},
+        {"Simple Standard Dance Option","简易标准舞步选项"},
         {"Includes Standard Step (and all steps) in the rotation.","等待翻译"},
-        {"Simple Technical Dance Option","等待翻译"},
+        {"Simple Technical Dance Option","简易技巧舞步选项"},
         {"Includes Technical Step, all dance steps and Technical Finish in the rotation.","等待翻译"},
         {"Simple Tech Fill Option","等待翻译"},
         {"Adds ONLY Technical dance steps and Technical Finish to the rotation.\nTechnical Step itself needs to be initiated manually when using this option.","等待翻译"},
@@ -1328,11 +1331,12 @@ public class Translatezh_CN
         {"Includes Curing Waltz and Second Wind in the rotation when available and your HP is below the set percentages.","等待翻译"},
         //#endregion
         //#region Simple Dancer (AoE)
-        {"Simple Dancer (AoE) Feature","等待翻译"},
-        {"Single button, AoE. Includes songs, flourishes and overprotections.\nConflicts with all other non-simple toggles, except 'Dance Step Combo'.","等待翻译"},
-        {"Simple AoE Standard Dance Option","等待翻译"},
+        {"Simple Dancer (AoE) Feature","简易舞者（AOE）"},
+        {"Single button, AoE. Includes songs, flourishes and overprotections.\nConflicts with all other non-simple toggles, except 'Dance Step Combo'.",
+        "舞者AOE一键连击。包含唱，跳，Rap，打篮球，百花齐放和溢出保护。几乎与所以其他非一键选项冲突，除了上面的舞步连击"},
+        {"Simple AoE Standard Dance Option","简易标准舞步选项（AOE）"},
         {"Includes Standard Step (and all steps) in the AoE rotation.","等待翻译"},
-        {"Simple AoE Technical Dance Option","等待翻译"},
+        {"Simple AoE Technical Dance Option","简易技巧舞步选项（AOE）"},
         {"Includes Technical Step, all dance steps and Technical Finish in the AoE rotation.","等待翻译"},
         {"Simple AoE Tech Fill Option","等待翻译"},
         {"Adds ONLY Technical dance steps and Technical Finish to the AoE rotation.\nTechnical Step itself needs to be initiated manually when using this option.","等待翻译"},
