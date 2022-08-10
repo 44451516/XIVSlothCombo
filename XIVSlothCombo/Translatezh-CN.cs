@@ -1282,7 +1282,7 @@ public class Translatezh_CN
         "在使用buff，dots和唱歌时，加入敌人血量检测。\n如果血量少于指定值，则不会再次重新应用。"},
         {"Pools Bloodletter charges to allow for optimum burst phases.","等待翻译"},
         {"Simple Raging Jaws","简易猛者中续伶牙俐齿"},
-        {"Opener Only","开发者专用"},
+        {"Opener Only","起手专用"},
         {"Until the first auto-refresh you can DoT new targets automatically.","等待校对 你可以自动对新目标释放Dots直到第一次自动刷新"},
         {"Exclude Wanderer's Minuet","等待翻译"},
         {"Dont use Wanderer's Minuet.","等待翻译"},
