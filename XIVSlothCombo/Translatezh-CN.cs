@@ -7,17 +7,19 @@ public class Translatezh_CN
     public static Dictionary<string, string> db1 = new();
     public static Dictionary<string, string> db = new()
     {
-        //#region Misc
-        //#endregion
-        //#region ADV
-        //#endregion
-        //#region GLOBAL FEATURES
+        #region Misc
+        #endregion
+        #region ADV
+        #endregion
+
+        #region GLOBAL FEATURES
         {"Global Interrupt Feature","Global Interrupt Feature"},
         {"Replaces Stun (LowBlow) with interrupt (Interject) when the target can be interrupted.","Replaces Stun (LowBlow) with interrupt (Interject) when the target can be interrupted."},
         {"Global Raise Feature","Global 复活 Feature"},
         {"Replaces Swiftcast with Raise/Resurrection/Verraise/Ascend/Egeiro when appropriate.","Replaces Swiftcast with 复活/Resurrection/Verraise/Ascend/Egeiro when appropriate."},
-        //#endregion
-        //#region ASTROLOGIAN
+        #endregion
+
+        #region ASTROLOGIAN
         {"Draw on Play","用出卡替换抽卡"},
         {"Play turns into Draw when no card is drawn, as well as the usual Play behavior.","当没有抽取到奥秘卡时，自动将出卡替换为抽卡。"},
         {"Crown Play to Minor Arcana","用出王冠卡替换小奥秘卡"},
@@ -69,8 +71,9 @@ public class Translatezh_CN
         {"Adds Aspected Benefic & refreshes it if needed.","在目标身上没有吉星相位或快要结束时，自动更换福星为吉星相位"},
         {"Exaltation Feature","擢升设置"},
         {"Adds Exaltation.","添加擢升进入治疗连击"},
-        //#endregion
-        //#region BLACK MAGE
+        #endregion
+
+        #region BLACK MAGE
         {"Enochian Stance Switcher ++","天语转换"},
         {"Change Scathe to Fire 4 or Blizzard 4 depending on stance.\nScathe becomes all in one rotation.\nIf Thunder Feature is turned on it also adds Thunder3 proces onto all in one combo when DoT is about to expire or dosen't exist\nThis REQUIRES other features to be turned on!!!","基于零极冰或星极火时，自动将崩溃更改为火4或冰4。\n崩溃一键循环。\n如果雷dot被启用，同样会在DOT不存在或即将消失时，自动转换为雷3。\n这需要其他功能勾选启用！！！"},
         {"Umbral Soul/Transpose Switcher","灵极魂/星灵移位切换"},
@@ -113,8 +116,9 @@ public class Translatezh_CN
         {"Modifies the Simple Fire3 Opener to only use 1 Triplecast.","火三循环启动后只使用一个三连咏唱"},
         {"Foul / Manafont to Flare Option","秽浊 / 魔泉互相替换 灵极火状态"},
         {"Adds foul when available during Astral Fire. Weaves manafont after foul for additional Flare","在火状态下，秽浊后使用魔泉打出更多的火（在魔泉可用时）"},
-        //#endregion
-        //#region BLUE MAGE
+        #endregion
+
+        #region BLUE MAGE
         {"Buffed Song of Torment","苦闷之歌buff强化"},
         {"Turns Song of Torment into Bristle so SoT is buffed. \nSpells Required: Song of Torment.","不在蓄力状态时，将苦闷之歌替换为怒发冲冠. \n需要技能：苦闷之歌"},
         {"Moon Flute Opener","月之笛起手连击"},
@@ -137,8 +141,9 @@ public class Translatezh_CN
         {"Turns Black Knight's Tour or White Knight's Tour into its counterpart when the enemy is under the effect of the spell's debuff. \nSpells Required: White Knight's Tour, Black Knight's Tour","将黑骑士之旅或白骑士之旅替换成当敌人受到咒语减益的影响时，所对应的技能. \n需要技能: 白骑士之旅, 黑骑士之旅"},
         {"Peripheral Synthesis into Mustard Bomb","生成外设-芥末爆弹"},
         {"Turns Peripheral Synthesis into Mustard Bomb when target is under the effect of Lightheaded. \nSpells Required: Peripheral Synthesis, Mustard Bomb.","当目标处于眩晕状态下时，将生成外设替换成芥末爆弹. \n需要技能: 生成外设, 芥末爆弹."},
-        //#endregion
-        //#region BARD
+        #endregion
+
+        #region BARD
         {"Wanderer's into Pitch Perfect","放浪神的小步舞曲设置"},
         {"Replaces Wanderer's Minuet with Pitch Perfect while in WM.","吟唱放浪神期间，将放浪神的小步舞曲替换为完美音调。"},
         {"Heavy Shot into Straight Shot","强力射击设置"},
@@ -188,8 +193,9 @@ public class Translatezh_CN
         {"Adds Apex and Blast Arrow to Iron Jaws when available","当绝峰箭/爆破箭可用时，替换伶牙俐齿为绝峰箭/爆破箭。"},
         {"Simple RagingJaws","单体连击dot快照设置"},
         {"Enable the snapshotting of DoTs, within the remaining time of Raging Strikes below:","在猛者强击持续时间低于设定值时，自动替换插入dot技能。"},
-        //#endregion
-        //#region DANCER
+        #endregion
+
+        #region DANCER
         {"Single Target Multibutton","单体目标整合"},
         {"Change Cascade into procs and combos as available.","替换瀑泻为对应触发连击。"},
         {"ST Esprit Overcap Option","单体目标伶俐防溢出设置"},
@@ -279,8 +285,9 @@ public class Translatezh_CN
         {"Simple AoE Panic Heals","简易AoE紧急恢复"},
         {"Simple AoE Improvisation","简易AoE即兴表演"},
         {"Includes Improvisation in the AoE rotation when available.","当即兴表演可用时将其加入AoE循环。"},
-        //#endregion
-        //#region DARK KNIGHT
+        #endregion
+
+        #region DARK KNIGHT
         {"Buffs on Main Combo","主连击Buff整合"},
         {"Collection of Buffs to add to Main Combo","将Buff类技能整合到主连击。"},
         {"CDs on Main Combo","主连击CD整合"},
@@ -338,8 +345,9 @@ public class Translatezh_CN
         {"Adds Blood Weapon to Main Combo on CD and when Darkside is up.","当暗黑激活时将嗜血整合到主连击。"},
         {"Double Reprisal Protection","雪仇保护机制"},
         {"Prevents the use of Reprisal when target already has the effectby replacing it with Stone","当目标已被赋予雪仇效果时，将雪仇替换为飞石"},
-        //#endregion
-        //#region DRAGOON
+        #endregion
+
+        #region DRAGOON
         {"Jump + Mirage Dive","幻象冲整合设置"},
         {"Replace (High) Jump with Mirage Dive when Dive Ready.","处于幻象冲预备状态时，替换（高）跳跃为幻象冲。"},
         {"Coerthan Torment Combo","一键山境酷刑连"},
@@ -414,8 +422,9 @@ public class Translatezh_CN
         {"When you have either Enhanced Fang and Claw or Wheeling Thrust, Chaos Thrust Combo becomes Wheeling Thrust and Full Thrust Combo becomes Fang and Claw. Requires Chaos Thrust Combo and Full Thrust Combo.","在龙牙龙爪或龙尾大回旋预备状态下，替换樱花连为龙尾大回旋，替换直刺连为龙牙龙爪. 需要开启一键樱花连和直刺连。"},
         {"Wheeling Thrust/Fang and Claw Feature","龙尾大回旋/龙牙龙爪 特性"},
         {"Fang And Claw Becomes Wheeling Thrust when under Enhanced Wheeling Thrust Buff.","在龙尾大回旋预备状态下，替换龙牙龙爪为龙尾大回旋。"},
-        //#endregion
-        //#region GUNBREAKER
+        #endregion
+
+        #region GUNBREAKER
         {"Solid Barrel Combo","迅连斩连击"},
         {"Replace Solid Barrel with its combo chain. \nIf all sub options are selected will turn into a full one button rotation (Simple Gunbreaker)","将迅连斩替换为迅连斩连击。 \n如果所有的次级选项都被勾选，那么将可以做到一键循环。（简单枪刃）"},
         {"Gnashing Fang and Continuation on Main Combo","烈牙与续剑整合到主连击"},
@@ -475,8 +484,9 @@ public class Translatezh_CN
         
         // [CustomComboInfo("Cooldowns on No Mercy", "Adds Cooldowns to No Mercy when No Mercy is on cooldown.", GNB.JobID, 0, "", "")]
         
-        //#endregion
-        //#region MACHINIST
+        #endregion
+
+        #region MACHINIST
         {"(Heated) Shot Combo","热弹自动替换"},
         {"Replace either form of Clean Shot with its combo chain.","替换热弹为连击循环中的任一技能"},
         {"Overdrive Feature","超档炮塔/人偶替换设置"},
@@ -542,8 +552,9 @@ public class Translatezh_CN
         {"...when you have max charges of reassemble.","...当你整备充能是最大值时."},
         {"Only use Air Anchor...","只使用空气锚..."},
         {"Only use Chain Saw...","只使用回转飞锯..."},
-        //#endregion
-        //#region MONK
+        #endregion
+
+        #region MONK
         {"AoE Combo","AOE连击"},
         {"Replaces Arm Of The Destroyer/Shadow Of The Destroyer with the AoE combo chain.","整合AOE连击到破坏神脚/破坏神冲。"},
         {"Bootshine Feature","连击特性"},
@@ -581,8 +592,9 @@ public class Translatezh_CN
         {"Adds Meditation to the Main Combo.","将斗气整合进连击。"},
         {"Lunar Solar Opener","阴阳开场"},
         {"Start with the Lunar Solar Opener on the Main Combo. Requires level 68 for Riddle of Fire.","将阴阳脉轮开场整合进连击。需要68级（习得红莲极意）。"},
-        //#endregion
-        //#region NINJA
+        #endregion
+
+        #region NINJA
         {"Armor Crush Combo","强甲破点突 Combo"},
         {"Replace Armor Crush with its combo chain.","使用 强甲破点突 做为连击的起始技."},
         {"Aeolian Edge Combo","旋风刃 Combo"},
@@ -643,8 +655,9 @@ public class Translatezh_CN
         {"Adds Doton and Katon/Goka Mekkyaku to the combo.","将 土遁、火遁/劫火灭却之术 加入连击序列."},
         {"Bunshin Feature","分身之术 Feature"},
         {"Adds Bunshin and Phantom Kamaitachi to the combo.","将 分身之术 和 残影镰鼬 加入攻击序列."},
-        //#endregion
-        //#region PALADIN
+        #endregion
+
+        #region PALADIN
         {"Goring Blade Combo","沥血剑 Combo"},
         {"Replace Goring Blade with its combo chain.","将 沥血剑 设为沥血连."},
         {"Royal Authority Combo","王权剑 Combo"},
@@ -688,8 +701,9 @@ public class Translatezh_CN
         {"Adds Expiacion and Circle of Scorn onto the main combo during weave windows","在连击窗口期插入 偿赎剑 和 厄运流转."},
         {"AOE Expiacion / Circle of Scorn Feature","厄运流转加入aoe连击"},
         {"Adds Expiacion and Circle of Scorn onto the main AOE combo during weave windows","在连击窗口期插入 偿赎剑 和 厄运流转."},
-        //#endregion
-        //#region REAPER
+        #endregion
+
+        #region REAPER
         {"Slice Combo Feature","切割连击"},
         {"Replace Slice with its combo chain. Features and options inside.\nCollapsing this category disables the features inside.","将切割替换为切割连击。\n禁用此项将停用次级选项功能。"},
         {"Soul Slice Option","灵魂切割设置"},
@@ -752,8 +766,9 @@ public class Translatezh_CN
         {"Prevent Harvest Moon replacing Harpe when Enhanced Harpe is active.\nThis option also affects the Ranged Filler Option for the Slice Combo Feature.","防止收获月在拥有勾刃效果提高时替换勾刃。\n这个选项也会影响切割连击设置中的距离设置。"},
         {"Combat Harpe Option","战斗外勾刃设置"},
         {"Prevent Harvest Moon replacing Harpe when you are not in combat.\nThis option also affects the Ranged Filler Option for the Slice Combo Feature.","防止收获月在战斗外替换勾刃。\n这个选项也会影响切割连击设置中的距离设置。"},
-        //#endregion
-        //#region RED MAGE
+        #endregion
+
+        #region RED MAGE
         {"Red Mage AoE Combo","赤魔AOE连击"},
         {"Replaces Veraero/Verthunder 2 with Impact when Dualcast or Swiftcast are active.","若有连续咏唱或即刻咏唱状态,则替换赤烈风或赤震雷为冲击。"},
         {"Redoublement combo","魔连攻连击"},
@@ -800,8 +815,9 @@ public class Translatezh_CN
         {"Add Lucid Dreaming to Veraero, Verthunder and Impact when below threshold.","当MP低于设定数值时自动替换赤疾风、赤闪雷和冲击为醒梦。"},
         {"Swiftcast into Verraise Feature","即刻赤复活"},
         {"Changes Swiftcast to Verraise when under the effect of Swiftcast.","使用即刻咏唱后替换即刻咏唱为赤复活。"},
-        //#endregion
-        //#region SAGE
+        #endregion
+
+        #region SAGE
         {"Soteria into Kardia Feature","奶伴设置"},
         {"Soteria turns into Kardia when not active or Soteria is on-cooldown.","当未使用心关或拯救处于冷却状态时，替换拯救为心关。"},
         {"Rhizomata Feature###SGENormal","根素设置###SGENormal"},
@@ -864,8 +880,9 @@ public class Translatezh_CN
         {"Adds Rhizomata when Addersgall is 0###SGEAOE","当蛇胆数为0时自动插入根素。###SGEAOE"},
         {"Druochole Feature","灵橡清汁设置"},
         {"Adds Druochole when the selected target is at or above the set HP percentage.","当所选目标HP百分比在设定值以上时，自动插入灵橡清汁。"},
-        //#endregion
-        //#region SAMURAI
+        #endregion
+
+        #region SAMURAI
         {"Yukikaze Combo","雪风连"},
         {"Replace Yukikaze with its combo chain.","替换雪风为相应连击。"},
         {"Gekko Combo","月光连"},
@@ -922,8 +939,9 @@ public class Translatezh_CN
         {"Adds Ikishoten to most Single Target/AoE combos when at or below 50 Kenki","当剑气值在50以下时，在一键输出循环中插入意气冲天。"},
         {"Kaiten On Ikishoten","必杀剑·回天 强化 意气冲天"},
         {"Adds Kaiten to Ikishoten Namikiri Feature","在意气冲天变为奥义斩浪前插入必杀剑·回天。"},
-        //#endregion
-        //#region SCHOLAR
+        #endregion
+
+        #region SCHOLAR
         {"Seraph Fey Blessing/Consolation","异想的祥光替换慰藉"},
         {"Change Fey Blessing into Consolation when Seraph is out.","炽天使同行状态下，将 异想的祥光 变为 慰藉."},
         {"ED Aetherflow","无豆子能量吸收变为以太超流"},
@@ -941,8 +959,9 @@ public class Translatezh_CN
         {"DPS Feature Lucid Dreaming Option","醒梦好了加入循环"},
         {"SCH Extra DPS Feature","SCH Extra DPS Feature"},
         {"Adds Bio DoT on Ruin II. Won't work below level 38","战斗状态下，将 毁坏 变为Dot法术，级别低于38级时将不会生效."},
-        //#endregion
-        //#region SUMMONER
+        #endregion
+
+        #region SUMMONER
         {"Enable Single Target (Ruin1)","启动单体连击(毁灭)"},
         {"Enables changing Single-Target Combo (Ruin I).","启动该特性后，毁灭将会被替换为其他合适的单体连击技能"},
         {"Enable Single Target (RuinIII)","启动单体连击(毁荡)"},
@@ -999,8 +1018,9 @@ public class Translatezh_CN
         {"Puts Ruin4 Above anything if FurtherRuin about to expire and there is no Demi present.","如果毁绝预备效果即将过期，则将毁绝的优先级放到其他技能之前（除非现在是亚灵神显现期间）"},
         {"Rekindle Feature","苏生之炎特性"},
         {"Adds Rekindle onto the main Ruin1 or Ruin3 combo. Requires other features to work.","将苏生之炎加入到毁灭/毁荡的连击中，需要开启其他特性才能生效。"},
-        //#endregion
-        //#region WARRIOR
+        #endregion
+
+        #region WARRIOR
         {"Storms Path Combo","绿斩连击"},
         {"All in one main combo feature adds Storm's Eye/Path. \nIf all sub options and Fell Cleave/Decimate Options are toggled will turn into a full one button rotation (Simple Warrior)","将暴风斩替换为主要连击技能/Path. \n如果下列选项以及裂石飞环/地毁人亡相关选项被勾选，暴风斩将变为一键循环"},
         {"Storms Eye Combo","红斩连击"},
@@ -1037,8 +1057,9 @@ public class Translatezh_CN
         {"Adds Inner Release to Storm's Path Combo when Nascent Chaos is not up.","在没有原初的混沌BUFF时，将原初的解放加入到绿斩连击"},
         {"Infuriate on Storm's Path","战壕加入绿斩循环"},
         {"Adds Infuriate to Storm's Path Combo when gauge is below 50 and not under Inner Release.","在没有原初的解放BUFF且不会溢出兽魂时，将战壕加入到绿斩连击"},
-        //#endregion
-        //#region WHITE MAGE
+        #endregion
+
+        #region WHITE MAGE
         {"Solace into Misery","安慰之心-苦难之心"},
         {"Replaces Afflatus Solace with Afflatus Misery when Misery is ready to be used","当苦难之心可用时，将安慰之心替换为苦难之心"},
         {"Rapture into Misery","狂喜之心-苦难之心"},
@@ -1069,12 +1090,14 @@ public class Translatezh_CN
         {"Removes DoT from DPS feature","移除替换为DoT的特性"},
         {"Thin Air Raise Feature","无中生有-复活特性"},
         {"Adds Thin Air to the WHM Raise Feature/Alternative Feature","为白魔复活特性/替代 添加插入无中生有"},
-        //#endregion
-        //#region DOH
+        #endregion
+
+        #region DOH
         {"Placeholder","Placeholder"},
         {"Placeholder.","Placeholder."},
-        //#endregion
-        //#region DOL
+        #endregion
+
+        #region DOL
         {"Eureka Feature","理智同兴"},
         {"Replace Ageless Words and Solid Reason with Wise to the World when available.","当理智同兴可用时，将农夫之智或石工之理替换为理智同兴"},
         {"Cast / Hook Feature","抛竿"},
@@ -1089,8 +1112,9 @@ public class Translatezh_CN
         {"Replace Snagging with Salvage when underwater.","在水下时，将钓组替换为打捞"},
         {"Cast Light / Electric Current Feature","垂钓之光"},
         {"Replace Cast Light with Electric Current when underwater.","在水下时，将垂钓之光替换为电水流"},
-        //#endregion
-        //#region PvP Combos
+        #endregion
+
+        #region PvP Combos
         {"BurstShotFeature","BurstShotFeature"},
         {"Adds Shadowbite/EmpyArrow/PitchPerfect(3stacks)/SideWinder(When Target is low hp)/ApexArrow when gauge is 100 all on one button combo.","Adds 影噬箭/EmpyArrow/PitchPerfect(3stacks)/SideWinder(When Target is low hp)/ApexArrow when gauge is 100 all on one button combo."},
         {"SongsFeature","SongsFeature"},
@@ -1125,53 +1149,65 @@ public class Translatezh_CN
         {"Adds Axekick/Smite/TornadoKick on main combo","Adds Axekick/Smite/TornadoKick on main combo"},
         {"BlackEnochianPVPFeature","Black天语PVPFeature"},
         {"Enochian Stance Switcher","天语 Stance Switcher"},
-        //#endregio
+        #endregion
 
         #region 新版
-        //#region PvE Combos
-        //#region Misc
-        //#endregion
-        //#region GLOBAL FEATURES
-        //#region Global Tank Features
+
+        #region PvE Combos
+
+        #region Misc
+        #endregion
+
+        #region GLOBAL FEATURES
+
+        #region Global Tank Features
         {"Global Tank Features","等待翻译"},
         {"Features and options involving shared role actions for Tanks.\nCollapsing this category does NOT disable the features inside.","这个选项并没有什么实际作用"},
         {"Tank: Interrupt Feature","打断 Feature"},
         {"Replaces Low Blow (Stun) with Interject (Interrupt) when the target can be interrupted.\nPLDs can slot Shield Bash to have the feature to work with Shield Bash.","当目标可被打断时，使用插言替换掉下踢。\nPLDs can slot Shield Bash to have the feature to work with Shield Bash."},
         {"Tank: Double Reprisal Protection","血仇保护机制"},
         {"Prevents the use of Reprisal when target already has the effect by replacing it with Stone.","当目标已被赋予雪仇效果时，将雪仇替换为飞石"},
-        //#endregion
-        //#region Global Healer Features
+        #endregion
+
+        #region Global Healer Features
         {"Global Healer Features","等待翻译"},
         {"Features and options involving shared role actions for Healers.\nCollapsing this category does NOT disable the features inside.","这个选项并没有什么实际作用"},
         {"Healer: Raise Feature","复活 Feature"},
         {"Changes the class' Raise Ability into Swiftcast.","即可咏唱替换复活"},
-        //#endregion
-        //#region Global Magical Ranged Features
+        #endregion
+
+        #region Global Magical Ranged Features
         {"Global Magical Ranged Features","等待翻译"},
         {"Features and options involving shared role actions for Magical Ranged DPS.\nCollapsing this category does NOT disable the features inside.","这个选项并没有什么实际作用"},
         {"Magical Ranged DPS: Double Addle Protection","等待翻译"},
         {"Prevents the use of Addle when target already has the effect by replacing it with Fell Cleave.","等待翻译"},
         {"Magical Ranged DPS: Raise Feature","等待翻译"},
         {"Changes the class' Raise Ability into Swiftcast or Dualcast in the case of RDM.","等待翻译"},
-        //#endregion
-        //#region Global Melee Features
+        #endregion
+
+        #region Global Melee Features
         {"Global Melee DPS Features","等待翻译"},
         {"Features and options involving shared role actions for Melee DPS.\nCollapsing this category does NOT disable the features inside.","这个选项并没有什么实际作用"},
         {"Melee DPS: Double Feint Protection","等待翻译"},
         {"Prevents the use of Feint when target already has the effect by replacing it with Fire.","等待翻译"},
-        //#endregion
-        //#region Global Ranged Physical Features
+        #endregion
+
+        #region Global Ranged Physical Features
         {"Global Physical Ranged Features","等待翻译"},
         {"Features and options involving shared role actions for Physical Ranged DPS.\nCollapsing this category does NOT disable the features inside.","这个选项并没有什么实际作用"},
         {"Physical Ranged DPS: Double Mitigation Protection","等待翻译"},
         //行吟//策动防守之桑巴
         {"Prevents the use of Tactician/Troubadour/Shield Samba when target already has one of those three effects by replacing it with Stardiver.","大义防止行吟/策动/防守之桑巴 重复使用"},
-        //#endregion
+        #endregion
+
         {"Output Combat Log","等待翻译"},
         {"Outputs your performed actions to the chat.","等待翻译"},
-        //#endregion
-        //#region ASTROLOGIAN
-        //#region DPS
+
+        #endregion
+
+        #region ASTROLOGIAN
+
+        #region DPS
         {"Replaces Malefic or Combust with options below","用以下选项替换煞星(占星下个技能瞬发）或烧灼（占星dot)"},
         {"Combust Uptime Option","烧灼持续运行时间"},
         {"Adds Combust to the DPS feature if it's not present on current target, or is about to expire.","如果当前目标上没有烧灼或即将过期，则将烧灼添加到 输出循环。"},
@@ -1190,16 +1226,19 @@ public class Translatezh_CN
         {"Adds Auto Crown Card Draw","等待翻译"},
         {"Lord of Crowns Weave Option","等待翻译"},
         {"Adds Lord Of Crowns","等待翻译"},
-        //#endregion
-        //#region Healing
+        #endregion
+
+        #region Healing
         {"Simple Heals (Single Target)","等待翻译"},
         {"Benefic 2 Downgrade","等待翻译"},
         {"Changes Benefic 2 to Benefic when Benefic 2 is not unlocked or available.","等待翻译"},
-        //#endregion
-        //#region Utility
+        #endregion
+
+        #region Utility
         {"Alternative Raise Feature","等待翻译"},
-        //#endregion
-        //#region Cards
+        #endregion
+
+        #region Cards
         {"Quick Target Cards","等待翻译"},
         {"Grabs a suitable target from the party list when you draw a card and targets them for you.","等待翻译"},
         {"Keep Target Locked","等待翻译"},
@@ -1212,9 +1251,11 @@ public class Translatezh_CN
         {"Once you've played your card, switch back to your previously manually selected target. (May also be who you played the card on)","等待翻译"},
         {"Target Focus Feature","等待翻译"},
         {"Once you've played your card, switch back to your focus target.","等待翻译"},
-        //#endregion
-        //#endregion
-        //#region BLACK MAGE
+        #endregion
+
+        #endregion
+
+        #region BLACK MAGE
         {"Scathe Feature","等待翻译"},
         {"Replaces Scathe with Fire 4 or Blizzard 4 depending on Astral Fire/Umbral Ice.","等待翻译"},
         {"Umbral Soul/Transpose Feature","等待翻译"},
@@ -1264,14 +1305,16 @@ public class Translatezh_CN
         {"Use Xenoglossy when moving.","等待翻译"},
         {"Scathe Moving Option","等待翻译"},
         {"Use Scathe when moving.","等待翻译"},
-        //#endregion
-        //#region BLUE MAGE
+        #endregion
+
+        #region BLUE MAGE
         {"Solo Mode","等待翻译"},
         {"Uses Basic Instinct if you're in an instance and on your own.","等待翻译"},
         {"Hydro Pull Setup","等待翻译"},
         {"Uses Hydro Pull before using Ram's Voice.","等待翻译"},
-        //#endregion
-        //#region BARD
+        #endregion
+
+        #region BARD
         {"Simple Bard DoTs","等待翻译"},
         {"Simple Bard Songs","等待翻译"},
         {"Simple AoE Bard Song","等待翻译"},
@@ -1284,36 +1327,46 @@ public class Translatezh_CN
         {"Until the first auto-refresh you can DoT new targets automatically.","等待翻译"},
         {"Exclude Wanderer's Minuet","等待翻译"},
         {"Dont use Wanderer's Minuet.","等待翻译"},
-        //#endregion
-        //#region DANCER
-        //#region Single Target Multibutton
+        #endregion
+
+        #region DANCER
+
+        #region Single Target Multibutton
         {"Single Target Multibutton Feature","等待翻译"},
         {"Single target combo with Fan Dances and Esprit use.","等待翻译"},
         {"Adds Saber Dance above the set Esprit threshold.","等待翻译"},
         {"Adds Fan Dance 1 when Fourfold Feathers are full.","等待翻译"},
         {"Fan Dance Option","等待翻译"},
         {"Adds Fan Dance 3/4 when available.","等待翻译"},
-        //#endregion
-        //#region AoE Multibutton
+        #endregion
+
+        #region AoE Multibutton
         {"AoE Multibutton Feature","等待翻译"},
         {"AoE combo with Fan Dances and Esprit use.","等待翻译"},
         {"Adds Fan Dance 2 when Fourfold Feathers are full.","等待翻译"},
         {"AoE Fan Dance Option","等待翻译"},
-        //#endregion
-        //#region Dance Features
-        //#region Combined Dance Feature
-        //#endregion
-        //#endregion
-        //#region Flourishing Features
+        #endregion
+
+        #region Dance Features
+
+            #region Combined Dance Feature
+        #endregion
+
+        #endregion
+
+        #region Flourishing Features
         {"Flourishing Fan Dance Feature","等待翻译"},
         {"Replace Flourish with Fan Dance 3 & 4 during weave-windows, when Flourish is on cooldown.","等待翻译"},
-        //#endregion
-        //#region Fan Dance Combo Features
+        #endregion
+
+        #region Fan Dance Combo Features
         {"Fan Dance Combo Feature","等待翻译"},
         {"Options for Fan Dance combos. Fan Dance 3 takes priority over Fan Dance 4.","等待翻译"},
-        //#endregion
+        #endregion
+
         {"Dance Step Combo Feature","等待翻译"},
-        //#region Simple Dancer (Single Target)
+
+        #region Simple Dancer (Single Target)
         {"Simple Dancer (Single Target) Feature","等待翻译"},
         {"Single button, single target. Includes songs, flourishes and overprotections.\nConflicts with all other non-simple toggles, except 'Dance Step Combo'.","等待翻译"},
         {"Includes an interrupt in the rotation (if applicable to your current target).","等待翻译"},
@@ -1326,8 +1379,9 @@ public class Translatezh_CN
         {"Includes Devilment in the rotation.\nWill activate only during Technical Finish if you are Lv70 or above.","等待翻译"},
         {"Expends a feather in the next available weave window when capped.\nWeaves feathers where possible during Technical Finish.\nWeaves feathers outside of burst when target is below set HP percentage.","等待翻译"},
         {"Includes Curing Waltz and Second Wind in the rotation when available and your HP is below the set percentages.","等待翻译"},
-        //#endregion
-        //#region Simple Dancer (AoE)
+        #endregion
+
+        #region Simple Dancer (AoE)
         {"Simple Dancer (AoE) Feature","等待翻译"},
         {"Single button, AoE. Includes songs, flourishes and overprotections.\nConflicts with all other non-simple toggles, except 'Dance Step Combo'.","等待翻译"},
         {"Simple AoE Standard Dance Option","等待翻译"},
@@ -1339,9 +1393,11 @@ public class Translatezh_CN
         {"Includes Devilment in the AoE rotation.\nWill activate only during Technical Finish if you Lv70 or above.","等待翻译"},
         {"Expends a feather in the next available weave window when capped.","等待翻译"},
         {"Includes Curing Waltz and Second Wind in the AoE rotation when available and your HP is below the set percentages.","等待翻译"},
-        //#endregion
-        //#endregion
-        //#region DARK KNIGHT
+        #endregion
+
+        #endregion
+
+        #region DARK KNIGHT
         {"Shadowbringer oGCD Feature","等待翻译"},
         {"Melee Plunge Option","等待翻译"},
         {"Uses Plunge when under Darkside and in the target ring (1 yalm).\nWill use as many stacks as selected in the above slider.","等待翻译"},
@@ -1353,15 +1409,20 @@ public class Translatezh_CN
         {"Adds Salted Earth and Salt and Darkness to AOE on CD and when Darkside is up.","等待翻译"},
         {"Living Shadow Option","等待翻译"},
         {"Adds Living Shadow to AOE on CD and when Darkside is up.","等待翻译"},
-        //#endregion
-        //#region DRAGOON
-        //#region Chaos Thrust Combo
-        //#endregion
-        //#region Full Thrust Combo
-        //#endregion
-        //#region Full Thrust Combo Plus
-        //#endregion
-        //#region Simple Dragoon
+        #endregion
+
+        #region DRAGOON
+
+        #region Chaos Thrust Combo
+        #endregion
+
+        #region Full Thrust Combo
+        #endregion
+
+        #region Full Thrust Combo Plus
+        #endregion
+
+        #region Simple Dragoon
         {"Replaces Full Thrust with the entire DRG combo chain. Conflicts with every non-AoE feature.","等待翻译"},
         {"Level 88+. Use True North on prepull to activate. Adds opener to the Simple Dragoon rotation. Not recommended for use in dungeons. OPTIONAL: USE REACTION OR MOACTION FOR OPTIMAL TARGETING.","等待翻译"},
         {"Lance Charge Feature","等待翻译"},
@@ -1370,14 +1431,19 @@ public class Translatezh_CN
         {"Includes Battle Litany to the rotation.","等待翻译"},
         {"Ranged Uptime Option","等待翻译"},
         {"Replaces Main Combo with Piercing Talon when you are out of melee range.\nNOT OPTIMAL.","等待翻译"},
-        //#endregion
-        //#region Simple Dragoon AoE
-        //#region Buffs AoE Feature
-        //#endregion
+        #endregion
+
+        #region Simple Dragoon AoE
+
+            #region Buffs AoE Feature
+            #endregion
+
         {"Replaces Main AoE Combo with Piercing Talon when you are out of melee range.\nNOT OPTIMAL.","等待翻译"},
-        //#endregion
-        //#endregion
-        //#region GUNBREAKER
+        #endregion
+
+        #endregion
+
+        #region GUNBREAKER
         {"Adds Sonic Break/Bow Shock/Blasting Zone on Gnashing Fang, order dependent on No Mercy buff. \nBurst Strike and Hypervelocity added if there's charges while No Mercy buff is up.","等待翻译"},
         {"Burst Strike Continuation","爆发击续剑"},
         {"Adds Hypervelocity on Burst Strike.","超高速可以使用的时候，超高速替换爆发击"},
@@ -1396,8 +1462,9 @@ public class Translatezh_CN
         {"Uses Rough Divide when under No Mercy, burst cooldowns when available, and in the target ring (1 yalm).\nWill use as many stacks as selected in the above slider.","Uses 粗分斩 when under 无情, burst cooldowns when available, and in the target ring (1 yalm).\nWill use as many stacks as selected in the above slider."},
         {"Aurora Protection Feature","极光保护机制"},
         {"Turns Aurora into Nascent Flash if Aurora's effect is on the player.","等待翻译"},
-        //#endregion
-        //#region MACHINIST
+        #endregion
+
+        #region MACHINIST
         {"(Heated) Shot Combo Feature","等待翻译"},
         {"Replace Drill and Air Anchor (Hot Shot) with one or the other (or Chain Saw) depending on which is on cooldown.","等待翻译"},
         {"Drill/Air/Chain Saw on Main Combo Feature","等待翻译"},
@@ -1410,8 +1477,9 @@ public class Translatezh_CN
         {"Spread Shot turns into Scattergun when Lv82 or higher. Both turn into Auto Crossbow when Overheated.\nBioblaster is used first whenever it is off cooldown.","等待翻译"},
         {"Wildfire Only","等待翻译"},
         {"Only use it to prepare for Wildfire use.","等待翻译"},
-        //#endregion
-        //#region MONK
+        #endregion
+
+        #region MONK
         {"Arm of the Destroyer Combo","等待翻译"},
         {"Replaces Arm Of The Destroyer with its combo chain.","等待翻译"},
         {"Dragon Kick --> Bootshine Feature","等待翻译"},
@@ -1434,8 +1502,9 @@ public class Translatezh_CN
         {"Adds Thunderclap when out of combat to the AoE Combo.","等待翻译"},
         {"Thunderclap on Main Combo","等待翻译"},
         {"Adds Thunderclap when out of combat to the Main Combo.","等待翻译"},
-        //#endregion
-        //#region NINJA
+        #endregion
+
+        #region NINJA
         {"Raiju on Main Combo","等待翻译"},
         {"Huraijin on Main Combo","等待翻译"},
         {"Bunshin on Main Combo","等待翻译"},
@@ -1451,8 +1520,9 @@ public class Translatezh_CN
         {"Allows you to have a minimum amount of Ninki saved before spending on Bunshin.","等待翻译"},
         {"Ninki Pooling Feature - Bhavacakra","等待翻译"},
         {"Allows you to have a minimum amount of Ninki saved before spending on Bhavacakra.","等待翻译"},
-        //#endregion
-        //#region PALADIN
+        #endregion
+
+        #region PALADIN
         {"Atonement drop Feature","等待翻译"},
         {"Will drop the last Atonement charge right before FoF comes back off cooldown.\nPlease note that this assumes you use both FoF and Req according to the full FoF opener and standard loop\nRequires a GCD speed of 2.40-2.45s","等待翻译"},
         {"Replaces Royal Authority combo with Holy Spirit if you don't have the Fight or Flight buff","等待翻译"},
@@ -1469,11 +1539,13 @@ public class Translatezh_CN
         {"Adds the FoF opener to the main combo.\nWill execute the full FoF opener by default, but if FoF is activated 18s pre-pull, the 18s pre-pull opener will be executed. Requires Lv68.","等待翻译"},
         {"Intervene Option","等待翻译"},
         {"Adds Intervene to the Fight or Flight opener.","等待翻译"},
-        //#endregion
-        //#region REAPER
+        #endregion
+
+        #region REAPER
         {"Positional Preference","等待翻译"},
         {"Choose positional order for all positional related features.\nSupports turning Slice/Shadow of Death into all positionals or Slice and Shadow of Death being two separate positionals.","等待翻译"},
-        //#region Single Target (Slice) Combo Section
+
+        #region Single Target (Slice) Combo Section
         {"Replace Slice with its combo chain.\nIf all sub options are toggled will turn into a full one button rotation (Simple Reaper)","等待翻译"},
         {"Adds Soul Slice to Slice Combo when Soul Gauge is 50 or less and when current target is afflicted with Death's Design.","等待翻译"},
         {"Adds Shadow of Death to Slice Combo if Death's Design is not present on current target, or is about to expire.","等待翻译"},
@@ -1499,8 +1571,9 @@ public class Translatezh_CN
         {"Adds Gibbet and Gallows to Shadow of Death as well if chosen in positional preferences.","等待翻译"},
         {"Gluttony and Blood Stalk Option","等待翻译"},
         {"Adds Gluttony and Blood Stalk to the combo when target is afflicted with Death's Design, and the skills are off cooldown and < 50 soul.","等待翻译"},
-        //#endregion
-        //#region AoE (Scythe) Combo Section
+        #endregion
+
+        #region AoE (Scythe) Combo Section
         {"Replace Spinning Scythe with its combo chain.\nIf all sub options are toggled will turn into a full one button rotation (Simple AOE)","等待翻译"},
         {"Adds Soul Scythe to AoE Combo when Soul Gauge is 50 or less and current target is afflicted with Death's Design.","等待翻译"},
         {"Adds Whorl of Death to AoE Combo if Death's Design is not present on current target, or is about to expire.","等待翻译"},
@@ -1513,16 +1586,18 @@ public class Translatezh_CN
         {"Adds Communio to the AoE combo when there is 1 Lemure Shroud left.","等待翻译"},
         {"Gluttony and Grim Swathe Option","等待翻译"},
         {"Adds Gluttony and Grim Swathe to the AoE combo when current target is afflicted with Death's Design and Soul Gauge < 50.","等待翻译"},
-        //#endregion
-        //#region Blood Stalk/Grim Swathe Combo Section
+        #endregion
+
+        #region Blood Stalk/Grim Swathe Combo Section
         {"Gluttony on Blood Stalk/Grim Swathe Feature","等待翻译"},
         {"Blood Stalk and Grim Swathe will turn into Gluttony when it is available.","等待翻译"},
         {"Gibbet and Gallows/Guillotine on Blood Stalk/Grim Swathe Feature","等待翻译"},
         {"Adds Gibbet and Gallows on Blood Stalk.\nAdds Guillotine on Grim Swathe.","等待翻译"},
         {"Enshroud Combo Option","等待翻译"},
         {"Adds Enshroud Combo (Void/Cross Reaping, Communio, and Lemure's Slice) on Blood Stalk and Grim Swathe.","等待翻译"},
-        //#endregion
-        //#region Miscellaneous
+        #endregion
+
+        #region Miscellaneous
         {"Replaces Arcane Circle with Plentiful Harvest when you have stacks of Immortal Sacrifice.","等待翻译"},
         {"Changes both Hell's Ingress and Hell's Egress turn into Regress when Threshold is active.","等待翻译"},
         {"Soulsow Reminder Feature","等待翻译"},
@@ -1540,16 +1615,20 @@ public class Translatezh_CN
         {"Turns Enshroud to Communio when available to use.","等待翻译"},
         {"True North Feature","等待翻译"},
         {"Adds True North to Slice, Shadow of Death, Enshroud, and Blood Stalk when under Gluttony and if Gibbet/Gallows options are selected to replace those skills.","等待翻译"},
-        //#endregion
-        //#endregion
-        //#region RED MAGE
-        //#region Section 1 - Openers
+        #endregion
+
+        #endregion
+
+        #region RED MAGE
+
+        #region Section 1 - Openers
         {"Balance Opener Feature [Lv.90]","等待翻译"},
         {"Replaces Jolt with the Balance opener ending with Resolution\n**Must move into melee range before melee combo**","等待翻译"},
         {"Use Opener at any Mana Option","等待翻译"},
         {"Removes 0/0 Mana reqirement to reset opener\n**All other actions must be off cooldown**","等待翻译"},
-        //#endregion
-        //#region Sections 2 to 3 - Rotation
+        #endregion
+
+        #region Sections 2 to 3 - Rotation
         {"Verthunder/Veraero Feature","等待翻译"},
         {"Replace Jolt with Verthunder and Veraero","等待翻译"},
         {"Single Target Acceleration Option","等待翻译"},
@@ -1580,8 +1659,9 @@ public class Translatezh_CN
         {"Add Swiftcast when all Acceleration charges are used or when below level 50","等待翻译"},
         {"Weave Acceleration Option","等待翻译"},
         {"Only use acceleration during weave windows","等待翻译"},
-        //#endregion
-        //# region Sections 4 to 5 - Melee
+        #endregion
+
+        # region Sections 4 to 5 - Melee
         {"Single Target Melee Combo Feature","等待翻译"},
         {"Stack Reposte Combo on specified action(s)\n**Must be in melee range or have Gap close with Corps-a-corps enabled**","等待翻译"},
         {"Use Manafication and Embolden Option","等待翻译"},
@@ -1597,31 +1677,37 @@ public class Translatezh_CN
         {"Use Acceleration to unbalance mana prior to starting melee combo","等待翻译"},
         {"Melee Finisher Feature","等待翻译"},
         {"Add Verflare/Verholy and other finishing moves to specified action(s)","等待翻译"},
-        //#endregion
-        //#region Sections 6 to 7 - QoL
+        #endregion
+
+        #region Sections 6 to 7 - QoL
         {"Use Lucid Dreaming on Jolt 1/2, Veraero 1/2/3, Verthunder 1/2/3, and Scatter/Impact when below threshold.","等待翻译"},
         {"Verraise Feature","等待翻译"},
         {"Changes Swiftcast to Verraise when under the effect of Swiftcast or Dualcast.","等待翻译"},
-        //#endregion
-        //#region Sections 8 to 9 - Miscellaneous
+        #endregion
+
+        #region Sections 8 to 9 - Miscellaneous
         {"Displacement <> Corps-a-corps Feature","等待翻译"},
         {"Replace Displacement with Corps-a-corps when out of range.","等待翻译"},
         {"Embolden to Manafication Feature","等待翻译"},
         {"Changes Embolden to Manafication when on cooldown.","等待翻译"},
         {"Magick Barrier to Addle Feature","等待翻译"},
         {"Changes Magick Barrier to Addle when on cooldown.","等待翻译"},
-        //#endregion
-        //#endregion
-        //#region SAGE
-        //#region Single Target DPS Feature
+        #endregion
+
+        #endregion
+
+        #region SAGE
+
+        #region Single Target DPS Feature
         {"Single Target DPS Feature","等待翻译"},
         {"Adds Lucid Dreaming to Dosis when MP drops below slider value","等待翻译"},
         {"Eukrasian Dosis Option","等待翻译"},
         {"Automatic DoT Uptime","等待翻译"},
         {"Toxikon Movement Option","等待翻译"},
         {"Use Toxikon when you have Addersting charges and are moving","等待翻译"},
-        //#endregion
-        //#region AoE DPS Feature
+        #endregion
+
+        #region AoE DPS Feature
         {"No Phlegma to Toxikon Option","等待翻译"},
         {"Use Toxikon when out of Phlegma charges\nTakes priority over Dyskrasia","等待翻译"},
         {"Toxikon Distance Option","等待翻译"},
@@ -1631,8 +1717,9 @@ public class Translatezh_CN
         {"Dyskrasia No-Target Option","等待翻译"},
         {"Use Dyskrasia when no target is selected","等待翻译"},
         {"Adds Lucid Dreaming to Phlegma when MP drops below slider value","等待翻译"},
-        //#endregion
-        //#region Diagnosis Simple Single Target Heal
+        #endregion
+
+        #region Diagnosis Simple Single Target Heal
         {"Diagnosis Simple Single Target Heal Feature","等待翻译"},
         {"You must target a party member (including yourself) for some features to work.","等待翻译"},
         {"Eukrasian Diagnosis Option","等待翻译"},
@@ -1645,8 +1732,9 @@ public class Translatezh_CN
         {"Adds Rhizomata when Addersgall is 0","等待翻译"},
         {"Krasis Option","等待翻译"},
         {"Druochole Option","等待翻译"},
-        //#endregion
-        //#region Sage Simple AoE Heal
+        #endregion
+
+        #region Sage Simple AoE Heal
         {"Sage Simple AoE Heal Feature","等待翻译"},
         {"Customize your AoE healing to your liking","等待翻译"},
         {"Physis Option","等待翻译"},
@@ -1655,29 +1743,35 @@ public class Translatezh_CN
         {"Panhaima Option","等待翻译"},
         {"Ixochole Option","等待翻译"},
         {"Kerachole Option","等待翻译"},
-        //#endregion
-        //#region Misc Healing
+        #endregion
+
+        #region Misc Healing
         {"Rhizomata Feature","等待翻译"},
         {"Replaces Addersgall skills with Rhizomata when empty.","等待翻译"},
         {"Druochole to Taurochole Feature","等待翻译"},
         {"Upgrades Druochole to Taurochole when Taurochole is available","等待翻译"},
         {"Zoe Buff for Pneuma Feature","等待翻译"},
         {"Places Zoe ontop of Pneuma when both actions are on cooldown","等待翻译"},
-        //#endregion
-        //#region Utility
+        #endregion
+
+        #region Utility
         {"Swiftcast Raise Feature","等待翻译"},
         {"Changes Swiftcast to Egeiro while Swiftcast is on cooldown.","等待翻译"},
         {"Soteria to Kardia Feature","等待翻译"},
-        //#endregion
-        //#endregion
-        //#region SAMURAI
-        //#region Overcap Features
+        #endregion
+
+        #endregion
+
+        #region SAMURAI
+
+        #region Overcap Features
         {"Samurai Overcap Feature","等待翻译"},
         {"Adds Shinten onto main combo when Kenki is at the selected amount or more","等待翻译"},
         {"Samurai AoE Overcap Feature","等待翻译"},
         {"Adds Kyuten onto main AoE combos when Kenki is at the selected amount or more","等待翻译"},
-        //#endregion
-        //#region Main Combo (Gekko) Features
+        #endregion
+
+        #region Main Combo (Gekko) Features
         {"Replace Gekko with its combo chain.\nIf all sub options are selected will turn into a full one button rotation (Simple Samurai)","等待翻译"},
         {"Enpi Uptime Feature","等待翻译"},
         {"Replace Main Combo with Enpi when you are out of range.","等待翻译"},
@@ -1689,35 +1783,43 @@ public class Translatezh_CN
         {"Adds the Level 90 Opener to the Main Combo.\nOpener triggered by using Meikyo Shisui before combat. If you have any Sen, Hagakure will be used to clear them.\nWill work at any levels of Kenki, requires 2 charges of Meikyo Shisui and all CDs ready. If conditions aren't met it will skip into the regular rotation. \nIf the Opener is interrupted, it will exit the opener via a Goken and a Kaeshi: Goken at the end or via the last Yukikaze. If the latter, CDs will be used on cooldown regardless of burst options.","等待翻译"},
         {"Filler Combo Feature","等待翻译"},
         {"Adds selected Filler Combos to Main Combo at the appropriate time.\nChoose Skill Speed tier with Fuka buff below.\nWill disable if you die or if you don't activate the opener.","等待翻译"},
-        //#region CDs on Main Combo
-        {"Collection of CD features on Main Combo.","等待翻译"},
-        {"Ikishoten on Main Combo","等待翻译"},
-        {"Adds Ikishoten to Gekko and Mangetsu combos when at or below 50 Kenki.\nWill dump Kenki at 10 seconds left to allow Ikishoten to be used.","等待翻译"},
-        {"Iaijutsu on Main Combo","等待翻译"},
-        {"Adds Midare: Setsugekka, Higanbana, and Kaeshi: Setsugekka when ready and when you're not moving to Main Combo.","等待翻译"},
-        //#region Ogi Namikiri on Main Combo
-        {"Ogi Namikiri on Main Combo","等待翻译"},
-        {"Ogi Namikiri and Kaeshi: Namikiri when ready and when you're not moving to Main Combo.","等待翻译"},
-        {"Ogi Namikiri Burst Feature","等待翻译"},
-        {"Saves Ogi Namikiri for even minute burst windows.\nIf you don't activate the opener or die, Ogi Namikiri will instead be used on CD.","等待翻译"},
-        //#endregion
-        {"Meikyo Shisui on Main Combo","等待翻译"},
-        {"Adds Meikyo Shisui to Main Combo when off cooldown.","等待翻译"},
-        //#region Meikyo Shisui on Main Combo
-        {"Meikyo Shisui Burst Feature","等待翻译"},
-        {"Saves Meikyo Shisui for burst windows.\nIf you don't activate the opener or die, Meikyo Shisui will instead be used on CD.","等待翻译"},
-        //#endregion
-        {"Shoha on Main Combo","等待翻译"},
-        {"Adds Shoha to Main Combo when there are three meditation stacks.","等待翻译"},
-        {"Senei on Main Combo","等待翻译"},
-        {"Adds Senei to Main Combo when off cooldown and above 25 Kenki.","等待翻译"},
-        {"Senei Burst Feature","等待翻译"},
-        {"Saves Senei for even minute burst windows.\nIf you don't activate the opener or die, Senei will instead be used on CD.","等待翻译"},
-        //#endregion
-        //#endregion
-        //#region Yukikaze/Kasha Combos
-        //#endregion
-        //#region AoE Combos
+
+            #region CDs on Main Combo
+            {"Collection of CD features on Main Combo.","等待翻译"},
+            {"Ikishoten on Main Combo","等待翻译"},
+            {"Adds Ikishoten to Gekko and Mangetsu combos when at or below 50 Kenki.\nWill dump Kenki at 10 seconds left to allow Ikishoten to be used.","等待翻译"},
+            {"Iaijutsu on Main Combo","等待翻译"},
+            {"Adds Midare: Setsugekka, Higanbana, and Kaeshi: Setsugekka when ready and when you're not moving to Main Combo.","等待翻译"},
+            
+                #region Ogi Namikiri on Main Combo
+                {"Ogi Namikiri on Main Combo","等待翻译"},
+                {"Ogi Namikiri and Kaeshi: Namikiri when ready and when you're not moving to Main Combo.","等待翻译"},
+                {"Ogi Namikiri Burst Feature","等待翻译"},
+                {"Saves Ogi Namikiri for even minute burst windows.\nIf you don't activate the opener or die, Ogi Namikiri will instead be used on CD.","等待翻译"},
+                #endregion
+
+            {"Meikyo Shisui on Main Combo","等待翻译"},
+            {"Adds Meikyo Shisui to Main Combo when off cooldown.","等待翻译"},
+
+                #region Meikyo Shisui on Main Combo
+                {"Meikyo Shisui Burst Feature","等待翻译"},
+                {"Saves Meikyo Shisui for burst windows.\nIf you don't activate the opener or die, Meikyo Shisui will instead be used on CD.","等待翻译"},
+                #endregion
+
+            {"Shoha on Main Combo","等待翻译"},
+            {"Adds Shoha to Main Combo when there are three meditation stacks.","等待翻译"},
+            {"Senei on Main Combo","等待翻译"},
+            {"Adds Senei to Main Combo when off cooldown and above 25 Kenki.","等待翻译"},
+            {"Senei Burst Feature","等待翻译"},
+            {"Saves Senei for even minute burst windows.\nIf you don't activate the opener or die, Senei will instead be used on CD.","等待翻译"},
+            #endregion
+
+        #endregion
+
+        #region Yukikaze/Kasha Combos
+        #endregion
+
+        #region AoE Combos
         {"Replace Mangetsu with its combo chain.\nIf all sub options are toggled will turn into a full one button AoE rotation.","等待翻译"},
         {"Oka to Mangetsu Combo","等待翻译"},
         {"Adds Oka combo after Mangetsu combo loop.\nWill add Oka if needed during Meikyo Shisui.","等待翻译"},
@@ -1731,28 +1833,36 @@ public class Translatezh_CN
         {"Adds Guren when it's off cooldown and you have 25 Kenki to Mangetsu combo.","等待翻译"},
         {"Oka Two Target Rotation Feature","等待翻译"},
         {"Adds the Yukikaze Combo, Mangetsu Combo, Senei, Shinten, and Shoha to Oka Combo.\nUsed for two targets only and when Lv86 and above.","等待翻译"},
-        //#endregion
-        //#region CD Features
+        #endregion
+
+        #region CD Features
         {"Replace Meikyo Shisui with Jinpu, Shifu, and Yukikaze depending on what is needed.","等待翻译"},
-        //#endregion
-        //#region Iaijutsu Features
+        #endregion
+
+        #region Iaijutsu Features
         {"Iaijutsu Features","等待翻译"},
         {"Collection of Iaijutsu Features.","等待翻译"},
         {"Iaijutsu to Tsubame-Gaeshi","等待翻译"},
         {"Replace Iaijutsu with  Tsubame-gaeshi when Sen is empty.","等待翻译"},
         {"Iaijutsu to Ogi Namikiri","等待翻译"},
         {"Replace Iaijutsu with Ogi Namikiri and Kaeshi: Namikiri when buffed with Ogi Namikiri Ready.","等待翻译"},
-        //#endregion
-        //#region Shinten Features
-        //#endregion
-        //#region Kyuten Features
-        //#endregion
-        //#region Other
+        #endregion
+
+        #region Shinten Features
+        #endregion
+
+        #region Kyuten Features
+        #endregion
+
+        #region Other
         {"Adds True North on all ST Combos if Meikyo Shisui's buff is on you.","等待翻译"},
-        //#endregion
-        //#endregion
-        //#region SCHOLAR
-        //#region DPS
+        #endregion
+
+        #endregion
+
+        #region SCHOLAR
+
+        #region DPS
         {"Replace Ruin I / Broils or Bios with options below","等待翻译"},
         {"Adds Lucid Dreaming when MP drops below slider value:","等待翻译"},
         {"Chain Stratagem Weave Option","等待翻译"},
@@ -1762,11 +1872,13 @@ public class Translatezh_CN
         {"Ruin II Moving Option","等待翻译"},
         {"Use Ruin 2 when you have to move","等待翻译"},
         {"Bio / Biolysis Option","等待翻译"},
-        //#endregion
-        //#region Healing
+        #endregion
+
+        #region Healing
         {"Fey Blessing to Seraph's Consolation Feature","等待翻译"},
-        //#endregion
-        //#region Utilities
+        #endregion
+
+        #region Utilities
         {"Aetherflow Helper Feature","等待翻译"},
         {"Change Aetherflow-using skills to Aetherflow, Recitation, or Dissipation as selected","等待翻译"},
         {"Recitation Option","等待翻译"},
@@ -1778,9 +1890,11 @@ public class Translatezh_CN
         {"Swiftcast Raise Combo Feature","等待翻译"},
         {"Changes Swiftcast to Resurrection while Swiftcast is on cooldown","等待翻译"},
         {"Change all fairy actions into Fairy Summons if you do not have a fairy summoned.","等待翻译"},
-        //#endregion
-        //#endregion
-        //#region SUMMONER
+        #endregion
+
+        #endregion
+
+        #region SUMMONER
         {"Enable Single Target Combo Features","等待翻译"},
         {"Enables features tied to Ruin, or Ruin II.\nIf all sub options are toggled will turn into a full one button rotation (Simple Summoner)\nRuin III is kept untouched for mobility.","等待翻译"},
         {"Enable AoE Combo Features","等待翻译"},
@@ -1845,8 +1959,9 @@ public class Translatezh_CN
         {"Only use Swiftcast on single target combo.","等待翻译"},
         {"Ruin 4 Painflare Option","等待翻译"},
         {"Changes Painflare to Ruin 4 when out of Aetherflow stacks, Energy Siphon is on cooldown, and Ruin 4 is up.","等待翻译"},
-        //#endregion
-        //#region WARRIOR
+        #endregion
+
+        #region WARRIOR
         {"Adds Fell Cleave to main combo when gauge is at 50 or more and adds Decimate to the AoE combo .\nWill use Inner Chaos/Chaotic Cyclone if Infuriate is used and Fell Cleave/Steel Cyclone during Inner Release.\nWill begin pooling resources when Inner Release is under 30s","等待翻译"},
         {"Infuriate AoE Feature","战嚎 AoE Feature"},
         {"Adds Infuriate to AoE Combo when gauge is below 50 and not under Inner Release.","Adds 战嚎 to AoE Combo when gauge is below 50 and not under Inner Release."},
@@ -1858,8 +1973,9 @@ public class Translatezh_CN
         {"Uses Primal Rend when in the target's target ring (1 yalm) and closer otherwise will use it when buff is less than 10 seconds.","等待翻译"},
         {"Melee Onslaught Option","等待翻译"},
         {"Uses Onslaught when under Surging Tempest and in the target ring (1 yalm).\nWill use as many stacks as selected in the above slider.","等待翻译"},
-        //#endregion
-        //#region WHITE MAGE
+        #endregion
+
+        #region WHITE MAGE
         {"CDs on Glare/Stone","等待校对 在 闪耀/石 上显示CD"},
         {"Collection of CDs and spell features on Glare/Stone.","等待校对 在闪耀/石 技能图标上面显示咏唱速度和CD"},
         {"WHM Alternative Raise Feature","白魔扩展功能"},
@@ -1890,53 +2006,66 @@ public class Translatezh_CN
         {"Adds Afflatus Rapture (AoE Heal) to Holy/Holy3 when at 3 lilies."," 在 3 朵百合花时在aoe循环中插入狂喜之心 "},
         {"Adds Afflatus Misery to Holy/Holy3","在aoe中加入苦难之心 "},
         {"Adds Afflatus Misery to Holy/Holy3 when Blood Lily is in full bloom.","当血百合盛开时用苦难之心替代aoe "},
-        //#endregion
-        //#region DOH
-        //#endregion
-        //#region DOL
-        //#endregion
-        //#endregion
-        //#region PvP Combos
-        //#region ASTROLOGIAN
-        //#endregion
-        //#region MACHINIST
+        #endregion
+
+        #region DOH
+        #endregion
+
+        #region DOL
+        #endregion
+
+        #endregion
+
+        #region PvP Combos
+
+        #region ASTROLOGIAN
+        #endregion
+
+        #region MACHINIST
         {"Burst Mode","等待翻译"},
         {"Turns Blast Charge into an all-in-one damage button.","等待翻译"},
         {"Alternate Drill Mode","等待翻译"},
         {"Saves drill for use after wildfire.","等待翻译"},
         {"Alternate Analysis Mode","等待翻译"},
         {"Uses analysis with Air Anchor instead of Chain Saw.","等待翻译"},
-        //#endregion
-        //#region BARD
+        #endregion
+
+        #region BARD
         {"Turns Powerful Shot into an all-in-one damage button.","等待翻译"},
-        //#endregion
-        //#region RED MAGE
+        #endregion
+
+        #region RED MAGE
         {"Turns Verstone/Verfire into an all-in-one damage button.","等待翻译"},
-        //#endregion
-        //#region WARRIOR
+        #endregion
+
+        #region WARRIOR
         {"Turns Heavy Swing into an all-in-one damage button.","等待翻译"},
         {"Bloodwhetting Option","等待翻译"},
         {"Allows usage of bloodwhetting anytime, not just inbetween GCDs.","等待翻译"},
         {"Blota Option","等待翻译"},
         {"Removes blota from main combo if Primal Rend has 5 seconds or less on its cooldown.","等待翻译"},
-        //#endregion
-        //#region NINJA
+        #endregion
+
+        #region NINJA
         {"Turns Aeolian Edge Combo into an all-in-one damage button.","等待翻译"},
         {"AoE Burst Mode","等待翻译"},
         {"Turns Fuma Shuriken into an all-in-one AoE damage button.","等待翻译"},
-        //#endregion
-        //#region SAGE
+        #endregion
+
+        #region SAGE
         {"Turns Dosis III into an all-in-one damage button.","等待翻译"},
-        //#endregion
-        //#region DANCER
+        #endregion
+
+        #region DANCER
         {"Turns Fountain Combo into an all-in-one damage button.","等待翻译"},
         {"Honing Dance Option","等待翻译"},
         {"Adds Honing Dance to the main combo when in melee range (for pack pushing, respects global offset).\nThis option prevents early use of Honing Ovation!\nKeep Honing Dance bound to another key if you want to end early.","等待翻译"},
         {"Curing Waltz Option","等待翻译"},
         {"Adds Curing Waltz to the main combo when available, and your HP is at or below the set percentage.","等待翻译"},
-        //#endregion
-        //#region SAMURAI
-        //#region Burst Mode
+        #endregion
+
+        #region SAMURAI
+        #region Burst Mode
         {"Adds Meikyo Shisui, Midare:Setsugekka, Ogi Namikiri, Kaeshi: Namikiri and Soten to Meikyo Shisui.\nWill only cast Midare and Ogi Namikiri when you're not moving.\nWill not use if target is guarding.","等待翻译"},
         {"Add Chiten","等待翻译"},
         {"Adds Chiten to the Burst Mode when in combat and HP is below 95%.","等待翻译"},
@@ -1944,24 +2073,26 @@ public class Translatezh_CN
         {"Adds Mineuchi to the Burst Mode.","等待翻译"},
         {"Burst Mode on Kasha Combo","等待翻译"},
         {"Adds Burst Mode to Kasha Combo instead.","等待翻译"},
-        //#endregion
-        //#region Kasha Features
+        #endregion
+        #region Kasha Features
         {"PvP Features for Kasha Combo","等待翻译"},
         {"Collection of Features for Kasha Combo.","等待翻译"},
         {"Soten Gap Closer Option","等待翻译"},
         {"Adds Soten when outside melee range to the Kasha Combo.","等待翻译"},
         {"AoE Melee Protection","等待翻译"},
         {"Makes the AOE combos unusable if not in melee range of target.","等待翻译"},
-        //#endregion
-        //#endregion
-        //#region BLACK MAGE
+        #endregion
+        #endregion
+
+        #region BLACK MAGE
         {"Turns Fire and Blizzard into all-in-one damage buttons.","等待翻译"},
         {"Add Night Wing","等待翻译"},
         {"Adds Night Wing to the Burst Mode","等待翻译"},
         {"Add Aetherial Manipulation","等待翻译"},
         {"Uses Aetherial Manipulation to gap close if Burst is off cooldown.","等待翻译"},
-        //#endregion
-        //#region REAPER
+        #endregion
+
+        #region REAPER
         {"Turns Slice Combo into an all-in-one damage button.\nAdds Soul Slice to the main combo.","等待翻译"},
         {"Grim Swathe Option","等待翻译"},
         {"Weaves Grim Swathe onto the main combo when available.","等待翻译"},
@@ -1973,40 +2104,51 @@ public class Translatezh_CN
         {"Pools stacks of Immortal Sacrifice before using Plentiful Harvest.\nAlso holds Plentiful Harvest if Death Warrant is on cooldown.\nSet the value to 3 or below to use Plentiful as soon as it's suitable.","等待翻译"},
         {"Enshrouded Burst Option","等待翻译"},
         {"Puts Lemure's Slice on the main combo during Enshrouded Burst Phase.\nContains burst options.","等待翻译"},
-        //#region RPR Enshrouded Option
+        #region RPR Enshrouded Option
         {"Enshrouded Death Warrant Option","等待翻译"},
         {"Adds Death Warrant onto the main combo during the Enshroud burst when available.","等待翻译"},
         {"Adds Communio onto the main combo when you have 1 stack of Enshroud remaining.\nWill not trigger if you are moving.","等待翻译"},
-        //#endregion
+        #endregion
         {"Ranged Harvest Moon Option","等待翻译"},
         {"Puts Harvest Moon onto the main combo when you're out of melee range, the GCD is not rolling and it is available for use.","等待翻译"},
         {"Adds Arcane Circle to the main combo when under a set HP perecentage.","等待翻译"},
-        //#endregion
-        //#region MONK
+        #endregion
+
+        #region MONK
         {"Turns Phantom Rush Combo into all-in-one damage button.","等待翻译"},
         {"Add Thunderclap","等待翻译"},
         {"Adds Thunderclap to jump to Enemy Target when not buffed with Wind Resonance.","等待翻译"},
         {"Add Riddle of Earth","等待翻译"},
         {"Adds Riddle of Earth and Earth's Reply to the Burst Mode when in combat.","等待翻译"},
-        //#endregion
-        //#region DARK KNIGHT
-        //#endregion
-        //#region DRAGOON
-        //#endregion
-        //#region GUNBREAKER
-        //#endregion
-        //#region PALADIN
-        //#endregion
-        //#region SCHOLAR
-        //#endregion
-        //#region SUMMONER
-        //#endregion
-        //#region WARRIOR
-        //#endregion
-        //#region WHITE MAGE
-        //#endregion
-        //#endregion
-        //#region PvPGlobals // Pending insertion into above region
+        #endregion
+
+        #region DARK KNIGHT
+        #endregion
+
+        #region DRAGOON
+        #endregion
+
+        #region GUNBREAKER
+        #endregion
+
+        #region PALADIN
+        #endregion
+
+        #region SCHOLAR
+        #endregion
+
+        #region SUMMONER
+        #endregion
+
+        #region WARRIOR
+        #endregion
+
+        #region WHITE MAGE
+        #endregion
+
+        #endregion
+
+        #region PvPGlobals // Pending insertion into above region
         {"Emergency Heals","等待翻译"},
         {"Uses Recuperate when your HP is under a certain threshold and you have the MP.","等待翻译"},
         {"Emergency Guard","等待翻译"},
@@ -2015,8 +2157,8 @@ public class Translatezh_CN
         {"Uses Purify when afflicted with any selected debuff.","等待翻译"},
         {"Prevent Mash Cancelling","等待翻译"},
         {"Stops you cancelling your guard if you're mashing buttons","等待翻译"},
-        //#endregio
-        
+        #endregion
+
 
         #endregion
     };
