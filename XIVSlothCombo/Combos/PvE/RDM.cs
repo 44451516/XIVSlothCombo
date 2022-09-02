@@ -505,6 +505,7 @@ namespace XIVSlothCombo.Combos.PvE
 
                     if (actionID is Jolt or Jolt2 or Scatter or Impact or Fleche or Riposte or Moulinet)
                     {
+                        placeOGCD = actionID;
                         if (IsEnabled(CustomComboPreset.RDM_oGCD_Engagement) 
                             && (GetCooldown(Engagement).RemainingCharges > engagementPool
                                 || (GetCooldown(Engagement).RemainingCharges == 1 && GetCooldown(Engagement).CooldownRemaining < 3))
@@ -526,28 +527,10 @@ namespace XIVSlothCombo.Combos.PvE
                             && IsOffCooldown(Fleche) && level >= Levels.Fleche) 
                             placeOGCD = Fleche;
 
-                        if ((actionID is Jolt or Jolt2) && (radioButtonOGCD is 2 or 4) && CanSpellWeave(actionID) && placeOGCD != 0) return placeOGCD;
-                        if ((actionID is Scatter or Impact) && (radioButtonOGCD is 3 or 4) && CanSpellWeave(actionID) && placeOGCD != 0) return placeOGCD;
-                        if ((actionID is Riposte or Moulinet) && (radioButtonOGCD is 5 or 6) && CanSpellWeave(actionID) && placeOGCD != 0) return placeOGCD;
-                        if (actionID is Fleche && radioButtonOGCD is 1 or 6 && placeOGCD == 0) // All actions are on cooldown, determine the lowest CD to display on Fleche.
-                        {
-                            placeOGCD = Fleche;
-                            if (IsEnabled(CustomComboPreset.RDM_oGCD_ContraSixte) 
-                                && level >= Levels.ContreSixte
-                                && GetCooldown(placeOGCD).CooldownRemaining > GetCooldown(ContreSixte).CooldownRemaining) 
-                                placeOGCD = ContreSixte;
-                            if (IsEnabled(CustomComboPreset.RDM_oGCD_CorpsACorps) 
-                                && level >= Levels.Corpsacorps
-                                && GetCooldown(Corpsacorps).RemainingCharges == 0
-                                && GetCooldown(placeOGCD).CooldownRemaining > GetCooldown(Corpsacorps).CooldownRemaining) 
-                                placeOGCD = Corpsacorps;
-                            if (IsEnabled(CustomComboPreset.RDM_oGCD_Engagement) 
-                                && level >= Levels.Engagement
-                                && GetCooldown(Engagement).RemainingCharges == 0
-                                && GetCooldown(placeOGCD).CooldownRemaining > GetCooldown(Engagement).CooldownRemaining) 
-                                placeOGCD = Engagement;
-                        }
-                        if (actionID is Fleche && radioButtonOGCD == 1) return placeOGCD;
+                        if ((actionID is Jolt or Jolt2) && (radioButtonOGCD is 2 or 4) && CanSpellWeave(actionID)) return placeOGCD;
+                        if ((actionID is Scatter or Impact) && (radioButtonOGCD is 3 or 4) && CanSpellWeave(actionID)) return placeOGCD;
+                        if ((actionID is Riposte or Moulinet) && (radioButtonOGCD is 5 or 6) && CanSpellWeave(actionID)) return placeOGCD;
+                        if (actionID is Fleche && radioButtonOGCD is 1 or 6) return placeOGCD;
                     }
                 }
                 //END_RDM_OGCD

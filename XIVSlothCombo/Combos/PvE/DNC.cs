@@ -382,6 +382,7 @@ namespace XIVSlothCombo.Combos.PvE
             }
         }
 
+
         internal class DNC_ST_SimpleMode : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.DNC_ST_SimpleMode;
@@ -396,6 +397,7 @@ namespace XIVSlothCombo.Combos.PvE
                     bool flow = HasEffect(Buffs.SilkenFlow) || HasEffect(Buffs.FlourishingFlow);
                     bool symmetry = HasEffect(Buffs.SilkenSymmetry) || HasEffect(Buffs.FlourishingSymmetry);
                     float techBurstTimer = GetBuffRemainingTime(Buffs.TechnicalFinish);
+                    float techCooldownRemainingTime = GetCooldownRemainingTime(TechnicalStep);
                     bool techBurst = HasEffect(Buffs.TechnicalFinish);
                     bool improvisationReady = LevelChecked(Improvisation) && IsOffCooldown(Improvisation);
                     bool standardStepReady = LevelChecked(StandardStep) && IsOffCooldown(StandardStep);
@@ -426,10 +428,10 @@ namespace XIVSlothCombo.Combos.PvE
                         return All.HeadGraze;
 
                     // Simple ST Standard (activates dance with no target, or when target is over HP% threshold)
-                    if ((!HasTarget() || GetTargetHPPercent() > standardStepBurstThreshold) &&
-                        IsEnabled(CustomComboPreset.DNC_ST_Simple_SS) && standardStepReady &&
-                        ((!HasEffect(Buffs.TechnicalStep) && !techBurst) || techBurstTimer > 5))
-                        return StandardStep;
+                    //if ((!HasTarget() || GetTargetHPPercent() > standardStepBurstThreshold) &&
+                    //    IsEnabled(CustomComboPreset.DNC_ST_Simple_SS) && standardStepReady &&
+                    //    ((!HasEffect(Buffs.TechnicalStep) && !techBurst) || techBurstTimer > 5))
+                    //    return StandardStep;
 
                     // Simple ST Tech (activates dance with no target, or when target is over HP% threshold)
                     if ((!HasTarget() || GetTargetHPPercent() > technicalStepBurstThreshold) &&
@@ -498,8 +500,126 @@ namespace XIVSlothCombo.Combos.PvE
                     if (HasEffect(Buffs.FlourishingStarfall))
                         return StarfallDance;
 
+                    // Simple ST Standard (activates dance with no target, or when target is over HP% threshold)
+                    // limited to 3 times in 120 seconds
+                    bool burstProtected = (LevelChecked(TechnicalStep) && IsEnabled(CustomComboPreset.DNC_ST_Simple_TS))
+                        ? ((techCooldownRemainingTime < 90 && techCooldownRemainingTime > 5) ||
+                        (techBurstTimer > 5 && !canWeave && !flow && !symmetry && comboTime <= 0)) 
+                        : true;
+                    bool flourishProtected = (LevelChecked(Flourish) && IsEnabled(CustomComboPreset.DNC_ST_Simple_Flourish))
+                        ? (GetCooldownRemainingTime(Flourish) > 4) 
+                        : true;
+                    if (standardStepReady && 
+                        (!HasTarget() || GetTargetHPPercent() > standardStepBurstThreshold) &&
+                        IsEnabled(CustomComboPreset.DNC_ST_Simple_SS) && burstProtected && flourishProtected)
+                        return StandardStep;
+
                     if (LevelChecked(Fountainfall) && flow)
                         return Fountainfall;
+                    if (LevelChecked(ReverseCascade) && symmetry)
+                        return ReverseCascade;
+                    if (LevelChecked(Fountain) && lastComboMove is Cascade && comboTime > 0)
+                        return Fountain;
+                }
+
+                return actionID;
+            }
+        }
+
+        internal class DNC_DT_SimpleMode : CustomCombo
+        {
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.DNC_DT_SimpleMode;
+
+            protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
+            {
+                if (actionID is Cascade)
+                {
+                    #region Types
+                    DNCGauge? gauge = GetJobGauge<DNCGauge>();
+                    bool canWeave = CanWeave(actionID);
+                    bool flow = HasEffect(Buffs.SilkenFlow) || HasEffect(Buffs.FlourishingFlow);
+                    bool symmetry = HasEffect(Buffs.SilkenSymmetry) || HasEffect(Buffs.FlourishingSymmetry);
+                    float techBurstTimer = GetBuffRemainingTime(Buffs.TechnicalFinish);
+                    float techCooldownRemainingTime = GetCooldownRemainingTime(TechnicalStep);
+                    bool techBurst = HasEffect(Buffs.TechnicalFinish);
+                    bool standardStepReady = LevelChecked(StandardStep) && IsOffCooldown(StandardStep);
+                    bool technicalStepReady = LevelChecked(TechnicalStep) && IsOffCooldown(TechnicalStep);
+                    #endregion
+
+                    // Simple DT Standard Steps & Fill Feature
+                    if (HasEffect(Buffs.StandardStep) && IsEnabled(CustomComboPreset.DNC_DT_Simple_SS))
+                        return gauge.CompletedSteps < 2
+                            ? gauge.NextStep
+                            : StandardFinish2;
+
+                    // Simple DT Tech Steps & Fill Feature
+                    if (HasEffect(Buffs.TechnicalStep) && IsEnabled(CustomComboPreset.DNC_DT_Simple_TS))
+                        return gauge.CompletedSteps < 4
+                            ? gauge.NextStep
+                            : TechnicalFinish4;
+
+                    // Simple DT Tech (activates dance with no target, or when target is over HP% threshold)
+                    if (IsEnabled(CustomComboPreset.DNC_DT_Simple_TS) && technicalStepReady && !HasEffect(Buffs.StandardStep))
+                        return TechnicalStep;
+
+                    // Devilment & Flourish
+                    if (canWeave)
+                    {
+                        bool flourishReady = LevelChecked(Flourish) && IsOffCooldown(Flourish) && !HasEffect(Buffs.ThreeFoldFanDance) && !HasEffect(Buffs.FourFoldFanDance) && !HasEffect(Buffs.FlourishingSymmetry) && !HasEffect(Buffs.FlourishingFlow);
+                        bool devilmentReady = LevelChecked(Devilment) && IsOffCooldown(Devilment);
+
+                        if (devilmentReady && (techBurst || !LevelChecked(TechnicalStep)))
+                            return Devilment;
+                        if (IsEnabled(CustomComboPreset.DNC_DT_Simple_Flourish) && flourishReady)
+                            return Flourish;
+                    }
+
+                    if (canWeave)
+                    {
+                        // Feathers
+                        if (LevelChecked(FanDance2))
+                        {
+                            int minFeathers = LevelChecked(TechnicalStep)
+                                ? (GetCooldownRemainingTime(TechnicalStep) < 5f?4:3)
+                                : 0;
+
+                            if (HasEffect(Buffs.ThreeFoldFanDance))
+                                return FanDance3;
+                            if (gauge.Feathers > minFeathers ||
+                                (HasEffect(Buffs.TechnicalFinish) && gauge.Feathers > 0))
+                                return FanDance2;
+                        }
+
+                        if (HasEffect(Buffs.FourFoldFanDance))
+                            return FanDance4;
+                    }
+
+                    if (LevelChecked(SaberDance) && (gauge.Esprit >= 85 || (techBurst && gauge.Esprit > 50)))
+                        return SaberDance;
+
+                    if (LevelChecked(Fountain) && lastComboMove is Cascade && comboTime is < 2 and > 0)
+                        return Fountain;
+
+                    if (HasEffect(Buffs.FlourishingFinish))
+                        return Tillana;
+                    if (HasEffect(Buffs.FlourishingStarfall))
+                        return StarfallDance;
+
+                    // Simple DT Standard (activates dance with no target, or when target is over HP% threshold)
+                    // limited to 3 times in 120 seconds
+                    bool burstProtected = (LevelChecked(TechnicalStep) && IsEnabled(CustomComboPreset.DNC_DT_Simple_TS))
+                        ? ((techCooldownRemainingTime < 90 && techCooldownRemainingTime > 5) ||
+                        (techBurstTimer > 5 && !canWeave && !flow && !symmetry && comboTime <= 0)) 
+                        : true;
+                    bool flourishProtected = (LevelChecked(Flourish) && IsEnabled(CustomComboPreset.DNC_DT_Simple_Flourish))
+                        ? (GetCooldownRemainingTime(Flourish) > 4) 
+                        : true;
+                    if (standardStepReady && 
+                        IsEnabled(CustomComboPreset.DNC_DT_Simple_SS) && burstProtected && flourishProtected)
+                        return StandardStep;
+
+                    if (LevelChecked(Bloodshower) && flow)
+                        return Bloodshower;
                     if (LevelChecked(ReverseCascade) && symmetry)
                         return ReverseCascade;
                     if (LevelChecked(Fountain) && lastComboMove is Cascade && comboTime > 0)
