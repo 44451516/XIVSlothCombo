@@ -2,7 +2,7 @@
   "Author": "Aki, k-kz, ele-starshade, damolitionn, Taurenkey, Augporto, grimgal",
   "Name": "XIVSlothCombo",
   "InternalName": "XIVSlothCombo",
-  "AssemblyVersion": "3.0.16.17",
+  "AssemblyVersion": "3.0.16.18",
   "Description": "Condenses combos and mutually exclusive abilities onto a single button - and then some.",
   "ApplicableVersion": "any",
   "RepoUrl": "https://github.com/Nik-Potokar/XIVSlothCombo",
