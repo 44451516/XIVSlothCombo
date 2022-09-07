@@ -1143,7 +1143,7 @@ namespace XIVSlothCombo.Combos
         GNB_ST_Gnashing = 7001,
 
         [ParentCombo(GNB_ST_MainCombo)]
-        [CustomComboInfo("Cooldowns on Main Combo", "Adds various cooldowns to the main combo when under No Mercy or when No Mercy is on cooldown", GNB.JobID, 0, "", "")]
+        [CustomComboInfo("GNB Cooldowns on Main Combo", "Adds various cooldowns to the main combo when under No Mercy or when No Mercy is on cooldown", GNB.JobID, 0, "", "")]
         GNB_ST_MainCombo_CooldownsGroup = 7002,
 
         [ParentCombo(GNB_ST_MainCombo_CooldownsGroup)]
