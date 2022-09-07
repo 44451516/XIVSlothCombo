@@ -52,7 +52,7 @@ public class Translatezh_CN
         { "Melee DPS: Double Feint Protection", "近战进攻：牵制防顶" },
         { "Prevents the use of Feint when target already has the effect by replacing it with Fire.", "当目标已被赋予牵制效果时，将牵制替换为火炎" },
         { "Melee DPS: True North Protection", "近战：真北保护" },
-        { "Prevents the use of True North when its buff is already active by replacing it with Fire.", "等待翻译" },
+        { "Prevents the use of True North when its buff is already active by replacing it with Fire.", "当自身拥有真北时，将镇北替换为火炎" },
 
         #endregion
 
@@ -62,8 +62,8 @@ public class Translatezh_CN
         { "Features and options involving shared role actions for Physical Ranged DPS.\nCollapsing this category does NOT disable the features inside.", "物理远程职业功能的通用功能和选项\n取消勾选这个选项不会禁用里面的功能。" },
         { "Physical Ranged DPS: Double Mitigation Protection", "物理远程进攻：减伤防顶" },
         { "Prevents the use of Tactician/Troubadour/Shield Samba when target already has one of those three effects by replacing it with Stardiver.", "当目标已被赋予行吟/策动/防守之桑巴其中之一效果时，将自己的对应技能变为坠星冲。" },
-        { "Physical Ranged DPS: Ranged Interrupt Feature", "等待翻译" },
-        { "Replaces Foot Graze with Head Graze when target can be interrupted.", "等待翻译" },
+        { "Physical Ranged DPS: Ranged Interrupt Feature", "物理远程进攻：打断选项" },
+        { "Replaces Foot Graze with Head Graze when target can be interrupted.", "当目标可被打断时，使用伤头代替伤足" },
 
         #endregion
 
@@ -175,7 +175,7 @@ public class Translatezh_CN
         { "Adds Thunder 1/3 when the debuff isn't present or expiring to Simple BLM.", "当目标身上没有dot存在或dot即将结束时，自动插入闪雷/暴雷." },
         { "Simple BLM Feature", "标准循环" },
         { "Replaces Scathe with a full one button rotation.", "将崩溃整合为一键单体标准循环。" },
-        { "Cooldowns Option", "等待翻译" },
+        { "Cooldowns Option", "冷却选项" },
         { "Adds Manafont, Sharpcast, Amplifier onto the Simple BLM feature.", "加入魔泉, 激情咏唱至一键循环." },
         { "Ley Lines Option", "黑魔纹选项" },
         { "Adds Ley Lines onto the Simple BLM feature.", "加入黑魔纹至一键循环." },
@@ -213,37 +213,37 @@ public class Translatezh_CN
         #region BLUE MAGE
 
         { "Buffed Song of Torment", "苦闷之歌buff强化" },
-        { "Turns Song of Torment into Bristle so Song of Torment is buffed.", "等待翻译" },
+        { "Turns Song of Torment into Bristle so Song of Torment is buffed.", "将苦闷之歌用怒发冲冠代替，使苦闷之歌处于怒发冲冠的buff下" },
         { "Moon Flute Opener", "月之笛起手连击" },
-        { "Puts the Full Moon Flute Opener on Moon Flute or Whistle.", "等待翻译" },
-        { "Final Sting Combo Feature", "等待翻译" },
-        { "Turns Final Sting into the buff combo of: Moon Flute, Tingle, Whistle, Final Sting. Will use any primals off cooldown before casting Final Sting.", "等待翻译" },
-        { "Off-cooldown Primal Additions", "等待翻译" },
-        { "Adds any Primals that are off cooldown to the Final Sting Combo Feature.", "等待翻译" },
+        { "Puts the Full Moon Flute Opener on Moon Flute or Whistle.", "月之笛起手连击放置于月之笛或口笛上" },
+        { "Final Sting Combo Feature", "终极针连击" },
+        { "Turns Final Sting into the buff combo of: Moon Flute, Tingle, Whistle, Final Sting. Will use any primals off cooldown before casting Final Sting.", "将最终极针变成月之笛、哔哩哔哩、口笛、最终极针的BUFF组合。在施放终极极针之前，将使用任何冷却完毕的蛮神魔法。" },
+        { "Off-cooldown Primal Additions", "蛮神技能冷却选项" },
+        { "Adds any Primals that are off cooldown to the Final Sting Combo Feature.", "将任何已经冷却完毕的蛮神技能加入终极针连击中" },
         { "Ram's Voice into Ultravibration", "寒冰咆哮-超振动" },
-        { "Turns Ultravibration into Ram's Voice if Deep Freeze isn't on the target. Will swiftcast Ultravibration if available.", "等待翻译" },
+        { "Turns Ultravibration into Ram's Voice if Deep Freeze isn't on the target. Will swiftcast Ultravibration if available.", "如果目标未被冰冻，则将超震动更改为寒冰咆哮。如果目标已被冰冻，则会即刻咏唱超震动。" },
         { "Tank Debuff Feature", "坦克Debuff特性" },
-        { "Puts Devour, Off-Guard, Lucid Dreaming, and Bad Breath into one button when under Tank Mimicry.", "等待翻译" },
+        { "Puts Devour, Off-Guard, Lucid Dreaming, and Bad Breath into one button when under Tank Mimicry.", "在【以太复制：防护】下，将捕食、破防、醒梦、臭气合并为一个按钮。" },
         { "Addle/Magic Hammer Debuff Feature", "昏乱/魔法锤Debuff特性" },
-        { "Turns Magic Hammer into Addle when off CD.", "等待翻译" },
+        { "Turns Magic Hammer into Addle when off CD.", "当冷却完毕时，用魔法锤代替昏乱" },
         { "Primal Feature", "蛮神技特性" },
-        { "Turns Feather Rain into any Primals that are off CD. \nWill cause primals to desync from Moon Flute burst phases if used on CD.", "等待翻译" },
+        { "Turns Feather Rain into any Primals that are off CD. \nWill cause primals to desync from Moon Flute burst phases if used on CD.", "在冷却结束后，将所有蛮神技能整合至飞翎羽。\n如果在冷却未结束的时候使用，将导致月之笛爆发不完整。" },
         { "Knight's Tour Feature", "骑士之旅特性" },
-        { "Turns Black Knight's Tour or White Knight's Tour into its counterpart when the enemy is under the effect of the spell's debuff.", "等待翻译" },
+        { "Turns Black Knight's Tour or White Knight's Tour into its counterpart when the enemy is under the effect of the spell's debuff.", "在敌人处于“止步”或“减速”状态下时，自动将在黑/白骑士之旅间切换。" },
         { "Peripheral Synthesis into Mustard Bomb", "生成外设-芥末爆弹" },
-        { "Turns Peripheral Synthesis into Mustard Bomb when target is under the effect of Lightheaded.", "等待翻译" },
+        { "Turns Peripheral Synthesis into Mustard Bomb when target is under the effect of Lightheaded.", "当目标受到头晕的影响时，将生成外设变为芥末爆弹。" },
         { "Solo Mode", "单挑模式" },
         { "Uses Basic Instinct if you're in an instance and on your own.", "如果你在单挑副本，使用斗争本能。" },
         { "Hydro Pull Setup", "水力吸引设置" },
         { "Uses Hydro Pull before using Ram's Voice.", "在使用寒冰咆哮之前先用水力吸引。" },
-        { "J Kick Option", "等待翻译" },
-        { "Adds J Kick to the Primal Feature.", "等待翻译" },
-        { "Perpetual Ray into Sharpened Knife Feature", "等待翻译" },
-        { "Turns Perpetual Ray into Sharpened Knife when target is stunned and in melee range.", "等待翻译" },
-        { "Moon Flute Burst Pooling Option", "等待翻译" },
-        { "Holds spells if Moon Flute burst is about to occur and spells are off cooldown.", "等待翻译" },
-        { "Sonic Boom Melee Feature", "等待翻译" },
-        { "Turns Sonic Boom into Sharpened Knife when in melee range.", "等待翻译" },
+        { "J Kick Option", "正义飞踢选项" },
+        { "Adds J Kick to the Primal Feature.", "将正义飞踢加入蛮神技能选项" },
+        { "Perpetual Ray into Sharpened Knife Feature", "永恒射线-锋利菜刀" },
+        { "Turns Perpetual Ray into Sharpened Knife when target is stunned and in melee range.", "当目标是眩晕且在近战范围内时，将永恒射线转为锋利菜刀。" },
+        { "Moon Flute Burst Pooling Option", "月之笛爆发选项" },
+        { "Holds spells if Moon Flute burst is about to occur and spells are off cooldown.", "如果技能已经冷却完毕而月之笛即将冷却结束，则保留冷却完毕的技能至月之笛爆发期使用。" },
+        { "Sonic Boom Melee Feature", "音爆选项" },
+        { "Turns Sonic Boom into Sharpened Knife when in melee range.", "在近战范围内，使用锋利菜刀替代音爆。" },
 
         #endregion
 
@@ -1725,7 +1725,7 @@ public class Translatezh_CN
         { "Soten Gap Closer Option", "使用必杀剑·早天拉近距离" },
         { "Adds Soten when outside melee range to the Kasha Combo.", "花车连击时目标在近战范围外时使用必杀剑·早天" },
         { "AoE Melee Protection", "AOE范围近战保护" },
-        { "Makes the AoE combos unusable if not in melee range of target.", "等待翻译" },
+        { "Makes the AoE combos unusable if not in melee range of target.", "在超出近战范围时，将AOE连击变成不可用状态" },
 
         #endregion
 
