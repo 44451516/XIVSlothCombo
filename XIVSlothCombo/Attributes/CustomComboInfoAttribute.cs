@@ -37,7 +37,7 @@ namespace XIVSlothCombo.Attributes
 
                     if (db.ContainsKey(原始fancyName))
                     {
-                        if (!db[原始fancyName].Contains(saveWord))
+                        if (db[原始fancyName] != saveWord)
                         {
                             fancyName = db[原始fancyName];
                             增加搜索 = false;
@@ -48,31 +48,34 @@ namespace XIVSlothCombo.Attributes
                     if (fancyName技能翻译)
                     {
                         ProcessingActionName(原始fancyName, dbActionName, out fancyName);
-                        if(fancyName != 原始fancyName)
+                        if (fancyName != 原始fancyName)
                         {
                             db[原始fancyName] = fancyName;
                             增加搜索 = false;
                         }
                     }
 
+                    
 
                     if (db.ContainsKey(原始description))
                     {
-                        if (!db[原始description].Contains(saveWord))
+                        if (db[原始description]!= saveWord)
                         {
                             description = db[原始description];
                             description技能翻译 = false;
+                            增加搜索 = false;
                         }
                     }
-                    
+
                     if (description技能翻译)
                     {
                         ProcessingActionName(原始description, dbActionName, out description);
 
-                        if (description!= 原始description)
+                        if (description != 原始description)
                         {
                             db[原始description] = description;
                             增加搜索 = false;
+                            
                         }
                     }
 
@@ -120,7 +123,7 @@ namespace XIVSlothCombo.Attributes
                     description = 原始description;
                 }
             }
-            
+
 
             FancyName = fancyName;
             Description = description;
@@ -143,6 +146,7 @@ namespace XIVSlothCombo.Attributes
                         split_sentence[i] = dbActionName[split_sentence[i]];
                     }
                 }
+
                 if (i < split_sentence.Length - 2)
                 {
                     var new_word = split_sentence[i] + " " + split_sentence[i + 1] + " " + split_sentence[i + 2];
@@ -152,6 +156,7 @@ namespace XIVSlothCombo.Attributes
                         continue;
                     }
                 }
+
                 if (i < split_sentence.Length - 1)
                 {
                     var new_word = split_sentence[i] + " " + split_sentence[i + 1];
@@ -161,10 +166,10 @@ namespace XIVSlothCombo.Attributes
                         continue;
                     }
                 }
+
                 if (dbActionName.ContainsKey(split_sentence[i]))
                 {
                     output = output.Replace(split_sentence[i], dbActionName[split_sentence[i]]);
-
                 }
             }
         }
