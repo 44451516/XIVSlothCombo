@@ -1271,30 +1271,30 @@ namespace XIVSlothCombo.Window.Functions
                 UserConfig.DrawSliderInt(0, 15, NIN.Config.Advanced_Trick_Cooldown, "Set the amount of time remaining on Trick Attack cooldown to start saving cooldowns.");
 
             if (preset == CustomComboPreset.NIN_ST_AdvancedMode_SecondWind)
-                UserConfig.DrawSliderInt(0, 100, NIN.Config.SecondWindThresholdST, "Set a HP% threshold for when Second Wind will be used.");
+                UserConfig.DrawSliderInt(0, 100, NIN.Config.SecondWindThresholdST, "设置使用内丹时的剩余HP百分比.");
             
             if (preset == CustomComboPreset.NIN_ST_AdvancedMode_ShadeShift)
-                UserConfig.DrawSliderInt(0, 100, NIN.Config.ShadeShiftThresholdST, "Set a HP% threshold for when Shade Shift will be used.");
+                UserConfig.DrawSliderInt(0, 100, NIN.Config.ShadeShiftThresholdST, "设置使用残影时的剩余HP百分比.");
             
             if (preset == CustomComboPreset.NIN_ST_AdvancedMode_Bloodbath)            
-                UserConfig.DrawSliderInt(0, 100, NIN.Config.BloodbathThresholdST, "Set a HP% threshold for when Bloodbath will be used.");
+                UserConfig.DrawSliderInt(0, 100, NIN.Config.BloodbathThresholdST, "设置使用浴血时的剩余HP百分比.");
             
             if (preset == CustomComboPreset.NIN_AoE_AdvancedMode_SecondWind)
-                UserConfig.DrawSliderInt(0, 100, NIN.Config.SecondWindThresholdAoE, "Set a HP% threshold for when Second Wind will be used.");
+                UserConfig.DrawSliderInt(0, 100, NIN.Config.SecondWindThresholdAoE, "设置使用内丹时的剩余HP百分比.");
             
             if (preset == CustomComboPreset.NIN_AoE_AdvancedMode_ShadeShift)
-                UserConfig.DrawSliderInt(0, 100, NIN.Config.ShadeShiftThresholdAoE, "Set a HP% threshold for when Shade Shift will be used.");
+                UserConfig.DrawSliderInt(0, 100, NIN.Config.ShadeShiftThresholdAoE, "设置使用残影时的剩余HP百分比.");
             
             if (preset == CustomComboPreset.NIN_AoE_AdvancedMode_Bloodbath)
-                UserConfig.DrawSliderInt(0, 100, NIN.Config.BloodbathThresholdAoE, "Set a HP% threshold for when Bloodbath will be used.");
+                UserConfig.DrawSliderInt(0, 100, NIN.Config.BloodbathThresholdAoE, "设置使用浴血时的剩余HP百分比.");
             
             if (preset == CustomComboPreset.NIN_AoE_AdvancedMode_HellfrogMedium)
-                UserConfig.DrawSliderInt(50, 100, NIN.Config.Ninki_HellfrogPooling, "Set the amount of Ninki required to have before spending on Hellfrog Medium.");
+                UserConfig.DrawSliderInt(50, 100, NIN.Config.Ninki_HellfrogPooling, "设置积累多少忍气后使用大虾蟆.");
 
             if (preset == CustomComboPreset.NIN_AoE_AdvancedMode_Ninjitsus_Doton)
             {
-                UserConfig.DrawSliderInt(0, 18, NIN.Config.Advanced_DotonTimer, "Sets the amount of time remaining on Doton before casting again.");
-                UserConfig.DrawSliderInt(0, 100, NIN.Config.Advanced_DotonHP, "Sets the max remaining HP percentage of the current target to cast Doton.");
+                UserConfig.DrawSliderInt(0, 18, NIN.Config.Advanced_DotonTimer, "设置土遁剩余多长时间时再次使用土遁之术.");
+                UserConfig.DrawSliderInt(0, 100, NIN.Config.Advanced_DotonHP, "设置当前目标剩余HP百分比大于多少时使用土遁之术.");
             }
 
             if (preset == CustomComboPreset.NIN_AoE_AdvancedMode_TCJ)
@@ -1336,32 +1336,32 @@ namespace XIVSlothCombo.Window.Functions
             #region REAPER
 
             if (preset == CustomComboPreset.RPRPvP_Burst_ImmortalPooling && enabled)
-                UserConfig.DrawSliderInt(0, 8, RPRPVP.Config.RPRPvP_ImmortalStackThreshold, "Set a value of Immortal Sacrifice Stacks to hold for burst.###RPR", 150, SliderIncrements.Ones);
+                UserConfig.DrawSliderInt(0, 8, RPRPVP.Config.RPRPvP_ImmortalStackThreshold, "设置保留几层死亡祭品层数后进行爆发输出.###RPR", 150, SliderIncrements.Ones);
 
             if (preset == CustomComboPreset.RPRPvP_Burst_ArcaneCircle && enabled)
-                UserConfig.DrawSliderInt(5, 90, RPRPVP.Config.RPRPvP_ArcaneCircleThreshold, "Set a HP percentage value. Caps at 90 to prevent waste.###RPR", 150, SliderIncrements.Ones);
+                UserConfig.DrawSliderInt(5, 90, RPRPVP.Config.RPRPvP_ArcaneCircleThreshold, "设定hp百分比. 上限 90 以防止浪费.###RPR", 150, SliderIncrements.Ones);
 
             if (preset == CustomComboPreset.ReaperPositionalConfig && enabled)
             {
-                UserConfig.DrawHorizontalRadioButton(RPR.Config.RPR_PositionalChoice, "Rear First", "First positional: Gallows (Rear), Void Reaping.", 1);
-                UserConfig.DrawHorizontalRadioButton(RPR.Config.RPR_PositionalChoice, "Flank First", "First positional: Gibbet (Flank), Cross Reaping.", 2);
-                UserConfig.DrawHorizontalRadioButton(RPR.Config.RPR_PositionalChoice, "Rear: Slice, Flank: SoD", "Rear positionals on Slice, Flank positionals on Shadow of Death.", 3);
-                UserConfig.DrawHorizontalRadioButton(RPR.Config.RPR_PositionalChoice, "Rear: SoD, Flank: Slice", "Rear positionals on Shadow of Death, Flank positionals on Slice.", 4);
+                UserConfig.DrawHorizontalRadioButton(RPR.Config.RPR_PositionalChoice, "优先背部", "优先身位: 缢杀 (背部), 虚无收割.", 1);
+                UserConfig.DrawHorizontalRadioButton(RPR.Config.RPR_PositionalChoice, "优先侧面", "优先身位: 绞决 (Flank), 交错收割.", 2);
+                UserConfig.DrawHorizontalRadioButton(RPR.Config.RPR_PositionalChoice, "后: 切割, 侧: 死亡之影", "背后使用切割，侧面使用死亡之影.", 3);
+                UserConfig.DrawHorizontalRadioButton(RPR.Config.RPR_PositionalChoice, "后: 死亡之影, 侧: 切割", "背后使用死亡之影，侧面使用切割.", 4);
             }
 
             if (preset == CustomComboPreset.RPR_ST_SliceCombo_SoD && enabled)
             {
-                UserConfig.DrawSliderInt(0, 6, RPR.Config.RPR_SoDRefreshRange, "Seconds remaining before refreshing Death's Design.", 150, SliderIncrements.Ones);
-                UserConfig.DrawSliderInt(0, 5, RPR.Config.RPR_SoDThreshold, "Set a HP% Threshold for when SoD will not be automatically applied to the target.", 150, SliderIncrements.Ones);
+                UserConfig.DrawSliderInt(0, 6, RPR.Config.RPR_SoDRefreshRange, "在死亡烙印还剩多少秒时刷新.", 150, SliderIncrements.Ones);
+                UserConfig.DrawSliderInt(0, 5, RPR.Config.RPR_SoDThreshold, "设置在多少hp百分比下，不需要刷新死亡烙印buff.", 150, SliderIncrements.Ones);
             }
 
             if (preset == CustomComboPreset.RPR_Soulsow && enabled)
             {
-                UserConfig.DrawHorizontalMultiChoice(RPR.Config.RPR_SoulsowOptions, "Harpe", "Adds Soulsow to Harpe.", 5, 0);
-                UserConfig.DrawHorizontalMultiChoice(RPR.Config.RPR_SoulsowOptions, "Slice", "Adds Soulsow to Slice.", 5, 1);
-                UserConfig.DrawHorizontalMultiChoice(RPR.Config.RPR_SoulsowOptions, "Spinning Scythe", "Adds Soulsow to Spinning Scythe", 5, 2);
-                UserConfig.DrawHorizontalMultiChoice(RPR.Config.RPR_SoulsowOptions, "Shadow of Death", "Adds Soulsow to Shadow of Death.", 5, 3);
-                UserConfig.DrawHorizontalMultiChoice(RPR.Config.RPR_SoulsowOptions, "Blood Stalk", "Adds Soulsow to Blood Stalk.", 5, 4);  
+                UserConfig.DrawHorizontalMultiChoice(RPR.Config.RPR_SoulsowOptions, "勾刃", "添加魂播种至勾刃.", 5, 0);
+                UserConfig.DrawHorizontalMultiChoice(RPR.Config.RPR_SoulsowOptions, "切割", "添加魂播种至切割.", 5, 1);
+                UserConfig.DrawHorizontalMultiChoice(RPR.Config.RPR_SoulsowOptions, "旋转钐割", "添加魂播种至旋转钐割", 5, 2);
+                UserConfig.DrawHorizontalMultiChoice(RPR.Config.RPR_SoulsowOptions, "死亡之影", "添加魂播种至死亡之影.", 5, 3);
+                UserConfig.DrawHorizontalMultiChoice(RPR.Config.RPR_SoulsowOptions, "隐匿挥割", "添加魂播种至隐匿挥割.", 5, 4);  
             }
             
             #endregion

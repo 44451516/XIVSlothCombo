@@ -52,7 +52,7 @@ public class Translatezh_CN
         { "Melee DPS: Double Feint Protection", "近战进攻：牵制防顶" },
         { "Prevents the use of Feint when target already has the effect by replacing it with Fire.", "当目标已被赋予牵制效果时，将牵制替换为火炎" },
         { "Melee DPS: True North Protection", "近战：真北保护" },
-        { "Prevents the use of True North when its buff is already active by replacing it with Fire.", "当自身拥有真北时，将镇北替换为火炎" },
+        { "Prevents the use of True North when its buff is already active by replacing it with Fire.", "当自身拥有真北时，将真北替换为火炎" },
 
         #endregion
 
@@ -389,15 +389,15 @@ public class Translatezh_CN
         { "Simple Interrupt Option", "单体连击打断技能设置" },
         { "Includes an interrupt in the rotation (if applicable to your current target).", "循环加入打断技能" },
         { "Simple Dancer (Double Targets) Feature.", "简易舞步(双目标)" },
-        { "Single button, double targets. Includes songs, flourishes and overprotections.\nConflicts with all other non-simple toggles, except 'Dance Step Combo'.", "等待翻译" },
+        { "Single button, double targets. Includes songs, flourishes and overprotections.\nConflicts with all other non-simple toggles, except 'Dance Step Combo'.", "舞者双目标一键连击。包含唱歌，百花齐放和溢出保护。\n几乎与所以其他非一键选项冲突，除了上面的舞步连击" },
         { "Simple Standard Dance Option", "简易标准舞步选项" },
         { "Includes Standard Step (and all steps) in the rotation.", "循环加入标准舞步" },
-        { "Simple Standard Fill Option", "等待翻译" },
-        { "Adds ONLY Standard dance steps and Standard Finish to the rotation.\nStandard Step itself must be initiated manually when using this option.", "等待翻译" },
+        { "Simple Standard Fill Option", "简易标准舞步选项" },
+        { "Adds ONLY Standard dance steps and Standard Finish to the rotation.\nStandard Step itself must be initiated manually when using this option.", "只将标准舞步和标准舞步结束加入循环\n开启后必须手动跳标准舞步" },
         { "Simple Technical Dance Option", "简易技巧舞步选项" },
         { "Includes Technical Step, all dance steps and Technical Finish in the rotation.", "循环加入技巧舞步" },
         { "Simple Tech Fill Option", "简易技巧舞步选项" },
-        { "Adds ONLY Technical dance steps and Technical Finish to the rotation.\nTechnical Step itself must be initiated manually when using this option.", "等待翻译" },
+        { "Adds ONLY Technical dance steps and Technical Finish to the rotation.\nTechnical Step itself must be initiated manually when using this option.", "只将简易技巧舞步和简易技巧舞步结束加入循环\n开启后必须手动跳简易技巧舞步" },
         { "Simple Tech Devilment Option", "简易技巧进攻之探戈" },
         { "Includes Devilment in the rotation.\nWill activate only during Technical Finish if you are Lv70 or above.", "70级以上时，循环在技巧舞步结束后加入进攻之探戈" },
         { "Simple Flourish Option", "简易百花争艳" },
@@ -410,8 +410,8 @@ public class Translatezh_CN
         { "Includes Curing Waltz and Second Wind in the rotation when available and your HP is below the set percentages.", "自身血量低于设定值时使用治疗华尔兹、内丹" },
         { "Simple Improvisation Option", "简易即兴表演" },
         { "Includes Improvisation in the rotation when available.", "当即兴表演可用时将其加入循环。" },
-        { "Simple Peloton Opener Option", "等待翻译" },
-        { "Uses Peloton when you are out of combat, do not already have the Peloton buff and are performing Standard Step with greater than 5s remaining of your dance.\nWill not override Dance Step Combo Feature.", "等待翻译" },
+        { "Simple Peloton Opener Option", "简易速行起手" },
+        { "Uses Peloton when you are out of combat, do not already have the Peloton buff and are performing Standard Step with greater than 5s remaining of your dance.\nWill not override Dance Step Combo Feature.", "当脱战时使用速行，不会一直保持速行buff存在，并且在跳舞剩余时间少于5秒后释放舞蹈\n不会覆盖舞步连击设置。" },
 
         #endregion
 
@@ -423,12 +423,12 @@ public class Translatezh_CN
         { "Includes an interrupt in the AoE rotation (if your current target can be interrupted).", "在AoE循环中加入中断(伤头)(如果当前目标可被打断)。" },
         { "Simple AoE Standard Dance Option", "简易标准舞步选项（AOE）" },
         { "Includes Standard Step (and all steps) in the AoE rotation.", "循环加入标准舞步" },
-        { "Simple AoE Standard Fill Option", "等待翻译" },
-        { "Adds ONLY Standard dance steps and Standard Finish to the AoE rotation.\nStandard Step itself must be initiated manually when using this option.", "等待翻译" },
+        { "Simple AoE Standard Fill Option", "简易标准舞步选项（AOE）" },
+        { "Adds ONLY Standard dance steps and Standard Finish to the AoE rotation.\nStandard Step itself must be initiated manually when using this option.", "只将标准舞步和标准舞步结束加入循环\n开启后必须手动跳标准舞步" },
         { "Simple AoE Technical Dance Option", "简易技巧舞步选项（AOE）" },
         { "Includes Technical Step, all dance steps and Technical Finish in the AoE rotation.", "循环加入技巧舞步" },
         { "Simple AoE Tech Fill Option", "简易技巧舞步选项（AOE）" },
-        { "Adds ONLY Technical dance steps and Technical Finish to the AoE rotation.\nTechnical Step itself must be initiated manually when using this option.", "等待翻译" },
+        { "Adds ONLY Technical dance steps and Technical Finish to the AoE rotation.\nTechnical Step itself must be initiated manually when using this option.", "只将简易技巧舞步和简易技巧舞步结束加入循环\n开启后必须手动跳简易技巧舞步" },
         { "Simple AoE Tech Devilment Option", "简易AoE技巧进攻之探戈" },
         { "Includes Devilment in the AoE rotation.\nWill activate only during Technical Finish if you Lv70 or above.", "70级以上时，循环在技巧舞步结束后加入进攻之探戈" },
         { "Simple AoE Flourish Option", "简易AoE百花争艳" },
@@ -467,7 +467,7 @@ public class Translatezh_CN
         { "Uses Edge of Shadow if you are above 8,500 mana or Darkside is about to expire (10sec or less)", "当你的mp高于8500或暗黑状态即将结束时(剩余持续时间不超过10秒)自动插入暗影锋." },
         { "oGCD Feature", "能力技特性" },
         { "Adds Living Shadow > Salted Earth > Carve And Spit > Salt And Darkness to Carve And Spit and Abysal Drain", "按照掠影示现 > 腐秽大地 > 精雕怒斩 > 腐秽黑暗的顺序将能力技整合到精雕怒斩与吸血深渊。" },
-        { "Shadowbringer oGCD Feature", "等待翻译" },
+        { "Shadowbringer oGCD Feature", "暗影使者 设置" },
         { "Adds Shadowbringer to oGCD Feature", "将暗影使者整合到能力技特性。" },
         { "Plunge Feature", "跳斩特性" },
         { "Adds Plunge onto main combo whenever its available and Darkside is up.", "当暗黑激活时将跳斩添加到主连击。" },
@@ -499,13 +499,13 @@ public class Translatezh_CN
         { "Adds Delirium to main combo on cooldown and when Darkside is up. Will also spend 50 blood gauge if Delirium is nearly ready to protect from overcap.", "当自身存在暗影状态且血乱可用时插入血乱.同样当血乱即将结束冷却时会根据自身暗血值先插入血溅/寂灭以防止暗血值溢出." },
         { "Blood Weapon on Cooldown", "嗜血整合 设置" },
         { "Adds Blood Weapon to main combo on cooldown and when Darkside is up.", "若自身存在暗影状态且嗜血未在冷却中,在主连击中插入嗜血." },
-        { "Blood Weapon Option", "等待翻译" },
+        { "Blood Weapon Option", "嗜血 设置" },
         { "Adds Blood Weapon to AoE combo on cooldown and when Darkside is up.", "若自身存在暗影状态且嗜血未在冷却中,在刚魂连击中插入嗜血." },
-        { "Delirium Option", "等待翻译" },
-        { "Adds Deliriun to AoE combo on cooldown and when Darkside is up.", "等待翻译" },
-        { "Salted Earth Option", "等待翻译" },
+        { "Delirium Option", "血乱 设置" },
+        { "Adds Deliriun to AoE combo on cooldown and when Darkside is up.", "若自身存在暗影状态且嗜血未在冷却中,在刚魂连击中插入血乱." },
+        { "Salted Earth Option", "腐秽大地 设置" },
         { "Adds Salted Earth and Salt and Darkness to AoE on cooldown and when Darkside is up.", "若自身存在暗影状态且腐秽大地未在冷却中,在刚魂连击中插入腐秽大地与腐秽黑暗." },
-        { "Living Shadow Option", "等待翻译" },
+        { "Living Shadow Option", "掠影示现 设置" },
         { "Adds Living Shadow to AoE on cooldown and when Darkside is up.", "若自身存在暗影状态且掠影示现未在冷却中,在刚魂连击中插入掠影示现." },
 
         #endregion
@@ -541,8 +541,8 @@ public class Translatezh_CN
         { "Includes Life Surge, while under proper buffs, onto proper GCDs, to the rotation.", "在樱花/直刺/山境酷刑连击中的合适时机和buff下插入龙剑。" },
         { "Ranged Uptime Option", "超出近战范围选项" },
         { "Replaces Main Combo with Piercing Talon when you are out of melee range.", "超出近战范围时，将主要AOE连击替换为贯穿尖" },
-        { "Melee Dives Option", "等待翻译" },
-        { "Uses Spineshatter Dive, Dragonfire Dive, and Stardiver when in the target's target ring (1 yalm) and closer.", "当在目标环中时使用破碎冲，龙炎冲和坠星冲" },
+        { "Melee Dives Option", "冲冲冲设置" },
+        { "Uses Spineshatter Dive, Dragonfire Dive, and Stardiver when in the target's target ring (1 yalm) and closer.", "当在目标的目标圈内（1米）时使用破碎冲，龙炎冲和坠星冲" },
 
         #endregion
 
@@ -626,7 +626,7 @@ public class Translatezh_CN
         { "Gnashing Fang Starter", "烈牙启动" },
         { "Begins Gnashing Fang to the main combo.", "先从烈牙开始倾泻晶壤." },
         { "Bow Shock on Main Combo", "弓形冲波整合到主连击" },
-        { "Adds Bow Shock to the main combo.", "等待翻译" },
+        { "Adds Bow Shock to the main combo.", "弓形冲波整合到主连击" },
         { "Sonic Break on Main Combo", "音速破整合到主连击" },
         { "Adds Sonic Break to the main combo.", "在主连击中插入音速破." },
         { "Sonic Break/Bow Shock on No Mercy", "无情技能整合 设置" },
@@ -980,19 +980,19 @@ public class Translatezh_CN
         { "Adds Gibbet and Gallows to Shadow of Death as well if chosen in positional preferences.", "如果在身位喜好里设置了，将死亡之影替换为绞决/缢杀" },
         { "Gluttony and Blood Stalk Option", "暴食与隐匿挥割设置" },
         { "Adds Gluttony and Blood Stalk to the combo when target is afflicted with Death's Design, and the skills are off cooldown and < 50 soul.", "当目标有死亡烙印Debuff并且灵魂小于50并且暴食/隐匿挥割不在冷却时，将其加入连击。" },
-        { "Communio Movement Option", "等待翻译" },
-        { "Uses Shadow of Death instead of Communio when moving.", "等待翻译" },
+        { "Communio Movement Option", "移动时团契" },
+        { "Uses Shadow of Death instead of Communio when moving.", "当移动时使用死亡之影替换团契" },
 
         #endregion
 
         #region AoE (Scythe) Combo Section
 
         { "Scythe Combo Feature", "旋转钐割连击" },
-        { "Replace Spinning Scythe with its combo chain.\nIf all sub options are toggled will turn into a full one button rotation (Simple AoE)", "等待翻译" },
+        { "Replace Spinning Scythe with its combo chain.\nIf all sub options are toggled will turn into a full one button rotation (Simple AoE)", "旋转钐割加入循环。\n如果启用所有子选项则变为一键循环（简单AOE）" },
         { "Soul Scythe Option", "灵魂钐割设置" },
-        { "Adds Soul Scythe to AoE combo when Soul Gauge is 50 or less and current target is afflicted with Death's Design.", "等待翻译" },
+        { "Adds Soul Scythe to AoE combo when Soul Gauge is 50 or less and current target is afflicted with Death's Design.", "当目标有死亡烙印Debuff并且灵魂小于50 将灵魂钐割加入AOE连击" },
         { "Whorl Of Death Option", "死亡之涡设置" },
-        { "Adds Whorl of Death to AoE combo if Death's Design is not present on current target, or is about to expire.", "等待翻译" },
+        { "Adds Whorl of Death to AoE combo if Death's Design is not present on current target, or is about to expire.", "当目标的死亡烙印Debuff不存在或即将消失时 将死亡之涡加入AOE连击" },
         { "Guillotine Option", "断首设置" },
         { "Adds Guillotine to AoE combo when under Soul Reaver and when current target is afflicted with Death's Design.\nWill use Grim Reaping during Enshroud.", "当目标有死亡烙印Debuff且处于妖异之镰状态下时将断首加入AOE连击。\n在夜游魂衣时会重复使用阴冷收割。" },
         { "Adds Arcane Circle to AoE combo when off cooldown.", "当神秘环不在冷却时将其加入AOE连击。" },
@@ -1012,7 +1012,7 @@ public class Translatezh_CN
         { "Gibbet and Gallows/Guillotine on Blood Stalk/Grim Swathe Feature", "绞决/缢杀/断首替换隐匿挥割/束缚挥割功能" },
         { "Adds Gibbet and Gallows on Blood Stalk.\nAdds Guillotine on Grim Swathe.", "将隐匿挥割替换为绞决/缢杀。\n将束缚挥割替换为断首。" },
         { "Enshroud Combo Option", "夜游魂衣连击设置" },
-        { "Adds Enshroud combo (Void/Cross Reaping, Communio, and Lemure's Slice) on Blood Stalk and Grim Swathe.", "等待翻译" },
+        { "Adds Enshroud combo (Void/Cross Reaping, Communio, and Lemure's Slice) on Blood Stalk and Grim Swathe.", "将魂衣连击（交错/虚无收割，团契，夜游魂切割）替换至隐匿挥割和束缚挥割上" },
 
         #endregion
 
@@ -1023,7 +1023,7 @@ public class Translatezh_CN
         { "Regress Feature", "回退特性" },
         { "Changes both Hell's Ingress and Hell's Egress turn into Regress when Threshold is active.", "当你拥有回退预备状态时，将地狱入境与地狱出境替换为回退。" },
         { "Soulsow Reminder Feature", "播魂种提醒功能" },
-        { "Adds Soulsow to the skills selected below when out of combat. \nWill also add Soulsow to Harpe when in combat and no target is selected.", "等待翻译" },
+        { "Adds Soulsow to the skills selected below when out of combat. \nWill also add Soulsow to Harpe when in combat and no target is selected.", "脱战时将魂播种替换至下列选择的技能上\n在战斗中如果没有选择目标也会将播魂种替换至勾刃上" },
         { "Harpe Harvest Moon Feature", "勾刃收获月特性" },
         { "Replaces Harpe with Harvest Moon when you are in combat with Soulsow active.", "当你拥有播魂种BUFF时，使用收获月替换勾刃。" },
         { "Enhanced Harpe Option", "勾刃效果提高设置" },
@@ -1039,8 +1039,8 @@ public class Translatezh_CN
         { "Enshroud to Communio Feature", "夜游魂衣替换团契功能" },
         { "Turns Enshroud to Communio when available to use.", "当夜游魂衣可用时替换团契。" },
         { "Adds True North to Slice, Shadow of Death, Enshroud, and Blood Stalk when under Gluttony and if Gibbet/Gallows options are selected to replace those skills.", "如果绞决/缢杀设置替换了切割/死亡之影/夜游魂衣/隐匿挥割,在暴食后将真北加入这些技能。" },
-        { "Soulsow Reminder during Combat", "等待翻译" },
-        { "Adds Soulsow to Harpe during combat when no target is selected.", "等待翻译" },
+        { "Soulsow Reminder during Combat", "战斗中播魂种提醒" },
+        { "Adds Soulsow to Harpe during combat when no target is selected.", "没有目标选择时 将播魂种替换至勾刃上" },
 
         #endregion
 
@@ -1372,7 +1372,7 @@ public class Translatezh_CN
         { "Hissatsu: Gyoten becomes Yaten/Gyoten depending on the distance from your target.", "根据与目标的距离自动将必杀剑·晓天变为必杀剑·夜天/晓天。" },
         { "Ikishoten Namikiri Feature", "意气冲天 奥义斩浪 连击特性" },
         { "Replace Ikishoten with Ogi Namikiri and then Kaeshi Namikiri when available.\nIf you have full Meditation stacks, Ikishoten becomes Shoha while you have Ogi Namikiri ready.", "当奥义斩浪可用时，替换意气冲天为奥义斩浪，随后变为回返斩浪。\n若同时剑压已积累3档，则意气冲天将变为照破。" },
-        { "Adds True North on all single target combos if Meikyo Shisui's buff is on you.", "等待翻译" },
+        { "Adds True North on all single target combos if Meikyo Shisui's buff is on you.", "处于明镜止水状态时，将真北插入所有的单体连击" },
 
         #endregion
 
@@ -1384,40 +1384,40 @@ public class Translatezh_CN
 
         { "Replace Ruin I / Broils or Bios with options below", "等待翻译" },
         { "Adds Lucid Dreaming when MP drops below slider value:", "当 MP 低于滑动条的值时在循环中加入醒梦" },
-        { "Chain Stratagem Weave Option", "等待翻译" },
+        { "Chain Stratagem Weave Option", "连环计" },
         { "Adds Chain Stratagem on Cooldown with overlap protection", "等待翻译" },
-        { "Aetherflow Weave Option", "等待翻译" },
-        { "Use Aetherflow when out of aetherflow stacks", "等待翻译" },
-        { "Ruin II Moving Option", "等待翻译" },
-        { "Use Ruin 2 when you have to move", "等待翻译" },
-        { "Bio / Biolysis Option", "等待翻译" },
+        { "Aetherflow Weave Option", "以太超流" },
+        { "Use Aetherflow when out of aetherflow stacks", "当自身没有以太超流层数时使用以太超流技能补充" },
+        { "Ruin II Moving Option", "移动毁荡" },
+        { "Use Ruin 2 when you have to move", "使用毁荡当你在移动时" },
+        { "Bio / Biolysis Option", "毒菌/蛊毒法" },
         { "Automatic DoT Uptime.", "自动插入均衡注药续Dot." },
 
         #endregion
 
         #region Healing
 
-        { "Fey Blessing to Seraph's Consolation Feature", "等待翻译" },
+        { "Fey Blessing to Seraph's Consolation Feature", "异想的祥光 替换 慰藉" },
         { "Change Fey Blessing into Consolation when Seraph is out.", "炽天使同行状态下，将 异想的祥光 变为 慰藉." },
 
         #endregion
 
         #region Utilities
 
-        { "Aetherflow Helper Feature", "等待翻译" },
+        { "Aetherflow Helper Feature", "以太超流" },
         { "Change Aetherflow-using skills to Aetherflow, Recitation, or Dissipation as selected", "等待翻译" },
-        { "Recitation Option", "等待翻译" },
+        { "Recitation Option", "秘策" },
         { "Prioritizes Recitation usage on Excogitation or Indominability", "等待翻译" },
-        { "On Excogitation Option", "等待翻译" },
-        { "On Indominability Option", "等待翻译" },
-        { "Dissipation Option", "等待翻译" },
+        { "On Excogitation Option", "深谋远虑之策" },
+        { "On Indominability Option", "不屈不挠之策" },
+        { "Dissipation Option", "转化" },
         { "If Aetherflow itself is on cooldown, show Dissipation instead", "等待翻译" },
-        { "Swiftcast Raise Combo Feature", "等待翻译" },
-        { "Changes Swiftcast to Resurrection while Swiftcast is on cooldown", "等待翻译" },
-        { "Fairy Feature", "Fairy Feature" },
-        { "Change all fairy actions into Fairy Summons if you do not have a fairy summoned.", "等待翻译" },
-        { "Deployment Tactics Feature", "等待翻译" },
-        { "Deployment Tactics idles as Adloquium until the Party Member has the Galvanize Buff", "等待翻译" },
+        { "Swiftcast Raise Combo Feature", "即刻复活设置" },
+        { "Changes Swiftcast to Resurrection while Swiftcast is on cooldown", "当即刻冷却完毕 替换 复生" },
+        { "Fairy Feature", "小仙女" },
+        { "Change all fairy actions into Fairy Summons if you do not have a fairy summoned.", "当没有召唤小仙女时，将所有小仙女行动技能替换为召唤小仙女" },
+        { "Deployment Tactics Feature", "展开战术" },
+        { "Deployment Tactics idles as Adloquium until the Party Member has the Galvanize Buff", "将展开战术替换为鼓舞激励之策，直到所有队友都拥有鼓舞盾" },
         { "Adds Recitation when off cooldown to force a critical Galvanize Buff on the Party Member.", "等待翻译" },
 
         #endregion
@@ -1511,7 +1511,7 @@ public class Translatezh_CN
         { "Infuriate AoE Feature", "战嚎 AoE Feature" },
         { "Adds Infuriate to AoE combo when gauge is below 50 and not under Inner Release.", "等待翻译" },
         { "Inner Release AoE Feature", "原初的解放 AoE Feature" },
-        { "Adds Inner Release to Storm's Path combo.", "等待翻译" },
+        { "Adds Inner Release to Storm's Path combo.", "将原初的解放加入到暴风斩连击" },
         { "Tomahawk Uptime Feature", "飞斧" },
         { "Replace Storm's Path Combo Feature with Tomahawk when you are out of range.", "在如果离boss太远，将飞斧加入到暴风斩连击" },
         { "Infuriate on Fell Cleave / Decimate", "战嚎 on Fell Cleave / Decimate" },
@@ -1524,9 +1524,9 @@ public class Translatezh_CN
         { "Use Inner Release Stacks First", "等待翻译" },
         { "Prevents the use of Infuriate while you have Inner Release stacks available.", "等待翻译" },
         { "Primal Rend Melee Feature", "蛮荒崩裂 Melee Feature" },
-        { "Uses Primal Rend when in the target's target ring (1 yalm) and closer otherwise will use it when buff is less than 10 seconds.", "等待翻译" },
-        { "Melee Onslaught Option", "等待翻译" },
-        { "Uses Onslaught when under Surging Tempest and in the target ring (1 yalm).\nWill use as many stacks as selected in the above slider.", "等待翻译" },
+        { "Uses Primal Rend when in the target's target ring (1 yalm) and closer otherwise will use it when buff is less than 10 seconds.", "当处于目标的目标圈内（1米）并且蛮荒崩裂预备小于10s时使用蛮荒崩裂" },
+        { "Melee Onslaught Option", "猛攻" },
+        { "Uses Onslaught when under Surging Tempest and in the target ring (1 yalm).\nWill use as many stacks as selected in the above slider.", "拥有战场风暴并且处于目标的目标圈内（1米）时使用猛攻\n将使用滑条选择的层数" },
 
         #endregion
 
@@ -1536,7 +1536,7 @@ public class Translatezh_CN
 
         { "Collection of cooldowns and spell features on Glare/Stone.", "咏唱闪耀/飞石后插入能力技." },
         { "Glare III Opener Option", "开场技能整合至闪灼 设置" },
-        { "Delays all oGCDs until after third Glare III cast.\nOnly works with Glare III.", "等待翻译" },
+        { "Delays all oGCDs until after third Glare III cast.\nOnly works with Glare III.", "将所有的能力技延迟到第三发闪灼释放之后，仅当闪灼可用时生效" },
         { "Aero/Dia Uptime Option", "保持dot不断 设置" },
         { "Adds Aero/Dia to the single target combo if the debuff is not present on current target, or is about to expire.", "当目标身上不存在dot或dot即将结束时，在单目标输出循环中插入疾风/烈风/天辉." },
         { "Assize Option", "法令 设置" },
@@ -1570,7 +1570,7 @@ public class Translatezh_CN
         #region Afflatus Feature
 
         { "Afflatus Feature", "治疗百合状态" },
-        { "Changes Cure II into Afflatus Solace when Lilies are up.\nChanges Medica into Afflatus Rapture when Lilies are up.", "等待翻译" },
+        { "Changes Cure II into Afflatus Solace when Lilies are up.\nChanges Medica into Afflatus Rapture when Lilies are up.", "当有可用百合时替换救疗为苦难之心，将医济替换为狂喜之心\n" },
         { "Afflatus Misery Heal Feature", "治疗时使用苦难之心 设置" },
         { "Changes Cure II into Afflatus Misery when Misery is ready to be used.", "当苦难之心可用时，替换救疗为苦难之心." },
 
