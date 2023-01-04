@@ -385,11 +385,11 @@ public class Translatezh_CN
         #region Simple Dancer (Single Target)
 
         { "Simple Dancer (Single Target) Feature", "简易舞者（单目标）" },
-        { "Single button, single target. Includes songs, flourishes and overprotections.\nConflicts with all other non-simple toggles, except 'Dance Step Combo'.", "舞者单目标一键连击。包含唱，跳，Rap，打篮球，百花齐放和溢出保护。几乎与所以其他非一键选项冲突，除了上面的舞步连击" },
+        { "Single button, single target. Includes songs, flourishes and overprotections.\nConflicts with all other non-simple toggles, except 'Dance Step Combo'.", "舞者单目标一键连击。包含唱，跳，Rap，打篮球，百花齐放和溢出保护。几乎与所有其他非一键选项冲突，除了上面的舞步连击" },
         { "Simple Interrupt Option", "单体连击打断技能设置" },
         { "Includes an interrupt in the rotation (if applicable to your current target).", "循环加入打断技能" },
         { "Simple Dancer (Double Targets) Feature.", "简易舞步(双目标)" },
-        { "Single button, double targets. Includes songs, flourishes and overprotections.\nConflicts with all other non-simple toggles, except 'Dance Step Combo'.", "舞者双目标一键连击。包含唱歌，百花齐放和溢出保护。\n几乎与所以其他非一键选项冲突，除了上面的舞步连击" },
+        { "Single button, double targets. Includes songs, flourishes and overprotections.\nConflicts with all other non-simple toggles, except 'Dance Step Combo'.", "舞者双目标一键连击。包含唱歌，百花齐放和溢出保护。\n几乎与所有其他非一键选项冲突，除了上面的舞步连击" },
         { "Simple Standard Dance Option", "简易标准舞步选项" },
         { "Includes Standard Step (and all steps) in the rotation.", "循环加入标准舞步" },
         { "Simple Standard Fill Option", "简易标准舞步选项" },
@@ -418,7 +418,7 @@ public class Translatezh_CN
         #region Simple Dancer (AoE)
 
         { "Simple Dancer (AoE) Feature", "简易舞者（AOE）" },
-        { "Single button, AoE. Includes songs, flourishes and overprotections.\nConflicts with all other non-simple toggles, except 'Dance Step Combo'.", "舞者AOE一键连击。包含唱，跳，Rap，打篮球，百花齐放和溢出保护。几乎与所以其他非一键选项冲突，除了上面的舞步连击" },
+        { "Single button, AoE. Includes songs, flourishes and overprotections.\nConflicts with all other non-simple toggles, except 'Dance Step Combo'.", "舞者AOE一键连击。包含唱，跳，Rap，打篮球，百花齐放和溢出保护。几乎与所有其他非一键选项冲突，除了上面的舞步连击" },
         { "Simple AoE Interrupt Option", "简易AoE中断" },
         { "Includes an interrupt in the AoE rotation (if your current target can be interrupted).", "在AoE循环中加入中断(伤头)(如果当前目标可被打断)。" },
         { "Simple AoE Standard Dance Option", "简易标准舞步选项（AOE）" },

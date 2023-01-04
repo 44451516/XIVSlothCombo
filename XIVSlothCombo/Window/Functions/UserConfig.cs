@@ -1196,29 +1196,29 @@ namespace XIVSlothCombo.Window.Functions
             #region DRAGOON
             if (preset == CustomComboPreset.DRG_ST_Dives && enabled)
             {
-                UserConfig.DrawHorizontalRadioButton(DRG.Config.DRG_ST_DiveOptions, "On Cooldown", "Single Weave friendly. Uses skills on cooldown.", 1);
-                UserConfig.DrawHorizontalRadioButton(DRG.Config.DRG_ST_DiveOptions, "Under Battle Litany and Life of the Dragon", "Requires Double Weaving. Uses Spineshatter Dive and Dragonfire Dive under Battle Litany and Life of the Dragon, and Stardiver under Life of the Dragon.", 2);
-                UserConfig.DrawHorizontalRadioButton(DRG.Config.DRG_ST_DiveOptions, "Under Lance Charge", "Single Weave friendly. Uses Spineshatter Dive and Dragonfire Dive under Lance Charge, and Stardiver under Life of the Dragon.", 3);
+                UserConfig.DrawHorizontalRadioButton(DRG.Config.DRG_ST_DiveOptions, "冷却好了用", "单插友好. 冷却好了使用.", 1);
+                UserConfig.DrawHorizontalRadioButton(DRG.Config.DRG_ST_DiveOptions, "战斗连倒和红莲龙血下用", "需要双插. 破碎冲龙炎冲在战斗连倒和红莲龙血下用, 坠星冲在红莲龙血下用.", 2);
+                UserConfig.DrawHorizontalRadioButton(DRG.Config.DRG_ST_DiveOptions, "配合猛枪使用", "单插友好. 配合猛枪使用破碎冲龙炎冲, 红莲龙血下的坠星冲.", 3);
             }
 
             if (preset == CustomComboPreset.DRG_AoE_Dives && enabled)
             {
-                UserConfig.DrawHorizontalRadioButton(DRG.Config.DRG_AOE_DiveOptions, "On Cooldown", "Single Weave friendly. Uses skills on cooldown.", 1);
-                UserConfig.DrawHorizontalRadioButton(DRG.Config.DRG_AOE_DiveOptions, "Under Battle Litany and Life of the Dragon", "Requires Double Weaving. Uses Spineshatter Dive and Dragonfire Dive under Battle Litany and Life of the Dragon, and Stardiver under Life of the Dragon.", 2);
-                UserConfig.DrawHorizontalRadioButton(DRG.Config.DRG_AOE_DiveOptions, "Under Lance Charge", "Single Weave friendly. Uses Spineshatter Dive and Dragonfire Dive under Lance Charge, and Stardiver under Life of the Dragon.", 3);
+                UserConfig.DrawHorizontalRadioButton(DRG.Config.DRG_AOE_DiveOptions, "冷却好了用", "单插友好. 冷却好了使用.", 1);
+                UserConfig.DrawHorizontalRadioButton(DRG.Config.DRG_AOE_DiveOptions, "战斗连倒和红莲龙血下用", "需要双插. 破碎冲龙炎冲在战斗连倒和红莲龙血下用, 坠星冲在红莲龙血下用.", 2);
+                UserConfig.DrawHorizontalRadioButton(DRG.Config.DRG_AOE_DiveOptions, "配合猛枪使用", "单插友好. 配合猛枪使用破碎冲龙炎冲, 红莲龙血下的坠星冲.", 3);
             }
 
             if (preset == CustomComboPreset.DRG_ST_Opener && enabled)
             {
-                UserConfig.DrawHorizontalRadioButton(DRG.Config.DRG_OpenerOptions, "Standard Opener", "Uses the Standard Tincture Opener.", 1);
-                UserConfig.DrawHorizontalRadioButton(DRG.Config.DRG_OpenerOptions, "Low Ping Opener", "Uses the Low Ping Opener. Use Lance Charge after True Thrust for the No Tincture opener.", 2);                
+                UserConfig.DrawHorizontalRadioButton(DRG.Config.DRG_OpenerOptions, "标准开场起手", "使用标准起手（自己吃爆发药）", 1);
+                UserConfig.DrawHorizontalRadioButton(DRG.Config.DRG_OpenerOptions, "低Ping开场起手", "低延迟下的起手. 第一个直刺连中开猛枪的不吃药开场起手.", 2);                
             }
             #endregion
             // ====================================================================================
             #region GUNBREAKER
 
             if (preset == CustomComboPreset.GNB_ST_RoughDivide && enabled)
-                UserConfig.DrawSliderInt(0, 1, GNB.Config.GNB_RoughDivide_HeldCharges, "How many charges to keep ready? (0 = Use All)");
+                UserConfig.DrawSliderInt(0, 1, GNB.Config.GNB_RoughDivide_HeldCharges, "准备保留几层充能? (0 = 用光，一层不留)");
 
             #endregion
             // ====================================================================================
@@ -1229,10 +1229,10 @@ namespace XIVSlothCombo.Window.Functions
             #region MONK
 
             if (preset == CustomComboPreset.MNK_ST_SimpleMode)
-                UserConfig.DrawRoundedSliderFloat(5.0f, 10.0f, MNK.Config.MNK_Demolish_Apply, "Seconds remaining before refreshing Demolish.");
+                UserConfig.DrawRoundedSliderFloat(5.0f, 10.0f, MNK.Config.MNK_Demolish_Apply, "持续时间低于该秒数，刷新破碎拳");
 
             if (preset == CustomComboPreset.MNK_ST_SimpleMode)
-                UserConfig.DrawRoundedSliderFloat(5.0f, 10.0f, MNK.Config.MNK_DisciplinedFist_Apply, "Seconds remaining before refreshing Disciplined Fist.");
+                UserConfig.DrawRoundedSliderFloat(5.0f, 10.0f, MNK.Config.MNK_DisciplinedFist_Apply, "持续时间低于该秒数，刷新功力");
 
             #endregion
             // ====================================================================================
@@ -1299,8 +1299,8 @@ namespace XIVSlothCombo.Window.Functions
 
             if (preset == CustomComboPreset.NIN_AoE_AdvancedMode_TCJ)
             {
-                UserConfig.DrawRadioButton(NIN.Config.Advanced_TCJEnderAoE, "Ten Chi Jin Ender 1", "Ends Ten Chi Jin with Suiton.", 0);
-                UserConfig.DrawRadioButton(NIN.Config.Advanced_TCJEnderAoE, $"Ten Chi Jin Ender 2", "Ends Ten Chi Jin with Doton.\nIf you have Doton enabled, Ten Chi Jin will be delayed according to the settings in that feature.", 1);
+                UserConfig.DrawRadioButton(NIN.Config.Advanced_TCJEnderAoE, "天地人结束1", "天地人以水遁结束.", 0);
+                UserConfig.DrawRadioButton(NIN.Config.Advanced_TCJEnderAoE, $"天地人结束2", "天地人以土遁结束.\nIf you have Doton enabled, Ten Chi Jin will be delayed according to the settings in that feature.", 1);
             }
 
             #endregion
@@ -1460,17 +1460,17 @@ namespace XIVSlothCombo.Window.Functions
             #region SAMURAI
 
             if (preset == CustomComboPreset.SAM_ST_Overcap && enabled)
-                UserConfig.DrawSliderInt(0, 85, SAM.Config.SAM_ST_KenkiOvercapAmount, "Set the Kenki overcap amount for ST combos.");
+                UserConfig.DrawSliderInt(0, 85, SAM.Config.SAM_ST_KenkiOvercapAmount, "设置单体连击剑气积累数量.");
 
             if (preset == CustomComboPreset.SAM_AoE_Overcap && enabled)
-                UserConfig.DrawSliderInt(0, 85, SAM.Config.SAM_AoE_KenkiOvercapAmount, "Set the Kenki overcap amount for AOE combos.");
+                UserConfig.DrawSliderInt(0, 85, SAM.Config.SAM_AoE_KenkiOvercapAmount, "设置AOE连击剑气积累数量.");
 
             //PvP
             if (preset == CustomComboPreset.SAMPvP_BurstMode && enabled)
-                UserConfig.DrawSliderInt(0, 2, SAMPvP.Config.SAMPvP_SotenCharges, "How many charges of Soten to keep ready? (0 = Use All).");
+                UserConfig.DrawSliderInt(0, 2, SAMPvP.Config.SAMPvP_SotenCharges, "存几层必杀剑·早天? (0 = 全用，一层不留).");
 
             if (preset == CustomComboPreset.SAMPvP_KashaFeatures_GapCloser && enabled)
-                UserConfig.DrawSliderInt(0, 100, SAMPvP.Config.SAMPvP_SotenHP, "Use Soten on enemies below selected HP.");
+                UserConfig.DrawSliderInt(0, 100, SAMPvP.Config.SAMPvP_SotenHP, "使用必杀剑·早天当敌人低于设置的血量.");
 
             //Fillers
             if (preset == CustomComboPreset.SAM_ST_GekkoCombo_FillerCombos)
@@ -1530,8 +1530,8 @@ namespace XIVSlothCombo.Window.Functions
             #region PvE
             if (preset == CustomComboPreset.SMN_DemiEgiMenu_EgiOrder)
             {
-                UserConfig.DrawHorizontalRadioButton(SMN.Config.SMN_PrimalChoice, "Titan first", "Summons Titan, Garuda then Ifrit.", 1);
-                UserConfig.DrawHorizontalRadioButton(SMN.Config.SMN_PrimalChoice, "Garuda first", "Summons Garuda, Titan then Ifrit.", 2);
+                UserConfig.DrawHorizontalRadioButton(SMN.Config.SMN_PrimalChoice, "先招泰坦（土）", "按泰坦，迦楼罗，伊芙利特的顺序召唤", 1);
+                UserConfig.DrawHorizontalRadioButton(SMN.Config.SMN_PrimalChoice, "先招迦楼罗（风）", "按迦楼罗，泰坦，伊芙利特的顺序召唤.", 2);
             }
 
             if (preset == CustomComboPreset.SMN_DemiEgiMenu_oGCDPooling)
@@ -1539,21 +1539,21 @@ namespace XIVSlothCombo.Window.Functions
 
             if (preset == CustomComboPreset.SMN_DemiEgiMenu_oGCDPooling)
             {
-                UserConfig.DrawHorizontalRadioButton(SMN.Config.SMN_BurstPhase, "Bahamut", "Bursts during Bahamut phase.", 1);
-                UserConfig.DrawHorizontalRadioButton(SMN.Config.SMN_BurstPhase, "Phoenix", "Bursts during Phoenix phase.", 2);
-                UserConfig.DrawHorizontalRadioButton(SMN.Config.SMN_BurstPhase, "Bahamut or Phoenix", "Bursts during Bahamut or Phoenix phase (whichever comes first).", 3);
-                UserConfig.DrawHorizontalRadioButton(SMN.Config.SMN_BurstPhase, "Flexible (SpS) Option", "Bursts when Searing Light is ready, regardless of phase.", 4);
+                UserConfig.DrawHorizontalRadioButton(SMN.Config.SMN_BurstPhase, "巴哈姆特", "巴哈阶段爆发.", 1);
+                UserConfig.DrawHorizontalRadioButton(SMN.Config.SMN_BurstPhase, "菲尼克斯", "凤凰阶段爆发.", 2);
+                UserConfig.DrawHorizontalRadioButton(SMN.Config.SMN_BurstPhase, "巴哈姆特或菲尼克斯", "巴哈或凤凰阶段爆发 (取决于那个先到).", 3);
+                UserConfig.DrawHorizontalRadioButton(SMN.Config.SMN_BurstPhase, "灵活 (SpS) ", "当灼热之光时爆发, 而不管处在哪个阶段.", 4);
             }
 
             if (preset == CustomComboPreset.SMN_DemiEgiMenu_SwiftcastEgi)
             {
-                UserConfig.DrawHorizontalRadioButton(SMN.Config.SMN_SwiftcastPhase, "Garuda", "Swiftcasts Slipstream", 1);
-                UserConfig.DrawHorizontalRadioButton(SMN.Config.SMN_SwiftcastPhase, "Ifrit", "Swiftcasts Ruby Ruin/Ruby Rite", 2);
-                UserConfig.DrawHorizontalRadioButton(SMN.Config.SMN_SwiftcastPhase, "Flexible (SpS) Option", "Swiftcasts the first available Egi when Swiftcast is ready.", 3);
+                UserConfig.DrawHorizontalRadioButton(SMN.Config.SMN_SwiftcastPhase, "迦楼罗", "即刻用来使用螺旋气流", 1);
+                UserConfig.DrawHorizontalRadioButton(SMN.Config.SMN_SwiftcastPhase, "伊芙利特", "即刻用来使用红宝石之仪", 2);
+                UserConfig.DrawHorizontalRadioButton(SMN.Config.SMN_SwiftcastPhase, "灵活 (SpS) ", "当即刻可用，用来使用第一个能用的灵攻技能.", 3);
             }
 
             if (preset == CustomComboPreset.SMN_Lucid)
-                UserConfig.DrawSliderInt(4000, 9500, SMN.Config.SMN_Lucid, "Set value for your MP to be at or under for this feature to take effect.", 150, SliderIncrements.Hundreds);
+                UserConfig.DrawSliderInt(4000, 9500, SMN.Config.SMN_Lucid, "MP小于等于此值时使用.", 150, SliderIncrements.Hundreds);
             #endregion
 
             #region PvP
