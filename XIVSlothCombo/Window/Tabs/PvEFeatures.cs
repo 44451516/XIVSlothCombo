@@ -45,7 +45,7 @@ namespace XIVSlothCombo.Window.Tabs
 
                     if (ImGui.BeginTabBar($"subTab{jobName}", ImGuiTabBarFlags.Reorderable | ImGuiTabBarFlags.AutoSelectNewTabs))
                     {
-                        if (ImGui.BeginTabItem("Normal"))
+                        if (ImGui.BeginTabItem("普通"))
                         {
                             DrawHeadingContents(jobName, i);
                             ImGui.EndTabItem();
@@ -53,7 +53,7 @@ namespace XIVSlothCombo.Window.Tabs
 
                         if (groupedPresets[jobName].Any(x => PluginConfiguration.IsVariant(x.Preset)))
                         {
-                            if (ImGui.BeginTabItem("Variant Dungeons"))
+                            if (ImGui.BeginTabItem("异闻地下城（6.25新玩法，国服暂无）"))
                             {
                                 DrawVariantContents(jobName);
                                 ImGui.EndTabItem();
@@ -62,7 +62,7 @@ namespace XIVSlothCombo.Window.Tabs
 
                         if (groupedPresets[jobName].Any(x => PluginConfiguration.IsBozja(x.Preset)))
                         {
-                            if (ImGui.BeginTabItem("Bozja"))
+                            if (ImGui.BeginTabItem("博兹雅"))
                             {
                                 ImGui.EndTabItem();
                             }
@@ -70,7 +70,7 @@ namespace XIVSlothCombo.Window.Tabs
 
                         if (groupedPresets[jobName].Any(x => PluginConfiguration.IsEureka(x.Preset)))
                         {
-                            if (ImGui.BeginTabItem("Eureka"))
+                            if (ImGui.BeginTabItem("优雷卡"))
                             {
                                 ImGui.EndTabItem();
                             }
