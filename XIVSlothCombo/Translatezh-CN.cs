@@ -6,7 +6,7 @@ public class Translatezh_CN
 {
     public static Dictionary<string, string> db = new()
     {
-         #region PvE Combos
+        #region PvE Combos
         #region Misc
         #endregion
         #region GLOBAL FEATURES
@@ -71,7 +71,7 @@ public class Translatezh_CN
         {"Draws your card","抽卡"},
         {"Astrodyne Weave Option","星力选项"},
         {"Adds Astrodyne when you have 3 seals","当集齐三个星标时将星力加入循环"},
-        {"Minor Arcana Weave Option","等待翻译"},
+        {"Minor Arcana Weave Option","小奥秘卡选项"},
         {"Adds Minor Arcana","加入小奥秘卡（小阿卡纳）"},
         {"Lord of Crowns Weave Option","王冠之领主选项"},
         {"Adds Lord Of Crowns","循环加入王冠之领主"},
@@ -100,10 +100,10 @@ public class Translatezh_CN
         #region Utility
         {"Alternative Raise Feature","替代性的复活功能"},
         {"Changes Swiftcast to Ascend","自动把即刻咏唱改为生辰"},
-        {"Spirit Dart Option","等待翻译"},
-        {"Use Variant Spirit Dart whenever the debuff is not present or less than 3s.","等待翻译"},
-        {"Rampart Option","等待翻译"},
-        {"Use Variant Rampart on cooldown.","等待翻译"},
+        {"Spirit Dart Option","多变精神镖选项"},
+        {"Use Variant Spirit Dart whenever the debuff is not present or less than 3s.","在多变精神镖Debuff时间少于 3 秒时使用"},
+        {"Rampart Option","多变铁壁选项"},
+        {"Use Variant Rampart on cooldown.","多变铁壁冷却好使用"},
         #endregion
         #region Cards
         {"Draw on Play","用出卡替换抽卡"},
@@ -175,12 +175,12 @@ public class Translatezh_CN
         {"Use Scathe when moving.","移动时自动插入崩溃。"},
         {"Adds Thunder 1/3 when the debuff isn't present or expiring and Thundercloud is available to Advanced BLM.","当自身存在雷云状态且目标身上没有dot存在或dot即将结束时，自动插入闪雷/暴雷."},
         {"Adds Thunder 1/3 when the debuff isn't present or expiring to Advanced BLM.","当目标身上没有dot存在或dot即将结束时，自动插入闪雷/暴雷."},
-        {"Aetherial Manipulation Feature","等待翻译"},
-        {"Replaces Aetherial Manipulation with Between the Lines when out of active Ley Lines and standing still.","等待翻译"},
-        {"Raise Option","等待翻译"},
-        {"Turn Swiftcast into Variant Raise whenever you have the Swiftcast buff.","等待翻译"},
-        {"Cure Option","等待翻译"},
-        {"Use Variant Cure when HP is below set threshold.","等待翻译"},
+        {"Aetherial Manipulation Feature","以太步功能"},
+        {"Replaces Aetherial Manipulation with Between the Lines when out of active Ley Lines and standing still.","当离开黑魔纹切站立不动时，用魔纹步替代以太步"},
+        {"Raise Option","复活选项"},
+        {"Turn Swiftcast into Variant Raise whenever you have the Swiftcast buff.","当自身处于即刻咏唱buff时，用多变复活替代即刻咏唱"},
+        {"Cure Option","治疗选项"},
+        {"Use Variant Cure when HP is below set threshold.","当HP低于设定值时使用多变治疗"},
         #endregion
         #region BLUE MAGE
         {"Buffed Song of Torment","苦闷之歌buff强化"},
@@ -215,14 +215,14 @@ public class Translatezh_CN
         {"Holds spells if Moon Flute burst is about to occur and spells are off cooldown.","如果技能已经冷却完毕而月之笛即将冷却结束，则保留冷却完毕的技能至月之笛爆发期使用。"},
         {"Sonic Boom Melee Feature","音爆选项"},
         {"Turns Sonic Boom into Sharpened Knife when in melee range.","在近战范围内，使用锋利菜刀替代音爆。"},
-        {"Matra Magic Option","等待翻译"},
-        {"Adds Matra Magic to the Primal Feature.","等待翻译"},
-        {"Surpanakha Option","等待翻译"},
-        {"Adds Surpanakha to the Primal Feature.","等待翻译"},
-        {"Phantom Flurry Option","等待翻译"},
-        {"Adds Phantom Flurry to the Primal Feature.","等待翻译"},
-        {"Nightbloom Option","等待翻译"},
-        {"Adds Nightbloom to the Primal Feature.","等待翻译"},
+        {"Matra Magic Option","马特拉魔术选项"},
+        {"Adds Matra Magic to the Primal Feature.","将马特拉魔术加入蛮神技能选项"},
+        {"Surpanakha Option","穿甲散弹选项"},
+        {"Adds Surpanakha to the Primal Feature.","将穿甲散弹加入蛮神技能选项"},
+        {"Phantom Flurry Option","\t鬼宿脚选项"},
+        {"Adds Phantom Flurry to the Primal Feature.","将鬼宿脚加入蛮神技能选项"},
+        {"Nightbloom Option","月下彼岸花选项"},
+        {"Adds Nightbloom to the Primal Feature.","将月下彼岸花加入蛮神技能选项"},
         #endregion
         #region BARD
         {"Heavy Shot into Straight Shot Feature","等待翻译"},
@@ -523,7 +523,7 @@ public class Translatezh_CN
         {"Replaces Main AoE Combo with Piercing Talon when you are out of melee range.","超出近战范围时，将主要AOE连击替换为贯穿尖"},
         #endregion
         {"Stardiver Feature","坠星冲设置"},
-        {"Turns Stardiver into Nastrond during Life of the Dragon, and Geirskogul outside of Life of the Dragon.","等待翻译"},
+        {"Turns Stardiver into Nastrond during Life of the Dragon, and Geirskogul outside of Life of the Dragon.","在红莲龙血中将坠星冲变成死者之岸，在红莲龙血之外变成武神枪"},
         {"Lance Charge to Battle Litany Feature","猛枪整合到战斗连祷"},
         {"Turns Lance Charge into Battle Litany when the former is on cooldown.","猛枪冷却完毕后整合至战斗连祷"},
         {"Adds Dragon Sight to Lance Charge, will take precedence over Battle Litany.","将巨龙视线整合至猛枪（优先于战斗连祷）"},
@@ -1283,65 +1283,65 @@ public class Translatezh_CN
         #endregion
         #region SCHOLAR
         #region DPS
-        {"Replaces Ruin I / Broils or Bios with options below","等待翻译"},
+        {"Replaces Ruin I / Broils or Bios with options below","用以下选项替代毁灭/魔炎法"},
         {"Adds Lucid Dreaming when MP drops below slider value:","当 MP 低于滑动条的值时在循环中加入醒梦"},
         {"Chain Stratagem Weave Option","连环计"},
-        {"Adds Chain Stratagem on cooldown with overlap protection","等待翻译"},
+        {"Adds Chain Stratagem on cooldown with overlap protection","若连环计未在冷却中插入连环计，若目标已有连环计不会插入"},
         {"Aetherflow Weave Option","以太超流"},
         {"Use Aetherflow when out of Aetherflow stacks.","当自身没有以太超流层数时使用以太超流技能补充"},
-        {"Energy Drain Weave Option","等待翻译"},
-        {"Use Energy Drain to consume remaining Aetherflow stacks when Aetherflow is about to come off cooldown.","等待翻译"},
-        {"Energy Drain Burst Option","等待翻译"},
-        {"Holds Energy Drain when Chain Stratagem is ready or has less than 10 seconds cooldown remaining.","等待翻译"},
-        {"Ruin II Moving Option","移动毁荡"},
-        {"Use Ruin II when you have to move.","等待翻译"},
+        {"Energy Drain Weave Option","能量吸收选项"},
+        {"Use Energy Drain to consume remaining Aetherflow stacks when Aetherflow is about to come off cooldown.","当以太超流\"冷却时间即将结束时，使用能量吸收消耗剩余的以太值"},
+        {"Energy Drain Burst Option","能量吸收爆发选项"},
+        {"Holds Energy Drain when Chain Stratagem is ready or has less than 10 seconds cooldown remaining.","当连环计准备就绪或剩余冷却时间少于 10 秒时，不打能量吸收。"},
+        {"Ruin II Moving Option","毁灭移动选项"},
+        {"Use Ruin II when you have to move.","当你在移动时使用毁灭"},
         {"Bio / Biolysis Option","毒菌/蛊毒法"},
-        {"Dissipation Opener Option","等待翻译"},
-        {"Use Dissipation at the start of the battle.","等待翻译"},
-        {"Replaces Art of War with options below.","等待翻译"},
-        {"Bio I/II on Ruin II Feature","等待翻译"},
-        {"Replaces Ruin II with Bio I/II for DoT uptime","等待翻译"},
+        {"Dissipation Opener Option","转化开场选项"},
+        {"Use Dissipation at the start of the battle.","在战斗开始时使用转化"},
+        {"Replaces Art of War with options below.","破阵法选项"},
+        {"Bio I/II on Ruin II Feature","毁灭中的毒菌选项"},
+        {"Replaces Ruin II with Bio I/II for DoT uptime","当没上dot时，将毁灭替换为毒菌"},
         #endregion
         #region Healing
         {"Fey Blessing to Seraph's Consolation Feature","异想的祥光 替换 慰藉"},
         {"Change Fey Blessing into Consolation when Seraph is out.","炽天使同行状态下，将 异想的祥光 变为 慰藉."},
-        {"Lustrate to Excogitation Feature","等待翻译"},
-        {"Change Lustrate into Excogitation when Excogitation is ready.","等待翻译"},
-        {"Recitation Combo Feature","等待翻译"},
-        {"Change Recitation into either Adloquium, Succor, Indomitability, or Excogitation when used.","等待翻译"},
-        {"Fairy Healing Combo Feature","等待翻译"},
-        {"Change Whispering Dawn into Fey Illumination, Fey Blessing, then Whispering Dawn when used.","等待翻译"},
-        {"Consolation During Seraph Option","等待翻译"},
-        {"Adds Consolation during Seraph.","等待翻译"},
-        {"Replaces Succor with options below:","等待翻译"},
-        {"Adds Lucid Dreaming when MP isn't high enough to cast Succor.","等待翻译"},
-        {"Aetherflow Option","等待翻译"},
-        {"Indomitability Ready Only Option","等待翻译"},
-        {"Only uses Aetherflow is Indomitability is ready to use.","等待翻译"},
-        {"Indomitability Option","等待翻译"},
-        {"Use Indomitability before using Succor.","等待翻译"},
-        {"Change Physick into Adloquium, Lustrate, then Physick with below options:","等待翻译"},
-        {"Adloquium Option","等待翻译"},
-        {"Use Adloquium when missing Galvanize or target HP%% below:","等待翻译"},
-        {"Lustrate Option","等待翻译"},
-        {"Use Lustrate when target HP%% below:","等待翻译"},
+        {"Lustrate to Excogitation Feature","生命活性法替换深谋远虑之策"},
+        {"Change Lustrate into Excogitation when Excogitation is ready.","当深谋远虑之策准备就绪时，将生命活性法替换为深谋远虑之策"},
+        {"Recitation Combo Feature","秘策选项"},
+        {"Change Recitation into either Adloquium, Succor, Indomitability, or Excogitation when used.","秘策使用时，将其替换为鼓舞激励之策/士气高扬之策/不屈不挠之策/深谋远虑之策"},
+        {"Fairy Healing Combo Feature","小仙女选项"},
+        {"Change Whispering Dawn into Fey Illumination, Fey Blessing, then Whispering Dawn when used.","将仙光的低语依次替换为异想的幻光、异想的祥光"},
+        {"Consolation During Seraph Option","慰藉选项"},
+        {"Adds Consolation during Seraph.","在炽天使状态中也替换为慰藉"},
+        {"Replaces Succor with options below:","士气高扬之策选项"},
+        {"Adds Lucid Dreaming when MP isn't high enough to cast Succor.","当 MP 不足以施放士气高扬之策时，插入醒梦"},
+        {"Aetherflow Option","以太超流选项"},
+        {"Indomitability Ready Only Option","不屈不挠之策准备选项"},
+        {"Only uses Aetherflow is Indomitability is ready to use.","只有在不屈不挠之策准备就绪时才插入"},
+        {"Indomitability Option","不屈不挠之策选项"},
+        {"Use Indomitability before using Succor.","在使用士气高扬之策之前优先插入不屈不挠之策"},
+        {"Change Physick into Adloquium, Lustrate, then Physick with below options:","以下选项将医术依次替换为鼓舞激励之策/生命活性法"},
+        {"Adloquium Option","鼓舞激励之策选项"},
+        {"Use Adloquium when missing Galvanize or target HP%% below:","当目标缺少鼓舞或目标HP在给定值以下时使用鼓舞激励之策"},
+        {"Lustrate Option","生命活性法选项"},
+        {"Use Lustrate when target HP%% below:","当目标HP在给定值以下时使用生命活性法"},
         #endregion
         #region Utilities
         {"Aetherflow Helper Feature","以太超流"},
-        {"Change Aetherflow-using skills to Aetherflow, Recitation, or Dissipation as selected.","等待翻译"},
-        {"Recitation Option","秘策"},
-        {"Prioritizes Recitation usage on Excogitation or Indomitability.","等待翻译"},
-        {"On Excogitation","等待翻译"},
-        {"On Indomitability","等待翻译"},
-        {"Dissipation Option","转化"},
-        {"If Aetherflow is on cooldown, show Dissipation instead.","等待翻译"},
+        {"Change Aetherflow-using skills to Aetherflow, Recitation, or Dissipation as selected.","将使用以太超流的技能替换为以太超流或转化"},
+        {"Recitation Option","秘策选项"},
+        {"Prioritizes Recitation usage on Excogitation or Indomitability.","对生命活性法和不屈不挠之策，优先使用秘策替换"},
+        {"On Excogitation","应用于深谋远虑之策"},
+        {"On Indomitability","应用于不屈不挠之策"},
+        {"Dissipation Option","转化选项"},
+        {"If Aetherflow is on cooldown, show Dissipation instead.","当以太超流冷却时使用转化替代"},
         {"Swiftcast Raise Combo Feature","即刻复活设置"},
-        {"Changes Swiftcast to Resurrection while Swiftcast is on cooldown.","等待翻译"},
+        {"Changes Swiftcast to Resurrection while Swiftcast is on cooldown.","当即刻咏唱在冷却时，使用复活替代即刻咏唱"},
         {"Fairy Feature","小仙女"},
         {"Change all fairy actions into Fairy Summons if you do not have a fairy summoned.","当没有召唤小仙女时，将所有小仙女行动技能替换为召唤小仙女"},
         {"Deployment Tactics Feature","展开战术"},
-        {"Changes Deployment Tactics to Adloquium until a party member has the Galvanize buff.","等待翻译"},
-        {"Adds Recitation when off cooldown to force a critical Galvanize buff on a party member.","等待翻译"},
+        {"Changes Deployment Tactics to Adloquium until a party member has the Galvanize buff.","将展开战术替换为鼓舞激励之策，直到一名成员获得鼓舞BUFF。"},
+        {"Adds Recitation when off cooldown to force a critical Galvanize buff on a party member.","若秘策不在冷却，也替换为秘策"},
         #endregion
         #endregion
         #region SUMMONER
@@ -1671,6 +1671,24 @@ public class Translatezh_CN
         {"Uses Purify when afflicted with any selected debuff.","受到选定的debuff时使用净化"},
         {"Prevent Mash Cancelling","防止取消防御"},
         {"Stops you cancelling your guard if you're mashing buttons","阻止你取消防御"},
+        #endregion
+
+        #region Config Button
+        {"Select for one button rotation","在此技能上启用循环"},
+
+        {"On Ruin I / Broils","在此技能上启用循环"},
+        {"Stop using at Enemy HP%. Set to Zero to disable this check.","在敌人HP为百分之多少时时停止使用，设置为零可禁用"},
+        {"Seconds remaining before reapplying the DoT. Set to Zero to disable this check.","续 DoT 前的剩余秒数，设置为零可禁用"},
+        {"Aetherflow remaining cooldown:","以太超流剩余冷却时间"},
+
+
+        {"Show Aetherflow On Energy Drain Only","仅应用于能量吸收"},
+        {"Show Aetherflow On All Aetherflow Skills","应用于所有使用以太的技能"},
+
+
+        {"Only when out of Aetherflow Stacks","仅当以太溢出时"},
+        {"Always when available","总是应用"},        
+        
         #endregion
 
 

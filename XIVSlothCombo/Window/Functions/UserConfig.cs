@@ -11,11 +11,63 @@ using XIVSlothCombo.Combos.PvP;
 using XIVSlothCombo.Core;
 using XIVSlothCombo.Services;
 using Dalamud.Interface;
+using System.Collections.Generic;
 
 namespace XIVSlothCombo.Window.Functions
 {
     public static class UserConfig
     {
+
+        /// <summary> Tanslate Text on UserConfig. </summary>
+        /// <param name="checkBoxName"> Search checkBoxName Tanslate </param>
+        /// <param name="checkboxDescription"> Search checkboxDescription Tanslate </param>
+        private static void TanslateUserConfig(ref string checkBoxName, ref string checkboxDescription)
+        {
+            #region 添加汉化
+            Dictionary<string, string> db = Translatezh_CN.db;
+            Dictionary<string, string> dbActionName = Translatezh_CN_DBActionName.dbActionName;
+
+            var split_checkBoxName = checkBoxName.Replace("-", "").Replace("\n", " ").Split(" ");
+
+            foreach (var split_name in split_checkBoxName)
+            {
+                if (dbActionName.ContainsKey(split_name))
+                {
+                    if (dbActionName[split_name] != "等待翻译")
+                    {
+                        checkBoxName = checkBoxName.Replace(split_name, dbActionName[split_name]);
+                    }
+
+                }
+            }
+
+            if (db.ContainsKey(checkboxDescription))
+            {
+                if (db[checkboxDescription] != "等待翻译")
+                {
+                    checkboxDescription = db[checkboxDescription];
+                }
+            }
+            else
+            {
+                var split_checkboxDescription = checkboxDescription.Replace("-", "").Replace("\n", " ").Split(" ");
+
+                foreach (var split_name in split_checkboxDescription)
+                {
+                    if (dbActionName.ContainsKey(split_name))
+                    {
+                        if (dbActionName[split_name] != "等待翻译")
+                        {
+                            checkboxDescription = checkboxDescription.Replace(split_name, dbActionName[split_name]);
+                        }
+                    }
+                }
+            }
+            #endregion
+        }
+
+
+
         /// <summary> Draws a slider that lets the user set a given value for their feature. </summary>
         /// <param name="minValue"> The absolute minimum value you'll let the user pick. </param>
         /// <param name="maxValue"> The absolute maximum value you'll let the user pick. </param>
@@ -27,6 +79,9 @@ namespace XIVSlothCombo.Window.Functions
         /// <param name="additonalChoiceCondition">What the condition is to convey to the user what triggers it.</param>
         public static void DrawSliderInt(int minValue, int maxValue, string config, string sliderDescription, float itemWidth = 150, uint sliderIncrement = SliderIncrements.Ones, bool hasAdditionalChoice = false, string additonalChoiceCondition = "")
         {
+            string Nope = "";
+            TanslateUserConfig(ref Nope, ref sliderDescription);
+
             int output = PluginConfiguration.GetCustomIntValue(config, minValue);
             if (output < minValue)
             {
@@ -127,6 +182,9 @@ namespace XIVSlothCombo.Window.Functions
         /// <param name="additonalChoiceCondition"></param>
         public static void DrawSliderFloat(float minValue, float maxValue, string config, string sliderDescription, float itemWidth = 150, bool hasAdditionalChoice = false, string additonalChoiceCondition = "")
         {
+            string Nope = "";
+            TanslateUserConfig(ref Nope, ref sliderDescription);
+
             float output = PluginConfiguration.GetCustomFloatValue(config, minValue);
             if (output < minValue)
             {
@@ -222,6 +280,9 @@ namespace XIVSlothCombo.Window.Functions
         /// <param name="digits"></param>
         public static void DrawRoundedSliderFloat(float minValue, float maxValue, string config, string sliderDescription, float itemWidth = 150, bool hasAdditionalChoice = false, string additonalChoiceCondition = "", int digits = 1)
         {
+            string Nope = "";
+            TanslateUserConfig(ref Nope, ref sliderDescription);
+
             float output = PluginConfiguration.GetCustomFloatValue(config, minValue);
             if (output < minValue)
             {
@@ -315,6 +376,8 @@ namespace XIVSlothCombo.Window.Functions
         /// <param name="descriptionColor"></param>
         public static void DrawRadioButton(string config, string checkBoxName, string checkboxDescription, int outputValue, float itemWidth = 150, Vector4 descriptionColor = new Vector4())
         {
+            TanslateUserConfig(ref checkBoxName, ref checkboxDescription);
+
             ImGui.Indent();
             if (descriptionColor == new Vector4()) descriptionColor = ImGuiColors.DalamudYellow;
             int output = PluginConfiguration.GetCustomIntValue(config, outputValue);
@@ -341,6 +404,10 @@ namespace XIVSlothCombo.Window.Functions
             ImGui.Spacing();
         }
 
+
+
+
+
         /// <summary> Draws a checkbox in a horizontal configuration intended to be linked to other checkboxes sharing the same config value. </summary>
         /// <param name="config"> The config ID. </param>
         /// <param name="checkBoxName"> The name of the feature. </param>
@@ -350,6 +417,8 @@ namespace XIVSlothCombo.Window.Functions
         /// <param name="descriptionColor"></param>
         public static void DrawHorizontalRadioButton(string config, string checkBoxName, string checkboxDescription, int outputValue, float itemWidth = 150, Vector4 descriptionColor = new Vector4())
         {
+            TanslateUserConfig(ref checkBoxName, ref checkboxDescription);
+
             ImGui.Indent();
             if (descriptionColor == new Vector4()) descriptionColor = ImGuiColors.DalamudYellow;
             int output = PluginConfiguration.GetCustomIntValue(config);
@@ -386,6 +455,8 @@ namespace XIVSlothCombo.Window.Functions
         /// <param name="isConditionalChoice"></param>
         public static void DrawAdditionalBoolChoice(string config, string checkBoxName, string checkboxDescription, float itemWidth = 150, bool isConditionalChoice = false)
         {
+            TanslateUserConfig(ref checkBoxName, ref checkboxDescription);
+
             bool output = PluginConfiguration.GetCustomBoolValue(config);
             ImGui.PushItemWidth(itemWidth);
             if (!isConditionalChoice)
@@ -431,6 +502,8 @@ namespace XIVSlothCombo.Window.Functions
         /// <param name="descriptionColor"></param>
         public static void DrawHorizontalMultiChoice(string config, string checkBoxName, string checkboxDescription, int totalChoices, int choice, float itemWidth = 150, Vector4 descriptionColor = new Vector4())
         {
+            TanslateUserConfig(ref checkBoxName, ref checkboxDescription);
+
             ImGui.Indent();
             if (descriptionColor == new Vector4()) descriptionColor = ImGuiColors.DalamudWhite;
             ImGui.PushItemWidth(itemWidth);
