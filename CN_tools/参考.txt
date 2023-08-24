@@ -1,0 +1,24 @@
+BLMGauge（Gauge）类：
+
+short EnochianTimer				还有多久获得通晓(单位ms)
+short ElementTimeRemaining		天语剩下的时间（单位ms）
+byte PolyglotStacks				通晓层数
+byte UmbralHearts				灵极心层数
+byte UmbralIceStacks			冰层数
+byte AstralFireStacks			火层数
+bool InUmbralIce				在冰状态
+bool InAstralFire				在火状态
+bool IsEnochianActive			是否在天语状态
+bool IsParadoxActive			是否在悖论状态
+
+=======================================================
+一些功能函数：
+
+bool IsOffCooldown(uint actionID)								判断一个技能是否处于冷却完成状态
+bool CanSpellWeave(uint actionID, double weaveTime = 0.6)		？
+float GetCooldownRemainingTime(uint actionID)					获取剩余冷却时间（单位S）
+uint OriginalHook(uint actionID)								获取原始钩子，这对技能升级中被替换的技能有奇效，如使用其获取雷1，在45级之前获取的是雷1，45级之后获取的是雷3
+bool TargetHasEffect(ushort effectID)							目标是否被某个buff影响
+Status? FindTargetEffect(ushort effectID)						获取目标某个buff信息
+bool LevelChecked(uint actionid)								检查是否到了能使用该技能的等级
+bool HasEffect(ushort effectID)									自身是否有某个buff

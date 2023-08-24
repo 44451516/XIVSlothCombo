@@ -13,7 +13,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
+		<DalamudLibPath>E:\YFF\Downloads\Dalamud.Updater.exe_v1.0.4.4\addon\Hooks\dev\</DalamudLibPath>
 		<DalamudPluginPath>$(appdata)\XIVLauncher\installedPlugins\XIVSlothCombo\$(version)</DalamudPluginPath>
 		<DalamudDevPlugins>$(appdata)\XIVLauncher\devPlugins\XIVSlothCombo\</DalamudDevPlugins>
 		<AssemblyName>XIVSlothCombo</AssemblyName>

@@ -451,6 +451,11 @@ namespace XIVSlothCombo.Combos
         [CustomComboInfo("治疗 选项", "在下水道使用治疗当HP低于某个值", BLM.JobID)]
         BLM_Variant_Cure = 2034,
 
+        [ReplaceSkill(BLM.Scathe)]
+        [ConflictingCombos(BLM_SimpleMode, BLM_Simple_Transpose, BLM_Paradox)]
+        [CustomComboInfo("自定义循环", "将崩溃整合为单体自定义循环。", BLM.JobID, -3, "", "")]
+        BLM_Zimo = 2500,
+
         // Last value = 2034
 
         #endregion
@@ -2445,98 +2450,98 @@ namespace XIVSlothCombo.Combos
         */
         #region Single Target DPS
         [ReplaceSkill(RDM.Jolt, RDM.Jolt2)]
-        [CustomComboInfo("Single Target DPS Features", "Enables various Single Target options below.", RDM.JobID, 1)]
+        [CustomComboInfo("赤魔简单模式 - 单目标", "启用以下所有选项.", RDM.JobID, 1)]
         RDM_ST_DPS = 13000,
 
         [ParentCombo(RDM_ST_DPS)]
-        [CustomComboInfo("Balance Opener Option [Lv.90]", "Replaces Jolt with the Balance opener ending with Resolution.\\n**Must move into melee range before melee combo**", RDM.JobID, 110)]
+        [CustomComboInfo("魔三连起手", "以【魔三连】作为起手代替【摇荡】（必须在近战距离内）", RDM.JobID, 110)]
         RDM_Balance_Opener = 13110,
 
         [ParentCombo(RDM_Balance_Opener)]
-        [CustomComboInfo("无视魔元选项", "无视魔元量整合起手技能.\\n**但所有技能都必须处于可用状态.**", RDM.JobID, 111)]
+        [CustomComboInfo("无视魔元", "无视魔元是否平衡，但所有技能都必须在可用状态", RDM.JobID, 111)]
         RDM_Balance_Opener_AnyMana = 13111,
 
         [ParentCombo(RDM_ST_DPS)]
-        [CustomComboInfo("Verthunder/Veraero Option", "Replace Jolt with Verthunder and Veraero.", RDM.JobID, 210)]
+        [CustomComboInfo("赤疾风 / 赤闪雷 替代", "以【赤疾风/赤闪雷（或其升级）】代替【摇荡】", RDM.JobID, 210)]
         RDM_ST_ThunderAero = 13210,
 
         [ParentCombo(RDM_ST_ThunderAero)]
-        [CustomComboInfo("Acceleration Option", "Add Acceleration when no Verfire/Verstone proc is available.", RDM.JobID, 211)]
+        [CustomComboInfo("促进 替代", "当没有【赤飞石/赤火炎预备】时，添加【促进】", RDM.JobID, 211)]
         RDM_ST_ThunderAero_Accel = 13211,
 
         [ParentCombo(RDM_ST_ThunderAero_Accel)]
-        [CustomComboInfo("对单目标时使用即刻咏唱 设置", "Add Swiftcast when all Acceleration charges are used.", RDM.JobID, 212)]
+        [CustomComboInfo("在循环中使用 即刻咏唱", "当所有短CD技都用完后，添加【即刻咏唱】", RDM.JobID, 212)]
         RDM_ST_ThunderAero_Accel_Swiftcast = 13212,
 
         [ParentCombo(RDM_ST_DPS)]
-        [CustomComboInfo("Verfire/Verstone Option", "Replace Jolt with Verfire and Verstone.", RDM.JobID, 220)]
+        [CustomComboInfo("赤飞石 / 赤火炎 替代", "以【赤飞石/赤火炎】代替【摇荡】", RDM.JobID, 220)]
         RDM_ST_FireStone = 13220,
 
         [ParentCombo(RDM_ST_DPS)]
-        [CustomComboInfo("Weave oGCD Damage Option", "Weave the following oGCD actions.", RDM.JobID, 240)]
+        [CustomComboInfo("能力技 设置", "在循环中加入能力技", RDM.JobID, 240)]
         RDM_ST_oGCD = 13240,
 
         [ParentCombo(RDM_ST_DPS)]
-        [CustomComboInfo("Single Target Melee Combo Option", "Add the Reposte combo.\\n**Must be in melee range or have Gap close with Corps-a-corps enabled**", RDM.JobID, 410)]
+        [CustomComboInfo("魔三连 设置", "在循环中加入魔三连（必须在近战范围内或启用了【使用短兵相接接近目标】）", RDM.JobID, 410)]
         RDM_ST_MeleeCombo = 13410,
 
         [ParentCombo(RDM_ST_MeleeCombo)]
-        [CustomComboInfo("倍增与鼓励使用 设置", "Add Manafication and Embolden.\\n**Must be in melee range or have Gap close with Corps-a-corps enabled**", RDM.JobID, 411)]
+        [CustomComboInfo("倍增与鼓励使用 设置", "加入倍增与鼓励（必须在近战范围内或启用了【使用短兵相接接近目标】）", RDM.JobID, 411)]
         RDM_ST_MeleeCombo_ManaEmbolden = 13411,
 
         [ParentCombo(RDM_ST_MeleeCombo_ManaEmbolden)]
-        [CustomComboInfo("倍增与鼓励延后使用 设置", "Hold both actions until you can perform 当 深谋远虑之策 冷却完毕时，将 生命活性法 替换为 深谋远虑之策。 double melee combo.", RDM.JobID, 412)]
+        [CustomComboInfo("倍增与鼓励延后使用 设置", "延后使用这两个技能直到你能打出两套魔三连", RDM.JobID, 412)]
         RDM_ST_MeleeCombo_ManaEmbolden_DoubleCombo = 13412,
 
         [ParentCombo(RDM_ST_MeleeCombo)]
-        [CustomComboInfo("使用短兵相接接近目标 设置", "Use Corp-a-corps when out of melee range and you have enough mana to start the melee combo.", RDM.JobID, 430)]
+        [CustomComboInfo("使用短兵相接接近目标 设置", "当你不在近战范围内并魔元足够你开始魔三连的时候，使用短兵相接接近目标", RDM.JobID, 430)]
         RDM_ST_MeleeCombo_CorpsGapCloser = 13430,
 
         [ParentCombo(RDM_ST_MeleeCombo)]
-        [CustomComboInfo("不平衡魔元处理 设置", "Use Acceleration to unbalance mana prior to starting melee combo.", RDM.JobID, 410)]
+        [CustomComboInfo("不平衡魔元处理 设置", "通过使用【促进】来平衡魔元以开始魔三连", RDM.JobID, 410)]
         RDM_ST_MeleeCombo_UnbalanceMana = 13440,
 
         [ParentCombo(RDM_ST_DPS)]
-        [CustomComboInfo("Melee Finisher Option", "Add Verflare/Verholy and other finishing moves.", RDM.JobID, 510)]
+        [CustomComboInfo("近战技能终结 设置", "在魔三连后加入【赤神圣/赤核爆】等终结技能", RDM.JobID, 510)]
         RDM_ST_MeleeFinisher = 13510,
 
         [ParentCombo(RDM_ST_DPS)]
-        [CustomComboInfo("循环加入醒梦", "当MP小于滑块值时，将醒梦整合至此循环", RDM.JobID, 610)]
+        [CustomComboInfo("在循环使用 醒梦", "当MP小于指定值时，使用【醒梦】", RDM.JobID, 610)]
         RDM_ST_Lucid = 13610,
         #endregion
 
         #region AoE DPS
         [ReplaceSkill(RDM.Scatter, RDM.Impact)]
-        [CustomComboInfo("AoE DPS连击", "Enables various AoE Target options below.", RDM.JobID, 310)]
+        [CustomComboInfo("赤魔简单模式 - AOE", "启用以下所有选项", RDM.JobID, 310)]
         RDM_AoE_DPS = 13310,
 
         [ParentCombo(RDM_AoE_DPS)]
         [ReplaceSkill(RDM.Scatter, RDM.Impact)]
-        [CustomComboInfo("AoE Acceleration Option", "Use Acceleration for increased damage.", RDM.JobID, 320)]
+        [CustomComboInfo("AOE的 促进 选项", "使用【促进】来增加伤害", RDM.JobID, 320)]
         RDM_AoE_Accel = 13320,
 
         [ParentCombo(RDM_AoE_Accel)]
-        [CustomComboInfo("对单目标时使用即刻咏唱 设置", "Add Swiftcast when all Acceleration charges are used or when below level 50.", RDM.JobID, 321)]
+        [CustomComboInfo("对单目标时使用即刻咏唱 设置", "当所有的短CD技能用完了或你低于50级时，在循环中加入【即刻咏唱】", RDM.JobID, 321)]
         RDM_AoE_Accel_Swiftcast = 13321,
 
         [ParentCombo(RDM_AoE_Accel)]
-        [CustomComboInfo("使用促进 设置", "Only use acceleration during weave windows.", RDM.JobID, 322)]
+        [CustomComboInfo("使用 促进 设置", "只在能力技时间窗内使用【促进】", RDM.JobID, 322)]
         RDM_AoE_Accel_Weave = 13322,
 
         [ParentCombo(RDM_AoE_DPS)]
-        [CustomComboInfo("Weave oGCD Damage Option", "Weave the following oGCD actions:", RDM.JobID, 240)]
+        [CustomComboInfo("能力技 设置", "在循环中加入能力技", RDM.JobID, 240)]
         RDM_AoE_oGCD = 13241,
 
         [ParentCombo(RDM_AoE_DPS)]
-        [CustomComboInfo("Moulinet Melee Combo Option", "Use Moulinet when over 60/60 mana", RDM.JobID, 420)]
+        [CustomComboInfo("划圆斩 设置", "当你的两种魔元都在60以上时，使用划圆斩", RDM.JobID, 420)]
         RDM_AoE_MeleeCombo = 13420,
 
         [ParentCombo(RDM_AoE_MeleeCombo)]
-        [CustomComboInfo("倍增与鼓励使用 设置", "Add Manafication and Embolden.\\n**Must be in range of Moulinet**", RDM.JobID, 411)]
+        [CustomComboInfo("倍增与鼓励使用 设置", "加入倍增与鼓励（必须在近战范围内）", RDM.JobID, 411)]
         RDM_AoE_MeleeCombo_ManaEmbolden = 13421,
 
         [ParentCombo(RDM_AoE_MeleeCombo)]
-        [CustomComboInfo("使用短兵相接接近目标 设置", "Use Corp-a-corps when out of melee range and you have enough mana to start the melee combo.", RDM.JobID, 430)]
+        [CustomComboInfo("使用短兵相接接近目标 设置", "当你不在近战范围内并魔元足够你开始魔三连的时候，使用短兵相接接近目标", RDM.JobID, 430)]
         RDM_AoE_MeleeCombo_CorpsGapCloser = 13422,
 
         [ParentCombo(RDM_AoE_MeleeCombo)]
@@ -2544,11 +2549,11 @@ namespace XIVSlothCombo.Combos
         RDM_AoE_MeleeCombo_UnbalanceMana = 13423,
 
         [ParentCombo(RDM_AoE_DPS)]
-        [CustomComboInfo("Melee Finisher Option", "Add Verflare/Verholy and other finishing moves.", RDM.JobID, 510)]
+        [CustomComboInfo("近战技能终结 设置", "在魔三连后加入【赤神圣/赤核爆】等终结技能", RDM.JobID, 510)]
         RDM_AoE_MeleeFinisher = 13424,
 
         [ParentCombo(RDM_AoE_DPS)]
-        [CustomComboInfo("循环加入醒梦", "当MP小于滑块值时，将醒梦整合至此循环", RDM.JobID, 610)]
+        [CustomComboInfo("在循环使用 醒梦", "当MP小于指定值时，使用【醒梦】", RDM.JobID, 610)]
         RDM_AoE_Lucid = 13425,
         #endregion
 

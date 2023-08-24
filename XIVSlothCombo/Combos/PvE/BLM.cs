@@ -6,6 +6,7 @@ using XIVSlothCombo.Combos.PvE.Content;
 using XIVSlothCombo.Core;
 using XIVSlothCombo.CustomComboNS;
 using XIVSlothCombo.CustomComboNS.Functions;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureMacroModule.Macro;
 
 namespace XIVSlothCombo.Combos.PvE
 {
@@ -112,9 +113,9 @@ namespace XIVSlothCombo.Combos.PvE
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
-                if (actionID is Blizzard && LevelChecked(Freeze) && !Gauge.InUmbralIce) 
+                if (actionID is Blizzard && LevelChecked(Freeze) && !Gauge.InUmbralIce)
                     return Blizzard3;
-                if (actionID is Freeze && !LevelChecked(Freeze)) 
+                if (actionID is Freeze && !LevelChecked(Freeze))
                     return Blizzard2;
                 return actionID;
             }
@@ -137,7 +138,7 @@ namespace XIVSlothCombo.Combos.PvE
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_LeyLines;
 
-            protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level) => 
+            protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level) =>
                 actionID is LeyLines && HasEffect(Buffs.LeyLines) && LevelChecked(BetweenTheLines) ? BetweenTheLines : actionID;
         }
 
@@ -148,7 +149,7 @@ namespace XIVSlothCombo.Combos.PvE
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level) =>
                 actionID is AetherialManipulation &&
                 ActionReady(BetweenTheLines) &&
-                HasEffect(Buffs.LeyLines) && 
+                HasEffect(Buffs.LeyLines) &&
                 !HasEffect(Buffs.CircleOfPower) &&
                 !IsMoving
                 ? BetweenTheLines : actionID;
@@ -158,7 +159,7 @@ namespace XIVSlothCombo.Combos.PvE
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_Mana;
 
-            protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level) => 
+            protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level) =>
                 actionID is Transpose && Gauge.InUmbralIce && LevelChecked(UmbralSoul) ? UmbralSoul : actionID;
         }
 
@@ -166,10 +167,53 @@ namespace XIVSlothCombo.Combos.PvE
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_AoE_SimpleMode;
 
+            internal static DateTime previousTime;
+            internal static double movementTime = 0.0f;
+
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
                 if (actionID is Flare)
                 {
+                    // Handle movement
+                    if (IsEnabled(CustomComboPreset.BLM_Simple_CastMovement) && InCombat())
+                    {
+                        var movementTimeThreshold = PluginConfiguration.GetCustomFloatValue(Config.BLM_MovementTime);
+                        double deltaTime = (DateTime.Now - previousTime).TotalSeconds;
+                        previousTime = DateTime.Now;
+                        if (IsMoving)
+                        {
+                            movementTime = movementTime + deltaTime > movementTimeThreshold + 0.02 ? movementTimeThreshold + 0.02 : movementTime + deltaTime;
+                        }
+                        else
+                        {
+                            movementTime = movementTime - deltaTime < 0 ? 0 : movementTime - (deltaTime * 2);
+                        }
+
+                        if (movementTime > movementTimeThreshold && !HasEffect(Buffs.Triplecast) && !HasEffect(All.Buffs.Swiftcast))
+                        {
+                            if (InCombat() && LocalPlayer.CurrentCastTime == 0.0f)
+                            {
+                                if (HasEffect(Buffs.Thundercloud))
+                                {
+                                    if (!ThunderList.ContainsKey(lastComboMove))
+                                    {
+                                        uint dot = OriginalHook(Thunder2); //Grab the appropriate DoT Action
+                                        return dot;
+                                    }
+                                }
+                                if (IsOffCooldown(All.Swiftcast))
+                                {
+                                    return All.Swiftcast;
+                                }
+                                if (ActionReady(Triplecast))
+                                {
+                                    return Triplecast;
+                                }
+                            }
+                        }
+                    }
+
+
                     var currentMP = LocalPlayer.CurrentMp;
                     var polyToStore = PluginConfiguration.GetCustomIntValue(Config.BLM_PolyglotsStored);
 
@@ -238,7 +282,7 @@ namespace XIVSlothCombo.Combos.PvE
                                 return Flare;
                             }
                             else if (currentMP >= MP.FireAoE)
-                            {                                
+                            {
                                 return fireAoEID;
                             }
                         }
@@ -356,7 +400,7 @@ namespace XIVSlothCombo.Combos.PvE
                                     {
                                         triplecastMP = 6000;
                                     }
-                                    if (currentMP <= triplecastMP)
+                                    if (currentMP <= triplecastMP && GetRemainingCharges(Triplecast) > 1)
                                     {
                                         return Triplecast;
                                     }
@@ -505,7 +549,7 @@ namespace XIVSlothCombo.Combos.PvE
                                         uint dot = OriginalHook(Thunder); //Grab the appropriate DoT Action
                                         Status? dotDebuff = FindTargetEffect(ThunderList[dot]); //Match it with it's Debuff ID, and check for the Debuff
 
-                                        if (dotDebuff is null || dotDebuff?.RemainingTime <= 4) 
+                                        if (dotDebuff is null || dotDebuff?.RemainingTime <= 4)
                                             return dot; //Use appropriate DoT Action
                                     }
                                 }
@@ -535,7 +579,7 @@ namespace XIVSlothCombo.Combos.PvE
                         // Thunder uptime
                         if (IsEnabled(CustomComboPreset.BLM_Thunder) && Gauge.ElementTimeRemaining >= astralFireRefresh)
                         {
-                            if (!ThunderList.ContainsKey(lastComboMove) && 
+                            if (!ThunderList.ContainsKey(lastComboMove) &&
                                 !TargetHasEffect(Debuffs.Thunder2) && !TargetHasEffect(Debuffs.Thunder4))
                             {
                                 if (HasEffect(Buffs.Thundercloud) || (IsEnabled(CustomComboPreset.BLM_ThunderUptime) && currentMP >= MP.Thunder))
@@ -1466,6 +1510,510 @@ namespace XIVSlothCombo.Combos.PvE
                     if (LevelChecked(Xenoglossy) && Gauge.PolyglotStacks > 0)
                         return Xenoglossy;
                 }
+                return actionID;
+            }
+        }
+
+        internal class BLM_Zimo : CustomCombo
+        {
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_Zimo;
+
+            internal static bool fireChance = true;
+            internal static bool thunderChance = true;
+            internal static int fire4Count = 0;
+            internal static uint lastGCD = 0;
+            internal static uint lastOGCD = 0;
+            internal static bool chant = false;
+            internal static string pecialCombo = "";
+
+            protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
+            {
+                if (actionID is Scathe)
+                {
+                    //var currentMP = LocalPlayer.CurrentMp;
+                    //Dalamud.Logging.PluginLog.Warning($"{LevelChecked(Triplecast) && Gauge.InAstralFire && GetRemainingCharges(Triplecast) > 1 &&
+                    //        FindEffect(Buffs.Triplecast) == null && lastOGCD != Triplecast &&
+                    //        (currentMP >= 4000 && LevelChecked(Despair) && Gauge.ElementTimeRemaining > 6000 ||
+                    //        currentMP >= 2400 && Gauge.UmbralHearts == 3 && Gauge.ElementTimeRemaining > 10000)}");
+                    //return actionID;
+
+                    // 先准备一些变量
+                    var canWeave = CanSpellWeave(actionID);
+                    var currentMP = LocalPlayer.CurrentMp;
+
+                    // 需要吟唱的技能时点
+                    // 开始吟唱时点
+                    if (comboTime == 0 && !chant)
+                    {
+                        chant = true;
+                        if (lastGCD == Fire4)
+                        {
+                            fire4Count++;
+                        }
+                        //if (lastGCD == Fire || lastGCD == Fire3 || lastGCD == Paradox || lastGCD == Despair)
+                        //{
+                        //    fire4Count = 0;
+                        //    var firestarterBuff = FindEffect(Buffs.Firestarter);
+                        //    if (firestarterBuff != null && firestarterBuff.RemainingTime > 15000)
+                        //    {
+                        //        fireChance = true;
+                        //    }
+                        //}
+                        if (lastGCD == Thunder || lastGCD == Thunder3 || lastGCD == Foul)
+                        {
+                            fireChance = false;
+                        }
+                        if (lastGCD == Thunder || lastGCD == Thunder3)
+                        {
+                            thunderChance = false;
+                        }
+                    }
+                    if (comboTime != 0 && chant)
+                    {
+                        chant = false;
+                        thunderChance = true;
+                    }
+                    // 技能释放时点
+
+                    // 不需要吟唱的技能时点
+                    if (lastComboMove == Thunder || lastComboMove == Thunder3 || lastComboMove == Xenoglossy ||
+                    lastComboMove == Foul)
+                    {
+                        fireChance = false;
+                    }
+                    if (lastComboMove == Fire || lastComboMove == Fire3 || lastComboMove == Paradox || lastComboMove == Despair)
+                    {
+                        fire4Count = 0;
+                        var firestarterBuff = FindEffect(Buffs.Firestarter);
+                        if (firestarterBuff != null && firestarterBuff.RemainingTime > 15000)
+                        {
+                            fireChance = true;
+                        }
+                    }
+
+                    // 判断并使用特殊连招
+                    if (pecialCombo == "")
+                    {
+                        // 起手
+                        if (LevelChecked(Paradox) && GetRemainingCharges(Triplecast) > 0 && !Gauge.InUmbralIce && !Gauge.InAstralFire &&
+                            currentMP == 10000 && GetRemainingCharges(All.Swiftcast) > 0)
+                        {
+                            pecialCombo = "AtFirst";
+                        }
+                        // 魔泉收尾
+                        if (LevelChecked(Xenoglossy) && GetRemainingCharges(Manafont) > 0 && GetRemainingCharges(Triplecast) > 0 && FindEffect(Buffs.Triplecast) == null &&
+                            Gauge.InAstralFire && currentMP < MP.Fire && currentMP >= MP.Despair && Gauge.PolyglotStacks > 0 && Gauge.ElementTimeRemaining >= 3000)
+                        {
+                            pecialCombo = "ManafontWindUp";
+                        }
+                    }
+                    var result = actionID;
+                    switch (pecialCombo)
+                    {
+                        case "":
+                            break;
+                        case "AtFirst":
+                            // 起手
+                            result = AtFirst(actionID, lastComboMove, comboTime, level, canWeave, currentMP);
+                            if (result != actionID)
+                            {
+                                return result;
+                            }
+                            break;
+                        case "ManafontWindUp":
+                            // 魔泉收尾
+                            result = ManafontWindUp(actionID, lastComboMove, comboTime, level, canWeave, currentMP);
+                            if (result != actionID)
+                            {
+                                return result;
+                            }
+                            break;
+                    }
+
+                    #region 按状态判断
+                    // 能力技阶段
+                    if (canWeave)
+                    {
+                        // 黑魔纹
+                        if (LevelChecked(LeyLines) && GetRemainingCharges(LeyLines) > 0)
+                        {
+                            lastOGCD = LeyLines;
+                            return LeyLines;
+                        }
+                        // 详述
+                        if (LevelChecked(Amplifier) && GetRemainingCharges(Amplifier) > 0 && Gauge.PolyglotStacks < 2 &&
+                            !(Gauge.PolyglotStacks == 1 && Gauge.EnochianTimer < 10000 && Gauge.EnochianTimer != 0))
+                        {
+                            lastOGCD = Amplifier;
+                            return Amplifier;
+                        }
+                        // 三连咏唱
+                        if (LevelChecked(Triplecast) && Gauge.InAstralFire && GetRemainingCharges(Triplecast) > 1 &&
+                            !HasEffect(Buffs.Triplecast) && lastOGCD != Triplecast &&
+                            currentMP >= MP.Fire * 2 + MP.Despair)
+                            //(currentMP >= 4000 && LevelChecked(Despair) && Gauge.ElementTimeRemaining > 600cu0 ||
+                            //currentMP >= 2400 && Gauge.UmbralHearts == 3 && Gauge.ElementTimeRemaining > 10000))
+                        {
+                            lastOGCD = Triplecast;
+                            return Triplecast;
+                        }
+                        // 激情咏唱
+                        var thunder = OriginalHook(Thunder);
+                        var buff = FindTargetEffect(ThunderList[thunder]);
+                        if (LevelChecked(Sharpcast) && GetRemainingCharges(Sharpcast) > 0 && !HasEffect(Buffs.Sharpcast) && (buff is null || buff.RemainingTime <= 8))
+                        {
+                            lastOGCD = Sharpcast;
+                            return Sharpcast;
+                        }
+                        // 激情咏唱2
+                        if (LevelChecked(Sharpcast) && GetRemainingCharges(Sharpcast) > 0 && !HasEffect(Buffs.Sharpcast) && GetRemainingCharges(Sharpcast) > 1)
+                        {
+                            lastOGCD = Sharpcast;
+                            return Sharpcast;
+                        }
+                    }
+                    // 恢复阶段
+                    if (!Gauge.InUmbralIce && !Gauge.InAstralFire)
+                    {
+                        // 激情咏唱
+                        if (LevelChecked(Sharpcast) && GetRemainingCharges(Sharpcast) > 0 && !HasEffect(Buffs.Sharpcast))
+                        {
+                            lastOGCD = Sharpcast;
+                            return Sharpcast;
+                        }
+                        // 火3
+                        if (LevelChecked(Fire3) && currentMP >= 6400)
+                        {
+                            lastGCD = Fire3;
+                            return Fire3;
+                        }
+                        // 火1
+                        if (LevelChecked(Fire) && currentMP >= 4000)
+                        {
+                            lastGCD = Fire;
+                            return Fire;
+                        }
+                        // 冰3
+                        if (LevelChecked(Blizzard3) && currentMP < 6400)
+                        {
+                            lastGCD = Blizzard3;
+                            return Blizzard3;
+                        }
+                        // 冰1
+                        if (LevelChecked(Blizzard) && currentMP < 4000)
+                        {
+                            lastGCD = Blizzard;
+                            return Blizzard;
+                        }
+                    }
+                    // 冰阶段
+                    if (Gauge.InUmbralIce)
+                    {
+                        // 释放快要过期的资源
+                        // 电
+                        var thunder = OriginalHook(Thunder);
+                        var thundercloudBuff = FindEffect(Buffs.Thundercloud);
+                        if (LevelChecked(thunder) && thundercloudBuff != null && thundercloudBuff.RemainingTime <= 4 && thunderChance && lastComboMove != thunder)
+                        {
+                            lastGCD = thunder;
+                            return thunder;
+                        }
+                        // 异言
+                        if (LevelChecked(Xenoglossy) && (Gauge.PolyglotStacks == 2 || Gauge.EnochianTimer < 5000 && Gauge.PolyglotStacks == 1))
+                        {
+                            lastGCD = Xenoglossy;
+                            return Xenoglossy;
+                        }
+                        // 秽浊
+                        if (LevelChecked(Foul) && (Gauge.PolyglotStacks == 2 || Gauge.EnochianTimer < 5000 && Gauge.PolyglotStacks == 1))
+                        {
+                            lastGCD = Foul;
+                            return Foul;
+                        }
+
+                        // 补buff
+                        // 电2
+                        var buff = FindTargetEffect(ThunderList[thunder]);
+                        if (LevelChecked(thunder) && (buff is null || buff.RemainingTime <= 4) && currentMP >= MP.Thunder && thunderChance && lastComboMove != thunder)
+                        {
+                            lastGCD = thunder;
+                            return thunder;
+                        }
+
+                        // 常规技能
+                        // 冰澈
+                        if (LevelChecked(Blizzard4) && Gauge.UmbralHearts < 3)
+                        {
+                            lastGCD = Blizzard4;
+                            return Blizzard4;
+                        }
+                        // 悖论
+                        if (LevelChecked(Paradox) && Gauge.IsParadoxActive)
+                        {
+                            lastGCD = Paradox;
+                            return Paradox;
+                        }
+                        // 爆炎
+                        if (LevelChecked(Fire3) && currentMP > 9500)
+                        {
+                            lastGCD = Fire3;
+                            return Fire3;
+                        }
+                        // 冰澈2
+                        if (LevelChecked(Blizzard4))
+                        {
+                            lastGCD = Blizzard4;
+                            return Blizzard4;
+                        }
+
+                        // 低等级常规技能
+                        // 冰结
+                        if (LevelChecked(Blizzard) && currentMP <= 9500)
+                        {
+                            lastGCD = Blizzard;
+                            return Blizzard;
+                        }
+                        // 星灵移位
+                        if (LevelChecked(Transpose) && currentMP > 9500)
+                        {
+                            lastGCD = Transpose;
+                            return Transpose;
+                        }
+
+                        // 理论上不会到这
+                        return actionID;
+                    }
+                    // 火阶段
+                    if (Gauge.InAstralFire)
+                    {
+
+                        // 释放快要过期的资源
+                        // 爆炎2
+                        var firestarterBuff = FindEffect(Buffs.Firestarter);
+                        if (LevelChecked(Fire3) && firestarterBuff != null && firestarterBuff.RemainingTime <= 4)
+                        {
+                            lastGCD = Fire3;
+                            return Fire3;
+                        }
+                        // 电
+                        var thunder = OriginalHook(Thunder);
+                        var thundercloudBuff = FindEffect(Buffs.Thundercloud);
+                        if (LevelChecked(thunder) && thundercloudBuff != null && thundercloudBuff.RemainingTime <= 4 && thunderChance && fireChance && lastComboMove != thunder)
+                        {
+                            lastGCD = thunder;
+                            return thunder;
+                        }
+                        // 异言
+                        if (LevelChecked(Xenoglossy) && Gauge.PolyglotStacks == 2 && fireChance)
+                        {
+                            lastGCD = Xenoglossy;
+                            return Xenoglossy;
+                        }
+                        // 秽浊
+                        if (LevelChecked(Foul) && Gauge.PolyglotStacks == 2 && fireChance)
+                        {
+                            lastGCD = Xenoglossy;
+                            return Foul;
+                        }
+
+                        // 补buff
+                        // 电2
+                        var thunderBuff = FindTargetEffect(ThunderList[thunder]);
+                        if (LevelChecked(thunder) && (thunderBuff is null || thunderBuff.RemainingTime <= 4) && currentMP >= MP.Thunder && thunderChance && fireChance && lastComboMove != thunder)
+                        {
+                            lastGCD = thunder;
+                            return thunder;
+                        }
+
+                        // 保持天语不断
+                        // 爆炎
+                        if (LevelChecked(Fire3) && HasEffect(Buffs.Firestarter) && (Gauge.ElementTimeRemaining < 4000 || fire4Count >= 3))
+                        {
+                            lastGCD = Fire3;
+                            return Fire3;
+                        }
+                        // 悖论
+                        if (LevelChecked(Paradox) && Gauge.IsParadoxActive && (Gauge.ElementTimeRemaining < 4000 || fire4Count >= 3))
+                        {
+                            lastGCD = Paradox;
+                            return Paradox;
+                        }
+                        // 火炎
+                        if (LevelChecked(Fire) && currentMP >= MP.Fire && (Gauge.ElementTimeRemaining < 4000 || fire4Count >= 3))
+                        {
+                            lastGCD = Fire;
+                            return Fire;
+                        }
+
+                        // 常规技能
+                        // 炽炎
+                        if (LevelChecked(Fire4) && currentMP >= MP.Fire)
+                        {
+                            lastGCD = Fire4;
+                            return Fire4;
+                        }
+                        // 绝望
+                        if (LevelChecked(Despair) && currentMP >= MP.Despair)
+                        {
+                            lastGCD = Despair;
+                            return Despair;
+                        }
+                        // 冰封
+                        if (LevelChecked(Blizzard3) && currentMP < Fire)
+                        {
+                            lastGCD = Blizzard3;
+                            return Blizzard3;
+                        }
+
+                        // 低等级常规技能
+                        // 火炎2
+                        if (LevelChecked(Fire) && currentMP >= MP.Fire)
+                        {
+                            lastGCD = Fire;
+                            return Fire;
+                        }
+
+                        // 理论上不会到这
+                        return actionID;
+                    }
+                    #endregion
+                }
+                return actionID;
+            }
+
+            internal static bool ManafontWindUp_Xenoglossy = false;
+
+            protected uint ManafontWindUp(uint actionID, uint lastComboMove, float comboTime, byte level, bool canWeave, float currentMP)
+            {
+                if (lastComboMove == Xenoglossy)
+                {
+                    ManafontWindUp_Xenoglossy = true;
+                }
+                // 异言
+                if (Gauge.PolyglotStacks > 0 && FindEffect(Buffs.Triplecast) == null && !ManafontWindUp_Xenoglossy)
+                {
+                    lastGCD = Xenoglossy;
+                    return Xenoglossy;
+                }
+                // 三连咏唱
+                if (canWeave && GetRemainingCharges(Triplecast) > 0 && FindEffect(Buffs.Triplecast) == null)
+                {
+                    lastOGCD = Triplecast;
+                    return Triplecast;
+                }
+                // 炽炎
+                if (currentMP >= MP.Fire && FindEffect(Buffs.Triplecast) != null)
+                {
+                    lastGCD = Fire4;
+                    return Fire4;
+                }
+                // 绝望
+                if (currentMP >= MP.Despair && FindEffect(Buffs.Triplecast) != null)
+                {
+                    if (GetRemainingCharges(Manafont) == 0)
+                    {
+                        ManafontWindUp_Xenoglossy = false;
+                        pecialCombo = "";
+                    }
+                    lastGCD = Despair;
+                    return Despair;
+                }
+                // 炽炎2
+                if (GetRemainingCharges(Manafont) == 0 && FindEffect(Buffs.Triplecast) != null)
+                {
+                    lastGCD = Fire4;
+                    return Fire4;
+                }
+                // 魔泉
+                if (currentMP == 0 && GetRemainingCharges(Manafont) > 0)
+                {
+                    lastOGCD = Manafont;
+                    return Manafont;
+                }
+                // 出现了意外
+                ManafontWindUp_Xenoglossy = false;
+                pecialCombo = "";
+                return actionID;
+            }
+
+            protected uint AtFirst(uint actionID, uint lastComboMove, float comboTime, byte level, bool canWeave, float currentMP)
+            {
+                // 激情咏唱
+                if (GetRemainingCharges(Sharpcast) > 0 && !HasEffect(Buffs.Sharpcast) && !Gauge.InUmbralIce && !Gauge.InAstralFire)
+                {
+                    lastOGCD = Sharpcast;
+                    return Sharpcast;
+                }
+                // 爆炎
+                if (!Gauge.InUmbralIce && !Gauge.InAstralFire && currentMP > MP.Fire3)
+                {
+                    lastGCD = Fire3;
+                    return Fire3;
+                }
+                // 暴雷
+                if (lastComboMove == Fire3 && currentMP > MP.Thunder)
+                {
+                    lastGCD = Thunder3;
+                    return Thunder3;
+                }
+                // 三连咏唱
+                if (lastComboMove == Fire4 && GetRemainingCharges(Triplecast) > 0 && (currentMP == 7600 || currentMP == 6000) && FindEffect(Buffs.Triplecast) == null)
+                {
+                    lastOGCD = Triplecast;
+                    return Triplecast;
+                }
+                if (canWeave)
+                {
+                    // 详述
+                    if (GetRemainingCharges(Amplifier) > 0 && Gauge.PolyglotStacks < 2 &&
+                        !(Gauge.PolyglotStacks == 1 && Gauge.EnochianTimer < 10000 && Gauge.EnochianTimer != 0))
+                    {
+                        lastOGCD = Amplifier;
+                        return Amplifier;
+                    }
+                    // 黑魔纹
+                    if (GetRemainingCharges(LeyLines) > 0)
+                    {
+                        lastOGCD = LeyLines;
+                        return LeyLines;
+                    }
+                    // 即刻咏唱
+                    if (FindEffect(Buffs.Triplecast) == null && GetRemainingCharges(All.Swiftcast) > 0)
+                    {
+                        lastOGCD = All.Swiftcast;
+                        return All.Swiftcast;
+                    }
+                }
+                // 炽炎
+                if (currentMP >= MP.Fire)
+                {
+                    lastGCD = Fire4;
+                    return Fire4;
+                }
+                // 绝望
+                if (currentMP >= MP.Despair)
+                {
+                    if (GetRemainingCharges(Manafont) == 0)
+                    {
+                        pecialCombo = "";
+                    }
+                    lastGCD = Despair;
+                    return Despair;
+                }
+                // 炽炎2
+                if (GetRemainingCharges(Manafont) == 0)
+                {
+                    lastGCD = Fire4;
+                    return Fire4;
+                }
+                // 魔泉
+                if (GetRemainingCharges(Manafont) > 0)
+                {
+                    lastOGCD = Manafont;
+                    return Manafont;
+                }
+                // 出现了意外
+                pecialCombo = "";
                 return actionID;
             }
         }
