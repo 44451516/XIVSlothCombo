@@ -27,6 +27,8 @@ namespace XIVSlothComboX.CustomComboNS.Functions
 
         public static readonly List<CustomAction> 整个轴 = new();
 
+        public static uint CustomTimelineHookId = 0;
+
 
         public static void InitCustomTimeline()
         {

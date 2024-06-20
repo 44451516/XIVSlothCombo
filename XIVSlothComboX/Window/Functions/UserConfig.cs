@@ -353,12 +353,11 @@ namespace XIVSlothComboX.Window.Functions
         }
 
 
-        public static void DrawCustom(CustomTimeline customTimeline,List<CustomTimeline> customTimelineList)
+        public static void DrawCustom(CustomTimeline customTimeline, List<CustomTimeline> customTimelineList)
         {
             ImGui.PushID(customTimeline.Name);
             ImGui.Indent();
             ImGui.SameLine();
- 
 
 
             if (ImGui.Button("加载"))
@@ -369,31 +368,26 @@ namespace XIVSlothComboX.Window.Functions
                     {
                         tCustomTimeline.Enable = false;
                     }
-
                 }
+
                 customTimeline.Enable = true;
-                
+
                 Service.Configuration.Save();
-                
+
                 CustomComboFunctions.LoadCustomTime(customTimeline);
-
-
-               
             }
-           
-            
+
+
             ImGui.SameLine();
             ImGui.SetCursorPosX(60);
             if (ImGui.Button("停用"))
             {
                 customTimeline.Enable = false;
                 Service.Configuration.Save();
-                
+
                 CustomComboFunctions.ResetCustomTime();
             }
 
-            
-          
 
             {
                 ImGui.SameLine();
@@ -405,18 +399,14 @@ namespace XIVSlothComboX.Window.Functions
 
                 if (customTimeline.Enable)
                 {
-                    ImGui.TextColored(descriptionColor,customTimeline.Name);
+                    ImGui.TextColored(descriptionColor, customTimeline.Name);
                 }
                 else
                 {
                     ImGui.Text(customTimeline.Name);
                 }
-
-             
-                
-          
             }
-            
+
 
             ImGui.Unindent();
             ImGui.Spacing();
@@ -1314,6 +1304,19 @@ namespace XIVSlothComboX.Window.Functions
 
             #region BLACK MAGE
 
+            if (preset is CustomComboPreset.BLM_Advanced_CustomMode)
+            {
+                List<CustomTimeline> customTimelineList =
+                    PluginConfiguration.CustomTimelineList.FindAll(CustomTimeline => CustomTimeline.JobId == BLM.JobID);
+
+
+                for (var i = 0; i < customTimelineList.Count; i++)
+                {
+                    CustomTimeline customTimeline = customTimelineList[i];
+                    UserConfig.DrawCustom(customTimeline, customTimelineList);
+                }
+            }
+
             if (preset is CustomComboPreset.BLM_ST_AdvancedMode)
             {
                 UserConfig.DrawHorizontalRadioButton(BLM.Config.BLM_Adv_InitialCast, "火 3 Initial Cast", "", 0);
@@ -1483,6 +1486,19 @@ namespace XIVSlothComboX.Window.Functions
 
             #region DARK KNIGHT
 
+            if (preset is CustomComboPreset.DRK_Advanced_CustomMode)
+            {
+                List<CustomTimeline> customTimelineList =
+                    PluginConfiguration.CustomTimelineList.FindAll(CustomTimeline => CustomTimeline.JobId == SMN.JobID);
+                
+                
+                for (var i = 0; i < customTimelineList.Count; i++)
+                {
+                    CustomTimeline customTimeline = customTimelineList[i];
+                    UserConfig.DrawCustom(customTimeline,customTimelineList);
+                }
+            }
+            
             if (preset == CustomComboPreset.DRK_EoSPooling && enabled)
                 UserConfig.DrawSliderInt(0, 3000, DRK.Config.DRK_MPManagement, "保留多少MP (0 = 全部使用)", 150, SliderIncrements.Thousands);
 
@@ -1499,6 +1515,19 @@ namespace XIVSlothComboX.Window.Functions
 
             #region DRAGOON
 
+            if (preset is CustomComboPreset.DRG_Advanced_CustomMode)
+            {
+                List<CustomTimeline> customTimelineList =
+                    PluginConfiguration.CustomTimelineList.FindAll(CustomTimeline => CustomTimeline.JobId == SMN.JobID);
+                
+                
+                for (var i = 0; i < customTimelineList.Count; i++)
+                {
+                    CustomTimeline customTimeline = customTimelineList[i];
+                    UserConfig.DrawCustom(customTimeline,customTimelineList);
+                }
+            }
+            
             if (preset == CustomComboPreset.DRG_ST_Dives && enabled)
             {
                 UserConfig.DrawHorizontalRadioButton(DRG.Config.DRG_ST_DiveOptions, "冷却好了用", "单插友好. 冷却好了使用.", 1);
@@ -1540,6 +1569,19 @@ namespace XIVSlothComboX.Window.Functions
 
             #region GUNBREAKER
 
+            if (preset is CustomComboPreset.GNB_Advanced_CustomMode)
+            {
+                List<CustomTimeline> customTimelineList =
+                    PluginConfiguration.CustomTimelineList.FindAll(CustomTimeline => CustomTimeline.JobId == GNB.JobID);
+                
+                
+                for (var i = 0; i < customTimelineList.Count; i++)
+                {
+                    CustomTimeline customTimeline = customTimelineList[i];
+                    UserConfig.DrawCustom(customTimeline,customTimelineList);
+                }
+            }
+            
             if (preset == CustomComboPreset.GNB_START_GCD)
             {
                 UserConfig.DrawHorizontalRadioButton(GNB.Config.GNB_START_GCD, "1GCD", "", 1);
@@ -1573,11 +1615,11 @@ namespace XIVSlothComboX.Window.Functions
                 List<CustomTimeline> customTimelineList =
                     PluginConfiguration.CustomTimelineList.FindAll(CustomTimeline => CustomTimeline.JobId == MCH.JobID);
 
-                
+
                 for (var i = 0; i < customTimelineList.Count; i++)
                 {
                     CustomTimeline customTimeline = customTimelineList[i];
-                    UserConfig.DrawCustom(customTimeline,customTimelineList);
+                    UserConfig.DrawCustom(customTimeline, customTimelineList);
                 }
             }
 
@@ -1760,6 +1802,19 @@ namespace XIVSlothComboX.Window.Functions
             // ====================================================================================
 
             #region PALADIN
+            if (preset is CustomComboPreset.PLD_Advanced_CustomMode)
+            {
+                List<CustomTimeline> customTimelineList =
+                    PluginConfiguration.CustomTimelineList.FindAll(CustomTimeline => CustomTimeline.JobId == PLD.JobID);
+                
+                
+                for (var i = 0; i < customTimelineList.Count; i++)
+                {
+                    CustomTimeline customTimeline = customTimelineList[i];
+                    UserConfig.DrawCustom(customTimeline,customTimelineList);
+                }
+            }
+            
 
             if (preset == CustomComboPreset.PLD_Requiescat_Options)
             {
@@ -1850,6 +1905,19 @@ namespace XIVSlothComboX.Window.Functions
             // ====================================================================================
 
             #region RED MAGE
+
+            if (preset is CustomComboPreset.RDM_Advanced_CustomMode)
+            {
+                List<CustomTimeline> customTimelineList =
+                    PluginConfiguration.CustomTimelineList.FindAll(CustomTimeline => CustomTimeline.JobId == RDM.JobID);
+
+
+                for (var i = 0; i < customTimelineList.Count; i++)
+                {
+                    CustomTimeline customTimeline = customTimelineList[i];
+                    UserConfig.DrawCustom(customTimeline, customTimelineList);
+                }
+            }
 
             if (preset is CustomComboPreset.RDM_ST_oGCD)
             {
@@ -2338,15 +2406,15 @@ namespace XIVSlothComboX.Window.Functions
             {
                 List<CustomTimeline> customTimelineList =
                     PluginConfiguration.CustomTimelineList.FindAll(CustomTimeline => CustomTimeline.JobId == SMN.JobID);
-                
-                
+
+
                 for (var i = 0; i < customTimelineList.Count; i++)
                 {
                     CustomTimeline customTimeline = customTimelineList[i];
-                    UserConfig.DrawCustom(customTimeline,customTimelineList);
+                    UserConfig.DrawCustom(customTimeline, customTimelineList);
                 }
             }
-            
+
             if (preset == CustomComboPreset.SMN_DemiEgiMenu_EgiOrder)
             {
                 UserConfig.DrawHorizontalRadioButton(SMN.Config.召唤顺序, "土风火", "按泰坦，迦楼罗，伊芙利特的顺序召唤", 1);
@@ -2404,6 +2472,19 @@ namespace XIVSlothComboX.Window.Functions
 
             #region WARRIOR
 
+            if (preset is CustomComboPreset.WAR_Advanced_CustomMode)
+            {
+                List<CustomTimeline> customTimelineList =
+                    PluginConfiguration.CustomTimelineList.FindAll(CustomTimeline => CustomTimeline.JobId == WAR.JobID);
+                
+                
+                for (var i = 0; i < customTimelineList.Count; i++)
+                {
+                    CustomTimeline customTimeline = customTimelineList[i];
+                    UserConfig.DrawCustom(customTimeline,customTimelineList);
+                }
+            }
+            
             if (preset == CustomComboPreset.WAR_InfuriateFellCleave && enabled)
                 UserConfig.DrawSliderInt(0, 50, WAR.Config.WAR_InfuriateRange, "设置怒气值不超过多少时使用此功能。");
 

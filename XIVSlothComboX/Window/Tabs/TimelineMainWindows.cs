@@ -41,7 +41,14 @@ namespace XIVSlothComboX.Window.Tabs
                 PluginConfiguration.SetCustomBoolValue(CustomComboFunctions.UseCustomTimeKeyUseItem, CustomComboFunctions.IsUseItem);
                 Service.Configuration.Save();
             }
-
+            ImGui.SameLine();
+            
+            //本人时间和精力有限，如果你能加入开发那更好了。。
+            if (ImGui.Button("帮助"))
+            {
+                Util.OpenLink("https://docs.qq.com/doc/DT2hlRGl5WWhVTGNM");                
+            }
+            ImGui.Separator();
 
             if (ImGui.Button("停用"))
             {
@@ -69,7 +76,7 @@ namespace XIVSlothComboX.Window.Tabs
                 }
             }
 
-            ImGuiEx.Tooltip("读取当前使用的时间轴");
+            ImGuiEx.Tooltip("从剪贴版导入");
 
             ImGui.SameLine();
             ImGui.SetCursorPosX(400f);
@@ -79,10 +86,13 @@ namespace XIVSlothComboX.Window.Tabs
                 customTimelineList.Clear();
                 Service.Configuration.Save();
             }
-
             ImGuiEx.Tooltip("Delete Hold CTRL+click.");
-
+            
+          
+            
             ImGui.Separator();
+            
+          
 
             for (var i = 0; i < customTimelineList.Count; i++)
             {

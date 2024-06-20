@@ -301,6 +301,14 @@ namespace XIVSlothComboX.Combos
         #endregion
 
         #region BLACK MAGE
+        
+        
+        [ReplaceSkill(All.Sleep)]
+        [CustomComboInfo("自定义循环",
+            "自定义循环",
+            BLM.JobID, -10, "", "")]
+        BLM_Advanced_CustomMode = 20120,
+        
 
         [ReplaceSkill(BLM.Scathe)]
         [ConflictingCombos(BLM_Scathe_Xeno, BLM_ST_AdvancedMode, BLM_ST_AdvancedMode)]
@@ -819,6 +827,14 @@ namespace XIVSlothComboX.Combos
         #endregion
 
         #region DARK KNIGHT
+        
+        [ReplaceSkill(DRK.SyphonStrike)]
+        [CustomComboInfo("自定义循环",
+            "自定义循环",
+            DRK.JobID, -10, "", "")]
+        DRK_Advanced_CustomMode = 50981,
+
+        
 
         [ParentCombo(DRK_SouleaterCombo)] [CustomComboInfo("主连击Buff整合", "将所有增益技能整合至噬魂斩连击中.", DRK.JobID, 0, "", "")]
         DRK_MainComboBuffs_Group = 5098,
@@ -930,6 +946,12 @@ namespace XIVSlothComboX.Combos
 
         #region DRAGOON
 
+        [ReplaceSkill(DRG.VorpalThrust)]
+        [CustomComboInfo("自定义循环",
+            "自定义循环",
+            DRG.JobID, -10, "", "")]
+        DRG_Advanced_CustomMode = 60001,
+        
         [ReplaceSkill(DRG.Jump, DRG.HighJump)]
         [CustomComboInfo("Jump to Mirage Dive", "Replace (High) Jump with Mirage Dive when Dive Ready.", DRG.JobID, 0)]
         DRG_Jump = 6000,
@@ -1088,6 +1110,12 @@ namespace XIVSlothComboX.Combos
 
         #region GUNBREAKER
 
+        [ReplaceSkill(GNB.残暴弹BrutalShell)]
+        [CustomComboInfo("自定义循环",
+            "自定义循环",
+            BLM.JobID, -10, "", "")]
+        GNB_Advanced_CustomMode = 69999,
+        
         [ParentCombo(GNB_ST_MainCombo)] [CustomComboInfo("起手设置", "设置多少GCD起手", GNB.JobID, 0)]
         GNB_START_GCD = 6999,
 
@@ -1779,6 +1807,14 @@ namespace XIVSlothComboX.Combos
 
         #region PALADIN
 
+        
+        [ReplaceSkill(PLD.暴乱剑RiotBlade)]
+        [CustomComboInfo("自定义循环",
+            "自定义循环",
+            PLD.JobID, -10, "", "")]
+        PLD_Advanced_CustomMode = 110001,
+
+            
         //// Last value = 11032
 
         [ConflictingCombos(PLD_ST_AdvancedMode)] [ReplaceSkill(PLD.先锋剑FastBlade)] [CustomComboInfo("骑士简单模式 - 单目标", $"一键输出(先锋剑)", PLD.JobID)]
@@ -2094,6 +2130,12 @@ namespace XIVSlothComboX.Combos
         If more than 10 sub features, use the next feature number if available
         The three digets after RDM.JobID can be used to reorder items in the list
         */
+        
+        [ReplaceSkill(All.Sleep)]
+        [CustomComboInfo("自定义循环",
+            "自定义循环",
+            RDM.JobID, -10, "", "")]
+        RDM_Advanced_CustomMode = 130000,
 
         #region Single Target DPS
 
@@ -2790,7 +2832,7 @@ namespace XIVSlothComboX.Combos
         [ReplaceSkill(All.Sleep)]
         [CustomComboInfo("自定义循环",
             "自定义循环",
-            SMN.JobID, 0, "", "")]
+            SMN.JobID, -10, "", "")]
         SMN_Advanced_CustomMode = 170000,
         
         [ReplaceSkill(SMN.Ruin, SMN.Ruin2, SMN.Outburst, SMN.Tridisaster)]
@@ -2927,6 +2969,12 @@ namespace XIVSlothComboX.Combos
 
         #region WARRIOR
 
+        [ReplaceSkill(WAR.Maim)]
+        [CustomComboInfo("自定义循环",
+            "自定义循环",
+            WAR.JobID, -10, "", "")]
+        WAR_Advanced_CustomMode = 180001,
+        
         [ReplaceSkill(WAR.StormsPath)]
         [CustomComboInfo("暴风斩连击", "战士主连击整合，加入暴风斩/碎.\n如果下面的所有子选项和裂石飞环/地毁人亡都被打开并加以设定，会形成一个完整的一键连击（高级战士，有一定智力的战士0.0）.", WAR.JobID, 0, "", "")]
         WAR_ST_StormsPath = 18000,

@@ -73,6 +73,51 @@ namespace XIVSlothComboX.Combos.PvE
         }
 
 
+        internal class GNB_ST_Custom : CustomCombo
+        {
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.GNB_Advanced_CustomMode;
+
+            protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
+            {
+                if (actionID is GNB.残暴弹BrutalShell)
+                {
+                    if (CustomTimelineIsEnable())
+                    {
+                        var seconds = CombatEngageDuration().TotalSeconds;
+
+                        foreach (var customAction in 药品轴)
+                        {
+                            if (customAction.UseTimeStart < seconds && seconds < customAction.UseTimeEnd)
+                            {
+                                Useitem(customAction.ActionId);
+                            }
+                        }
+
+
+                        foreach (var customAction in 时间轴)
+                        {
+                            if (customAction.ActionId.ActionReady() && customAction.UseTimeStart < seconds && seconds < customAction.UseTimeEnd)
+                            {
+                                return customAction.ActionId;
+                            }
+                        }
+
+
+                        int index = ActionWatching.CustomList.Count;
+                        if (index < 序列轴.Count)
+                        {
+                            var newActionId = 序列轴[index].ActionId;
+                            return newActionId;
+                        }
+                    }
+                }
+
+
+                return actionID;
+            }
+        }
+
+
         internal class GNB_ST_MainCombo : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.GNB_ST_MainCombo;
@@ -81,7 +126,6 @@ namespace XIVSlothComboX.Combos.PvE
             {
                 if (actionID is 利刃斩KeenEdge)
                 {
-
                     if (ActionWatching.CombatActions.Count <= 10 && !InCombat())
                     {
                         是否使用爆发 = false;
@@ -94,7 +138,6 @@ namespace XIVSlothComboX.Combos.PvE
 
                     var gauge = GetJobGauge<GNBGauge>();
                     var roughDivideChargesRemaining = PluginConfiguration.GetCustomIntValue(Config.GNB_RoughDivide_HeldCharges);
-
 
 
                     if (IsEnabled(CustomComboPreset.GNB_Variant_Cure)
@@ -114,7 +157,6 @@ namespace XIVSlothComboX.Combos.PvE
                         {
                             if (CanWeave(actionID))
                             {
-
                                 //低等级循环
                                 if (MaxCartridges(level) == 2)
                                 {
@@ -144,7 +186,6 @@ namespace XIVSlothComboX.Combos.PvE
                                     {
                                         case 1:
                                         {
-
                                             if (IsEnabled(CustomComboPreset.GNB_ST_Bloodfest)
                                                 && lastComboMove == (利刃斩KeenEdge)
                                                 && gauge.Ammo == 0
@@ -173,7 +214,6 @@ namespace XIVSlothComboX.Combos.PvE
 
                                         case 2:
                                         {
-
                                             if (IsEnabled(CustomComboPreset.GNB_ST_Bloodfest)
                                                 && !(HasEffect(Buffs.ReadyToRip)
                                                      || HasEffect(Buffs.ReadyToTear)
@@ -205,6 +245,7 @@ namespace XIVSlothComboX.Combos.PvE
                                             {
                                                 return 无情NoMercy;
                                             }
+
                                             break;
                                         }
 
@@ -228,6 +269,7 @@ namespace XIVSlothComboX.Combos.PvE
                                                     return 无情NoMercy;
                                                 }
                                             }
+
                                             break;
                                         }
                                     }
@@ -242,7 +284,6 @@ namespace XIVSlothComboX.Combos.PvE
                                                 => x == 无情NoMercy)) // Check RA has been used for opener exception
                                             return 无情NoMercy;
                                     }
-
                                 }
                             }
                         }
@@ -323,7 +364,6 @@ namespace XIVSlothComboX.Combos.PvE
                                 }
                             }
                         }
-
                     }
 
 
@@ -332,7 +372,6 @@ namespace XIVSlothComboX.Combos.PvE
                         // 60s window features
                         if (HasEffect(Buffs.NoMercy))
                         {
-
                             //低等级循环
                             if (!LevelChecked(倍攻DoubleDown) && 是否使用爆发)
                             {
@@ -344,7 +383,6 @@ namespace XIVSlothComboX.Combos.PvE
 
                             if (LevelChecked(倍攻DoubleDown) && 是否使用爆发)
                             {
-
                                 if (LevelChecked(倍攻DoubleDown)
                                     && IsEnabled(CustomComboPreset.GNB_ST_DoubleDown)
                                     && gauge.Ammo == 2
@@ -355,13 +393,12 @@ namespace XIVSlothComboX.Combos.PvE
                                     return 倍攻DoubleDown;
                                 }
 
-                                
+
                                 int 先打什么选项 = PluginConfiguration.GetCustomIntValue(Config.GNB_SkS);
                                 switch (先打什么选项)
                                 {
                                     case 1:
                                     {
-
                                         if (使用子弹连(gauge, level, lastComboMove))
                                         {
                                             return OriginalHook(烈牙GnashingFang);
@@ -376,12 +413,12 @@ namespace XIVSlothComboX.Combos.PvE
                                         {
                                             return 音速破SonicBreak;
                                         }
+
                                         break;
                                     }
 
                                     case 2:
                                     {
-
                                         if (使用子弹连(gauge, level, lastComboMove))
                                         {
                                             return OriginalHook(烈牙GnashingFang);
@@ -396,13 +433,13 @@ namespace XIVSlothComboX.Combos.PvE
                                         {
                                             return 倍攻DoubleDown;
                                         }
+
                                         break;
                                     }
 
 
                                     case 3:
                                     {
-
                                         if (IsEnabled(CustomComboPreset.GNB_ST_SonicBreak) && ActionReady(音速破SonicBreak))
                                         {
                                             return 音速破SonicBreak;
@@ -417,13 +454,13 @@ namespace XIVSlothComboX.Combos.PvE
                                         {
                                             return 倍攻DoubleDown;
                                         }
+
                                         break;
                                     }
 
 
                                     case 4:
                                     {
-
                                         if (IsEnabled(CustomComboPreset.GNB_ST_SonicBreak) && ActionReady(音速破SonicBreak))
                                         {
                                             return 音速破SonicBreak;
@@ -438,6 +475,7 @@ namespace XIVSlothComboX.Combos.PvE
                                         {
                                             return OriginalHook(烈牙GnashingFang);
                                         }
+
                                         break;
                                     }
 
@@ -458,13 +496,13 @@ namespace XIVSlothComboX.Combos.PvE
                                         {
                                             return OriginalHook(烈牙GnashingFang);
                                         }
+
                                         break;
                                     }
 
 
                                     case 6:
                                     {
-
                                         if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gauge.Ammo >= 2)
                                         {
                                             return 倍攻DoubleDown;
@@ -485,7 +523,6 @@ namespace XIVSlothComboX.Combos.PvE
                                     }
                                     default:
                                     {
-
                                         if (使用子弹连(gauge, level, lastComboMove))
                                         {
                                             return OriginalHook(烈牙GnashingFang);
@@ -500,6 +537,7 @@ namespace XIVSlothComboX.Combos.PvE
                                         {
                                             return 音速破SonicBreak;
                                         }
+
                                         break;
                                     }
                                 }
@@ -510,7 +548,6 @@ namespace XIVSlothComboX.Combos.PvE
                                 //     return OriginalHook(烈牙GnashingFang);
                                 // }
                             }
-
                         }
                         else
                         {
@@ -521,7 +558,6 @@ namespace XIVSlothComboX.Combos.PvE
                                     return OriginalHook(烈牙GnashingFang);
                                 }
                             }
-
                         }
 
 
@@ -540,6 +576,7 @@ namespace XIVSlothComboX.Combos.PvE
                             }
                         }
                     }
+
                     //Pre Gnashing Fang stuff
                     if (IsEnabled(CustomComboPreset.GNB_ST_Gnashing) && LevelChecked(烈牙GnashingFang))
                     {
@@ -573,7 +610,6 @@ namespace XIVSlothComboX.Combos.PvE
                                 && GetCooldownRemainingTime(烈牙GnashingFang) > 10
                                 && GetCooldownRemainingTime(血壤Bloodfest) <= GetCooldownRemainingTime(利刃斩KeenEdge))
                                 return 爆发击BurstStrike;
-
                         }
 
                         //final check if Burst Strike is used right before No Mercy ends
@@ -615,7 +651,6 @@ namespace XIVSlothComboX.Combos.PvE
 
                 return actionID;
             }
-
         }
 
         private static bool 子弹连是否准备就绪()
@@ -631,13 +666,13 @@ namespace XIVSlothComboX.Combos.PvE
             {
                 return true;
             }
+
             return false;
         }
 
 
         private static bool 倍攻是否准备就绪()
         {
-
             if (!CustomComboFunctions.LevelChecked(倍攻DoubleDown))
             {
                 return false;
@@ -652,7 +687,6 @@ namespace XIVSlothComboX.Combos.PvE
                     return true;
                 }
             }
-
 
 
             return false;
@@ -684,7 +718,7 @@ namespace XIVSlothComboX.Combos.PvE
                 {
                     return true;
                 }
-                
+
                 if (gauge.Ammo == 1 && 子弹连是否准备就绪() && CustomComboFunctions.IsOffCooldown(血壤Bloodfest))
                 {
                     return true;
@@ -701,7 +735,7 @@ namespace XIVSlothComboX.Combos.PvE
                     return true;
                 }
             }
-            
+
             if (lastComboMove == 残暴弹BrutalShell && gauge.Ammo >= 2 && 子弹连是否准备就绪())
             {
                 return true;
@@ -713,7 +747,6 @@ namespace XIVSlothComboX.Combos.PvE
 
         private static bool 使用子弹连2(GNBGauge gauge, byte level, uint lastComboMove)
         {
-
             if (gauge.Ammo >= 1 && 子弹连是否准备就绪())
             {
                 return true;
@@ -822,7 +855,6 @@ namespace XIVSlothComboX.Combos.PvE
                             {
                                 case 1:
                                 {
-
                                     if (使用子弹连2(gauge, level, lastComboMove))
                                     {
                                         return OriginalHook(烈牙GnashingFang);
@@ -837,12 +869,12 @@ namespace XIVSlothComboX.Combos.PvE
                                     {
                                         return 音速破SonicBreak;
                                     }
+
                                     break;
                                 }
 
                                 case 2:
                                 {
-
                                     if (使用子弹连2(gauge, level, lastComboMove))
                                         return OriginalHook(烈牙GnashingFang);
 
@@ -857,7 +889,6 @@ namespace XIVSlothComboX.Combos.PvE
 
                                 case 3:
                                 {
-
                                     if (IsEnabled(CustomComboPreset.GNB_ST_SonicBreak) && ActionReady(音速破SonicBreak))
                                         return 音速破SonicBreak;
 
@@ -872,7 +903,6 @@ namespace XIVSlothComboX.Combos.PvE
 
                                 case 4:
                                 {
-
                                     if (IsEnabled(CustomComboPreset.GNB_ST_SonicBreak) && ActionReady(音速破SonicBreak))
                                         return 音速破SonicBreak;
 
@@ -901,7 +931,6 @@ namespace XIVSlothComboX.Combos.PvE
 
                                 case 6:
                                 {
-
                                     if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gauge.Ammo >= 2)
                                         return 倍攻DoubleDown;
 
@@ -914,10 +943,9 @@ namespace XIVSlothComboX.Combos.PvE
 
                                     break;
                                 }
-                                
+
                                 default:
                                 {
-
                                     if (使用子弹连2(gauge, level, lastComboMove))
                                         return OriginalHook(烈牙GnashingFang);
 
@@ -976,7 +1004,6 @@ namespace XIVSlothComboX.Combos.PvE
                                 && GetCooldownRemainingTime(烈牙GnashingFang) > 10
                                 && GetCooldownRemainingTime(血壤Bloodfest) <= GetCooldownRemainingTime(利刃斩KeenEdge))
                                 return 爆发击BurstStrike;
-
                         }
 
                         //final check if Burst Strike is used right before No Mercy ends
@@ -987,7 +1014,6 @@ namespace XIVSlothComboX.Combos.PvE
                         {
                             return OriginalHook(烈牙GnashingFang);
                         }
-
                     }
                 }
 
@@ -1035,7 +1061,6 @@ namespace XIVSlothComboX.Combos.PvE
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
-
                 if (actionID == 恶魔切DemonSlice)
                 {
                     var gauge = GetJobGauge<GNBGauge>();
@@ -1085,13 +1110,13 @@ namespace XIVSlothComboX.Combos.PvE
                             && GetCooldownRemainingTime(血壤Bloodfest) < 6
                             && LevelChecked(命运之环FatedCircle))
                             return 命运之环FatedCircle;
-
                     }
 
                     if (comboTime > 0 && lastComboMove == 恶魔切DemonSlice && LevelChecked(恶魔杀DemonSlaughter))
                     {
                         return (IsEnabled(CustomComboPreset.GNB_AOE_Overcap) && LevelChecked(命运之环FatedCircle) && gauge.Ammo == MaxCartridges(level))
-                            ? 命运之环FatedCircle : 恶魔杀DemonSlaughter;
+                            ? 命运之环FatedCircle
+                            : 恶魔杀DemonSlaughter;
                     }
 
                     return 恶魔切DemonSlice;
@@ -1100,7 +1125,7 @@ namespace XIVSlothComboX.Combos.PvE
                 return actionID;
             }
         }
-        
+
 
         internal class GNB_AuroraProtection : CustomCombo
         {

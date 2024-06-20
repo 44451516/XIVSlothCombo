@@ -3,6 +3,7 @@ using Dalamud.Game.ClientState.Statuses;
 using XIVSlothComboX.Combos.PvE.Content;
 using XIVSlothComboX.Core;
 using XIVSlothComboX.CustomComboNS;
+using XIVSlothComboX.Data;
 using XIVSlothComboX.Extensions;
 
 namespace XIVSlothComboX.Combos.PvE
@@ -68,6 +69,53 @@ namespace XIVSlothComboX.Combos.PvE
                 WAR_InfuriateAoEGauge = "WAR_InfuriateAoEGauge";
         }
 
+        
+        internal class WAR_ST_Custom : CustomCombo
+        {
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_Advanced_CustomMode;
+
+            protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
+            {
+                if (actionID is WAR.Maim)
+                {
+
+                    if (CustomTimelineIsEnable())
+                    {
+                        var seconds = CombatEngageDuration().TotalSeconds;
+
+                        foreach (var customAction in 药品轴)
+                        {
+                            if (customAction.UseTimeStart < seconds && seconds < customAction.UseTimeEnd)
+                            {
+                                Useitem(customAction.ActionId);
+                            }
+                        }
+
+
+                        foreach (var customAction in 时间轴)
+                        {
+                            if (customAction.ActionId.ActionReady() && customAction.UseTimeStart < seconds && seconds < customAction.UseTimeEnd)
+                            {
+                                return customAction.ActionId;
+                            }
+                        }
+
+
+                        int index = ActionWatching.CustomList.Count;
+                        if (index < 序列轴.Count)
+                        {
+                            var newActionId = 序列轴[index].ActionId;
+                            return newActionId;
+                        }
+                    }
+                }
+
+
+                return actionID;
+            }
+        }
+
+        
         // Replace Storm's Path with Storm's Path combo and overcap feature on main combo to fellcleave
         // 
         internal class WAR_ST_StormsPath : CustomCombo

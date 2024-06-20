@@ -4,6 +4,7 @@ using XIVSlothComboX.Combos.PvE.Content;
 using XIVSlothComboX.Combos.PvP;
 using XIVSlothComboX.Core;
 using XIVSlothComboX.CustomComboNS;
+using XIVSlothComboX.Data;
 using XIVSlothComboX.Extensions;
 
 namespace XIVSlothComboX.Combos.PvE
@@ -72,6 +73,53 @@ namespace XIVSlothComboX.Combos.PvE
                 DRK_VariantCure = "DRKVariantCure";
         }
 
+        
+        internal class DRK_ST_Custom : CustomCombo
+        {
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.DRK_Advanced_CustomMode;
+
+            protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
+            {
+                if (actionID is DRK.SyphonStrike)
+                {
+
+                    if (CustomTimelineIsEnable())
+                    {
+                        var seconds = CombatEngageDuration().TotalSeconds;
+
+                        foreach (var customAction in 药品轴)
+                        {
+                            if (customAction.UseTimeStart < seconds && seconds < customAction.UseTimeEnd)
+                            {
+                                Useitem(customAction.ActionId);
+                            }
+                        }
+
+
+                        foreach (var customAction in 时间轴)
+                        {
+                            if (customAction.ActionId.ActionReady() && customAction.UseTimeStart < seconds && seconds < customAction.UseTimeEnd)
+                            {
+                                return customAction.ActionId;
+                            }
+                        }
+
+
+                        int index = ActionWatching.CustomList.Count;
+                        if (index < 序列轴.Count)
+                        {
+                            var newActionId = 序列轴[index].ActionId;
+                            return newActionId;
+                        }
+                    }
+                }
+
+
+                return actionID;
+            }
+        }
+
+        
 
         internal class DRK_SouleaterCombo : CustomCombo
         {

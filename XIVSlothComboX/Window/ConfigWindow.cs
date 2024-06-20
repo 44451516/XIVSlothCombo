@@ -131,7 +131,7 @@ namespace XIVSlothComboX.Window
                     //     ImGui.EndTabItem();
                     // }
 
-                    if (ImGui.BeginTabItem("关于 XIVSlothComboX / 提出建议"))
+                    if (ImGui.BeginTabItem("提出建议"))
                     {
                         AboutUs.Draw();
                         ImGui.EndTabItem();
