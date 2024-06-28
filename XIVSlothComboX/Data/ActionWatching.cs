@@ -6,6 +6,7 @@ using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
+using FFXIVClientStructs.FFXIV.Common.Math;
 using Lumina.Excel.GeneratedSheets;
 using XIVSlothComboX.Combos.JobHelpers;
 using XIVSlothComboX.Combos.JobHelpers.Enums;
@@ -14,6 +15,7 @@ using XIVSlothComboX.CustomComboNS.Functions;
 using XIVSlothComboX.Services;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 using AST = XIVSlothComboX.Combos.PvE.AST;
+using Vector3Struct = FFXIVClientStructs.FFXIV.Common.Math.Vector3;
 
 namespace XIVSlothComboX.Data
 {
@@ -27,11 +29,11 @@ namespace XIVSlothComboX.Data
         internal static Dictionary<uint, Lumina.Excel.GeneratedSheets.Status> StatusSheet =
             Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Status>()!
                 .ToDictionary(i => i.RowId, i => i);
-        
-        internal static Dictionary<uint, Item>    ItemsSheet =  
+
+        internal static Dictionary<uint, Item> ItemsSheet =
             Service.DataManager.GetExcelSheet<Item>()!
-            .ToDictionary(i => i.RowId, i => i);
-        
+                .ToDictionary(i => i.RowId, i => i);
+
 
         internal static Dictionary<uint, Trait> TraitSheet = Service.DataManager.GetExcelSheet<Trait>()!
             .Where(i =>
@@ -56,6 +58,77 @@ namespace XIVSlothComboX.Data
          * 用于对比时间序列
          */
         internal static readonly List<uint> CustomList = new();
+
+
+        private delegate byte UseActionLocationDelegate(IntPtr actionManager, uint actionType, uint actionID, long targetedActorID,
+            IntPtr vectorLocation, uint param);
+
+        private static readonly Hook<UseActionLocationDelegate>? UseActionLocationHook;
+
+        private static byte UseActionLocationDetour(IntPtr actionManager, uint actionType, uint actionId, long targetedActorID, IntPtr vectorLocation,
+            uint param)
+        {
+            // Service.ChatGui.PrintError($"UseActionLocationDetour{GetActionName(actionID)}");
+            // Service.ChatGui.PrintError($"UseActionLocationDetour{GetActionName(actionID)}");
+
+            //
+            Vector3 vector3 = (Vector3)Marshal.PtrToStructure<Vector3Struct>(vectorLocation);
+            
+            
+            bool isSkip = vector3 is { X: 0, Y: 0, Z: 0 };
+
+            if (isSkip == false)
+            {
+                //用于记录
+                {
+                    var customAction = new CustomAction();
+                    customAction.ActionId = actionId;
+                    var totalSeconds = CustomComboFunctions.CombatEngageDuration().TotalSeconds;
+
+                    if (CustomComboFunctions.InCombat())
+                    {
+                        customAction.UseTimeStart = totalSeconds;
+                        customAction.UseTimeEnd = totalSeconds + 0.5f;
+                    }
+                    else
+                    {
+                        var timeRemaining = Countdown.TimeRemaining();
+                        if (timeRemaining != null)
+                        {
+                            customAction.UseTimeStart = (double)-timeRemaining;
+                            customAction.UseTimeEnd = (double)-timeRemaining + 0.5f;
+                        }
+                        else
+                        {
+                            customAction.UseTimeStart = -1;
+                        }
+                    }
+
+
+                    if (ActionSheet.ContainsKey(actionId))
+                    {
+                        {
+                            customAction.CustomActionType = CustomType.地面;
+                            customAction.Vector3.X = vector3.X;
+                            customAction.Vector3.Y = vector3.Y;
+                            customAction.Vector3.Z = vector3.Z;
+                        }
+                    }
+
+
+                    TimelineList.Add(customAction);
+                }
+
+                
+                // Service.ChatGui.PrintError(
+                //     $"UseActionLocationDetour{GetActionName(actionId)}-{actionId}-{actionType}-{targetedActorID} {param}");
+            }
+
+
+            var ret = UseActionLocationHook.Original(actionManager, actionType, actionId, targetedActorID, vectorLocation, param);
+
+            return ret;
+        }
 
         private delegate void ReceiveActionEffectDelegate(int sourceObjectId, IntPtr sourceActor, IntPtr position, IntPtr effectHeader,
             IntPtr effectArray, IntPtr effectTrail);
@@ -113,7 +186,6 @@ namespace XIVSlothComboX.Data
                 CombatActions.Add(header.ActionId);
                 特殊起手Actions.Add(header.ActionId);
 
-                
 
                 if (Service.Configuration.EnabledOutputLog)
                     OutputLog();
@@ -128,67 +200,52 @@ namespace XIVSlothComboX.Data
         private static unsafe void SendActionDetour(ulong targetObjectId, byte actionType, uint actionId, ushort sequence, long a5, long a6, long a7,
             long a8, long a9)
         {
-            
             {
-                    
-                    var customAction = new CustomAction();
-                    customAction.ActionId = actionId;
-                    var totalSeconds = CustomComboFunctions.CombatEngageDuration().TotalSeconds;
+                var customAction = new CustomAction();
+                customAction.ActionId = actionId;
+                var totalSeconds = CustomComboFunctions.CombatEngageDuration().TotalSeconds;
 
-                    if (CustomComboFunctions.InCombat())
+                if (CustomComboFunctions.InCombat())
+                {
+                    customAction.UseTimeStart = totalSeconds;
+                    customAction.UseTimeEnd = totalSeconds + 0.5f;
+                }
+                else
+                {
+                    var timeRemaining = Countdown.TimeRemaining();
+                    if (timeRemaining != null)
                     {
-                        customAction.UseTimeStart = totalSeconds;
-                        customAction.UseTimeEnd = totalSeconds + 0.5f;
+                        customAction.UseTimeStart = (double)-timeRemaining;
+                        customAction.UseTimeEnd = (double)-timeRemaining + 0.5f;
                     }
                     else
                     {
-                        var timeRemaining = Countdown.TimeRemaining();
-                        if (timeRemaining != null)
-                        {
-                            customAction.UseTimeStart = (double)-timeRemaining;
-                            customAction.UseTimeEnd = (double)-timeRemaining + 0.5f;
-                        }
-                        else
-                        {
-                            customAction.UseTimeStart = -1;
-                        }
+                        customAction.UseTimeStart = -1;
                     }
-
-                    if (ActionSheet.ContainsKey(actionId))
-                    {
-                        Action actionByActionSheet = ActionSheet[actionId];
-                        // Service.ChatGui.PrintError($"{GetActionName(customAction.ActionId)}-{actionByActionSheet.CanTargetParty}-{sourceActor}-{Service.ClientState.LocalPlayer.Address}");
-                        
-                        if (actionByActionSheet.CanTargetParty)
-                        {
-                            // CustomComboFunctions.get
-                            
-                            customAction.CustomActionType = CustomType.时间;
-                            customAction.TargetType = CustomComboFunctions.getPartyIndex(targetObjectId);
-                            
-                            // Service.ChatGui.PrintError($"{GetActionName(customAction.ActionId)}-{targetObjectId}- {CustomComboFunctions.getPartyIndex(targetObjectId)}");
-
-                        }
-                    }
-
-                 
-
-            
-
-                    TimelineList.Add(customAction);
-                 
                 }
 
-            
-            // Service.ChatGui.PrintError($"SendActionDetour{CustomComboFunctions.DateTimeToLongTimeStamp(DateTime.Now)}");
+                if (ActionSheet.ContainsKey(actionId))
+                {
+                    Action actionByActionSheet = ActionSheet[actionId];
+
+                    if (actionByActionSheet.CanTargetParty)
+                    {
+                        customAction.CustomActionType = CustomType.时间;
+                        customAction.TargetType = CustomComboFunctions.getPartyIndex(targetObjectId);
+                    }
+                }
+
+                //为啥不换UseAction？？？
+                TimelineList.Add(customAction);
+            }
+
+
             try
             {
                 CheckForChangedTarget(actionId, ref targetObjectId);
                 SendActionHook!.Original(targetObjectId, actionType, actionId, sequence, a5, a6, a7, a8, a9);
                 TimeLastActionUsed = DateTime.Now;
                 ActionType = actionType;
-
-                //Dalamud.Logging.PluginLog.Debug($"{actionId} {sequence} {a5} {a6} {a7} {a8} {a9}");
             }
             catch (Exception ex)
             {
@@ -201,7 +258,7 @@ namespace XIVSlothComboX.Data
         {
             // Service.ChatGui.PrintError($"[CheckForChangedTarget]");
 
-            
+
             if (CustomComboFunctions.CustomTimelineIsEnable())
             {
                 CustomAction? customAction = CustomComboFunctions.CustomTimelineFindBy时间轴(actionId);
@@ -217,13 +274,13 @@ namespace XIVSlothComboX.Data
                             targetObjectId = gameObject.ObjectId;
                         }
                     }
-                }else
+                }
+                else
                 {
                     CustomList.Add(actionId);
                 }
-                
             }
-            
+
 
             if (actionId is AST.Balance or AST.Bole or AST.Ewer or AST.Arrow or AST.Spire or AST.Spear &&
                 Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember is not null &&
@@ -327,18 +384,24 @@ namespace XIVSlothComboX.Data
         {
             ReceiveActionEffectHook?.Dispose();
             SendActionHook?.Dispose();
+            UseActionLocationHook?.Dispose();
         }
 
         static unsafe ActionWatching()
         {
-            // ReceiveActionEffectHook ??= Hook<ReceiveActionEffectDelegate>.FromAddress(Service.SigScanner.ScanText("E8 ?? ?? ?? ?? 48 8B 8D F0 03 00 00"), ReceiveActionEffectDetour);
-            // SendActionHook ??= Hook<SendActionDelegate>.FromAddress(Service.SigScanner.ScanText("E8 ?? ?? ?? ?? E9 ?? ?? ?? ?? F3 0F 10 3D ?? ?? ?? ?? 48 8D 4D BF"), SendActionDetour);
             ReceiveActionEffectHook ??=
-                Service.GameInteropProvider.HookFromSignature<ReceiveActionEffectDelegate>("E8 ?? ?? ?? ?? 48 8B 8D F0 03 00 00",
+                Service.GameInteropProvider.HookFromSignature<ReceiveActionEffectDelegate>(HookAddress.ReceiveActionEffect,
                     ReceiveActionEffectDetour);
-            SendActionHook ??=
-                Service.GameInteropProvider.HookFromSignature<SendActionDelegate>("E8 ?? ?? ?? ?? E9 ?? ?? ?? ?? F3 0F 10 3D ?? ?? ?? ?? 48 8D 4D BF",
-                    SendActionDetour);
+
+            SendActionHook ??= Service.GameInteropProvider.HookFromSignature<SendActionDelegate>(HookAddress.SendAction, SendActionDetour);
+
+
+            UseActionLocationHook ??=
+                Service.GameInteropProvider.HookFromAddress<UseActionLocationDelegate>(ActionManagerHelper.FpUseActionLocation,
+                    UseActionLocationDetour);
+
+            Service.PluginLog.Verbose($"{nameof(ReceiveActionEffectHook)}         0x{ReceiveActionEffectHook.Address:X}");
+            Service.PluginLog.Verbose($"{nameof(SendActionHook)}         0x{SendActionHook.Address:X}");
         }
 
 
@@ -346,8 +409,10 @@ namespace XIVSlothComboX.Data
         {
             ReceiveActionEffectHook?.Enable();
             SendActionHook?.Enable();
-            Service.Condition.ConditionChange += ResetActions;
+            UseActionLocationHook?.Enable();
 
+
+            Service.Condition.ConditionChange += ResetActions;
             Service.ClientState.TerritoryChanged += TerritoryChangedEvent;
         }
 

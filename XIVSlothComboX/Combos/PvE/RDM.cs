@@ -2,6 +2,7 @@ using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using XIVSlothComboX.Combos.PvE.Content;
+using XIVSlothComboX.Core;
 using XIVSlothComboX.CustomComboNS;
 using XIVSlothComboX.CustomComboNS.Functions;
 using XIVSlothComboX.Data;
@@ -122,7 +123,21 @@ namespace XIVSlothComboX.Combos.PvE
 
                     if (CustomTimelineIsEnable())
                     {
-                        var seconds = CombatEngageDuration().TotalSeconds;
+                        double? seconds = -9999d;
+
+                        if (InCombat())
+                        {
+                            seconds = CombatEngageDuration().TotalSeconds;
+                        }
+                        else
+                        {
+                            var timeRemaining = Countdown.TimeRemaining();
+                            if (timeRemaining != null)
+                            {
+                                seconds = -timeRemaining;
+                            }
+                        }
+
 
                         foreach (var customAction in 药品轴)
                         {
@@ -131,7 +146,7 @@ namespace XIVSlothComboX.Combos.PvE
                                 Useitem(customAction.ActionId);
                             }
                         }
-
+                        
 
                         foreach (var customAction in 时间轴)
                         {

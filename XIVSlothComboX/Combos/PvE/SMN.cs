@@ -242,8 +242,21 @@ namespace XIVSlothComboX.Combos.PvE
 
                     if (CustomTimelineIsEnable())
                     {
-                        var seconds = CombatEngageDuration().TotalSeconds;
+                        double? seconds = -9999d;
 
+                        if (InCombat())
+                        {
+                            seconds = CombatEngageDuration().TotalSeconds;
+                        }
+                        else
+                        {
+                            var timeRemaining = Countdown.TimeRemaining();
+                            if (timeRemaining != null)
+                            {
+                                seconds = -timeRemaining;
+                            }
+                        }
+                        
                         foreach (var customAction in 药品轴)
                         {
                             if (customAction.UseTimeStart < seconds && seconds < customAction.UseTimeEnd)
@@ -251,8 +264,15 @@ namespace XIVSlothComboX.Combos.PvE
                                 Useitem(customAction.ActionId);
                             }
                         }
-
-
+                        
+                        foreach (var customAction in 地面轴)
+                        {
+                            if (customAction.UseTimeStart < seconds && seconds < customAction.UseTimeEnd)
+                            {
+                                Use地面技能(customAction);
+                            }
+                        }
+                        
                         foreach (var customAction in 时间轴)
                         {
                             if (customAction.ActionId.ActionReady() && customAction.UseTimeStart < seconds && seconds < customAction.UseTimeEnd)
@@ -260,8 +280,7 @@ namespace XIVSlothComboX.Combos.PvE
                                 return customAction.ActionId;
                             }
                         }
-
-
+                        
                         int index = ActionWatching.CustomList.Count;
                         if (index < 序列轴.Count)
                         {

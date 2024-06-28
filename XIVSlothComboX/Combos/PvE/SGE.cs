@@ -3,8 +3,11 @@ using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
 using System.Collections.Generic;
 using XIVSlothComboX.Combos.PvE.Content;
+using XIVSlothComboX.Core;
 using XIVSlothComboX.CustomComboNS;
 using XIVSlothComboX.CustomComboNS.Functions;
+using XIVSlothComboX.Data;
+using XIVSlothComboX.Extensions;
 
 namespace XIVSlothComboX.Combos.PvE
 {
@@ -84,7 +87,7 @@ namespace XIVSlothComboX.Combos.PvE
         internal static readonly Dictionary<uint, ushort>
             DosisList = new()
             {
-                { Dosis,  Debuffs.EukrasianDosis  },
+                { Dosis, Debuffs.EukrasianDosis },
                 { Dosis2, Debuffs.EukrasianDosis2 },
                 { Dosis3, Debuffs.EukrasianDosis3 }
             };
@@ -97,29 +100,36 @@ namespace XIVSlothComboX.Combos.PvE
         public static class Config
         {
             #region DPS
+
             public static UserBool
                 SGE_ST_DPS_Adv = new("SGE_ST_DPS_Adv"),
                 SGE_ST_DPS_Adv_D2 = new("SGE_ST_Dosis_AltMode"),
                 SGE_ST_DPS_Adv_GroupInstants = new("SGE_ST_DPS_Adv_GroupInstants"),
                 SGE_ST_DPS_EDosis_Adv = new("SGE_ST_Dosis_EDosis_Adv");
+
             public static UserBoolArray
                 SGE_ST_DPS_Adv_GroupInstants_Addl = new("SGE_ST_DPS_Adv_GroupInstants_Addl"),
                 SGE_ST_DPS_Movement = new("SGE_ST_DPS_Movement");
+
             public static UserInt
                 SGE_ST_DPS_EDosisHPPer = new("SGE_ST_Dosis_EDosisHPPer"),
                 SGE_ST_DPS_Lucid = new("SGE_ST_DPS_Lucid"),
                 SGE_ST_DPS_Rhizo = new("SGE_ST_DPS_Rhizo"),
                 SGE_AoE_DPS_Lucid = new("SGE_AoE_Phlegma_Lucid"),
                 SGE_AoE_DPS_Rhizo = new("SGE_AoE_DPS_Rhizo");
+
             public static UserFloat
                 SGE_ST_DPS_EDosisThreshold = new("SGE_ST_Dosis_EDosisThreshold");
+
             #endregion
 
             #region Healing
+
             public static UserBool
                 SGE_ST_Heal_Adv = new("SGE_ST_Heal_Adv"),
                 SGE_ST_Heal_UIMouseOver = new("SGE_ST_Heal_UIMouseOver"),
                 SGE_AoE_Heal_KeracholeTrait = new("SGE_AoE_Heal_KeracholeTrait");
+
             public static UserInt
                 SGE_ST_Heal_Zoe = new("SGE_ST_Heal_Zoe"),
                 SGE_ST_Heal_Haima = new("SGE_ST_Heal_Haima"),
@@ -129,9 +139,11 @@ namespace XIVSlothComboX.Combos.PvE
                 SGE_ST_Heal_EDiagnosisHP = new("SGE_ST_Heal_EDiagnosisHP"),
                 SGE_ST_Heal_Druochole = new("SGE_ST_Heal_Druochole"),
                 SGE_ST_Heal_Taurochole = new("SGE_ST_Heal_Taurochole"),
-                SGE_ST_Heal_Esuna = new("SGE_ST_Heal_Esuna");                
+                SGE_ST_Heal_Esuna = new("SGE_ST_Heal_Esuna");
+
             public static UserBoolArray
                 SGE_ST_Heal_EDiagnosisOpts = new("SGE_ST_Heal_EDiagnosisOpts");
+
             #endregion
 
             public static UserInt
@@ -140,10 +152,72 @@ namespace XIVSlothComboX.Combos.PvE
 
         internal static class Traits
         {
-            internal const ushort 
+            internal const ushort
                 EnhancedKerachole = 375;
         }
 
+        internal class SGE_ST_Custom : CustomCombo
+        {
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SGE_Advanced_CustomMode;
+
+            protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
+            {
+                if (actionID is All.Repose)
+                {
+                    if (CustomTimelineIsEnable())
+                    {
+                        double? seconds = -9999d;
+
+                        if (InCombat())
+                        {
+                            seconds = CombatEngageDuration().TotalSeconds;
+                        }
+                        else
+                        {
+                            var timeRemaining = Countdown.TimeRemaining();
+                            if (timeRemaining != null)
+                            {
+                                seconds = -timeRemaining;
+                            }
+                        }
+
+                        foreach (var customAction in 药品轴)
+                        {
+                            if (customAction.UseTimeStart < seconds && seconds < customAction.UseTimeEnd)
+                            {
+                                Useitem(customAction.ActionId);
+                            }
+                        }
+
+                        foreach (var customAction in 地面轴)
+                        {
+                            if (customAction.UseTimeStart < seconds && seconds < customAction.UseTimeEnd)
+                            {
+                                Use地面技能(customAction);
+                            }
+                        }
+
+                        foreach (var customAction in 时间轴)
+                        {
+                            if (customAction.ActionId.ActionReady() && customAction.UseTimeStart < seconds && seconds < customAction.UseTimeEnd)
+                            {
+                                return customAction.ActionId;
+                            }
+                        }
+
+                        int index = ActionWatching.CustomList.Count;
+                        if (index < 序列轴.Count)
+                        {
+                            var newActionId = 序列轴[index].ActionId;
+                            return newActionId;
+                        }
+                    }
+                }
+
+
+                return actionID;
+            }
+        }
 
         /*
          * SGE_Kardia
@@ -152,6 +226,7 @@ namespace XIVSlothComboX.Combos.PvE
         internal class SGE_Kardia : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SGE_Kardia;
+
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
                 => actionID is Soteria && (!HasEffect(Buffs.Kardia) || IsOnCooldown(Soteria)) ? Kardia : actionID;
         }
@@ -164,8 +239,11 @@ namespace XIVSlothComboX.Combos.PvE
         internal class SGE_Rhizo : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SGE_Rhizo;
+
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
-                => AddersgallList.Contains(actionID) && ActionReady(Rhizomata) && !Gauge.HasAddersgall() && IsOffCooldown(actionID) ? Rhizomata : actionID;
+                => AddersgallList.Contains(actionID) && ActionReady(Rhizomata) && !Gauge.HasAddersgall() && IsOffCooldown(actionID)
+                    ? Rhizomata
+                    : actionID;
         }
 
         /*
@@ -177,6 +255,7 @@ namespace XIVSlothComboX.Combos.PvE
         internal class SGE_DruoTauro : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SGE_DruoTauro;
+
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
                 => actionID is Druochole && ActionReady(Taurochole) ? Taurochole : actionID;
         }
@@ -188,6 +267,7 @@ namespace XIVSlothComboX.Combos.PvE
         internal class SGE_ZoePneuma : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SGE_ZoePneuma;
+
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
                 => actionID is Pneuma && ActionReady(Pneuma) && IsOffCooldown(Zoe) ? Zoe : actionID;
         }
@@ -200,6 +280,7 @@ namespace XIVSlothComboX.Combos.PvE
         internal class SGE_AoE_DPS : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SGE_AoE_DPS;
+
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
                 if (PhlegmaList.Contains(actionID))
@@ -263,6 +344,7 @@ namespace XIVSlothComboX.Combos.PvE
         internal class SGE_ST_DPS : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SGE_ST_DPS;
+
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
                 bool ActionFound;
@@ -272,9 +354,10 @@ namespace XIVSlothComboX.Combos.PvE
                 {
                     GroupInstants = actionID is Toxikon && Config.SGE_ST_DPS_Adv_GroupInstants;
                     ActionFound = (!Config.SGE_ST_DPS_Adv_D2 && DosisList.ContainsKey(actionID)) || //not restricted to Dosis 2
-                                  actionID is Dosis2 ||                                             //Dosis 2 is always allowed
-                                  GroupInstants;                                                    //Group Instants on Toxikon
-                } else ActionFound = DosisList.ContainsKey(actionID); //default handling
+                                  actionID is Dosis2 || //Dosis 2 is always allowed
+                                  GroupInstants; //Group Instants on Toxikon
+                }
+                else ActionFound = DosisList.ContainsKey(actionID); //default handling
 
                 if (ActionFound)
                 {
@@ -301,7 +384,7 @@ namespace XIVSlothComboX.Combos.PvE
                         return Rhizomata;
 
                     if (HasBattleTarget() && (!HasEffect(Buffs.Eukrasia)))
-                    // Buff check Above. Without it, Toxikon and any future option will interfere in the Eukrasia->Eukrasia Dosis combo
+                        // Buff check Above. Without it, Toxikon and any future option will interfere in the Eukrasia->Eukrasia Dosis combo
                     {
                         // Eukrasian Dosis.
                         // If we're too low level to use Eukrasia, we can stop here.
@@ -344,7 +427,8 @@ namespace XIVSlothComboX.Combos.PvE
                                 // Toxikon
                                 if (Config.SGE_ST_DPS_Movement[0] && LevelChecked(Toxikon) && Gauge.HasAddersting()) return OriginalHook(Toxikon);
                                 // Dyskrasia
-                                if (Config.SGE_ST_DPS_Movement[1] && LevelChecked(Dyskrasia) && InActionRange(Dyskrasia)) return OriginalHook(Dyskrasia);
+                                if (Config.SGE_ST_DPS_Movement[1] && LevelChecked(Dyskrasia) && InActionRange(Dyskrasia))
+                                    return OriginalHook(Dyskrasia);
                                 // Eukrasia
                                 if (Config.SGE_ST_DPS_Movement[2] && LevelChecked(Eukrasia)) return Eukrasia;
                             }
@@ -355,17 +439,21 @@ namespace XIVSlothComboX.Combos.PvE
                     if (GroupInstants)
                     {
                         if (HasEffect(Buffs.Eukrasia)) return OriginalHook(Dosis);
-                        
+
                         if (Config.SGE_ST_DPS_Adv_GroupInstants_Addl.Count == 2)
                         {
                             // Toxikon
-                            if (Config.SGE_ST_DPS_Adv_GroupInstants_Addl[0] && LevelChecked(Toxikon) && Gauge.HasAddersting()) return OriginalHook(Toxikon);
+                            if (Config.SGE_ST_DPS_Adv_GroupInstants_Addl[0] && LevelChecked(Toxikon) && Gauge.HasAddersting())
+                                return OriginalHook(Toxikon);
                             // Dyskrasia
-                            if (Config.SGE_ST_DPS_Adv_GroupInstants_Addl[1] && LevelChecked(Dyskrasia) && InActionRange(Dyskrasia)) return OriginalHook(Dyskrasia);
+                            if (Config.SGE_ST_DPS_Adv_GroupInstants_Addl[1] && LevelChecked(Dyskrasia) && InActionRange(Dyskrasia))
+                                return OriginalHook(Dyskrasia);
                         }
+
                         return Eukrasia;
                     }
                 }
+
                 return actionID;
             }
         }
@@ -377,11 +465,12 @@ namespace XIVSlothComboX.Combos.PvE
         internal class SGE_Raise : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SGE_Raise;
+
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
-                    => actionID is All.即刻咏唱Swiftcast && IsOnCooldown(All.即刻咏唱Swiftcast) ? Egeiro : actionID;
+                => actionID is All.即刻咏唱Swiftcast && IsOnCooldown(All.即刻咏唱Swiftcast) ? Egeiro : actionID;
         }
 
-        /* 
+        /*
          * SGE_Eukrasia (Eukrasia combo)
          * Normally after Eukrasia is used and updates the abilities, it becomes disabled
          * This will "combo" the action to user selected action
@@ -389,6 +478,7 @@ namespace XIVSlothComboX.Combos.PvE
         internal class SGE_Eukrasia : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SGE_Eukrasia;
+
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
                 if (actionID is Eukrasia && HasEffect(Buffs.Eukrasia))
@@ -406,14 +496,15 @@ namespace XIVSlothComboX.Combos.PvE
             }
         }
 
-        /* 
+        /*
          * SGE_ST_Heal (Diagnosis Single Target Heal)
-         * Replaces Diagnosis with various Single Target healing options, 
+         * Replaces Diagnosis with various Single Target healing options,
          * Pseudo priority set by various custom user percentages
          */
         internal class SGE_ST_Heal : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SGE_ST_Heal;
+
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
                 if (actionID is Diagnosis)
@@ -470,24 +561,25 @@ namespace XIVSlothComboX.Combos.PvE
 
                     if (IsEnabled(CustomComboPreset.SGE_ST_Heal_EDiagnosis) && LevelChecked(Eukrasia) &&
                         GetTargetHPPercent(healTarget) <= Config.SGE_ST_Heal_EDiagnosisHP &&
-                        (Config.SGE_ST_Heal_EDiagnosisOpts[0] || FindEffectOnMember(Buffs.EukrasianDiagnosis, healTarget) is null) && //Ignore existing shield check
+                        (Config.SGE_ST_Heal_EDiagnosisOpts[0] ||
+                         FindEffectOnMember(Buffs.EukrasianDiagnosis, healTarget) is null) && //Ignore existing shield check
                         (!Config.SGE_ST_Heal_EDiagnosisOpts[1] || FindEffectOnMember(SCH.Buffs.Galvanize, healTarget) is null)) //Galvenize Check
                         return Eukrasia;
-
                 }
 
                 return actionID;
             }
         }
 
-        /* 
+        /*
          * SGE_AoE_Heal (Prognosis AoE Heal)
-         * Replaces Prognosis with various AoE healing options, 
+         * Replaces Prognosis with various AoE healing options,
          * Pseudo priority set by various custom user percentages
          */
         internal class SGE_AoE_Heal : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SGE_AoE_Heal;
+
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
                 if (actionID is Prognosis)
@@ -501,7 +593,8 @@ namespace XIVSlothComboX.Combos.PvE
 
                     if (IsEnabled(CustomComboPreset.SGE_AoE_Heal_Kerachole) &&
                         ActionReady(Kerachole) &&
-                        (!Config.SGE_AoE_Heal_KeracholeTrait || (Config.SGE_AoE_Heal_KeracholeTrait && TraitLevelChecked(Traits.EnhancedKerachole))) &&
+                        (!Config.SGE_AoE_Heal_KeracholeTrait ||
+                         (Config.SGE_AoE_Heal_KeracholeTrait && TraitLevelChecked(Traits.EnhancedKerachole))) &&
                         Gauge.HasAddersgall())
                         return Kerachole;
 

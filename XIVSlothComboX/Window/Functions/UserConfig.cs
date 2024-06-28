@@ -1225,7 +1225,20 @@ namespace XIVSlothComboX.Window.Functions
             // ====================================================================================
 
             #region ASTROLOGIAN
-
+            
+            if (preset is CustomComboPreset.AST_Advanced_CustomMode)
+            {
+                List<CustomTimeline> customTimelineList =
+                    PluginConfiguration.CustomTimelineList.FindAll(CustomTimeline => CustomTimeline.JobId == AST.JobID);
+                
+                
+                for (var i = 0; i < customTimelineList.Count; i++)
+                {
+                    CustomTimeline customTimeline = customTimelineList[i];
+                    UserConfig.DrawCustom(customTimeline,customTimelineList);
+                }
+            }	
+            
             if (preset is CustomComboPreset.AST_ST_DPS)
             {
                 UserConfig.DrawRadioButton(AST.Config.AST_DPS_AltMode, "凶星", "", 0);
@@ -1489,7 +1502,7 @@ namespace XIVSlothComboX.Window.Functions
             if (preset is CustomComboPreset.DRK_Advanced_CustomMode)
             {
                 List<CustomTimeline> customTimelineList =
-                    PluginConfiguration.CustomTimelineList.FindAll(CustomTimeline => CustomTimeline.JobId == SMN.JobID);
+                    PluginConfiguration.CustomTimelineList.FindAll(CustomTimeline => CustomTimeline.JobId == DRK.JobID);
                 
                 
                 for (var i = 0; i < customTimelineList.Count; i++)
@@ -1518,7 +1531,7 @@ namespace XIVSlothComboX.Window.Functions
             if (preset is CustomComboPreset.DRG_Advanced_CustomMode)
             {
                 List<CustomTimeline> customTimelineList =
-                    PluginConfiguration.CustomTimelineList.FindAll(CustomTimeline => CustomTimeline.JobId == SMN.JobID);
+                    PluginConfiguration.CustomTimelineList.FindAll(CustomTimeline => CustomTimeline.JobId == DRG.JobID);
                 
                 
                 for (var i = 0; i < customTimelineList.Count; i++)
@@ -2070,6 +2083,19 @@ namespace XIVSlothComboX.Window.Functions
 
             #region SAGE
 
+            if (preset is CustomComboPreset.SGE_Advanced_CustomMode)
+            {
+                List<CustomTimeline> customTimelineList =
+                    PluginConfiguration.CustomTimelineList.FindAll(CustomTimeline => CustomTimeline.JobId == SGE.JobID);
+                
+                
+                for (var i = 0; i < customTimelineList.Count; i++)
+                {
+                    CustomTimeline customTimeline = customTimelineList[i];
+                    UserConfig.DrawCustom(customTimeline,customTimelineList);
+                }
+            }	
+            
             if (preset is CustomComboPreset.SGE_ST_DPS)
             {
                 UserConfig.DrawAdditionalBoolChoice(SGE.Config.SGE_ST_DPS_Adv, "Advanced Action Options", "Change how Dosis actions are handled",
@@ -2263,6 +2289,19 @@ namespace XIVSlothComboX.Window.Functions
 
             #region SCHOLAR
 
+            if (preset is CustomComboPreset.SCH_Advanced_CustomMode)
+            {
+                List<CustomTimeline> customTimelineList =
+                    PluginConfiguration.CustomTimelineList.FindAll(CustomTimeline => CustomTimeline.JobId == SCH.JobID);
+                
+                
+                for (var i = 0; i < customTimelineList.Count; i++)
+                {
+                    CustomTimeline customTimeline = customTimelineList[i];
+                    UserConfig.DrawCustom(customTimeline,customTimelineList);
+                }
+            }	
+            
             if (preset is CustomComboPreset.SCH_DPS)
             {
                 UserConfig.DrawAdditionalBoolChoice(SCH.Config.SCH_ST_DPS_Adv, "Advanced Action Options", "Change how actions are handled",
@@ -2521,6 +2560,19 @@ namespace XIVSlothComboX.Window.Functions
 
             #region WHITE MAGE
 
+            if (preset is CustomComboPreset.WHM_Advanced_CustomMode)
+            {
+                List<CustomTimeline> customTimelineList =
+                    PluginConfiguration.CustomTimelineList.FindAll(CustomTimeline => CustomTimeline.JobId == WHM.JobID);
+                
+                
+                for (var i = 0; i < customTimelineList.Count; i++)
+                {
+                    CustomTimeline customTimeline = customTimelineList[i];
+                    UserConfig.DrawCustom(customTimeline,customTimelineList);
+                }
+            }	
+            
             if (preset is CustomComboPreset.WHM_ST_MainCombo)
             {
                 UserConfig.DrawAdditionalBoolChoice(WHM.Config.WHM_ST_MainCombo_Adv, "高级选项", "Change how actions are handled",

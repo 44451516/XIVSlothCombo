@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using Dalamud.Interface;
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility;
 using Dalamud.Utility;
+using ECommons;
 using ECommons.ImGuiMethods;
 using ECommons.LanguageHelpers;
 using ImGuiNET;
@@ -90,10 +92,10 @@ namespace XIVSlothComboX.Window.Tabs
 
                 if (ImGui.Button("保存".Loc()))
                 {
-                    int count = customTimelineList.Count;
+                    int index = customTimelineList.Last().Index;
 
                     var customTimeline = new CustomTimeline();
-                    customTimeline.Index = ++count;
+                    customTimeline.Index = ++index;
                     customTimeline.JobId = Service.ClientState.LocalPlayer.ClassJob.Id;
                     customTimeline.Name = saveAs;
                     customTimeline.Enable = false;
@@ -138,8 +140,15 @@ namespace XIVSlothComboX.Window.Tabs
                 {
                     case CustomType.序列:
                     case CustomType.时间:
+                    case CustomType.地面:
                     {
-                        Action action = ActionSheet.GetRow(customAction.ActionId)!;
+                        Action? action = ActionSheet.GetRow(customAction.ActionId);
+                        if (action != null)
+                        {
+                            Service.ChatGui.PrintError(
+                                $"UseActionLocationDetour{customAction.ActionId}");
+                        }
+
 
                         IDalamudTextureWrap? textureWrap = Service.IconManager.GetActionIcon(action);
 

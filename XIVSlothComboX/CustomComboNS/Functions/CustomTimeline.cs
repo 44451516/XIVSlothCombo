@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Common.Math;
 using XIVSlothComboX.Core;
 using XIVSlothComboX.Data;
+using XIVSlothComboX.Extensions;
 using XIVSlothComboX.Services;
 
 namespace XIVSlothComboX.CustomComboNS.Functions
@@ -23,6 +25,8 @@ namespace XIVSlothComboX.CustomComboNS.Functions
         public static readonly List<CustomAction> 序列轴 = new();
 
         public static readonly List<CustomAction> 时间轴 = new();
+
+        public static readonly List<CustomAction> 地面轴 = new();
 
 
         public static readonly List<CustomAction> 整个轴 = new();
@@ -53,17 +57,21 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             {
                 if (tCustomTimeline.Index == index)
                 {
-                    LoadCustomTime(tCustomTimeline);
+                    LoadCustomTime(tCustomTimeline, true);
                     return;
                 }
             }
         }
 
-        public static void LoadCustomTime(CustomTimeline tCustomAction)
+        public static void LoadCustomTime(CustomTimeline tCustomAction, bool init = false)
         {
             ResetCustomTime();
 
-            PluginConfiguration.SetCustomIntValue(UseCustomTimeKeyIndex, tCustomAction.Index);
+            if (init != true)
+            {
+                PluginConfiguration.SetCustomIntValue(UseCustomTimeKeyIndex, tCustomAction.Index);
+            }
+
             _CustomTimeline = tCustomAction;
 
 
@@ -90,9 +98,19 @@ namespace XIVSlothComboX.CustomComboNS.Functions
                         药品轴.Add(customAction);
                         break;
                     }
+
+                    case CustomType.地面:
+                    {
+                        地面轴.Add(customAction);
+                        break;
+                    }
                 }
             }
-            Service.Configuration.Save();
+
+            if (init != true)
+            {
+                Service.Configuration.Save();
+            }
         }
 
 
@@ -103,6 +121,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             时间轴.Clear();
             序列轴.Clear();
             药品轴.Clear();
+            地面轴.Clear();
             整个轴.Clear();
             ActionWatching.CustomList.Clear();
             Service.Configuration.Save();
@@ -112,6 +131,38 @@ namespace XIVSlothComboX.CustomComboNS.Functions
         {
             var seconds = CombatEngageDuration().TotalSeconds;
             foreach (var customAction in 时间轴)
+            {
+                if (customAction.ActionId == actionId)
+                {
+                    if (customAction.UseTimeStart < seconds && seconds < customAction.UseTimeEnd)
+                    {
+                        return customAction;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public static CustomAction? CustomTimelineFindBy地面轴(uint actionId)
+        {
+            double? seconds = -9999d;
+
+            if (InCombat())
+            {
+                seconds = CombatEngageDuration().TotalSeconds;
+            }
+            else
+            {
+                var timeRemaining = Countdown.TimeRemaining();
+                if (timeRemaining != null)
+                {
+                    seconds = -timeRemaining;
+                }
+            }
+
+
+            foreach (var customAction in 地面轴)
             {
                 if (customAction.ActionId == actionId)
                 {
@@ -165,6 +216,20 @@ namespace XIVSlothComboX.CustomComboNS.Functions
 
             return ActionManager.Instance()->UseAction(ActionType.Item, itemId, LocalPlayer.ObjectId, a4);
         }
+
+        public static unsafe void Use地面技能(CustomAction customAction)
+        {
+            if (customAction.ActionId.ActionReady())
+            {
+                Vector3 vector3 = new Vector3();
+                vector3.X = customAction.Vector3.X;
+                vector3.Y = customAction.Vector3.Y;
+                vector3.Z = customAction.Vector3.Z;
+
+                ActionManager.Instance()->UseActionLocation(ActionType.Action, customAction.ActionId, 3758096384, &vector3, 0);
+            }
+        }
+
 
         // public static long DateTimeToLongTimeStamp(DateTime dateTime)
         // {

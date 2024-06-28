@@ -53,9 +53,9 @@ namespace XIVSlothComboX.Combos.PvE
             即兴表演Improvisation = 16014,
             治疗之华尔兹CuringWaltz = 16015,
             //7.0 等待技能ID
-            最后一舞 = 4584,
+            最后一舞LastDance = 36983,
             舞步终结 = 4584,
-            晓之舞 = 36985,
+            晓之舞DanceOfTheDawn = 36985,
             _ = 0;
 
         public static class Buffs
@@ -297,8 +297,8 @@ namespace XIVSlothComboX.Combos.PvE
                     {
                         if (gauge.Esprit >= 50)
                         {
-                            if (晓之舞.LevelChecked() && HasEffect(Buffs.晓之舞预备))
-                                return 晓之舞;
+                            if (晓之舞DanceOfTheDawn.LevelChecked() && HasEffect(Buffs.晓之舞预备))
+                                return 晓之舞DanceOfTheDawn;
                         }
 
                         if (IsEnabled(CustomComboPreset.DNC_DT_Simple_SaberDance_1))
@@ -322,8 +322,8 @@ namespace XIVSlothComboX.Combos.PvE
 
                     if (IsEnabled(CustomComboPreset.DNC_DT_Simple_最后一舞))
                     {
-                        if (最后一舞.LevelChecked() && HasEffect(Buffs.最后一舞预备PRE))
-                            return 最后一舞;
+                        if (最后一舞LastDance.LevelChecked() && HasEffect(Buffs.最后一舞预备PRE))
+                            return 最后一舞LastDance;
                     }
 
                     if (IsEnabled(CustomComboPreset.DNC_DT_Simple_舞步终结))

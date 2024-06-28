@@ -173,6 +173,13 @@ namespace XIVSlothComboX.Combos
 
         #region ASTROLOGIAN
 
+        
+        [ReplaceSkill(All.Repose)]
+        [CustomComboInfo("自定义循环",
+            "自定义循环",
+            AST.JobID, -10, "", "")]
+        AST_Advanced_CustomMode = 10180,
+        
         #region DPS
 
         [ReplaceSkill(AST.Malefic, AST.Malefic2, AST.Malefic3, AST.Malefic4, AST.FallMalefic, AST.Combust, AST.Combust2, AST.Combust3, AST.Gravity,
@@ -2271,6 +2278,13 @@ namespace XIVSlothComboX.Combos
         New features should be added to the appropriate sections.
         */
 
+        [ReplaceSkill(All.Repose)]
+        [CustomComboInfo("自定义循环",
+            "自定义循环",
+            SGE.JobID, -10, "", "")]
+        SGE_Advanced_CustomMode = 141001,
+
+        
         #region Single Target DPS Feature
 
         [ReplaceSkill(SGE.Dosis, SGE.Dosis2, SGE.Dosis3)] [CustomComboInfo("整合单体输出技能", "注药I/II/III 各种选项", SGE.JobID, 100, "", "")]
@@ -2689,6 +2703,14 @@ namespace XIVSlothComboX.Combos
         Example: 16110 (Feature Number 1, Option 1, no suboption)
         New features should be added to the appropriate sections.
         */
+        
+        
+        [ReplaceSkill(All.Repose)]
+        [CustomComboInfo("自定义循环",
+            "自定义循环",
+            SCH.JobID, -10, "", "")]
+        SCH_Advanced_CustomMode = 161001, 
+        
 
         #region DPS
 
@@ -3065,6 +3087,14 @@ namespace XIVSlothComboX.Combos
 
         #region WHITE MAGE
 
+        
+        [ReplaceSkill(All.Repose)]
+        [CustomComboInfo("自定义循环",
+            "自定义循环",
+            WHM.JobID, -10, "", "")]
+        WHM_Advanced_CustomMode = 190999,
+
+        
         #region Single Target DPS Feature
 
         [ReplaceSkill(WHM.Stone1, WHM.Stone2, WHM.Stone3, WHM.Stone4, WHM.Glare1, WHM.Glare3)]

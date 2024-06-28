@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using XIVSlothComboX.CustomComboNS.Functions;
+using System.Numerics;
 
 namespace XIVSlothComboX.Data;
 
@@ -42,11 +42,14 @@ public class CustomAction
     public double UseTimeEnd;
     
     /// <summary>
-    /// 1自己 2-8为小队其他队友 9为血量百分比最低
+    /// 1自己 2-8为小队其他队友
+    /// todo 9为血量百分比最低
     /// </summary>
     public int TargetType;
 
     public byte CustomActionType = CustomType.序列;
+
+    public Vector3 Vector3 = new();
 }
 
 internal static class CustomType
@@ -54,7 +57,8 @@ internal static class CustomType
     internal const byte
         序列 = 1,
         时间 = 2,
-        药品 = 3;
+        药品 = 3,
+        地面 = 4;
 }
 
 
