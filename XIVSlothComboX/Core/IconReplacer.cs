@@ -16,15 +16,18 @@ namespace XIVSlothComboX.Core
     internal sealed partial class IconReplacer : IDisposable
     {
         private readonly List<CustomCombo> customCombos;
+        
         private readonly Hook<IsIconReplaceableDelegate> isIconReplaceableHook;
         private readonly Hook<GetIconDelegate> getIconHook;
 
         private IntPtr actionManager = IntPtr.Zero;
-        private readonly IntPtr module = IntPtr.Zero;
 
         /// <summary> Initializes a new instance of the <see cref="IconReplacer"/> class. </summary>
         public IconReplacer()
         {
+            
+            // ActionManager.Addresses
+            
             customCombos = Assembly.GetAssembly(typeof(CustomCombo))!.GetTypes()
                 .Where(t => !t.IsAbstract && t.BaseType == typeof(CustomCombo))
                 .Select(t => Activator.CreateInstance(t))
@@ -32,14 +35,18 @@ namespace XIVSlothComboX.Core
                 .OrderByDescending(x => x.Preset)
                 .ToList();
 
-            getIconHook = Service.GameInteropProvider.HookFromAddress<GetIconDelegate>((nint)ActionManager.Addresses.GetAdjustedActionId.Value, GetIconDetour);
-            isIconReplaceableHook = Service.GameInteropProvider.HookFromAddress<IsIconReplaceableDelegate>(Service.Address.IsActionIdReplaceable, IsIconReplaceableDetour);
+            // ActionManager.MemberFunctionPointers.GetAdjustedActionId
 
+            
+            
+            // getIconHook = Service.GameInteropProvider.HookFromAddress<GetIconDelegate>(ActionManager.Addresses.GetAdjustedActionId.Value, GetIconDetour);
+            getIconHook = Service.GameInteropProvider.HookFromSignature<GetIconDelegate>(HookAddress.GetAdjustedActionId, GetIconDetour);
             getIconHook.Enable();
+            
+            isIconReplaceableHook = Service.GameInteropProvider.HookFromAddress<IsIconReplaceableDelegate>(Service.Address.IsActionIdReplaceable, IsIconReplaceableDetour);
             isIconReplaceableHook.Enable();
         }
-
-        private delegate ulong IsIconReplaceableDelegate(uint actionID);
+        
 
         private delegate uint GetIconDelegate(IntPtr actionManager, uint actionID);
 
@@ -59,27 +66,26 @@ namespace XIVSlothComboX.Core
         {
             this.actionManager = actionManager;
 
+            // Service.PluginLog.Error($"{actionID}");
+            
             try
             {
                 if (Service.ClientState.LocalPlayer == null)
                     return OriginalHook(actionID);
 
-                if (ClassLocked()) 
+                if (ClassLocked() || 
+                    (DisabledJobsPVE.Any(x => x == Service.ClientState.LocalPlayer.ClassJob.Id) && !Service.ClientState.IsPvP) || 
+                    (DisabledJobsPVP.Any(x => x == Service.ClientState.LocalPlayer.ClassJob.Id) && Service.ClientState.IsPvP)) 
                     return OriginalHook(actionID);
 
                 uint lastComboMove = *(uint*)Service.Address.LastComboMove;
                 float comboTime = *(float*)Service.Address.ComboTimer;
                 byte level = Service.ClientState.LocalPlayer?.Level ?? 0;
 
-                BlueMageService.PopulateBLUSpells();
-
                 foreach (CustomCombo? combo in customCombos)
                 {
                     if (combo.TryInvoke(actionID, level, lastComboMove, comboTime, out uint newActionID))
-                    {
                         return newActionID;
-                    }
-
                 }
 
                 return OriginalHook(actionID);
@@ -91,6 +97,7 @@ namespace XIVSlothComboX.Core
                 return OriginalHook(actionID);
             }
         }
+
 
         // Class locking
         public unsafe static bool ClassLocked()
@@ -115,7 +122,14 @@ namespace XIVSlothComboX.Core
 
             return false;
         }
+        
+        private delegate ulong IsIconReplaceableDelegate(uint actionID);
 
-        private ulong IsIconReplaceableDetour(uint actionID) => 1;
-    }
+        private ulong IsIconReplaceableDetour(uint actionID)
+        {
+            // Service.PluginLog.Error($"IsIconReplaceableDetour");
+            return 1;
+        }
+    };
+        
 }

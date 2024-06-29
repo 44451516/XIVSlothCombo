@@ -13,7 +13,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
+		<DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev10\</DalamudLibPath>
+<!--		<DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>-->
 <!--		<DalamudPluginPath>$(appdata)\XIVLauncher\installedPlugins\XIVSlothComboX\$(version)</DalamudPluginPath>-->
 <!--		<DalamudDevPlugins>$(appdata)\XIVLauncher\devPlugins\XIVSlothComboX\</DalamudDevPlugins>-->
 		<AssemblyName>XIVSlothComboX</AssemblyName>
@@ -67,26 +68,33 @@
 
 	<ItemGroup>
 		<PackageReference Include="DalamudPackager" Version="2.1.12" />
-<!--		<PackageReference Include="ECommons" Version="2.0.0.4" />-->
 		<PackageReference Include="ILRepack" Version="2.0.18" />
 <!--		<ProjectReference Include="E:\DevProject\FF14\Dalamud-ECommons\ECommons\ECommons.csproj" />-->
 	</ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />
+	</ItemGroup>
+	
 	<ItemGroup>
 		<Reference Include="Dalamud">
 			<HintPath>$(DalamudLibPath)Dalamud.dll</HintPath>
 			<Private>False</Private>
 		</Reference>	
 		
-		<Reference Include="ECommons">
-			<HintPath>E:\DevProject\FF14\Dalamud-ECommons\ECommons\bin\Debug\ECommons.dll</HintPath>
-			<Private>True</Private>
-		</Reference>
+<!--		<Reference Include="ECommons">-->
+<!--			<HintPath>$(appdata)\XIVLauncher\addon\Hooks\dev_Lib\ECommons\ECommons.dll</HintPath>-->
+<!--			<Private>True</Private>-->
+<!--		</Reference>-->
 
 		<Reference Include="FFXIVClientStructs">
 			<HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
 			<Private>False</Private>
 
+		</Reference>
+
+		<Reference Include="InteropGenerator.Runtime">
+		  <HintPath>C:\Users\woodnaonly\AppData\Roaming\XIVLauncher\addon\Hooks\dev10\InteropGenerator.Runtime.dll</HintPath>
 		</Reference>
 
 		<Reference Include="Newtonsoft.Json">

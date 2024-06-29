@@ -1,24 +1,21 @@
-namespace XIVSlothComboX.Services;
-
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Numerics;
-using System.Text;
 using System.Threading.Tasks;
-using Dalamud;
-using Dalamud.Game.Config;
-using Dalamud.Interface.Internal;
-using Dalamud.Utility;
-using ImGuiNET;
+using Dalamud.Game;
+using Dalamud.Interface.Textures;
+using Dalamud.Interface.Textures.TextureWraps;
 using Lumina.Data.Files;
 using Action = Lumina.Excel.GeneratedSheets.Action;
+
+namespace XIVSlothComboX.Services;
+
+﻿using Action = Action;
 
 
 public class IconManager : IDisposable {
     private bool disposed;
-    private readonly Dictionary<(int, bool), IDalamudTextureWrap> iconTextures = new();
+    private readonly Dictionary<(uint, bool), IDalamudTextureWrap> iconTextures = new();
     private readonly Dictionary<uint, ushort> actionCustomIcons = new() {
             
     };
@@ -42,12 +39,16 @@ public class IconManager : IDisposable {
         
     }
         
-    private void LoadIconTexture(int iconId, bool hq = false) {
+    private void LoadIconTexture(uint iconId, bool hq = false) {
         Task.Run(() => {
             try {
-                var iconTex = GetIcon(iconId, hq);
 
-                var tex = Service.Interface.UiBuilder.LoadImageRaw(iconTex.GetRgbaImageData(), iconTex.Header.Width, iconTex.Header.Height, 4);
+                var gameIconLookup = new GameIconLookup(iconId);
+
+                var dalamudTextureWrap = Service.TextureProvider.GetFromGameIcon(gameIconLookup).RentAsync().Result;
+
+
+                var tex = dalamudTextureWrap;
 
                 if (tex.ImGuiHandle != IntPtr.Zero) {
                     this.iconTextures[(iconId, hq)] = tex;
@@ -59,7 +60,7 @@ public class IconManager : IDisposable {
         });
     }
         
-    public TexFile GetIcon(int iconId, bool hq = false) => this.GetIcon(Service.DataManager.Language, iconId, hq);
+    public TexFile GetIcon(uint iconId, bool hq = false) => this.GetIcon(Service.DataManager.Language, iconId, hq);
 
     /// <summary>
     /// Get a <see cref="T:Lumina.Data.Files.TexFile" /> containing the icon with the given ID, of the given language.
@@ -67,7 +68,7 @@ public class IconManager : IDisposable {
     /// <param name="iconLanguage">The requested language.</param>
     /// <param name="iconId">The icon ID.</param>
     /// <returns>The <see cref="T:Lumina.Data.Files.TexFile" /> containing the icon.</returns>
-    public TexFile GetIcon(ClientLanguage iconLanguage, int iconId, bool hq = false)
+    public TexFile GetIcon(ClientLanguage iconLanguage, uint iconId, bool hq = false)
     {
         string type;
         switch (iconLanguage)
@@ -92,7 +93,7 @@ public class IconManager : IDisposable {
         return this.GetIcon(type, iconId, hq);
     }
         
-    public TexFile GetIcon(string type, int iconId, bool hq = false)
+    public TexFile GetIcon(string type, uint iconId, bool hq = false)
     {
         if (type == null)
             type = string.Empty;
@@ -113,7 +114,7 @@ public class IconManager : IDisposable {
         return actionCustomIcons.ContainsKey(action.RowId) ? actionCustomIcons[action.RowId] : action.Icon;
     }
 
-    public IDalamudTextureWrap? GetIconTexture(int iconId, bool hq = false) {
+    public IDalamudTextureWrap? GetIconTexture(uint iconId, bool hq = false) {
         if (this.disposed) 
             return null;
         if (this.iconTextures.ContainsKey((iconId, hq))) 

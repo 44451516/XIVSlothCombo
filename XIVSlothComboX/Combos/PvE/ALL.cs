@@ -6,7 +6,7 @@ namespace XIVSlothComboX.Combos.PvE
 {
     internal class All
     {
-        public const byte JobID = 99;
+        public const byte JobID = 0;
 
         public const uint
             Rampart = 7531,
@@ -83,8 +83,18 @@ namespace XIVSlothComboX.Combos.PvE
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
-                if (actionID is Sprint && Service.ClientState.TerritoryType is 1055) return IsleSprint;
-                else return actionID;
+                // if (actionID is Sprint && Service.ClientState.TerritoryType is 1055)
+                if (actionID is Sprint )
+                {
+                    
+                    // return IsleSprint;
+                    return 20;
+                }
+                else
+                {
+                    return actionID;
+                }
+
             }
         }
 

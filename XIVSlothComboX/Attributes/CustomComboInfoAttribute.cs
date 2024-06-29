@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Dalamud.Game;
+using ECommons.DalamudServices;
 using XIVSlothComboX.Combos.PvE;
 using XIVSlothComboX.Services;
 
@@ -147,6 +149,17 @@ namespace XIVSlothComboX.Attributes
         /// <summary> Gets the job ID. </summary>
         public byte JobID { get; }
 
+        /// <summary> Gets the job role. </summary>
+        public int Role => JobIDToRole(JobID);
+
+        private int JobIDToRole(byte jobID)
+        {
+            if (Service.DataManager.GetExcelSheet<ClassJob>().HasRow(jobID))
+                return Service.DataManager.GetExcelSheet<ClassJob>().GetRow(jobID).Role;
+
+            return 0;
+        }
+        
         /// <summary> Gets the display order. </summary>
         public int Order { get; }
 
@@ -172,19 +185,32 @@ namespace XIVSlothComboX.Attributes
 
         public static string JobIDToName(byte key)
         {
+            if (key == 0)
+                return "通用职业";
+
+            if (key == 51)
+            {
+                ;
+                ;
+                ;
+            }
+
             //Override DOH/DOL
-            if (key is DOH.JobID) key = 08; //Set to Carpenter
-            if (key is DOL.JobID) key = 16; //Set to Miner
+            if (key is DOH.JobID) 
+                key = 08; //Set to Carpenter
+            if (key is DOL.JobID) 
+                key = 16; //Set to Miner
             if (ClassJobs.TryGetValue(key, out ClassJob? job))
             {
                 //Grab Category name for DOH/DOL, else the normal Name for the rest
-                string jobname = key is 08 or 16 ? job.ClassJobCategory.Value.Name : job.Name;
+                // string jobname = key is 08 or 16 ? job.ClassJobCategory.Value.Name : job.Name;
+                string jobname = key is 08 or 16 ? "大地使者" : job.Name;
                 //Job names are all lowercase by default. This capitalizes based on regional rules
                 string cultureID = Service.ClientState.ClientLanguage switch
                 {
-                    Dalamud.ClientLanguage.French => "fr-FR",
-                    Dalamud.ClientLanguage.Japanese => "ja-JP",
-                    Dalamud.ClientLanguage.German => "de-DE",
+                    ClientLanguage.French => "fr-FR",
+                    ClientLanguage.Japanese => "ja-JP",
+                    ClientLanguage.German => "de-DE",
                     _ => "en-us",
                 };
                 TextInfo textInfo = new CultureInfo(cultureID, false).TextInfo;
@@ -243,8 +269,8 @@ namespace XIVSlothComboX.Attributes
             39 => "Reaper",
             40 => "Sage",
             99 => "Global",
-            DOH.JobID => "Disciples of the Hand",
-            DOL.JobID => "Disciples of the Land",
+            DOH.JobID => "Disciples of the 手工艺",
+            DOL.JobID => "Disciples of the 大地使者",
             _ => "Unknown",
         };
 

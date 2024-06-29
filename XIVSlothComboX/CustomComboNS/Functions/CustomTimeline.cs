@@ -211,22 +211,23 @@ namespace XIVSlothComboX.CustomComboNS.Functions
 
             if (InventoryManager.Instance()->GetInventoryItemCount(itemId, true) > 0)
             {
-                return ActionManager.Instance()->UseAction(ActionType.Item, itemId + 1000000, LocalPlayer.ObjectId, a4);
+                return ActionManager.Instance()->UseAction(ActionType.Item, itemId + 1000000, LocalPlayer.GameObjectId, a4);
             }
 
-            return ActionManager.Instance()->UseAction(ActionType.Item, itemId, LocalPlayer.ObjectId, a4);
+            return ActionManager.Instance()->UseAction(ActionType.Item, itemId, LocalPlayer.GameObjectId, a4);
         }
 
         public static unsafe void Use地面技能(CustomAction customAction)
         {
             if (customAction.ActionId.ActionReady())
             {
-                Vector3 vector3 = new Vector3();
+                System.Numerics.Vector3 vector3 = new Vector3();
                 vector3.X = customAction.Vector3.X;
                 vector3.Y = customAction.Vector3.Y;
                 vector3.Z = customAction.Vector3.Z;
 
                 ActionManager.Instance()->UseActionLocation(ActionType.Action, customAction.ActionId, 3758096384, &vector3, 0);
+                // ActionManager.Instance()->UseActionLocation(ActionType.Action, customAction.ActionId, 3758096384, &vector3, 0);
             }
         }
 

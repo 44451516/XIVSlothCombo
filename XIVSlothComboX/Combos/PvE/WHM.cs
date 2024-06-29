@@ -404,7 +404,7 @@ namespace XIVSlothComboX.Combos.PvE
                 if (actionID is Cure)
                 {
                     WHMGauge? gauge = GetJobGauge<WHMGauge>();
-                    GameObject? healTarget = GetHealTarget(Config.WHM_STHeals_UIMouseOver);
+                    IGameObject? healTarget = GetHealTarget(Config.WHM_STHeals_UIMouseOver);
                     bool canWeave = CanSpellWeave(actionID, 0.3);
                     bool thinAirReady = LevelChecked(ThinAir) && !HasEffect(Buffs.ThinAir) &&
                                         GetRemainingCharges(ThinAir) > Config.WHM_STHeals_ThinAir;

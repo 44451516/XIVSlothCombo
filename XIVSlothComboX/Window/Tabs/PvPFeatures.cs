@@ -1,7 +1,11 @@
 ﻿using System.Linq;
 using System.Numerics;
 using Dalamud.Interface;
+using Dalamud.Interface.Internal;
+using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Interface.Utility;
+using Dalamud.Interface.Utility.Raii;
+using ECommons.ImGuiMethods;
 using ImGuiNET;
 using XIVSlothComboX.Core;
 using XIVSlothComboX.Services;
@@ -9,75 +13,120 @@ using XIVSlothComboX.Window.Functions;
 
 namespace XIVSlothComboX.Window.Tabs
 {
-    internal class PvPFeatures : ConfigWindow
+  internal class PvPFeatures : ConfigWindow
     {
+        internal static string OpenJob = string.Empty;
+
         internal static new void Draw()
         {
-            ImGui.Text("此选项卡允许您选择要启用的PvP连击和功能。");
+            PvEFeatures.HasToOpenJob = true;
 
-            ImGui.PushFont(UiBuilder.IconFont);
-            ImGui.Text($"{FontAwesomeIcon.SkullCrossbones.ToIconString()}");
-            ImGui.PopFont();
-            ImGui.SameLine();
-            ImGui.TextUnformatted("PVP功能只能在PVP用");
-            ImGui.SameLine();
-            ImGui.PushFont(UiBuilder.IconFont);
-            ImGui.Text($"{FontAwesomeIcon.SkullCrossbones.ToIconString()}");
-            ImGui.PopFont();
-
-            ImGui.BeginChild("scrolling", new Vector2(0, 0), true);
-
-            ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0, 5));
-
-            int i = 1;
-
-            foreach (string? jobName in groupedPresets.Keys)
+            using (var scrolling = ImRaii.Child("scrolling", new Vector2(ImGui.GetContentRegionAvail().X, ImGui.GetContentRegionAvail().Y), true))
             {
-                if (!groupedPresets[jobName].Any(x => PluginConfiguration.IsSecret(x.Preset))) 
-                    continue;
-                string header = jobName;
-                if (jobName == groupedPresets.First().Key)
-                {
-                    header = "All Jobs";
-                }
-                if (ImGui.CollapsingHeader(header))
-                {
-                    foreach (var otherJob in groupedPresets.Keys.Where(x => x != jobName))
-                    {
-                        ImGui.GetStateStorage().SetInt(ImGui.GetID(otherJob), 0);
-                    }
-                    
-                    if (jobName != groupedPresets.First().Key)
-                    {
-                        ImGui.GetStateStorage().SetInt(ImGui.GetID("All Jobs"), 0);
-                    }
+                int i = 1;
 
-                    DrawHeadingContents(jobName, i);
-                }
+                var indentwidth = 12f.Scale();
+                var indentwidth2 = indentwidth + 42f.Scale();
 
+                if (OpenJob == string.Empty)
+                {
+                    ImGuiEx.LineCentered("pvpDesc", () =>
+                    {
+                        ImGui.PushFont(UiBuilder.IconFont);
+                        ImGui.TextWrapped($"{FontAwesomeIcon.SkullCrossbones.ToIconString()}");
+                        ImGui.PopFont();
+                        ImGui.SameLine();
+                        ImGui.TextWrapped("PVP功能只能在PVP用");
+                        ImGui.SameLine();
+                        ImGui.PushFont(UiBuilder.IconFont);
+                        ImGui.TextWrapped($"{FontAwesomeIcon.SkullCrossbones.ToIconString()}");
+                        ImGui.PopFont();
+                    });
+                    ImGuiEx.LineCentered($"pvpDesc2", () => {
+                        // ImGuiEx.TextUnderlined("Select a job from below to enable and configure features for it.");
+                        ImGuiEx.TextUnderlined("从下面选择一项任务，为其启用和配置功能。.");
+                    });
+                    ImGui.Spacing();
+
+                    foreach (string? jobName in groupedPresets.Keys)
+                    {
+                        string abbreviation = groupedPresets[jobName].First().Info.JobShorthand;
+                        string header = string.IsNullOrEmpty(abbreviation) ? jobName : $"{jobName} - {abbreviation}";
+                        var id = groupedPresets[jobName].First().Info.JobID;
+                        IDalamudTextureWrap? icon = Icons.GetJobIcon(id);
+                        using (var disabled = ImRaii.Disabled(DisabledJobsPVP.Any(x => x == id)))
+                        {
+                            if (ImGui.Selectable($"###{header}", OpenJob == jobName, ImGuiSelectableFlags.None, icon == null ? new Vector2(0) : new Vector2(0, (icon.Size.Y / 2f) * ImGui.GetIO().FontGlobalScale)))
+                            {
+                                OpenJob = jobName;
+                            }
+                            ImGui.SameLine(indentwidth);
+                            if (icon != null)
+                            {
+                                ImGui.Image(icon.ImGuiHandle, (icon.Size / 2f) * ImGui.GetIO().FontGlobalScale);
+                                ImGui.SameLine(indentwidth2);
+                            }
+                            ImGui.Text($"{header} {(disabled ? "(因更新而禁用)" : "")}");
+                        }
+                    }
+                }
                 else
                 {
-                    i += groupedPresets[jobName].Where(x => PluginConfiguration.IsSecret(x.Preset)).Count();
-                    foreach (var preset in groupedPresets[jobName].Where(x => PluginConfiguration.IsSecret(x.Preset)))
+                    var id = groupedPresets[OpenJob].First().Info.JobID;
+                    IDalamudTextureWrap? icon = Icons.GetJobIcon(id);
+
+                    using (var headingTab = ImRaii.Child("HeadingTab", new Vector2(ImGui.GetContentRegionAvail().X, (icon.Size.Y / 2f.Scale()) + 4f)))
                     {
-                        i += Presets.AllChildren(presetChildren[preset.Preset]);
+                        if (ImGui.Button("Back"))
+                        {
+                            OpenJob = "";
+                            return;
+                        }
+
+                        ImGui.SameLine(ImGui.GetContentRegionAvail().X / 2);
+                        if (icon != null)
+                        {
+                            ImGui.Image(icon.ImGuiHandle, (icon.Size / 2f.Scale()));
+                            ImGui.SameLine((ImGui.GetContentRegionAvail().X / 2) + 42f.Scale());
+                        }
+                        ImGuiEx.Text($"{OpenJob}");
+
+                    }
+
+                    using (var contents = ImRaii.Child("Contents", new Vector2(0)))
+                    {
+
+                        try
+                        {
+                            if (ImGui.BeginTabBar($"subTab{OpenJob}", ImGuiTabBarFlags.Reorderable | ImGuiTabBarFlags.AutoSelectNewTabs))
+                            {
+                                if (ImGui.BeginTabItem("Normal"))
+                                {
+                                    DrawHeadingContents(OpenJob, i);
+                                    ImGui.EndTabItem();
+                                }
+
+                                ImGui.EndTabBar();
+                            }
+                        }
+                        catch { }
+
                     }
                 }
+
             }
-            ImGui.PopStyleVar();
-            ImGui.EndChild();
         }
 
         private static void DrawHeadingContents(string jobName, int i)
         {
-            foreach (var (preset, info) in groupedPresets[jobName].Where(x => PluginConfiguration.IsSecret(x.Preset)))
+            foreach (var (preset, info) in groupedPresets[jobName].Where(x => PresetStorage.IsSecret(x.Preset)))
             {
                 InfoBox presetBox = new() { Color = Colors.Grey, BorderThickness = 1f, CurveRadius = 8f, ContentsAction = () => { Presets.DrawPreset(preset, info, ref i); } };
 
                 if (Service.Configuration.HideConflictedCombos)
                 {
-                    var conflictOriginals = Service.Configuration.GetConflicts(preset); // Presets that are contained within a ConflictedAttribute
-                    var conflictsSource = Service.Configuration.GetAllConflicts();      // Presets with the ConflictedAttribute
+                    var conflictOriginals = PresetStorage.GetConflicts(preset); // Presets that are contained within a ConflictedAttribute
+                    var conflictsSource = PresetStorage.GetAllConflicts();      // Presets with the ConflictedAttribute
 
                     if (!conflictsSource.Where(x => x == preset).Any() || conflictOriginals.Length == 0)
                     {
@@ -86,7 +135,7 @@ namespace XIVSlothComboX.Window.Tabs
                         continue;
                     }
 
-                    if (conflictOriginals.Any(x => Service.Configuration.IsEnabled(x)))
+                    if (conflictOriginals.Any(x => PresetStorage.IsEnabled(x)))
                     {
                         Service.Configuration.EnabledActions.Remove(preset);
                         Service.Configuration.Save();

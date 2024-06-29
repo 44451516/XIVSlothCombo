@@ -349,10 +349,10 @@ namespace XIVSlothComboX.Combos.PvE
                 if (actionID is DeploymentTactics && ActionReady(DeploymentTactics))
                 {
                     //Grab our target (Soft->Hard->Self)
-                    GameObject? healTarget = GetHealTarget(Config.SCH_DeploymentTactics_Adv && Config.SCH_DeploymentTactics_UIMouseOver);
+                    IGameObject? healTarget = GetHealTarget(Config.SCH_DeploymentTactics_Adv && Config.SCH_DeploymentTactics_UIMouseOver);
 
                     //Check for the Galvanize shield buff. Start applying if it doesn't exist
-                    if (FindEffect(Buffs.Galvanize, healTarget, LocalPlayer.ObjectId) is null)
+                    if (FindEffect(Buffs.Galvanize, healTarget, LocalPlayer.GameObjectId) is null)
                     {
                         if (IsEnabled(CustomComboPreset.SCH_DeploymentTactics_Recitation) && ActionReady(Recitation))
                             return Recitation;
@@ -391,6 +391,12 @@ namespace XIVSlothComboX.Combos.PvE
 
                 if (ActionFound)
                 {
+                    
+                    //Ruin 2 Movement 
+                    if (IsEnabled(CustomComboPreset.SCH_DPS_Ruin2Movement) &&
+                        LevelChecked(Ruin2) &&
+                        IsMoving) return OriginalHook(Ruin2); //Who knows in the future
+                    
                     var incombat = HasCondition(Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat);
                     if (!incombat)
                     {
@@ -471,11 +477,7 @@ namespace XIVSlothComboX.Combos.PvE
                                 GetTargetHPPercent() > Config.SCH_ST_DPS_BioOption)
                                 return dot; //Use appropriate DoT Action
                         }
-
-                        //Ruin 2 Movement 
-                        if (IsEnabled(CustomComboPreset.SCH_DPS_Ruin2Movement) &&
-                            LevelChecked(Ruin2) && InCombat() &&
-                            IsMoving) return OriginalHook(Ruin2); //Who knows in the future
+                        
                     }
                 }
                 return actionID;
@@ -616,7 +618,7 @@ namespace XIVSlothComboX.Combos.PvE
                         return All.LucidDreaming;
 
                     //Grab our target (Soft->Hard->Self)
-                    GameObject? healTarget = GetHealTarget(Config.SCH_ST_Heal_Adv && Config.SCH_ST_Heal_UIMouseOver);
+                    IGameObject? healTarget = GetHealTarget(Config.SCH_ST_Heal_Adv && Config.SCH_ST_Heal_UIMouseOver);
 
                     if (IsEnabled(CustomComboPreset.SCH_ST_Heal_Esuna) && ActionReady(All.Esuna) &&
                         HasCleansableDebuff(healTarget))
@@ -625,7 +627,7 @@ namespace XIVSlothComboX.Combos.PvE
                     //Check for the Galvanize shield buff. Start applying if it doesn't exist or Target HP is below %
                     if (IsEnabled(CustomComboPreset.SCH_ST_Heal_Adloquium) &&
                         ActionReady(Adloquium) &&
-                        (FindEffect(Buffs.Galvanize, healTarget, LocalPlayer?.ObjectId) is null || GetTargetHPPercent(healTarget) <= Config.SCH_ST_Heal_AdloquiumOption))
+                        (FindEffect(Buffs.Galvanize, healTarget, LocalPlayer?.GameObjectId) is null || GetTargetHPPercent(healTarget) <= Config.SCH_ST_Heal_AdloquiumOption))
                     {
                         return Adloquium;
                     }

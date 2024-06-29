@@ -4,16 +4,16 @@ using System.Numerics;
 using Dalamud.Game.ClientState.Objects;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
+using FFXIVClientStructs.FFXIV.Client.Game.Character;
 using XIVSlothComboX.Data;
 using XIVSlothComboX.Services;
-using StructsObject = FFXIVClientStructs.FFXIV.Client.Game.Object;
 
 namespace XIVSlothComboX.CustomComboNS.Functions
 {
     internal abstract partial class CustomComboFunctions
     {
         /// <summary> Gets the current target or null. </summary>
-        public static GameObject? CurrentTarget => Service.TargetManager.Target;
+        public static IGameObject? CurrentTarget => Service.TargetManager.Target;
 
         /// <summary> Find if the player has a target. </summary>
         /// <returns> A value indicating whether the player has a target. </returns>
@@ -26,10 +26,10 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             if (CurrentTarget is null || LocalPlayer is null)
                 return 0;
 
-            if (CurrentTarget is not BattleChara chara)
+            if (CurrentTarget is not IBattleChara chara)
                 return 0;
 
-            if (CurrentTarget.ObjectId == LocalPlayer.ObjectId)
+            if (CurrentTarget.GameObjectId == LocalPlayer.GameObjectId)
                 return 0;
 
             Vector2 position = new(chara.Position.X, chara.Position.Z);
@@ -58,7 +58,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
 
         /// <summary> Gets a value indicating target's HP Percent. CurrentTarget is default unless specified </summary>
         /// <returns> Double indicating percentage. </returns>
-        public static float GetTargetHPPercent(GameObject? OurTarget = null)
+        public static float GetTargetHPPercent(IGameObject? OurTarget = null)
         {
             if (OurTarget is null)
             {
@@ -67,7 +67,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
                     return 0;
             }
 
-            return OurTarget is not BattleChara chara
+            return OurTarget is not IBattleChara chara
                 ? 0
                 : (float)chara.CurrentHp / chara.MaxHp * 100;
         }
@@ -76,7 +76,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
         {
             if (CurrentTarget is null)
                 return 0;
-            if (CurrentTarget is not BattleChara chara)
+            if (CurrentTarget is not IBattleChara chara)
                 return 0;
 
             return chara.MaxHp;
@@ -86,7 +86,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
         {
             if (CurrentTarget is null)
                 return 0;
-            if (CurrentTarget is not BattleChara chara)
+            if (CurrentTarget is not IBattleChara chara)
                 return 0;
 
             return chara.CurrentHp;
@@ -94,9 +94,9 @@ namespace XIVSlothComboX.CustomComboNS.Functions
 
         public static float PlayerHealthPercentageHp() => (float)LocalPlayer.CurrentHp / LocalPlayer.MaxHp * 100;
 
-        public static bool HasBattleTarget() => (CurrentTarget as BattleNpc)?.BattleNpcKind is BattleNpcSubKind.Enemy or (BattleNpcSubKind)1;
+        public static bool HasBattleTarget() => (CurrentTarget as IBattleNpc)?.BattleNpcKind is BattleNpcSubKind.Enemy or (BattleNpcSubKind)1;
 
-        public static bool HasFriendlyTarget(GameObject? OurTarget = null)
+        public static bool HasFriendlyTarget(IGameObject? OurTarget = null)
         {
             if (OurTarget is null)
             {
@@ -110,16 +110,16 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             if (OurTarget.ObjectKind is ObjectKind.Player)
                 return true;
             //AI
-            if (OurTarget is BattleNpc) return (OurTarget as BattleNpc).BattleNpcKind is not BattleNpcSubKind.Enemy and not (BattleNpcSubKind)1;
+            if (OurTarget is IBattleNpc) return (OurTarget as IBattleNpc).BattleNpcKind is not BattleNpcSubKind.Enemy and not (BattleNpcSubKind)1;
             return false;
         }
 
         /// <summary> Grabs healable target. Checks Soft Target then Hard Target. 
         /// If Party UI Mouseover is enabled, find the target and return that. Else return the player. </summary>
         /// <returns> GameObject of a player target. </returns>
-        public static unsafe GameObject? GetHealTarget(bool checkMOPartyUI = false, bool restrictToMouseover = false)
+        public static unsafe IGameObject? GetHealTarget(bool checkMOPartyUI = false, bool restrictToMouseover = false)
         {
-            GameObject? healTarget = null;
+            IGameObject? healTarget = null;
             ITargetManager tm = Service.TargetManager;
 
             if (HasFriendlyTarget(tm.SoftTarget)) healTarget = tm.SoftTarget;
@@ -127,10 +127,11 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             //if (checkMO && HasFriendlyTarget(tm.MouseOverTarget)) healTarget = tm.MouseOverTarget;
             if (checkMOPartyUI)
             {
-                StructsObject.GameObject* t = PartyTargetingService.UITarget;
-                if (t != null && t->ObjectID != 0)
+                FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* t = PartyTargetingService.UITarget;
+                // if (t != null && t->ObjectID != 0)
+                if (t != null && t->GetGameObjectId() != 0)
                 {
-                    GameObject? uiTarget = Service.ObjectTable.Where(x => x.ObjectId == t->ObjectID).FirstOrDefault();
+                    IGameObject? uiTarget = Service.ObjectTable.Where(x => x.GameObjectId == t->GetGameObjectId()).FirstOrDefault();
                     if (uiTarget != null && HasFriendlyTarget(uiTarget)) healTarget = uiTarget;
 
                     if (restrictToMouseover)
@@ -151,7 +152,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
         {
             if (CurrentTarget is null)
                 return false;
-            if (CurrentTarget is not BattleChara chara)
+            if (CurrentTarget is not IBattleChara chara)
                 return false;
             if (chara.IsCasting)
                 return chara.IsCastInterruptible;
@@ -161,11 +162,11 @@ namespace XIVSlothComboX.CustomComboNS.Functions
 
         /// <summary> Sets the player's target. </summary>
         /// <param name="target"> Target must be a game object that the player can normally click and target. </param>
-        public static void SetTarget(GameObject? target) => Service.TargetManager.Target = target;
+        public static void SetTarget(IGameObject? target) => Service.TargetManager.Target = target;
 
         /// <summary> Checks if target is in appropriate range for targeting </summary>
         /// <param name="target"> The target object to check </param>
-        public static bool IsInRange(GameObject? target)
+        public static bool IsInRange(IGameObject? target)
         {
             if (target == null || target.YalmDistanceX >= 30)
                 return false;
@@ -185,22 +186,22 @@ namespace XIVSlothComboX.CustomComboNS.Functions
         /// <param name="target"></param>
         protected static unsafe void TargetObject(TargetType target)
         {
-            StructsObject.GameObject* t = GetTarget(target);
+            FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* t = GetTarget(target);
             if (t == null) return;
-            long o = PartyTargetingService.GetObjectID(t);
-            GameObject? p = Service.ObjectTable.Where(x => x.ObjectId == o).First();
+            ulong o = PartyTargetingService.GetObjectID(t);
+            IGameObject? p = Service.ObjectTable.Where(x => x.GameObjectId == o).First();
 
             if (IsInRange(p)) SetTarget(p);
         }
 
-        public static void TargetObject(GameObject? target)
+        public static void TargetObject(IGameObject? target)
         {
             if (IsInRange(target)) SetTarget(target);
         }
 
-        public unsafe static StructsObject.GameObject* GetTarget(TargetType target)
+        public unsafe static FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* GetTarget(TargetType target)
         {
-            GameObject? o = null;
+            IGameObject? o = null;
 
             switch (target)
             {
@@ -246,18 +247,18 @@ namespace XIVSlothComboX.CustomComboNS.Functions
                     return PartyTargetingService.GetGameObjectFromPronounID(50);
             }
 
-            return o != null ? (StructsObject.GameObject*)o.Address : null;
+            return o != null ? (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)o.Address : null;
         }
 
 
         public unsafe static int getPartyIndex(ulong ObjectId)
         {
             {
-                GameObject? gameObject = GetPartySlot(2);
+                IGameObject? gameObject = GetPartySlot(2);
 
                 if (gameObject != null)
                 {
-                    if (ObjectId ==gameObject.ObjectId)
+                    if (ObjectId ==gameObject.GameObjectId)
                     {
                         return 2;
                     }
@@ -266,11 +267,11 @@ namespace XIVSlothComboX.CustomComboNS.Functions
         
 
             {
-                GameObject? gameObject = GetPartySlot(3);
+                IGameObject? gameObject = GetPartySlot(3);
 
                 if (gameObject != null)
                 {
-                    if (ObjectId ==  gameObject.ObjectId)
+                    if (ObjectId ==  gameObject.GameObjectId)
                     {
                         return 3;
                     }
@@ -278,11 +279,11 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             }
             
             {
-                GameObject? gameObject = GetPartySlot(4);
+                IGameObject? gameObject = GetPartySlot(4);
 
                 if (gameObject != null)
                 {
-                    if (ObjectId == gameObject.ObjectId)
+                    if (ObjectId == gameObject.GameObjectId)
                     {
                         return 4;
                     }
@@ -291,11 +292,11 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             
             
             {
-                GameObject? gameObject = GetPartySlot(5);
+                IGameObject? gameObject = GetPartySlot(5);
 
                 if (gameObject != null)
                 {
-                    if (ObjectId ==  gameObject.ObjectId)
+                    if (ObjectId ==  gameObject.GameObjectId)
                     {
                         return 5;
                     }
@@ -304,11 +305,11 @@ namespace XIVSlothComboX.CustomComboNS.Functions
 
             
             {
-                GameObject? gameObject = GetPartySlot(6);
+                IGameObject? gameObject = GetPartySlot(6);
 
                 if (gameObject != null)
                 {
-                    if (ObjectId == gameObject.ObjectId)
+                    if (ObjectId == gameObject.GameObjectId)
                     {
                         return 6;
                     }
@@ -316,11 +317,11 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             }
             
             {
-                GameObject? gameObject = GetPartySlot(7);
+                IGameObject? gameObject = GetPartySlot(7);
 
                 if (gameObject != null)
                 {
-                    if (ObjectId ==  gameObject.ObjectId)
+                    if (ObjectId ==  gameObject.GameObjectId)
                     {
                         return 7;
                     }
@@ -328,11 +329,11 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             }
 
             {
-                GameObject? gameObject = GetPartySlot(8);
+                IGameObject? gameObject = GetPartySlot(8);
 
                 if (gameObject != null)
                 {
-                    if (ObjectId ==  gameObject.ObjectId)
+                    if (ObjectId ==  gameObject.GameObjectId)
                     {
                         return 8;
                     }
@@ -373,7 +374,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             if (CurrentTarget is null || LocalPlayer is null)
                 return 0;
 
-            if (CurrentTarget is not BattleChara chara || CurrentTarget.ObjectKind != Dalamud.Game.ClientState.Objects.Enums.ObjectKind.BattleNpc)
+            if (CurrentTarget is not IBattleChara chara || CurrentTarget.ObjectKind != Dalamud.Game.ClientState.Objects.Enums.ObjectKind.BattleNpc)
                 return 0;
 
             var targetPosition = new Vector2(CurrentTarget.Position.X, CurrentTarget.Position.Z);
@@ -417,7 +418,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             if (CurrentTarget is null || LocalPlayer is null)
                 return false;
 
-            if (CurrentTarget is not BattleChara chara || CurrentTarget.ObjectKind != Dalamud.Game.ClientState.Objects.Enums.ObjectKind.BattleNpc)
+            if (CurrentTarget is not IBattleChara chara || CurrentTarget.ObjectKind != Dalamud.Game.ClientState.Objects.Enums.ObjectKind.BattleNpc)
                 return false;
 
             var targetPosition = new Vector2(CurrentTarget.Position.X, CurrentTarget.Position.Z);
@@ -446,7 +447,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             if (CurrentTarget is null || LocalPlayer is null)
                 return false;
 
-            if (CurrentTarget is not BattleChara chara || CurrentTarget.ObjectKind != Dalamud.Game.ClientState.Objects.Enums.ObjectKind.BattleNpc)
+            if (CurrentTarget is not IBattleChara chara || CurrentTarget.ObjectKind != Dalamud.Game.ClientState.Objects.Enums.ObjectKind.BattleNpc)
                 return false;
 
             var targetPosition = new Vector2(CurrentTarget.Position.X, CurrentTarget.Position.Z);
@@ -492,7 +493,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             }
         }
 
-        internal unsafe static bool OutOfRange(uint actionID, GameObject target) => ActionWatching.OutOfRange(actionID,
-            (StructsObject.GameObject*)Service.ClientState.LocalPlayer.Address, (StructsObject.GameObject*)target.Address);
+        internal unsafe static bool OutOfRange(uint actionID, IGameObject target) => ActionWatching.OutOfRange(actionID,
+            (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)Service.ClientState.LocalPlayer.Address, (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)target.Address);
     }
 }

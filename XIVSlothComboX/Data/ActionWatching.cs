@@ -7,6 +7,7 @@ using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using FFXIVClientStructs.FFXIV.Common.Math;
+using InteropGenerator.Runtime;
 using Lumina.Excel.GeneratedSheets;
 using XIVSlothComboX.Combos.JobHelpers;
 using XIVSlothComboX.Combos.JobHelpers.Enums;
@@ -130,12 +131,12 @@ namespace XIVSlothComboX.Data
             return ret;
         }
 
-        private delegate void ReceiveActionEffectDelegate(int sourceObjectId, IntPtr sourceActor, IntPtr position, IntPtr effectHeader,
+        private delegate void ReceiveActionEffectDelegate(ulong sourceObjectId, IntPtr sourceActor, IntPtr position, IntPtr effectHeader,
             IntPtr effectArray, IntPtr effectTrail);
 
         private static readonly Hook<ReceiveActionEffectDelegate>? ReceiveActionEffectHook;
 
-        private static void ReceiveActionEffectDetour(int sourceObjectId, IntPtr sourceActor, IntPtr position, IntPtr effectHeader,
+        private static void ReceiveActionEffectDetour(ulong sourceObjectId, IntPtr sourceActor, IntPtr position, IntPtr effectHeader,
             IntPtr effectArray, IntPtr effectTrail)
         {
             if (!CustomComboFunctions.InCombat())
@@ -155,7 +156,7 @@ namespace XIVSlothComboX.Data
             if (ActionType is 13 or 2) return;
             if (header.ActionId != 7 &&
                 header.ActionId != 8 &&
-                sourceObjectId == Service.ClientState.LocalPlayer.ObjectId)
+                sourceObjectId == Service.ClientState.LocalPlayer.GameObjectId)
             {
                 TimeLastActionUsed = DateTime.Now;
                 LastActionUseCount++;
@@ -249,7 +250,7 @@ namespace XIVSlothComboX.Data
             }
             catch (Exception ex)
             {
-                Dalamud.Logging.PluginLog.Error(ex, "SendActionDetour");
+                // Dalamud.Logging.PluginLog.Error(ex, "SendActionDetour");
                 SendActionHook!.Original(targetObjectId, actionType, actionId, sequence, a5, a6, a7, a8, a9);
             }
         }
@@ -271,7 +272,8 @@ namespace XIVSlothComboX.Data
                         var gameObject = CustomComboFunctions.GetPartySlot(targetType);
                         if (gameObject != null)
                         {
-                            targetObjectId = gameObject.ObjectId;
+                            // targetObjectId = gameObject.ObjectId;
+                            targetObjectId = gameObject.GameObjectId;
                         }
                     }
                 }
@@ -292,19 +294,19 @@ namespace XIVSlothComboX.Data
                 switch (targetOptions)
                 {
                     case 0:
-                        targetObjectId = Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember.ObjectId;
+                        targetObjectId = Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember.GameObjectId;
                         break;
                     case 1:
                         if (CustomComboFunctions.HasFriendlyTarget())
-                            targetObjectId = Service.ClientState.LocalPlayer.TargetObject.ObjectId;
+                            targetObjectId = Service.ClientState.LocalPlayer.TargetObject.GameObjectId;
                         else
-                            targetObjectId = Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember.ObjectId;
+                            targetObjectId = Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember.GameObjectId;
                         break;
                     case 2:
                         if (CustomComboFunctions.GetHealTarget(true, true) is not null)
-                            targetObjectId = CustomComboFunctions.GetHealTarget(true, true).ObjectId;
+                            targetObjectId = CustomComboFunctions.GetHealTarget(true, true).GameObjectId;
                         else
-                            targetObjectId = Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember.ObjectId;
+                            targetObjectId = Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember.GameObjectId;
                         break;
                 }
             }
@@ -395,13 +397,22 @@ namespace XIVSlothComboX.Data
 
             SendActionHook ??= Service.GameInteropProvider.HookFromSignature<SendActionDelegate>(HookAddress.SendAction, SendActionDetour);
 
-
+            
+            //E8 ?? ?? ?? ?? 3C 01 0F 85 ?? ?? ?? ?? EB 46
+            //E8 ?? ?? ?? ?? 41 3A C5 0F 85 ?? ?? ?? ?? ?? ??
+            
             UseActionLocationHook ??=
-                Service.GameInteropProvider.HookFromAddress<UseActionLocationDelegate>(ActionManagerHelper.FpUseActionLocation,
+                Service.GameInteropProvider.HookFromSignature<UseActionLocationDelegate>(HookAddress.UseActionLocation,
                     UseActionLocationDetour);
 
-            Service.PluginLog.Verbose($"{nameof(ReceiveActionEffectHook)}         0x{ReceiveActionEffectHook.Address:X}");
-            Service.PluginLog.Verbose($"{nameof(SendActionHook)}         0x{SendActionHook.Address:X}");
+            
+            // UseActionLocationHook ??=
+            //     Service.GameInteropProvider.HookFromAddress<UseActionLocationDelegate>(ActionManagerHelper.FpUseActionLocation,
+            //         UseActionLocationDetour);
+
+            Service.PluginLog.Error($"{nameof(ReceiveActionEffectHook)}         0x{ReceiveActionEffectHook.Address:X}");
+            Service.PluginLog.Error($"{nameof(SendActionHook)}                  0x{SendActionHook.Address:X}");
+            Service.PluginLog.Error($"{nameof(UseActionLocationHook)}           0x{UseActionLocationHook.Address:X}");
         }
 
 
@@ -461,10 +472,14 @@ namespace XIVSlothComboX.Data
             if (statusCache.TryGetValue(status, out List<uint>? list))
                 return list;
 
+            
+
             return statusCache.TryAdd(status,
                 StatusSheet.Where(x => x.Value.Name.ToString().Equals(status, StringComparison.CurrentCultureIgnoreCase)).Select(x => x.Key).ToList())
                 ? statusCache[status]
                 : null;
+            
+            
         }
 
         public static ActionAttackType GetAttackType(uint id)

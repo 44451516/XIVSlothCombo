@@ -26,9 +26,9 @@ namespace XIVSlothComboX.Core
 
             Service.PluginLog.Verbose("===== X I V S L O T H C O M B O =====");
             
-            Service.PluginLog.Verbose($"{nameof(IsActionIdReplaceable)} 0x{IsActionIdReplaceable:X}");
-            Service.PluginLog.Verbose($"{nameof(ComboTimer)}            0x{ComboTimer:X}");
-            Service.PluginLog.Verbose($"{nameof(LastComboMove)}         0x{LastComboMove:X}");
+            Service.PluginLog.Error($"{nameof(IsActionIdReplaceable)} 0x{IsActionIdReplaceable:X}");
+            Service.PluginLog.Error($"{nameof(ComboTimer)}            0x{ComboTimer:X}");
+            Service.PluginLog.Error($"{nameof(LastComboMove)}         0x{LastComboMove:X}");
         }
     }
 }

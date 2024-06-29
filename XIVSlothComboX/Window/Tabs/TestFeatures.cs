@@ -18,7 +18,7 @@ namespace XIVSlothComboX.Window.Tabs
     {
         internal static new void Draw()
         {
-            ImGui.BeginChild("main", new Vector2(0, 0), true);
+            // ImGui.BeginChild("main", new Vector2(0, 0), true);
             ImGui.Text("此选项卡的功能在测试中...");
 
 
@@ -109,7 +109,8 @@ namespace XIVSlothComboX.Window.Tabs
                                         FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* Struct =
                                             (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)Service.ClientState.LocalPlayer.Address;
 
-                                        SafeMemory.WriteBytes((IntPtr)Struct->Name, SeStringUtils.NameText(fakeName));
+                                        
+                                        SafeMemory.WriteBytes((IntPtr)Struct->Name.GetPinnableReference(), SeStringUtils.NameText(fakeName));
 
                                     }
 

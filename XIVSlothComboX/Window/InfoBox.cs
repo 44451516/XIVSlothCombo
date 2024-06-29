@@ -2,15 +2,17 @@
 using System.Numerics;
 using Dalamud.Interface;
 using Dalamud.Interface.Utility;
+using Dalamud.Interface.Utility.Raii;
 using ImGuiNET;
 
 namespace XIVSlothComboX.Window
 {
     internal class InfoBox
     {
-        public Vector4 Color { get; set; } = Colors.White;
+       public Vector4 Color { get; set; } = Colors.White;
         public Action ContentsAction { get; set; } = () => ImGui.Text("Action Not Set");
-        public float CurveRadius { get; set; } = 15.0f;
+        public float CurveRadius { get; set; } = 1f;
+        public float ContentsOffset { get; set; } = 0f;
         public Vector2 Size { get; set; } = Vector2.Zero;
         public float BorderThickness { get; set; } = 2.0f;
         public int SegmentResolution { get; set; } = 10;
@@ -61,7 +63,7 @@ namespace XIVSlothComboX.Window
         {
             Vector2 region = ImGui.GetContentRegionAvail();
             Vector2 currentPosition = ImGui.GetCursorPos();
-            Vector2 width = new Vector2(region.X * percentSize);
+            Vector2 width = new(region.X * percentSize);
             ImGui.SetCursorPos(currentPosition with { X = (region.X / 2.0f) - (width.X / 2.0f) });
 
             Size = width;
@@ -70,26 +72,29 @@ namespace XIVSlothComboX.Window
 
         private void DrawContents()
         {
-            Vector2 topLeftCurveCenter = new Vector2(StartPosition.X + CurveRadius, StartPosition.Y + CurveRadius);
+            Vector2 topLeftCurveCenter = new(StartPosition.X + CurveRadius + ContentsOffset, StartPosition.Y + CurveRadius + ContentsOffset);
 
             ImGui.SetCursorScreenPos(topLeftCurveCenter);
             ImGui.PushTextWrapPos(Size.X);
 
-            ImGui.BeginGroup();
-            ImGui.PushID(Label);
-            ContentsAction();
-            ImGui.PopID();
-            ImGui.EndGroup();
+            using (var group = ImRaii.Group())
+            {
+                ImGui.PushID(Label);
+                ContentsAction();
+                if (ContentsOffset > 0)
+                    ImGuiHelpers.ScaledDummy(ContentsOffset);
+                ImGui.PopID();
+            }
 
             ImGui.PopTextWrapPos();
         }
 
         private void DrawCorners()
         {
-            Vector2 topLeftCurveCenter = new Vector2(StartPosition.X + CurveRadius, StartPosition.Y + CurveRadius);
-            Vector2 topRightCurveCenter = new Vector2(StartPosition.X + Size.X - CurveRadius, StartPosition.Y + CurveRadius);
-            Vector2 bottomLeftCurveCenter = new Vector2(StartPosition.X + CurveRadius, StartPosition.Y + Size.Y - CurveRadius);
-            Vector2 bottomRightCurveCenter = new Vector2(StartPosition.X + Size.X - CurveRadius, StartPosition.Y + Size.Y - CurveRadius);
+            Vector2 topLeftCurveCenter = new(StartPosition.X + CurveRadius, StartPosition.Y + CurveRadius);
+            Vector2 topRightCurveCenter = new(StartPosition.X + Size.X - CurveRadius, StartPosition.Y + CurveRadius);
+            Vector2 bottomLeftCurveCenter = new(StartPosition.X + CurveRadius, StartPosition.Y + Size.Y - CurveRadius);
+            Vector2 bottomRightCurveCenter = new(StartPosition.X + Size.X - CurveRadius, StartPosition.Y + Size.Y - CurveRadius);
 
             DrawList.PathArcTo(topLeftCurveCenter, CurveRadius, DegreesToRadians(180), DegreesToRadians(270), SegmentResolution);
             DrawList.PathStroke(ColorU32, ImDrawFlags.None, BorderThickness);

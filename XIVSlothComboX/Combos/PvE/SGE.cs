@@ -512,7 +512,7 @@ namespace XIVSlothComboX.Combos.PvE
                     if (HasEffect(Buffs.Eukrasia))
                         return EukrasianDiagnosis;
 
-                    GameObject? healTarget = GetHealTarget(Config.SGE_ST_Heal_Adv && Config.SGE_ST_Heal_UIMouseOver);
+                    IGameObject? healTarget = GetHealTarget(Config.SGE_ST_Heal_Adv && Config.SGE_ST_Heal_UIMouseOver);
 
                     if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Esuna) && ActionReady(All.Esuna) &&
                         GetTargetHPPercent(healTarget) >= Config.SGE_ST_Heal_Esuna &&
@@ -535,7 +535,7 @@ namespace XIVSlothComboX.Combos.PvE
 
                     if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Kardia) && LevelChecked(Kardia) &&
                         FindEffect(Buffs.Kardia) is null &&
-                        FindEffect(Buffs.Kardion, healTarget, LocalPlayer?.ObjectId) is null)
+                        FindEffect(Buffs.Kardion, healTarget, LocalPlayer?.GameObjectId) is null)
                         return Kardia;
 
                     if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Soteria) && ActionReady(Soteria) &&
@@ -552,7 +552,7 @@ namespace XIVSlothComboX.Combos.PvE
 
                     if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Pepsis) && ActionReady(Pepsis) &&
                         GetTargetHPPercent(healTarget) <= Config.SGE_ST_Heal_Pepsis &&
-                        FindEffect(Buffs.EukrasianDiagnosis, healTarget, LocalPlayer?.ObjectId) is not null)
+                        FindEffect(Buffs.EukrasianDiagnosis, healTarget, LocalPlayer?.GameObjectId) is not null)
                         return Pepsis;
 
                     if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Haima) && ActionReady(Haima) &&

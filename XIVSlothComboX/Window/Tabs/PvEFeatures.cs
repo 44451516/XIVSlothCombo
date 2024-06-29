@@ -3,7 +3,11 @@ using System.Numerics;
 using Dalamud.Interface;
 using ImGuiNET;
 using System.Collections.Generic;
+using Dalamud.Interface.Internal;
+using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Interface.Utility;
+using Dalamud.Interface.Utility.Raii;
+using ECommons.ImGuiMethods;
 using XIVSlothComboX.Attributes;
 using XIVSlothComboX.Combos.PvE;
 using XIVSlothComboX.Core;
@@ -17,207 +21,148 @@ namespace XIVSlothComboX.Window.Tabs
     {
         //internal static Dictionary<string, bool> showHeader = new Dictionary<string, bool>();
 
-        internal static List<float> allHeights = new();
         internal static bool HasToOpenJob = true;
+        internal static string OpenJob = string.Empty;
 
         internal static new void Draw()
         {
-// #if !DEBUG
-//             if (Service.ClassLocked)
-//             {
-//                 ImGui.Text("Equip your job stone to re-unlock features.装备你的职业水晶来重新解锁功能。");
-//                 return;
-//             }
-// #endif
+            //#if !DEBUG
+            // if (IconReplacer.ClassLocked())
+            // {
+            //     ImGui.TextWrapped("Equip your job stone to re-unlock features.");
+            //     return;
+            // }
+            //#endif
 
-            ImGui.Text("此选项卡允许您选择要启用的PvE连击和功能");
-            ImGui.BeginChild("scrolling", new Vector2(ImGui.GetContentRegionAvail().X, ImGui.GetContentRegionAvail().Y), true);
-
-            ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0, 5));
-
-            int i = 1;
-
-            Positions.Clear();
-            allHeights.Clear();
-            foreach (string? jobName in groupedPresets.Keys)
+            using (var scrolling = ImRaii.Child("scrolling", new Vector2(ImGui.GetContentRegionAvail().X, ImGui.GetContentRegionAvail().Y), true))
             {
-                string abbreviation = groupedPresets[jobName].First().Info.JobShorthand;
-                string header = string.IsNullOrEmpty(abbreviation) ? jobName : $"{jobName} - {abbreviation}";
-                if (Positions.Count > 0)
+                int i = 1;
+                var indentwidth = 12f.Scale();
+                var indentwidth2 = indentwidth + 42f.Scale();
+                if (OpenJob == string.Empty)
                 {
-                    var currentPos = ImGui.GetCursorPos().Y;
-                    var lastPos = Positions.Last().Value.Y;
-
-                    allHeights.Add(currentPos - lastPos);
-                }
-                Positions[header] = ImGui.GetCursorPos();
-
-                if (ImGui.CollapsingHeader($"{header}"))
-                {
-                    foreach (var otherJob in groupedPresets.Keys.Where(x => x != jobName))
+                    ImGui.SameLine(indentwidth);
+                    ImGuiEx.LineCentered(() =>
                     {
-                        string otherAbbreviation = groupedPresets[otherJob].First().Info.JobShorthand;
-                        string otherHeader = string.IsNullOrEmpty(otherAbbreviation) ? otherJob : $"{otherJob} - {otherAbbreviation}";
-                        ImGui.GetStateStorage().SetInt(ImGui.GetID(otherHeader), 0);
-                    }
+                        // ImGuiEx.TextUnderlined("Select a job from below to enable and configure features for it.");
+                        ImGuiEx.TextUnderlined("从下面选择一项任务，为其启用和配置功能。.");
+                    });
 
-                    if (ImGui.BeginTabBar($"subTab{jobName}", ImGuiTabBarFlags.Reorderable | ImGuiTabBarFlags.AutoSelectNewTabs))
+                    foreach (string? jobName in groupedPresets.Keys)
                     {
-                        if (ImGui.BeginTabItem("常规"))
+                        string abbreviation = groupedPresets[jobName].First().Info.JobShorthand;
+                        string header = string.IsNullOrEmpty(abbreviation) ? jobName : $"{jobName} - {abbreviation}";
+                        var id = groupedPresets[jobName].First().Info.JobID;
+                        IDalamudTextureWrap? icon = Icons.GetJobIcon(id);
+                        using (var disabled = ImRaii.Disabled(DisabledJobsPVE.Any(x => x == id)))
                         {
-                            DrawHeadingContents(jobName, i);
-                            ImGui.EndTabItem();
-                        }
-
-                        if (groupedPresets[jobName].Any(x => PluginConfiguration.IsVariant(x.Preset)))
-                        {
-                            if (ImGui.BeginTabItem("下水道"))
+                            if (ImGui.Selectable($"###{header}", OpenJob == jobName, ImGuiSelectableFlags.None, icon == null ? new Vector2(0) : new Vector2(0, (icon.Size.Y / 2f) * ImGui.GetIO().FontGlobalScale)))
                             {
-                                DrawVariantContents(jobName);
-                                ImGui.EndTabItem();
+                                OpenJob = jobName;
                             }
-                        }
-
-                        if (groupedPresets[jobName].Any(x => PluginConfiguration.IsBozja(x.Preset)))
-                        {
-                            if (ImGui.BeginTabItem("博兹雅"))
+                            ImGui.SameLine(indentwidth);
+                            if (icon != null)
                             {
-                                ImGui.EndTabItem();
+                                ImGui.Image(icon.ImGuiHandle, (icon.Size / 2f) * ImGui.GetIO().FontGlobalScale);
+                                ImGui.SameLine(indentwidth2);
                             }
+                            ImGui.Text($"{header} {(disabled ? "(因更新而禁用)" : "")}");
                         }
-
-                        if (groupedPresets[jobName].Any(x => PluginConfiguration.IsEureka(x.Preset)))
-                        {
-                            if (ImGui.BeginTabItem("优雷卡"))
-                            {
-                                ImGui.EndTabItem();
-                            }
-                        }
-
-                        ImGui.EndTabBar();
                     }
                 }
                 else
                 {
-                    i += groupedPresets[jobName].Where(x => !PluginConfiguration.IsSecret(x.Preset)).Count();
-                    foreach (var preset in groupedPresets[jobName].Where(x => !PluginConfiguration.IsSecret(x.Preset)))
+                    var id = groupedPresets[OpenJob].First().Info.JobID;
+                    if (id is ADV.JobID or DOL.JobID or DOH.JobID)
                     {
-                        i += Presets.AllChildren(presetChildren[preset.Preset]);
+                        id = SCH.JobID;
                     }
-                }
-            }
 
-            ImGui.PopStyleVar();
+                    IDalamudTextureWrap? icon = Icons.GetJobIcon(id);
 
-            OpenJobAutomatically();
-
-            if (!string.IsNullOrEmpty(HeaderToOpen))
-            {
-                foreach (var job in groupedPresets.Keys)
-                {
-                    string otherAbbreviation = groupedPresets[job].First().Info.JobShorthand;
-                    string otherHeader = string.IsNullOrEmpty(otherAbbreviation) ? job : $"{job} - {otherAbbreviation}";
-                    ImGui.GetStateStorage().SetInt(ImGui.GetID(otherHeader), 0);
-                }
-
-                float headerPos = 0;
-                float normalHeight = allHeights.OrderBy(x => x).First();
-                foreach (var job in groupedPresets.Keys)
-                {
-                    string otherAbbreviation = groupedPresets[job].First().Info.JobShorthand;
-                    string otherHeader = string.IsNullOrEmpty(otherAbbreviation) ? job : $"{job} - {otherAbbreviation}";
-                    if (otherHeader != HeaderToOpen)
-                        headerPos += normalHeight;
-                    else
-                        break;
-
-                }
-
-                if (headerPos > 0)
-                {
-                    ImGui.GetStateStorage().SetInt(ImGui.GetID(HeaderToOpen), 1);
-                    ImGui.SetScrollY(headerPos);
-                    HeaderToOpen = null;
-                }
-            }
-
-            ImGui.EndChild();
-        }
+                    // if (icon == null)
+                    // {
+                    //     Service.ChatGui.PrintError($"删除{id} {OpenJob}");
+                    // }
 
 
-        private static void OpenJobAutomatically()
-        {
-            if (Service.Configuration.AutomaticallyOpenToCurrentJob && HasToOpenJob)
-            {
-                var id = Service.ClientState.LocalPlayer?.ClassJob?.Id;
-                id = id switch
-                {
-                    ADV.ClassID => ADV.JobID,
-                    BLM.ClassID => BLM.JobID,
-                    BRD.ClassID => BRD.JobID,
-                    DRG.ClassID => DRG.JobID,
-                    MNK.ClassID => MNK.JobID,
-                    NIN.ClassID => NIN.JobID,
-                    PLD.ClassID => PLD.JobID,
-                    SMN.ClassID => SMN.JobID,
-                    WAR.ClassID => WAR.JobID,
-                    WHM.ClassID => WHM.JobID,
-                    _ => id,
-                };
-
-                if (id is >= 8 and <= 15)
-                    id = DOH.JobID;
-
-                if (id is >= 16 and <= 18)
-                    id = DOL.JobID;
-
-                if (id is not null)
-                {
-                    var currentJob = CustomComboInfoAttribute.JobIDToName((byte)id);
-
-                    if (!string.IsNullOrEmpty(currentJob))
+                    if (icon != null)
                     {
-                        string abbreviation = groupedPresets[currentJob].First().Info.JobShorthand;
-                        string header = string.IsNullOrEmpty(abbreviation) ? currentJob : $"{currentJob} - {abbreviation}";
-
-                        foreach (var job in groupedPresets.Keys)
+                        using (var headingTab = ImRaii.Child("HeadingTab", new Vector2(ImGui.GetContentRegionAvail().X, (icon.Size.Y / 2f.Scale()) + 4f)))
+                    {
+                        if (ImGui.Button("Back"))
                         {
-                            string otherAbbreviation = groupedPresets[job].First().Info.JobShorthand;
-                            string otherHeader = string.IsNullOrEmpty(otherAbbreviation) ? job : $"{job} - {otherAbbreviation}";
-                            ImGui.GetStateStorage().SetInt(ImGui.GetID(otherHeader), 0);
+                            OpenJob = "";
+                            return;
                         }
-
-                        float headerPos = 0;
-                        float normalHeight = allHeights.OrderBy(x => x).First();
-                        foreach (var job in groupedPresets.Keys)
+                        ImGui.SameLine();
+                        ImGuiEx.LineCentered(() =>
                         {
-                            string otherAbbreviation = groupedPresets[job].First().Info.JobShorthand;
-                            string otherHeader = string.IsNullOrEmpty(otherAbbreviation) ? job : $"{job} - {otherAbbreviation}";
-                            if (otherHeader != header)
-                                headerPos += normalHeight;
-                            else
-                                break;
-
-                        }
-
-                        if (headerPos > 0)
-                        {
-                            ImGui.GetStateStorage().SetInt(ImGui.GetID(header), 1);
-                            ImGui.SetScrollY(headerPos);
-                            
-                            if (ImGui.GetScrollY() == headerPos)
+                            if (icon != null)
                             {
-                                HasToOpenJob = false;
+                                ImGui.Image(icon.ImGuiHandle, (icon.Size / 2f.Scale()));
+                                ImGui.SameLine();
+                            }
+                            ImGuiEx.Text($"{OpenJob}");
+                        });
+
+                    }
+
+                    using (var contents = ImRaii.Child("Contents", new Vector2(0)))
+                    {
+
+                        try
+                        {
+                            if (ImGui.BeginTabBar($"subTab{OpenJob}", ImGuiTabBarFlags.Reorderable | ImGuiTabBarFlags.AutoSelectNewTabs))
+                            {
+                                if (ImGui.BeginTabItem("常规"))
+                                {
+                                    DrawHeadingContents(OpenJob, i);
+                                    ImGui.EndTabItem();
+                                }
+
+                                if (groupedPresets[OpenJob].Any(x => PresetStorage.IsVariant(x.Preset)))
+                                {
+                                    if (ImGui.BeginTabItem("下水道"))
+                                    {
+                                        DrawVariantContents(OpenJob);
+                                        ImGui.EndTabItem();
+                                    }
+                                }
+
+                                if (groupedPresets[OpenJob].Any(x => PresetStorage.IsBozja(x.Preset)))
+                                {
+                                    if (ImGui.BeginTabItem("博兹雅"))
+                                    {
+                                        ImGui.EndTabItem();
+                                    }
+                                }
+
+                                if (groupedPresets[OpenJob].Any(x => PresetStorage.IsEureka(x.Preset)))
+                                {
+                                    if (ImGui.BeginTabItem("优雷卡"))
+                                    {
+                                        ImGui.EndTabItem();
+                                    }
+                                }
+
+                                ImGui.EndTabBar();
                             }
                         }
+                        catch { }
+
                     }
+                    }
+
+                    
                 }
+
             }
         }
 
         private static void DrawVariantContents(string jobName)
         {
-            foreach (var (preset, info) in groupedPresets[jobName].Where(x => PluginConfiguration.IsVariant(x.Preset)))
+            foreach (var (preset, info) in groupedPresets[jobName].Where(x => PresetStorage.IsVariant(x.Preset)))
             {
                 int i = -1;
                 InfoBox presetBox = new() { Color = Colors.Grey, BorderThickness = 1f, CurveRadius = 8f, ContentsAction = () => { Presets.DrawPreset(preset, info, ref i); } };
@@ -230,17 +175,17 @@ namespace XIVSlothComboX.Window.Tabs
         {
             if (!Messages.PrintBLUMessage(jobName)) return;
 
-            foreach (var (preset, info) in groupedPresets[jobName].Where(x =>   !PluginConfiguration.IsSecret(x.Preset) && 
-                                                                                !PluginConfiguration.IsVariant(x.Preset) &&
-                                                                                !PluginConfiguration.IsBozja(x.Preset) &&
-                                                                                !PluginConfiguration.IsEureka(x.Preset)))
+            foreach (var (preset, info) in groupedPresets[jobName].Where(x => !PresetStorage.IsSecret(x.Preset) &&
+                                                                                !PresetStorage.IsVariant(x.Preset) &&
+                                                                                !PresetStorage.IsBozja(x.Preset) &&
+                                                                                !PresetStorage.IsEureka(x.Preset)))
             {
-                InfoBox presetBox = new() { Color = Colors.Grey, BorderThickness = 1f, CurveRadius = 8f, ContentsAction = () => { Presets.DrawPreset(preset, info, ref i); } };
+                InfoBox presetBox = new() { Color = Colors.Grey, BorderThickness = 2f.Scale(), ContentsOffset = 5f.Scale(), ContentsAction = () => { Presets.DrawPreset(preset, info, ref i); } };
 
                 if (Service.Configuration.HideConflictedCombos)
                 {
-                    var conflictOriginals = Service.Configuration.GetConflicts(preset); // Presets that are contained within a ConflictedAttribute
-                    var conflictsSource = Service.Configuration.GetAllConflicts();      // Presets with the ConflictedAttribute
+                    var conflictOriginals = PresetStorage.GetConflicts(preset); // Presets that are contained within a ConflictedAttribute
+                    var conflictsSource = PresetStorage.GetAllConflicts();      // Presets with the ConflictedAttribute
 
                     if (!conflictsSource.Where(x => x == preset).Any() || conflictOriginals.Length == 0)
                     {
@@ -249,7 +194,7 @@ namespace XIVSlothComboX.Window.Tabs
                         continue;
                     }
 
-                    if (conflictOriginals.Any(x => Service.Configuration.IsEnabled(x)))
+                    if (conflictOriginals.Any(x => PresetStorage.IsEnabled(x)))
                     {
                         Service.Configuration.EnabledActions.Remove(preset);
                         Service.Configuration.Save();
@@ -258,7 +203,7 @@ namespace XIVSlothComboX.Window.Tabs
                     else
                     {
                         presetBox.Draw();
-                        ImGuiHelpers.ScaledDummy(12.0f);
+                        
                         continue;
                     }
                 }
@@ -272,7 +217,6 @@ namespace XIVSlothComboX.Window.Tabs
         }
 
         internal static string? HeaderToOpen;
-
-        internal static Dictionary<string, Vector2> Positions = new();
     }
+    
 }

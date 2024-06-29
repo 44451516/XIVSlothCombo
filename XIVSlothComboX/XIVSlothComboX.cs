@@ -14,9 +14,14 @@ using Dalamud.Game.Command;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
+using Dalamud.Interface.Windowing;
 using Dalamud.Memory;
 using Dalamud.Plugin;
+using Dalamud.Plugin.Services;
+using Dalamud.Utility;
+using ECommons;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using XIVSlothComboX.Attributes;
 using XIVSlothComboX.Combos;
 using XIVSlothComboX.Combos.PvE;
 using XIVSlothComboX.Core;
@@ -35,7 +40,80 @@ namespace XIVSlothComboX
     {
         private const string Command = "/scombo";
 
+        
         private readonly ConfigWindow _ConfigWindow;
+        internal static XIVSlothComboX P = null!;
+        internal WindowSystem _WindowSystem;
+        private static uint? jobID;
+        
+
+        public static readonly List<uint> DisabledJobsPVE = new List<uint>()
+        {
+            // ADV.JobID,
+            //AST.JobID,
+            BLM.JobID,
+            // BLU.JobID,
+            // BRD.JobID,
+            // DNC.JobID,
+            // DOL.JobID,
+            // DRG.JobID,
+            // DRK.JobID,
+            // GNB.JobID,
+            // MCH.JobID,
+            // MNK.JobID,
+            NIN.JobID,
+            // PLD.JobID,
+            // RDM.JobID,
+            // RPR.JobID,
+            // SAM.JobID,
+            // SCH.JobID,
+            // SGE.JobID,
+            // SMN.JobID,
+            // WAR.JobID,
+            // WHM.JobID
+        };
+
+        public static readonly List<uint> DisabledJobsPVP = new List<uint>()
+        {
+            // ADV.JobID,
+            // AST.JobID,
+            // BLM.JobID,
+            // BLU.JobID,
+            //BRD.JobID,
+            // DNC.JobID,
+            // DOL.JobID,
+            // DRG.JobID,
+            // DRK.JobID,
+            // GNB.JobID,
+            // MCH.JobID,
+            // MNK.JobID,
+            // NIN.JobID,
+            // PLD.JobID,
+            // RDM.JobID,
+            // RPR.JobID,
+            // SAM.JobID,
+            // SCH.JobID,
+            // SGE.JobID,
+            // SMN.JobID,
+            // WAR.JobID,
+            // WHM.JobID
+        };
+
+        public static uint? JobID
+        {
+            get => jobID;
+            set
+            {
+                if (jobID != value && value != null)
+                {
+                    Service.PluginLog.Debug($"Switched to job {value}");
+                    PvEFeatures.HasToOpenJob = true;
+                }
+                jobID = value;
+            }
+        }
+
+        
 
         private readonly TextPayload starterMotd = new("[Sloth Message of the Day] ");
 
@@ -43,6 +121,10 @@ namespace XIVSlothComboX
         private uint autoActionId = 0;
         private int CustomTimelineIndex = 0;
 
+        
+        
+        
+        
         // private bool isAuto = false;
 
         private CancellationTokenSource autoTokenSource = new(); // 令牌对象
@@ -53,14 +135,15 @@ namespace XIVSlothComboX
         /// <param name="pluginInterface"> Dalamud plugin interface. </param>
         public XIVSlothComboX(DalamudPluginInterface pluginInterface)
         {
+            P = this;
             pluginInterface.Create<Service>();
-
+            ECommonsMain.Init(pluginInterface, this);
+          
             Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
             Service.Address = new PluginAddressResolver();
             Service.Address.Setup(Service.SigScanner);
-
-            if (Service.Configuration.Version == 4)
-                UpgradeConfig4();
+            PresetStorage.Init();
+   
 
             Service.ComboCache = new CustomComboCache();
             Service.IconReplacer = new IconReplacer();
@@ -68,10 +151,11 @@ namespace XIVSlothComboX
             Combos.JobHelpers.AST.Init();
 
             _ConfigWindow = new();
-
-            Service.Interface.UiBuilder.Draw += DrawUI;
+            _WindowSystem = new();
+            _WindowSystem.AddWindow(_ConfigWindow);
+            
+            Service.Interface.UiBuilder.Draw += _WindowSystem.Draw;
             Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
-            Service.Interface.UiBuilder.OpenMainUi += OpenMainUi;
 
             Service.CommandManager.AddHandler(Command,
                 new CommandInfo(OnCommand)
@@ -81,24 +165,55 @@ namespace XIVSlothComboX
                 });
 
             Service.ClientState.Login += PrintLoginMessage;
-            // Service.ClientState.Login += TestFeatures.function;
 
             if (Service.ClientState.IsLoggedIn)
             {
                 ResetFeatures();
             }
 
-            // Service.Framework.Update += OnFramework;
+            Service.Framework.Update += OnFrameworkUpdate;
+            
 
             autoToken = autoTokenSource.Token; // 开关绑
 
             // TestFeatures.function();
             KillRedundantIDs();
-
+            HandleConflictedCombos();
             Service.IconManager = new IconManager();
         }
 
+        
+        private static void HandleConflictedCombos()
+        {
+            var enabledCopy = Service.Configuration.EnabledActions.ToHashSet(); //Prevents issues later removing during enumeration
+            foreach (var preset in enabledCopy)
+            {
+                if (!PresetStorage.IsEnabled(preset)) continue;
 
+                var conflictingCombos = preset.GetAttribute<ConflictingCombosAttribute>();
+                if (conflictingCombos != null)
+                {
+                    foreach (var conflict in conflictingCombos.ConflictingPresets)
+                    {
+                        if (PresetStorage.IsEnabled(conflict))
+                        {
+                            Service.Configuration.EnabledActions.Remove(conflict);
+                            Service.Configuration.Save();
+                        }
+                    }
+                }
+            }
+        }
+
+        
+        private static void OnFrameworkUpdate(IFramework framework)
+        {
+            if (Service.ClientState.LocalPlayer is not null)
+                JobID = Service.ClientState.LocalPlayer?.ClassJob?.Id;
+
+            BlueMageService.PopulateBLUSpells();
+        }
+        
         private static void KillRedundantIDs()
         {
             List<int> redundantIDs = Service.Configuration.EnabledActions.Where(x => int.TryParse(x.ToString(), out _)).OrderBy(x => x).Cast<int>()
@@ -125,21 +240,18 @@ namespace XIVSlothComboX
             _ConfigWindow.Draw();
         }
 
-        private void OpenMainUi()
-        {
-            _ConfigWindow.Visible = true;
-        }
+     
 
         private void OnOpenConfigUi()
         {
-            _ConfigWindow.Visible = !_ConfigWindow.Visible;
+            _ConfigWindow.IsOpen = !_ConfigWindow.IsOpen;
         }
 
         private void PrintLoginMessage()
         {
             // Task.Delay(TimeSpan.FromSeconds(5)).ContinueWith(task => ResetFeatures());
             if (!Service.Configuration.HideMessageOfTheDay)
-                Task.Delay(TimeSpan.FromSeconds(3)).ContinueWith(task => PrintMotD());
+                Task.Delay(TimeSpan.FromSeconds(5)).ContinueWith(task => PrintMotD());
         }
 
         private void PrintMotD()
@@ -156,14 +268,12 @@ namespace XIVSlothComboX
         {
             autoActionId = 0;
             // isAuto = false;
-
-
+            
             autoTokenSource.Cancel();
-
             _ConfigWindow?.Dispose();
 
             Service.CommandManager.RemoveHandler(Command);
-
+            Service.Framework.Update -= OnFrameworkUpdate;
             Service.Interface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
             Service.Interface.UiBuilder.Draw -= DrawUI;
 
@@ -175,12 +285,12 @@ namespace XIVSlothComboX
 
             Combos.JobHelpers.AST.Dispose();
 
-            // Service.Framework.Update -= OnFramework;
 
             Service.ClientState.Login -= PrintLoginMessage;
-            // Service.ClientState.Login -= TestFeatures.function;
+            ECommonsMain.Dispose();
+            
+            P = null;
 
-            // TestFeatures.Dispose();
         }
 
 
@@ -188,7 +298,7 @@ namespace XIVSlothComboX
         {
             string[]? argumentsParts = arguments.Split();
             var setOutChat = Service.Configuration.SetOutChat;
-            PlayerCharacter? localPlayer = Service.ClientState.LocalPlayer;
+            IPlayerCharacter? localPlayer = Service.ClientState.LocalPlayer;
 
             // Service.ChatGui.Print(argumentsParts[0].ToLower());
 
@@ -327,7 +437,8 @@ namespace XIVSlothComboX
 
                     if (filter == "set") // list set features
                     {
-                        foreach (bool preset in Enum.GetValues<CustomComboPreset>().Select(preset => Service.Configuration.IsEnabled(preset)))
+                        foreach (bool preset in Enum.GetValues<CustomComboPreset>()
+                                     .Select(preset => PresetStorage.IsEnabled(preset)))
                         {
                             if (setOutChat)
                             {
@@ -338,7 +449,7 @@ namespace XIVSlothComboX
 
                     else if (filter == "unset") // list unset features
                     {
-                        foreach (bool preset in Enum.GetValues<CustomComboPreset>().Select(preset => !Service.Configuration.IsEnabled(preset)))
+                        foreach (bool preset in Enum.GetValues<CustomComboPreset>().Select(preset => !PresetStorage.IsEnabled(preset)))
                         {
                             if (setOutChat)
                             {
@@ -482,7 +593,7 @@ namespace XIVSlothComboX
 
                     catch (Exception ex)
                     {
-                        Dalamud.Logging.PluginLog.Error(ex, "Debug Log");
+                        // Dalamud.Logging.PluginLog.Error(ex, "Debug Log");
                         Service.ChatGui.Print("Unable to write Debug log.");
                         break;
                     }
@@ -498,7 +609,7 @@ namespace XIVSlothComboX
                     catch (Exception exception)
                     {
                         autoActionId = 0;
-                        Dalamud.Logging.PluginLog.Error(exception, "Debug Log");
+                        // Dalamud.Logging.PluginLog.Error(exception, "Debug Log");
                     }
 
 
@@ -580,9 +691,9 @@ namespace XIVSlothComboX
                                         {
                                             if (targetObjectId != 0)
                                             {
-                                                GameObject? targetObject = Service.ClientState.LocalPlayer.TargetObject;
+                                                IGameObject? targetObject = Service.ClientState.LocalPlayer.TargetObject;
 
-                                                if (targetObject != null && targetObject is BattleChara battleChara)
+                                                if (targetObject != null && targetObject is IBattleChara battleChara)
                                                 {
                                                     if (battleChara.ObjectKind == ObjectKind.BattleNpc)
                                                     {
@@ -621,7 +732,7 @@ namespace XIVSlothComboX
                             {
                                 FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* Struct =
                                     (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)localPlayer.Address;
-                                SafeMemory.WriteBytes((IntPtr)Struct->Name, SeStringUtils.NameText(argumentsParts[1]));
+                                SafeMemory.WriteBytes((IntPtr)Struct->Name.GetPinnableReference(), SeStringUtils.NameText(argumentsParts[1]));
                             }
                         }
                     }
@@ -631,7 +742,7 @@ namespace XIVSlothComboX
 
                 case "useitem":
                 {
-                    Dalamud.Logging.PluginLog.Error("1");
+                    // Dalamud.Logging.PluginLog.Error("1");
                     CustomComboFunctions.Useitem(4551);
 
                     break;
@@ -665,134 +776,21 @@ namespace XIVSlothComboX
 
                 default:
                 {
-                    _ConfigWindow.Visible = !_ConfigWindow.Visible;
+                    _ConfigWindow.IsOpen = !_ConfigWindow.IsOpen;
                     PvEFeatures.HasToOpenJob = true;
                     if (argumentsParts[0].Length > 0)
                     {
-                        var jobname = ConfigWindow.groupedPresets.Where(x =>
-                                x.Value.Any(y => y.Info.JobShorthand.Equals(argumentsParts[0].ToLower(), StringComparison.CurrentCultureIgnoreCase)))
-                            .FirstOrDefault().Key;
+                        var jobname = ConfigWindow.groupedPresets.Where(x => x.Value.Any(y => y.Info.JobShorthand.Equals(argumentsParts[0].ToLower(), StringComparison.CurrentCultureIgnoreCase))).FirstOrDefault().Key;
                         var header = $"{jobname} - {argumentsParts[0].ToUpper()}";
-                        Dalamud.Logging.PluginLog.Debug($"{jobname}");
+                        Service.PluginLog.Debug($"{jobname}");
                         PvEFeatures.HeaderToOpen = header;
                     }
-
                     break;
                 }
             }
 
             Service.Configuration.Save();
         }
-
-        private static void UpgradeConfig4()
-        {
-            Service.Configuration.Version = 5;
-            Service.Configuration.EnabledActions = Service.Configuration.EnabledActions4.Select(preset => (int)preset switch
-                {
-                    27 => 3301,
-                    75 => 3302,
-                    73 => 3303,
-                    25 => 2501,
-                    26 => 2502,
-                    56 => 2503,
-                    70 => 2504,
-                    71 => 2505,
-                    110 => 2506,
-                    95 => 2507,
-                    41 => 2301,
-                    42 => 2302,
-                    63 => 2303,
-                    74 => 2304,
-                    33 => 3801,
-                    31 => 3802,
-                    34 => 3803,
-                    43 => 3804,
-                    50 => 3805,
-                    72 => 3806,
-                    103 => 3807,
-                    44 => 2201,
-                    0 => 2202,
-                    1 => 2203,
-                    2 => 2204,
-                    3 => 3201,
-                    4 => 3202,
-                    57 => 3203,
-                    85 => 3204,
-                    20 => 3701,
-                    52 => 3702,
-                    96 => 3703,
-                    97 => 3704,
-                    22 => 3705,
-                    30 => 3706,
-                    83 => 3707,
-                    84 => 3708,
-                    23 => 3101,
-                    24 => 3102,
-                    47 => 3103,
-                    58 => 3104,
-                    66 => 3105,
-                    102 => 3106,
-                    54 => 2001,
-                    82 => 2002,
-                    106 => 2003,
-                    17 => 3001,
-                    18 => 3002,
-                    19 => 3003,
-                    87 => 3004,
-                    88 => 3005,
-                    89 => 3006,
-                    90 => 3007,
-                    91 => 3008,
-                    92 => 3009,
-                    107 => 3010,
-                    108 => 3011,
-                    5 => 1901,
-                    6 => 1902,
-                    59 => 1903,
-                    7 => 1904,
-                    55 => 1905,
-                    86 => 1906,
-                    69 => 1907,
-                    48 => 3501,
-                    49 => 3502,
-                    68 => 3503,
-                    53 => 3504,
-                    93 => 3505,
-                    101 => 3506,
-                    94 => 3507,
-                    11 => 3401,
-                    12 => 3402,
-                    13 => 3403,
-                    14 => 3404,
-                    15 => 3405,
-                    81 => 3406,
-                    60 => 3407,
-                    61 => 3408,
-                    64 => 3409,
-                    65 => 3410,
-                    109 => 3411,
-                    29 => 2801,
-                    37 => 2802,
-                    39 => 2701,
-                    40 => 2702,
-                    8 => 2101,
-                    9 => 2102,
-                    10 => 2103,
-                    78 => 2104,
-                    79 => 2105,
-                    67 => 2106,
-                    104 => 2107,
-                    35 => 2401,
-                    36 => 2402,
-                    76 => 2403,
-                    77 => 2404,
-                    _ => 0,
-                })
-                .Where(id => id != 0)
-                .Select(id => (CustomComboPreset)id)
-                .ToHashSet();
-            Service.Configuration.EnabledActions4 = new();
-            Service.Configuration.Save();
-        }
+        
     }
 }

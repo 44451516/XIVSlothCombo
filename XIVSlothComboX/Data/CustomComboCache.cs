@@ -17,7 +17,7 @@ namespace XIVSlothComboX.Data
         private const uint InvalidObjectID = 0xE000_0000;
 
         // Invalidate these
-        private readonly Dictionary<(uint StatusID, uint? TargetID, uint? SourceID), DalamudStatus.Status?> statusCache = new();
+        private readonly Dictionary<(uint statusID, ulong? GameObjectId, ulong? sourceID), DalamudStatus.Status?> statusCache = new();
         private readonly Dictionary<uint, CooldownData> cooldownCache = new();
 
         // Do not invalidate these
@@ -49,16 +49,17 @@ namespace XIVSlothComboX.Data
         /// <param name="obj"> Object to look for effects on. </param>
         /// <param name="sourceID"> Source object ID. </param>
         /// <returns> Status object or null. </returns>
-        internal DalamudStatus.Status? GetStatus(uint statusID, GameObject? obj, uint? sourceID)
+        internal DalamudStatus.Status? GetStatus(uint statusID, IGameObject? obj, ulong? sourceID)
         {
-            var key = (statusID, obj?.ObjectId, sourceID);
+            // var key = (statusID, obj?.ObjectId, sourceID);
+            var key = (statusID, obj?.GameObjectId, sourceID);
             if (statusCache.TryGetValue(key, out DalamudStatus.Status? found))
                 return found;
 
             if (obj is null)
                 return statusCache[key] = null;
 
-            if (obj is not BattleChara chara)
+            if (obj is not Dalamud.Game.ClientState.Objects.Types.IBattleChara chara)
                 return statusCache[key] = null;
 
             foreach (DalamudStatus.Status? status in chara.StatusList)
@@ -95,7 +96,7 @@ namespace XIVSlothComboX.Data
                 return cooldownCache[actionID] = data;
             }
 
-            cooldownPtr->ActionID = actionID;
+            cooldownPtr->ActionId = actionID;
 
             return cooldownCache[actionID] = *(CooldownData*)cooldownPtr;
         }
@@ -105,7 +106,7 @@ namespace XIVSlothComboX.Data
         /// <returns> Max number of charges at current and max level. </returns>
         internal unsafe (ushort Current, ushort Max) GetMaxCharges(uint actionID)
         {
-            PlayerCharacter? player = Service.ClientState.LocalPlayer;
+            IPlayerCharacter? player = Service.ClientState.LocalPlayer;
             if (player == null)
                 return (0, 0);
 

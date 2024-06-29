@@ -43,9 +43,9 @@ namespace XIVSlothComboX.Combos.JobHelpers
         internal class AST_QuickTargetCards : CustomComboFunctions
         {
 
-            internal static List<GameObject> PartyTargets = new();
+            internal static List<IGameObject> PartyTargets = new();
 
-            internal static GameObject? SelectedRandomMember;
+            internal static IGameObject? SelectedRandomMember;
 
             public static void Invoke()
             {
@@ -69,7 +69,7 @@ namespace XIVSlothComboX.Combos.JobHelpers
                 PartyTargets.Clear();
                 for (int i = 1; i <= 8; i++) //Checking all 8 available slots and skipping nulls & DCs
                 {
-                    if (GetPartySlot(i) is not BattleChara member) 
+                    if (GetPartySlot(i) is not IBattleChara member) 
                         continue;
                     if (member is null) 
                         continue; //Skip nulls/disconnected people
@@ -95,7 +95,7 @@ namespace XIVSlothComboX.Combos.JobHelpers
                 {
                     for (int i = 1; i <= 8; i++) //Checking all 8 available slots and skipping nulls & DCs
                     {
-                        if (GetPartySlot(i) is not BattleChara member) continue;
+                        if (GetPartySlot(i) is not IBattleChara member) continue;
                         if (member is null) continue; //Skip nulls/disconnected people
                         if (member.IsDead) continue;
                         if (OutOfRange(Bole, member)) continue;
@@ -113,7 +113,8 @@ namespace XIVSlothComboX.Combos.JobHelpers
 
                 if (SelectedRandomMember is not null)
                 {
-                    if (PartyTargets.Any(x => x.ObjectId == SelectedRandomMember.ObjectId))
+                    if (PartyTargets.Any(x => x.GameObjectId == SelectedRandomMember.GameObjectId))
+                    // if (PartyTargets.Any(x => x.ObjectId == SelectedRandomMember.ObjectId))
                     {
                         //TargetObject(SelectedRandomMember);
                         return true;
@@ -127,7 +128,7 @@ namespace XIVSlothComboX.Combos.JobHelpers
                     //Give card to DPS first
                     for (int i = 0; i <= PartyTargets.Count - 1; i++)
                     {
-                        byte job = PartyTargets[i] is BattleChara ? (byte)(PartyTargets[i] as BattleChara).ClassJob.Id : (byte)0;
+                        byte job = PartyTargets[i] is IBattleChara ? (byte)(PartyTargets[i] as IBattleChara).ClassJob.Id : (byte)0;
                         if (((cardDrawn is CardType.BALANCE or CardType.ARROW or CardType.SPEAR) && JobIDs.Melee.Contains(job)) ||
                             ((cardDrawn is CardType.BOLE or CardType.EWER or CardType.SPIRE) && JobIDs.Ranged.Contains(job)))
                         {
@@ -141,7 +142,7 @@ namespace XIVSlothComboX.Combos.JobHelpers
                     {
                         for (int i = 0; i <= PartyTargets.Count - 1; i++)
                         {
-                            byte job = PartyTargets[i] is BattleChara ? (byte)(PartyTargets[i] as BattleChara).ClassJob.Id : (byte)0;
+                            byte job = PartyTargets[i] is IBattleChara ? (byte)(PartyTargets[i] as IBattleChara).ClassJob.Id : (byte)0;
                             if ((cardDrawn is CardType.BALANCE or CardType.ARROW or CardType.SPEAR && JobIDs.Tank.Contains(job)) ||
                                 (cardDrawn is CardType.BOLE or CardType.EWER or CardType.SPIRE && JobIDs.Healer.Contains(job)))
                             {

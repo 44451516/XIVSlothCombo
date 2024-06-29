@@ -33,14 +33,14 @@ namespace XIVSlothComboX.Window.Tabs
 
         internal static new  void Draw()
         {
-            PlayerCharacter? LocalPlayer = Service.ClientState.LocalPlayer;
+            IPlayerCharacter? LocalPlayer = Service.ClientState.LocalPlayer;
             // DebugCombo? comboClass = new();
 
             if (LocalPlayer != null)
             {
                 unsafe
                 {
-                    if (Service.ClientState.LocalPlayer.TargetObject is BattleChara chara)
+                    if (Service.ClientState.LocalPlayer.TargetObject is IBattleChara chara)
                     {
                         foreach (Status? status in chara.StatusList)
                         {
@@ -48,14 +48,13 @@ namespace XIVSlothComboX.Window.Tabs
                         }
                     }
 
-                    foreach (Status? status in (Service.ClientState.LocalPlayer as BattleChara).StatusList)
+                    foreach (Status? status in Service.ClientState.LocalPlayer.StatusList)
                     {
                         ImGui.TextUnformatted($"SELF STATUS CHECK: {Service.ClientState.LocalPlayer.Name} -> {ActionWatching.GetStatusName(status.StatusId)}: {status.StatusId}");
                     }
 
                     ImGui.TextUnformatted($"TARGET OBJECT KIND: {Service.ClientState.LocalPlayer.TargetObject?.ObjectKind}");
-                    ImGui.TextUnformatted($"TARGET IS BATTLE CHARA: {Service.ClientState.LocalPlayer.TargetObject is BattleChara}");
-                    ImGui.TextUnformatted($"PLAYER IS BATTLE CHARA: {LocalPlayer is BattleChara}");
+                    ImGui.TextUnformatted($"TARGET IS BATTLE CHARA: {Service.ClientState.LocalPlayer.TargetObject is IBattleChara}");
                     ImGui.TextUnformatted($"Level: {Service.ClientState.LocalPlayer.Level}");
                     ImGui.TextUnformatted($"IN COMBAT: {CustomComboFunctions.InCombat()}");
                     ImGui.TextUnformatted($"ActionWatching.CombatActions.Count: {ActionWatching.CombatActions.Count}");
@@ -69,13 +68,19 @@ namespace XIVSlothComboX.Window.Tabs
                     ImGui.TextUnformatted($"LAST SPELL: {ActionWatching.GetActionName(ActionWatching.LastSpell)}");
                     ImGui.TextUnformatted($"LAST ABILITY: {ActionWatching.GetActionName(ActionWatching.LastAbility)}");
                     ImGui.TextUnformatted($"ZONE: {Service.ClientState.TerritoryType}");
-                    ImGui.TextUnformatted($"倒计时 : {Countdown.TimeRemaining()} ");
                     ImGui.TextUnformatted($"战斗时间 : {CustomComboFunctions.CombatEngageDuration().TotalSeconds}");
 
+                    ImGui.TextUnformatted($"倒计时 : {Countdown.TimeRemaining()} ");
                     {
                         uint itemId = 4551;
                         ImGui.TextUnformatted($"恢复药数量 : {InventoryManager.Instance()->GetInventoryItemCount(itemId, true)}");
-                        ImGui.TextUnformatted($"恢复药数量 : {ActionManager.Instance()->GetActionStatus(ActionType.Item,itemId+ 1000000)}");
+                        ImGui.TextUnformatted($"恢复药状态 : {ActionManager.Instance()->GetActionStatus(ActionType.Item,itemId+ 1000000)}");
+                        
+                        
+                        // ActionManager.Instance()->UseActionLocation()
+                        // ImGui.TextUnformatted($"恢复药状态 : {}");
+                        
+                        // ImGui.TextUnformatted($"恢复药状态 : {ActionManager.Addresses.GetAdjustedActionIdwas}");
                     }
 
 
@@ -83,7 +88,7 @@ namespace XIVSlothComboX.Window.Tabs
                     // ImGui.TextUnformatted($"王权层数 : {CustomComboFunctions.GetBuffStacks(PLD.Buffs.忠义之剑SwordOath)}");
 
                   
-                    ImGui.TextUnformatted($"{CustomComboFunctions.HasEffect(DNC.Buffs.标准舞步预备StandardStep)} ");
+                    // ImGui.TextUnformatted($"{CustomComboFunctions.HasEffect(DNC.Buffs.标准舞步预备StandardStep)} ");
                     // ImGui.TextUnformatted($"四色技巧舞步结束TechnicalFinish4 : {CustomComboFunctions.WasLastAction(DNC.四色技巧舞步结束TechnicalFinish4)} 进攻之探戈Devilment {CustomComboFunctions.WasLastAction(DNC.进攻之探戈Devilment)}}} 综合{!CustomComboFunctions.WasLastAction(DNC.四色技巧舞步结束TechnicalFinish4) && !CustomComboFunctions.WasLastAbility(DNC.进攻之探戈Devilment) } ");
 
                     // if (ActionWatching.特殊起手Actions.Count >0 )
@@ -195,7 +200,6 @@ namespace XIVSlothComboX.Window.Tabs
                     
                     
                     
-                    ImGui.EndChild();
                 }
             }
 

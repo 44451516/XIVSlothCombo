@@ -3,6 +3,7 @@ using System.Linq;
 using System.Numerics;
 using Dalamud.Interface;
 using Dalamud.Interface.Internal;
+using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Interface.Utility;
 using Dalamud.Utility;
 using ECommons;
@@ -145,8 +146,8 @@ namespace XIVSlothComboX.Window.Tabs
                         Action? action = ActionSheet.GetRow(customAction.ActionId);
                         if (action != null)
                         {
-                            Service.ChatGui.PrintError(
-                                $"UseActionLocationDetour{customAction.ActionId}");
+                            // Service.ChatGui.PrintError(
+                            //     $"UseActionLocationDetour{customAction.ActionId}");
                         }
 
 

@@ -18,36 +18,6 @@ namespace XIVSlothComboX.Core
     [Serializable]
     public class PluginConfiguration : IPluginConfiguration
     {
-        private static readonly HashSet<CustomComboPreset> SecretCombos;
-        private static readonly HashSet<CustomComboPreset> VariantCombos;
-        private static readonly HashSet<CustomComboPreset> BozjaCombos;
-        private static readonly HashSet<CustomComboPreset> EurekaCombos;
-        private static readonly Dictionary<CustomComboPreset, CustomComboPreset[]> ConflictingCombos;
-        private static readonly Dictionary<CustomComboPreset, CustomComboPreset?> ParentCombos; // child: parent
-
-        static PluginConfiguration()
-        {
-            // Secret combos
-            SecretCombos = Enum.GetValues<CustomComboPreset>()
-                .Where(preset => preset.GetAttribute<SecretCustomComboAttribute>() != default)
-                .ToHashSet();
-
-            VariantCombos = Enum.GetValues<CustomComboPreset>().Where(preset => preset.GetAttribute<VariantAttribute>() != default).ToHashSet();
-
-            BozjaCombos = Enum.GetValues<CustomComboPreset>().Where(preset => preset.GetAttribute<BozjaAttribute>() != default).ToHashSet();
-
-            EurekaCombos = Enum.GetValues<CustomComboPreset>().Where(preset => preset.GetAttribute<EurekaAttribute>() != default).ToHashSet();
-
-            // Conflicting combos
-            ConflictingCombos = Enum.GetValues<CustomComboPreset>()
-                .ToDictionary(preset => preset,
-                    preset => preset.GetAttribute<ConflictingCombosAttribute>()?.ConflictingPresets ?? Array.Empty<CustomComboPreset>());
-
-            // Parent combos
-            ParentCombos = Enum.GetValues<CustomComboPreset>()
-                .ToDictionary(preset => preset, preset => preset.GetAttribute<ParentComboAttribute>()?.ParentPreset);
-        }
-
         #region Version
 
         /// <summary> Gets or sets the configuration version. </summary>
@@ -58,12 +28,8 @@ namespace XIVSlothComboX.Core
         #region EnabledActions
 
         /// <summary> Gets or sets the collection of enabled combos. </summary>
-        [JsonProperty("EnabledActionsV5")]
-        public HashSet<CustomComboPreset> EnabledActions { get; set; } = new();
-
-        /// <summary> Gets or sets the collection of enabled combos. </summary>
-        [JsonProperty("EnabledActionsV4")]
-        public HashSet<CustomComboPreset> EnabledActions4 { get; set; } = new();
+        [JsonProperty("EnabledActionsV6")]
+        public HashSet<CustomComboPreset> EnabledActions { get; set; } = [];
 
         #endregion
 
@@ -71,6 +37,7 @@ namespace XIVSlothComboX.Core
 
         /// <summary> Gets or sets a value indicating whether to output combat log to the chatbox. </summary>
         public bool EnabledOutputLog { get; set; } = false;
+        public bool SetOutChat { get; set; } = false;
 
         /// <summary> Gets or sets a value indicating whether to hide combos which conflict with enabled presets. </summary>
         public bool HideConflictedCombos { get; set; } = false;
@@ -85,59 +52,10 @@ namespace XIVSlothComboX.Core
 
         #endregion
 
-        #region Combo Preset Checks
-
-        /// <summary> Gets a value indicating whether a preset is enabled. </summary>
-        /// <param name="preset"> Preset to check. </param>
-        /// <returns> The boolean representation. </returns>
-        public bool IsEnabled(CustomComboPreset preset) => EnabledActions.Contains(preset);
-
-        /// <summary> Gets a value indicating whether a preset is secret. </summary>
-        /// <param name="preset"> Preset to check. </param>
-        /// <returns> The boolean representation. </returns>
-        public static bool IsSecret(CustomComboPreset preset) => SecretCombos.Contains(preset);
-
-        /// <summary> Gets a value indicating whether a preset is secret. </summary>
-        /// <param name="preset"> Preset to check. </param>
-        /// <returns> The boolean representation. </returns>
-        public static bool IsVariant(CustomComboPreset preset) => VariantCombos.Contains(preset);
-
-        /// <summary> Gets a value indicating whether a preset is secret. </summary>
-        /// <param name="preset"> Preset to check. </param>
-        /// <returns> The boolean representation. </returns>
-        public static bool IsBozja(CustomComboPreset preset) => BozjaCombos.Contains(preset);
-
-        /// <summary> Gets a value indicating whether a preset is secret. </summary>
-        /// <param name="preset"> Preset to check. </param>
-        /// <returns> The boolean representation. </returns>
-        public static bool IsEureka(CustomComboPreset preset) => EurekaCombos.Contains(preset);
-
-        /// <summary> Gets the parent combo preset if it exists, or null. </summary>
-        /// <param name="preset"> Preset to check. </param>
-        /// <returns> The parent preset. </returns>
-        public static CustomComboPreset? GetParent(CustomComboPreset preset) => ParentCombos[preset];
-
-        #endregion
-
-        #region Conflicting Combos
-
-        /// <summary> Gets an array of conflicting combo presets. </summary>
-        /// <param name="preset"> Preset to check. </param>
-        /// <returns> The conflicting presets. </returns>
-        public CustomComboPreset[] GetConflicts(CustomComboPreset preset) => ConflictingCombos[preset];
-
-        /// <summary> Gets the full list of conflicted combos. </summary>
-        public List<CustomComboPreset> GetAllConflicts() => ConflictingCombos.Keys.ToList();
-
-        /// <summary> Get all the info from conflicted combos. </summary>
-        public List<CustomComboPreset[]> GetAllConflictOriginals() => ConflictingCombos.Values.ToList();
-
-        #endregion
-
         #region Custom Float Values
 
-        [JsonProperty]
-        private static Dictionary<string, float> CustomFloatValues { get; set; } = new Dictionary<string, float>();
+        [JsonProperty("CustomFloatValuesV6")]
+        internal static Dictionary<string, float> CustomFloatValues { get; set; } = [];
 
         /// <summary> Gets a custom float value. </summary>
         public static float GetCustomFloatValue(string config, float defaultMinValue = 0)
@@ -158,8 +76,8 @@ namespace XIVSlothComboX.Core
 
         #region Custom Int Values
 
-        [JsonProperty]
-        private static Dictionary<string, int> CustomIntValues { get; set; } = new Dictionary<string, int>();
+        [JsonProperty("CustomIntValuesV6")]
+        internal static Dictionary<string, int> CustomIntValues { get; set; } = [];
 
         /// <summary> Gets a custom integer value. </summary>
         public static int GetCustomIntValue(string config, int defaultMinVal = 0)
@@ -178,10 +96,31 @@ namespace XIVSlothComboX.Core
 
         #endregion
 
+        #region Custom Int Array Values
+        [JsonProperty("CustomIntArrayValuesV6")]
+        internal static Dictionary<string, int[]> CustomIntArrayValues { get; set; } = [];
+
+        /// <summary> Gets a custom integer array value. </summary>
+        public static int[] GetCustomIntArrayValue(string config)
+        {
+            if (!CustomIntArrayValues.TryGetValue(config, out int[]? configValue))
+            {
+                SetCustomIntArrayValue(config, []);
+                return [];
+            }
+
+            return configValue;
+        }
+
+        /// <summary> Sets a custom integer array value. </summary>
+        public static void SetCustomIntArrayValue(string config, int[] value) => CustomIntArrayValues[config] = value;
+
+        #endregion
+
         #region Custom Bool Values
 
-        [JsonProperty]
-        private static Dictionary<string, bool> CustomBoolValues { get; set; } = new Dictionary<string, bool>();
+        [JsonProperty("CustomBoolValuesV6")]
+        internal static Dictionary<string, bool> CustomBoolValues { get; set; } = [];
 
         /// <summary> Gets a custom boolean value. </summary>
         public static bool GetCustomBoolValue(string config)
@@ -202,8 +141,8 @@ namespace XIVSlothComboX.Core
 
         #region Custom Bool Array Values
 
-        [JsonProperty]
-        private static Dictionary<string, bool[]> CustomBoolArrayValues { get; set; } = new Dictionary<string, bool[]>();
+        [JsonProperty("CustomBoolArrayValuesV6")]
+        internal static Dictionary<string, bool[]> CustomBoolArrayValues { get; set; } = [];
 
         /// <summary> Gets a custom boolean array value. </summary>
         public static bool[] GetCustomBoolArrayValue(string config)
@@ -225,47 +164,36 @@ namespace XIVSlothComboX.Core
         #region Job-specific
 
         /// <summary> Gets active Blue Mage (BLU) spells. </summary>
-        public List<uint> ActiveBLUSpells { get; set; } = new List<uint>();
+        public List<uint> ActiveBLUSpells { get; set; } = [];
 
-        /// <summary> Gets or sets an array of 4 ability IDs to interact with the <see cref="CustomComboPreset.DNC_DanceComboReplacer"/> combo. </summary>
-        public uint[] DancerDanceCompatActionIDs { get; set; } = new uint[]
-                                                                 {
-                                                                     DNC.瀑泻Cascade,
-                                                                     DNC.百花争艳Flourish,
-                                                                     DNC.扇舞序FanDance1,
-                                                                     DNC.扇舞破FanDance2,
-                                                                 };
-
+        
         #endregion
 
-        #region Preset Resetting
-
-        [JsonProperty]
-        private static Dictionary<string, bool> ResetFeatureCatalog { get; set; } = new Dictionary<string, bool>();
-
-        private bool GetResetValues(string config)
-        {
-            if (ResetFeatureCatalog.TryGetValue(config, out var value)) 
-                return value;
-
-            return false;
-        }
-
-        private void SetResetValues(string config, bool value)
-        {
-            ResetFeatureCatalog[config] = value;
-        }
-    
-      
         
         
         [JsonProperty]
         public static List<CustomTimeline> CustomTimelineList { get; set; } = new();
         
+        #region Preset Resetting
+
+        [JsonProperty]
+        private static Dictionary<string, bool> ResetFeatureCatalog { get; set; } = [];
+
+        private static bool GetResetValues(string config)
+        {
+            if (ResetFeatureCatalog.TryGetValue(config, out var value)) return value;
+
+            return false;
+        }
+
+        private static void SetResetValues(string config, bool value)
+        {
+            ResetFeatureCatalog[config] = value;
+        }
 
         public void ResetFeatures(string config, int[] values)
         {
-            Dalamud.Logging.PluginLog.Debug($"{config} {GetResetValues(config)}");
+            Service.PluginLog.Debug($"{config} {GetResetValues(config)}");
             if (!GetResetValues(config))
             {
                 bool needToResetMessagePrinted = false;
@@ -274,28 +202,29 @@ namespace XIVSlothComboX.Core
 
                 foreach (int value in values)
                 {
-                    Dalamud.Logging.PluginLog.Debug(value.ToString());
+                    Service.PluginLog.Debug(value.ToString());
                     if (presets.Contains(value))
                     {
-                        var preset = Enum.GetValues<CustomComboPreset>().Where(preset => (int)preset == value).First();
+                        var preset = Enum.GetValues<CustomComboPreset>()
+                            .Where(preset => (int)preset == value)
+                            .First();
 
-                        if (!IsEnabled(preset)) continue;
+                        if (!PresetStorage.IsEnabled(preset)) continue;
 
                         if (!needToResetMessagePrinted)
                         {
-                            Service.ChatGui.PrintError($"[XIVSlothComboX] Some features have been disabled due to an internal configuration update:");
+                            Service.ChatGui.PrintError($"[XIVSlothCombo] Some features have been disabled due to an internal configuration update:");
                             needToResetMessagePrinted = !needToResetMessagePrinted;
                         }
 
                         var info = preset.GetComboAttribute();
-                        Service.ChatGui.PrintError($"[XIVSlothComboX] - {info.JobName}: {info.FancyName}");
+                        Service.ChatGui.PrintError($"[XIVSlothCombo] - {info.JobName}: {info.FancyName}");
                         EnabledActions.Remove(preset);
                     }
                 }
-
+                
                 if (needToResetMessagePrinted)
-                    Service.ChatGui.PrintError(
-                        $"[XIVSlothComboX] Please re-enable these features to use them again. We apologise for the inconvenience");
+                Service.ChatGui.PrintError($"[XIVSlothCombo] Please re-enable these features to use them again. We apologise for the inconvenience");
             }
             SetResetValues(config, true);
             Save();
@@ -311,27 +240,18 @@ namespace XIVSlothComboX.Core
         /// <summary> Hides the message of the day. </summary>
         public bool HideMessageOfTheDay { get; set; } = false;
 
-
-        public bool SetOutChat { get; set; } = true;
+        public bool RecommendedSettingsViewed { get; set; } = false;
 
         /// <summary> Save the configuration to disk. </summary>
         public void Save() => Service.Interface.SavePluginConfig(this);
 
-        #region UI Settings
-
-        public bool AutomaticallyOpenToCurrentJob { get; set; } = false;
-
         #endregion
-
-        #endregion
-
+        
         #region test
 
         public string FakeName { get; set; } = string.Empty;
         public bool isFakeName { get; set; } = false;
 
         #endregion
-
-     
     }
 }
