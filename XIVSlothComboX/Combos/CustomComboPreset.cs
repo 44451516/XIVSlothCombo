@@ -280,20 +280,10 @@ namespace XIVSlothComboX.Combos
 
         #region Cards
 
-        [ReplaceSkill(AST.Play)] [CustomComboInfo("用出卡替换抽卡", "当没有抽取到奥秘卡时，自动将出卡替换为抽卡。", AST.JobID, 6, "", "")]
-        AST_Cards_DrawOnPlay = 1000,
 
-        [ParentCombo(AST_Cards_DrawOnPlay)] [CustomComboInfo("重抽功能", "当你抽到星标重复的卡且重抽技能可用时，将抽卡替换为重抽", AST.JobID)]
-        AST_Cards_Redraw = 1032,
 
-        [ReplaceSkill(AST.Draw)] [CustomComboInfo("Redraw on Draw", "如果你有重抽BUFF,抽卡变成重抽", AST.JobID)]
-        AST_Cards_RedrawStandalone = 1040,
+   
 
-        [ReplaceSkill(AST.Play)]
-        //Works With AST_Cards_DrawOnPlay as 当 深谋远虑之策 冷却完毕时，将 生命活性法 替换为 深谋远虑之策。 feature, or by itself if AST_Cards_DrawOnPlay is disabled.
-        //Do not do ConflictingCombos with AST_Cards_DrawOnPlay
-        [CustomComboInfo("用星力替换出卡", "当你拥有三颗星星时自动替换出卡为星力", AST.JobID, 18, "", "")]
-        AST_Cards_AstrodyneOnPlay = 1015,
 
         [CustomComboInfo("快速目标发牌", "抽卡时自动选中一个合适的队友。", AST.JobID)]
         AST_Cards_QuickTargetCards = 1029,
