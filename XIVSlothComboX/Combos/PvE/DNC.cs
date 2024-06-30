@@ -54,7 +54,7 @@ namespace XIVSlothComboX.Combos.PvE
             治疗之华尔兹CuringWaltz = 16015,
             //7.0 等待技能ID
             最后一舞LastDance = 36983,
-            舞步终结 = 4584,
+            舞步终结 = 36984,
             晓之舞DanceOfTheDawn = 36985,
             _ = 0;
 
@@ -85,8 +85,8 @@ namespace XIVSlothComboX.Combos.PvE
                 速行Peloton = 1199,
                 防守之桑巴ShieldSamba = 1826,
                 //7.0 等待BUFFid
-                最后一舞预备PRE = 1826,
-                舞步终结预备 = 1826,
+                最后一舞预备PRE = 3867,
+                舞步终结预备 = 3868,
                 晓之舞预备 = 3869,
                 _ = 0;
         }
@@ -284,7 +284,7 @@ namespace XIVSlothComboX.Combos.PvE
                             return 标准舞步StandardStep;
                         }
 
-                        if (techBurstTimer > 20)
+                        if (techBurstTimer > 5)
                         {
                             return 标准舞步StandardStep;
                         }
