@@ -209,7 +209,7 @@ namespace XIVSlothComboX.Combos.PvE
                         }
 
                         //破坏斧 7.0新增
-                        if (IsEnabled(CustomComboPreset.WAR_ST_StormsPath_破坏斧) && HasEffect(Buffs.破坏斧Pre) && LevelChecked(破坏斧))
+                        if (IsEnabled(CustomComboPreset.WAR_ST_StormsPath_破坏斧) && HasEffect(Buffs.破坏斧Pre) && 破坏斧.ActionReady())
                         {
                             // if (IsEnabled(CustomComboPreset.WAR_ST_StormsPath_PrimalRend_CloseRange)
                             //     && !IsMoving

@@ -82,6 +82,7 @@ namespace XIVSlothComboX.Combos.PvE
             // Demi summons
             龙神召唤SummonBahamut = 7427,
             不死鸟召唤SummonPhoenix = 25831,
+            太阳哈巴姆特SummonSolarBahamut = 36992,
 
             // Demi summon abilities
             星极脉冲AstralImpulse = 25820, // Single target Bahamut GCD
@@ -123,7 +124,8 @@ namespace XIVSlothComboX.Combos.PvE
             RadiantAegis = 25799,
             以太蓄能Aethercharge = 25800,
             //灼热之光 SearingLight
-            灼热之光SearingLight = 25801;
+            灼热之光SearingLight = 25801,
+            灼热的闪光SearingFlash = 36991;
 
 
         public static class Buffs
@@ -134,7 +136,8 @@ namespace XIVSlothComboX.Combos.PvE
                 TitansFavor = 2853,
                 IfritsFavor = 2724,
                 EverlastingFlight = 16517,
-                SearingLight = 2703;
+                SearingLight = 2703,
+                RubyGlimmer = 3873;
         }
 
         public static class Config
@@ -230,7 +233,7 @@ namespace XIVSlothComboX.Combos.PvE
             }
         }
 
-        
+
         internal class SMN_ST_Custom : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SMN_Advanced_CustomMode;
@@ -239,7 +242,6 @@ namespace XIVSlothComboX.Combos.PvE
             {
                 if (actionID is All.Sleep)
                 {
-
                     if (CustomTimelineIsEnable())
                     {
                         double? seconds = -9999d;
@@ -256,7 +258,7 @@ namespace XIVSlothComboX.Combos.PvE
                                 seconds = -timeRemaining;
                             }
                         }
-                        
+
                         foreach (var customAction in 药品轴)
                         {
                             if (customAction.UseTimeStart < seconds && seconds < customAction.UseTimeEnd)
@@ -264,7 +266,7 @@ namespace XIVSlothComboX.Combos.PvE
                                 Useitem(customAction.ActionId);
                             }
                         }
-                        
+
                         foreach (var customAction in 地面轴)
                         {
                             if (customAction.UseTimeStart < seconds && seconds < customAction.UseTimeEnd)
@@ -272,7 +274,7 @@ namespace XIVSlothComboX.Combos.PvE
                                 Use地面技能(customAction);
                             }
                         }
-                        
+
                         foreach (var customAction in 时间轴)
                         {
                             if (customAction.ActionId.ActionReady() && customAction.UseTimeStart < seconds && seconds < customAction.UseTimeEnd)
@@ -280,7 +282,7 @@ namespace XIVSlothComboX.Combos.PvE
                                 return customAction.ActionId;
                             }
                         }
-                        
+
                         int index = ActionWatching.CustomList.Count;
                         if (index < 序列轴.Count)
                         {
@@ -295,7 +297,7 @@ namespace XIVSlothComboX.Combos.PvE
             }
         }
 
-        
+
         /**
          * 高级召唤
          */
@@ -327,7 +329,7 @@ namespace XIVSlothComboX.Combos.PvE
 
                 // If SMN_Advanced_Burst_Delay_Option is active and outside opener window, set DemiAttackCount to 6 to ignore delayed oGCDs 
                 if (!inOpener)
-                // if (IsEnabled(CustomComboPreset.SMN_Advanced_Burst_Delay_Option) && !inOpener)
+                    // if (IsEnabled(CustomComboPreset.SMN_Advanced_Burst_Delay_Option) && !inOpener)
                 {
                     DemiAttackCount = 6;
                 }
@@ -441,8 +443,16 @@ namespace XIVSlothComboX.Combos.PvE
                                     (在什么阶段用爆发 is not 4) ||
                                     (在什么阶段用爆发 == 4 && !HasEffect(Buffs.TitansFavor)))
                                 {
+                                    if (灼热的闪光SearingFlash.ActionReady() && HasEffect(Buffs.RubyGlimmer))
+                                    {
+                                        return OriginalHook(灼热之光SearingLight);
+                                    }
+
                                     if (STCombo)
-                                        return 溃烂爆发Fester;
+                                    {
+                                        return OriginalHook(溃烂爆发Fester);
+                                    }
+
 
                                     if (AoECombo && LevelChecked(痛苦核爆Painflare) && IsNotEnabled(CustomComboPreset.SMN_DemiEgiMenu_oGCDPooling_Only))
                                         return 痛苦核爆Painflare;
@@ -479,8 +489,14 @@ namespace XIVSlothComboX.Combos.PvE
                             {
                                 if (IsNotEnabled(CustomComboPreset.SMN_DemiEgiMenu_oGCDPooling))
                                 {
+                                    
+                                    if (灼热的闪光SearingFlash.ActionReady() && HasEffect(Buffs.RubyGlimmer))
+                                    {
+                                        return OriginalHook(灼热之光SearingLight);
+                                    }
+                                    
                                     if (STCombo)
-                                        return 溃烂爆发Fester;
+                                        return OriginalHook(溃烂爆发Fester);
 
                                     if (AoECombo && LevelChecked(痛苦核爆Painflare))
                                         return 痛苦核爆Painflare;
@@ -491,7 +507,7 @@ namespace XIVSlothComboX.Combos.PvE
                                     if (!LevelChecked(灼热之光SearingLight))
                                     {
                                         if (STCombo)
-                                            return 溃烂爆发Fester;
+                                            return OriginalHook(溃烂爆发Fester);
 
                                         if (AoECombo && LevelChecked(痛苦核爆Painflare) &&
                                             IsNotEnabled(CustomComboPreset.SMN_DemiEgiMenu_oGCDPooling_Only))
@@ -503,8 +519,16 @@ namespace XIVSlothComboX.Combos.PvE
                                         (在什么阶段用爆发 is 0 or 1 or 2 or 3 && DemiAttackCount >= 延迟几个GCD打爆发) ||
                                         (在什么阶段用爆发 == 4 && !HasEffect(Buffs.TitansFavor)))
                                     {
+                                        if (灼热的闪光SearingFlash.ActionReady() && HasEffect(Buffs.RubyGlimmer))
+                                        {
+                                            return OriginalHook(灼热之光SearingLight);
+                                        }
+
                                         if (STCombo)
-                                            return 溃烂爆发Fester;
+                                        {
+                                            return OriginalHook(溃烂爆发Fester);
+                                        }
+
 
                                         if (AoECombo && LevelChecked(痛苦核爆Painflare) &&
                                             IsNotEnabled(CustomComboPreset.SMN_DemiEgiMenu_oGCDPooling_Only))
@@ -524,7 +548,9 @@ namespace XIVSlothComboX.Combos.PvE
                     {
                         if (InCombat() && gauge.SummonTimerRemaining == 0 && IsOffCooldown(OriginalHook(以太蓄能Aethercharge)) &&
                             (LevelChecked(以太蓄能Aethercharge) && !LevelChecked(龙神召唤SummonBahamut) || // Pre-Bahamut Phase
-                             gauge.IsBahamutReady && LevelChecked(龙神召唤SummonBahamut) || // Bahamut Phase
+                             // Bahamut Phase
+                             gauge.IsBahamutReady && LevelChecked(太阳哈巴姆特SummonSolarBahamut) ||
+                             gauge.IsBahamutReady && LevelChecked(龙神召唤SummonBahamut) ||
                              gauge.IsPhoenixReady && LevelChecked(不死鸟召唤SummonPhoenix))) // Phoenix Phase
                             return OriginalHook(以太蓄能Aethercharge);
                     }
@@ -757,10 +783,9 @@ namespace XIVSlothComboX.Combos.PvE
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
-                
                 // if (actionID is Ruin or Ruin2 or Ruin3 or DreadwyrmTrance or 星极超流 or 龙神迸发 or 灼热之光SearingLight or RadiantAegis or Outburst
-                    // or Tridisaster or 宝石辉AoePreciousBrilliance or 宝石耀Gemshine)
-                
+                // or Tridisaster or 宝石辉AoePreciousBrilliance or 宝石耀Gemshine)
+
                 if (actionID is Ruin or Ruin2 or Ruin3 or DreadwyrmTrance or 星极超流 or 龙神迸发 or 灼热之光SearingLight or RadiantAegis or Outburst
                     or Tridisaster or 宝石辉AoePreciousBrilliance or 宝石耀Gemshine)
                 {
@@ -791,7 +816,6 @@ namespace XIVSlothComboX.Combos.PvE
                         }
                         // return SummonCarbuncle;
                     }
-
                 }
 
                 return actionID;

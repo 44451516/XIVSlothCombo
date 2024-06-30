@@ -133,7 +133,7 @@ namespace XIVSlothComboX
 
         /// <summary> Initializes a new instance of the <see cref="XIVSlothComboX"/> class. </summary>
         /// <param name="pluginInterface"> Dalamud plugin interface. </param>
-        public XIVSlothComboX(DalamudPluginInterface pluginInterface)
+        public XIVSlothComboX(IDalamudPluginInterface pluginInterface)
         {
             P = this;
             pluginInterface.Create<Service>();
@@ -147,6 +147,7 @@ namespace XIVSlothComboX
 
             Service.ComboCache = new CustomComboCache();
             Service.IconReplacer = new IconReplacer();
+            
             ActionWatching.Enable();
             Combos.JobHelpers.AST.Init();
 

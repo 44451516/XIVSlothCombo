@@ -6,15 +6,13 @@ using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
-using FFXIVClientStructs.FFXIV.Common.Math;
-using InteropGenerator.Runtime;
 using Lumina.Excel.GeneratedSheets;
 using XIVSlothComboX.Combos.JobHelpers;
 using XIVSlothComboX.Combos.JobHelpers.Enums;
 using XIVSlothComboX.Core;
 using XIVSlothComboX.CustomComboNS.Functions;
 using XIVSlothComboX.Services;
-using Action = Lumina.Excel.GeneratedSheets.Action;
+using Action = System.Action;
 using AST = XIVSlothComboX.Combos.PvE.AST;
 using Vector3Struct = FFXIVClientStructs.FFXIV.Common.Math.Vector3;
 
@@ -22,6 +20,8 @@ namespace XIVSlothComboX.Data
 {
     public static class ActionWatching
     {
+       
+        
         internal static Dictionary<uint, Lumina.Excel.GeneratedSheets.Action> ActionSheet =
             Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>()!
                 .Where(i => i.RowId is not 7)
@@ -69,13 +69,11 @@ namespace XIVSlothComboX.Data
         private static byte UseActionLocationDetour(IntPtr actionManager, uint actionType, uint actionId, long targetedActorID, IntPtr vectorLocation,
             uint param)
         {
-            // Service.ChatGui.PrintError($"UseActionLocationDetour{GetActionName(actionID)}");
-            // Service.ChatGui.PrintError($"UseActionLocationDetour{GetActionName(actionID)}");
+            // Service.ChatGui.PrintError($"UseActionLocationDetour{GetActionName(actionId)} - {actionType}");
 
-            //
-            Vector3 vector3 = (Vector3)Marshal.PtrToStructure<Vector3Struct>(vectorLocation);
-            
-            
+            Vector3Struct vector3 = Marshal.PtrToStructure<Vector3Struct>(vectorLocation);
+
+
             bool isSkip = vector3 is { X: 0, Y: 0, Z: 0 };
 
             if (isSkip == false)
@@ -120,7 +118,7 @@ namespace XIVSlothComboX.Data
                     TimelineList.Add(customAction);
                 }
 
-                
+
                 // Service.ChatGui.PrintError(
                 //     $"UseActionLocationDetour{GetActionName(actionId)}-{actionId}-{actionType}-{targetedActorID} {param}");
             }
@@ -227,7 +225,7 @@ namespace XIVSlothComboX.Data
 
                 if (ActionSheet.ContainsKey(actionId))
                 {
-                    Action actionByActionSheet = ActionSheet[actionId];
+                    var actionByActionSheet = ActionSheet[actionId];
 
                     if (actionByActionSheet.CanTargetParty)
                     {
@@ -236,6 +234,7 @@ namespace XIVSlothComboX.Data
                     }
                 }
 
+                // Service.ChatGui.PrintError($"{targetObjectId} - {actionType} - {actionId}");
                 //为啥不换UseAction？？？
                 TimelineList.Add(customAction);
             }
@@ -397,15 +396,15 @@ namespace XIVSlothComboX.Data
 
             SendActionHook ??= Service.GameInteropProvider.HookFromSignature<SendActionDelegate>(HookAddress.SendAction, SendActionDetour);
 
-            
+
             //E8 ?? ?? ?? ?? 3C 01 0F 85 ?? ?? ?? ?? EB 46
             //E8 ?? ?? ?? ?? 41 3A C5 0F 85 ?? ?? ?? ?? ?? ??
-            
+
             UseActionLocationHook ??=
                 Service.GameInteropProvider.HookFromSignature<UseActionLocationDelegate>(HookAddress.UseActionLocation,
                     UseActionLocationDetour);
 
-            
+
             // UseActionLocationHook ??=
             //     Service.GameInteropProvider.HookFromAddress<UseActionLocationDelegate>(ActionManagerHelper.FpUseActionLocation,
             //         UseActionLocationDetour);
@@ -442,7 +441,7 @@ namespace XIVSlothComboX.Data
         public static void Disable()
         {
             ReceiveActionEffectHook.Disable();
-            SendActionHook?.Disable();
+            // SendActionHook?.Disable();
             Service.Condition.ConditionChange -= ResetActions;
             Service.ClientState.TerritoryChanged -= TerritoryChangedEvent;
         }
@@ -467,19 +466,24 @@ namespace XIVSlothComboX.Data
         public static string GetItemName(uint id) => ItemsSheet.TryGetValue(id, out var item) ? (string)item.Name : "UNKNOWN ITEM";
         public static string GetStatusName(uint id) => StatusSheet.TryGetValue(id, out var status) ? (string)status.Name : "Unknown Status";
 
+        public static string GetBLUIndex(uint id)
+        {
+            var aozKey = Service.DataManager.GetExcelSheet<AozAction>()!.First(x => x.Action.Row == id).RowId;
+            var index = Service.DataManager.GetExcelSheet<AozActionTransient>().GetRow(aozKey).Number;
+
+            return $"#{index} ";
+        }
+
         public static List<uint>? GetStatusesByName(string status)
         {
             if (statusCache.TryGetValue(status, out List<uint>? list))
                 return list;
 
-            
 
             return statusCache.TryAdd(status,
                 StatusSheet.Where(x => x.Value.Name.ToString().Equals(status, StringComparison.CurrentCultureIgnoreCase)).Select(x => x.Key).ToList())
                 ? statusCache[status]
                 : null;
-            
-            
         }
 
         public static ActionAttackType GetAttackType(uint id)
@@ -507,9 +511,9 @@ namespace XIVSlothComboX.Data
     internal static unsafe class ActionManagerHelper
     {
         private static readonly IntPtr actionMgrPtr;
-        internal static IntPtr FpUseAction => (IntPtr)ActionManager.Addresses.UseAction.Value;
-        internal static IntPtr FpUseActionLocation => (IntPtr)ActionManager.Addresses.UseActionLocation.Value;
-        internal static IntPtr CheckActionResources => (IntPtr)ActionManager.Addresses.CheckActionResources.Value;
+        // internal static IntPtr FpUseAction => (IntPtr)ActionManager.Addresses.UseAction.Value;
+        // internal static IntPtr FpUseActionLocation => (IntPtr)ActionManager.Addresses.UseActionLocation.Value;
+        // internal static IntPtr CheckActionResources => (IntPtr)ActionManager.Addresses.CheckActionResources.Value;
         public static ushort CurrentSeq => actionMgrPtr != IntPtr.Zero ? (ushort)Marshal.ReadInt16(actionMgrPtr + 0x110) : (ushort)0;
         public static ushort LastRecievedSeq => actionMgrPtr != IntPtr.Zero ? (ushort)Marshal.ReadInt16(actionMgrPtr + 0x112) : (ushort)0;
         public static bool IsCasting => actionMgrPtr != IntPtr.Zero && Marshal.ReadByte(actionMgrPtr + 0x28) != 0;

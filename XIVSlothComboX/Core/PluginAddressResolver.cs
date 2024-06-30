@@ -22,6 +22,8 @@ namespace XIVSlothComboX.Core
         {
             ComboTimer = new IntPtr(&ActionManager.Instance()->Combo.Timer);
 
+            // ActionManager.Addresses.GetAdjustedActionId
+            
             IsActionIdReplaceable = scanner.ScanText(HookAddress.ActionIdReplaceable);
 
             Service.PluginLog.Verbose("===== X I V S L O T H C O M B O =====");

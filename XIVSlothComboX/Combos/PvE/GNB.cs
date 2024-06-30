@@ -45,7 +45,10 @@ namespace XIVSlothComboX.Combos.PvE
             血壤Bloodfest = 16164,
             超高速Hypervelocity = 25759,
             粗分斩RoughDivide = 16154,
-            闪雷弹LightningShot = 16143;
+            闪雷弹LightningShot = 16143,
+            师心连1FatedBrand = 39636,
+            师心连2ReignOfBeasts = 39637,
+            师心连3NobleBlood = 39638;
 
         public static class Buffs
         {
@@ -55,7 +58,8 @@ namespace XIVSlothComboX.Combos.PvE
                 ReadyToRip = 1842,
                 ReadyToTear = 1843,
                 ReadyToGouge = 1844,
-                ReadyToBlast = 2686;
+                ReadyToBlast = 2686,
+                ReadyToReign = 3840;
         }
 
         public static class Debuffs
@@ -375,7 +379,7 @@ namespace XIVSlothComboX.Combos.PvE
                             //低等级循环
                             if (!LevelChecked(倍攻DoubleDown) && 是否使用爆发)
                             {
-                                if (使用子弹连(gauge, level, lastComboMove))
+                                if (主连击_使用子弹连(gauge, level, lastComboMove))
                                 {
                                     return OriginalHook(烈牙GnashingFang);
                                 }
@@ -399,7 +403,7 @@ namespace XIVSlothComboX.Combos.PvE
                                 {
                                     case 1:
                                     {
-                                        if (使用子弹连(gauge, level, lastComboMove))
+                                        if (主连击_使用子弹连(gauge, level, lastComboMove))
                                         {
                                             return OriginalHook(烈牙GnashingFang);
                                         }
@@ -413,13 +417,20 @@ namespace XIVSlothComboX.Combos.PvE
                                         {
                                             return 音速破SonicBreak;
                                         }
+
+
+                                        if (使用师心连(lastComboMove))
+                                        {
+                                            return OriginalHook(血壤Bloodfest);
+                                        }
+
 
                                         break;
                                     }
 
                                     case 2:
                                     {
-                                        if (使用子弹连(gauge, level, lastComboMove))
+                                        if (主连击_使用子弹连(gauge, level, lastComboMove))
                                         {
                                             return OriginalHook(烈牙GnashingFang);
                                         }
@@ -433,6 +444,12 @@ namespace XIVSlothComboX.Combos.PvE
                                         {
                                             return 倍攻DoubleDown;
                                         }
+
+                                        if (使用师心连(lastComboMove))
+                                        {
+                                            return OriginalHook(血壤Bloodfest);
+                                        }
+
 
                                         break;
                                     }
@@ -445,7 +462,7 @@ namespace XIVSlothComboX.Combos.PvE
                                             return 音速破SonicBreak;
                                         }
 
-                                        if (使用子弹连(gauge, level, lastComboMove))
+                                        if (主连击_使用子弹连(gauge, level, lastComboMove))
                                         {
                                             return OriginalHook(烈牙GnashingFang);
                                         }
@@ -453,6 +470,11 @@ namespace XIVSlothComboX.Combos.PvE
                                         if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gauge.Ammo >= 2)
                                         {
                                             return 倍攻DoubleDown;
+                                        }
+
+                                        if (使用师心连(lastComboMove))
+                                        {
+                                            return OriginalHook(血壤Bloodfest);
                                         }
 
                                         break;
@@ -471,10 +493,16 @@ namespace XIVSlothComboX.Combos.PvE
                                             return 倍攻DoubleDown;
                                         }
 
-                                        if (使用子弹连(gauge, level, lastComboMove))
+                                        if (主连击_使用子弹连(gauge, level, lastComboMove))
                                         {
                                             return OriginalHook(烈牙GnashingFang);
                                         }
+
+                                        if (使用师心连(lastComboMove))
+                                        {
+                                            return OriginalHook(血壤Bloodfest);
+                                        }
+
 
                                         break;
                                     }
@@ -492,10 +520,16 @@ namespace XIVSlothComboX.Combos.PvE
                                             return 音速破SonicBreak;
                                         }
 
-                                        if (使用子弹连(gauge, level, lastComboMove))
+                                        if (主连击_使用子弹连(gauge, level, lastComboMove))
                                         {
                                             return OriginalHook(烈牙GnashingFang);
                                         }
+
+                                        if (使用师心连(lastComboMove))
+                                        {
+                                            return OriginalHook(血壤Bloodfest);
+                                        }
+
 
                                         break;
                                     }
@@ -508,7 +542,7 @@ namespace XIVSlothComboX.Combos.PvE
                                             return 倍攻DoubleDown;
                                         }
 
-                                        if (使用子弹连(gauge, level, lastComboMove))
+                                        if (主连击_使用子弹连(gauge, level, lastComboMove))
                                         {
                                             return OriginalHook(烈牙GnashingFang);
                                         }
@@ -518,12 +552,17 @@ namespace XIVSlothComboX.Combos.PvE
                                             return 音速破SonicBreak;
                                         }
 
+                                        if (使用师心连(lastComboMove))
+                                        {
+                                            return OriginalHook(血壤Bloodfest);
+                                        }
+
 
                                         break;
                                     }
                                     default:
                                     {
-                                        if (使用子弹连(gauge, level, lastComboMove))
+                                        if (主连击_使用子弹连(gauge, level, lastComboMove))
                                         {
                                             return OriginalHook(烈牙GnashingFang);
                                         }
@@ -537,6 +576,12 @@ namespace XIVSlothComboX.Combos.PvE
                                         {
                                             return 音速破SonicBreak;
                                         }
+
+                                        if (使用师心连(lastComboMove))
+                                        {
+                                            return OriginalHook(血壤Bloodfest);
+                                        }
+
 
                                         break;
                                     }
@@ -553,7 +598,7 @@ namespace XIVSlothComboX.Combos.PvE
                         {
                             if (是否使用爆发)
                             {
-                                if (使用子弹连(gauge, level, lastComboMove))
+                                if (主连击_使用子弹连(gauge, level, lastComboMove))
                                 {
                                     return OriginalHook(烈牙GnashingFang);
                                 }
@@ -651,6 +696,8 @@ namespace XIVSlothComboX.Combos.PvE
 
                 return actionID;
             }
+
+      
         }
 
         private static bool 子弹连是否准备就绪()
@@ -704,7 +751,7 @@ namespace XIVSlothComboX.Combos.PvE
             return false;
         }
 
-        private static bool 使用子弹连(GNBGauge gauge, byte level, uint lastComboMove)
+        private static bool 主连击_使用子弹连(GNBGauge gauge, byte level, uint lastComboMove)
         {
             if (CustomComboFunctions.IsNotEnabled(CustomComboPreset.GNB_ST_Gnashing))
             {
@@ -745,9 +792,25 @@ namespace XIVSlothComboX.Combos.PvE
         }
 
 
-        private static bool 使用子弹连2(GNBGauge gauge, byte level, uint lastComboMove)
+        private static bool 子弹连_使用子弹连(GNBGauge gauge, byte level, uint lastComboMove)
         {
             if (gauge.Ammo >= 1 && 子弹连是否准备就绪())
+            {
+                return true;
+            }
+
+            return false;
+        }
+        
+        
+        private static bool 使用师心连(uint lastComboMove)
+        {
+            if (CustomComboFunctions.LevelChecked(师心连1FatedBrand) && CustomComboFunctions.HasEffect(Buffs.ReadyToReign))
+            {
+                return true;
+            }
+                
+            if (lastComboMove is 师心连1FatedBrand or 师心连2ReignOfBeasts )
             {
                 return true;
             }
@@ -855,7 +918,7 @@ namespace XIVSlothComboX.Combos.PvE
                             {
                                 case 1:
                                 {
-                                    if (使用子弹连2(gauge, level, lastComboMove))
+                                    if (子弹连_使用子弹连(gauge, level, lastComboMove))
                                     {
                                         return OriginalHook(烈牙GnashingFang);
                                     }
@@ -868,6 +931,11 @@ namespace XIVSlothComboX.Combos.PvE
                                     if (IsEnabled(CustomComboPreset.GNB_ST_SonicBreak) && ActionReady(音速破SonicBreak))
                                     {
                                         return 音速破SonicBreak;
+                                    }
+
+                                    if (使用师心连(lastComboMove))
+                                    {
+                                        return OriginalHook(血壤Bloodfest);
                                     }
 
                                     break;
@@ -875,7 +943,7 @@ namespace XIVSlothComboX.Combos.PvE
 
                                 case 2:
                                 {
-                                    if (使用子弹连2(gauge, level, lastComboMove))
+                                    if (子弹连_使用子弹连(gauge, level, lastComboMove))
                                         return OriginalHook(烈牙GnashingFang);
 
                                     if (IsEnabled(CustomComboPreset.GNB_ST_SonicBreak) && ActionReady(音速破SonicBreak))
@@ -883,6 +951,13 @@ namespace XIVSlothComboX.Combos.PvE
 
                                     if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gauge.Ammo >= 2)
                                         return 倍攻DoubleDown;
+
+                                    if (使用师心连(lastComboMove))
+                                    {
+                                        return OriginalHook(血壤Bloodfest);
+                                    }
+
+
                                     break;
                                 }
 
@@ -892,11 +967,18 @@ namespace XIVSlothComboX.Combos.PvE
                                     if (IsEnabled(CustomComboPreset.GNB_ST_SonicBreak) && ActionReady(音速破SonicBreak))
                                         return 音速破SonicBreak;
 
-                                    if (使用子弹连2(gauge, level, lastComboMove))
+                                    if (子弹连_使用子弹连(gauge, level, lastComboMove))
                                         return OriginalHook(烈牙GnashingFang);
 
                                     if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gauge.Ammo >= 2)
                                         return 倍攻DoubleDown;
+                                    
+                                    if (使用师心连(lastComboMove))
+                                    {
+                                        return OriginalHook(血壤Bloodfest);
+                                    }
+
+
                                     break;
                                 }
 
@@ -909,8 +991,15 @@ namespace XIVSlothComboX.Combos.PvE
                                     if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gauge.Ammo >= 2)
                                         return 倍攻DoubleDown;
 
-                                    if (使用子弹连2(gauge, level, lastComboMove))
+                                    if (子弹连_使用子弹连(gauge, level, lastComboMove))
                                         return OriginalHook(烈牙GnashingFang);
+
+                                    if (使用师心连(lastComboMove))
+                                    {
+                                        return OriginalHook(血壤Bloodfest);
+                                    }
+
+
                                     break;
                                 }
 
@@ -923,8 +1012,15 @@ namespace XIVSlothComboX.Combos.PvE
                                     if (IsEnabled(CustomComboPreset.GNB_ST_SonicBreak) && ActionReady(音速破SonicBreak))
                                         return 音速破SonicBreak;
 
-                                    if (使用子弹连2(gauge, level, lastComboMove))
+                                    if (子弹连_使用子弹连(gauge, level, lastComboMove))
                                         return OriginalHook(烈牙GnashingFang);
+
+                                    if (使用师心连(lastComboMove))
+                                    {
+                                        return OriginalHook(血壤Bloodfest);
+                                    }
+
+
                                     break;
                                 }
 
@@ -934,11 +1030,16 @@ namespace XIVSlothComboX.Combos.PvE
                                     if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gauge.Ammo >= 2)
                                         return 倍攻DoubleDown;
 
-                                    if (使用子弹连2(gauge, level, lastComboMove))
+                                    if (子弹连_使用子弹连(gauge, level, lastComboMove))
                                         return 烈牙GnashingFang;
 
                                     if (IsEnabled(CustomComboPreset.GNB_ST_SonicBreak) && ActionReady(音速破SonicBreak))
                                         return 音速破SonicBreak;
+
+                                    if (使用师心连(lastComboMove))
+                                    {
+                                        return OriginalHook(血壤Bloodfest);
+                                    }
 
 
                                     break;
@@ -946,7 +1047,7 @@ namespace XIVSlothComboX.Combos.PvE
 
                                 default:
                                 {
-                                    if (使用子弹连2(gauge, level, lastComboMove))
+                                    if (子弹连_使用子弹连(gauge, level, lastComboMove))
                                         return OriginalHook(烈牙GnashingFang);
 
                                     if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gauge.Ammo >= 2)
@@ -954,6 +1055,13 @@ namespace XIVSlothComboX.Combos.PvE
 
                                     if (IsEnabled(CustomComboPreset.GNB_ST_SonicBreak) && ActionReady(音速破SonicBreak))
                                         return 音速破SonicBreak;
+
+                                    if (使用师心连(lastComboMove))
+                                    {
+                                        return OriginalHook(血壤Bloodfest);
+                                    }
+
+
                                     break;
                                 }
                             }

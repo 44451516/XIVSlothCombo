@@ -125,10 +125,6 @@ namespace XIVSlothComboX.Combos.PvE
             #endregion
         }
 
-       
-
-       
-        
 
         /*
          * 单体模块
@@ -281,9 +277,17 @@ namespace XIVSlothComboX.Combos.PvE
                         }
                     }
 
-                    if (standardStepReady && IsEnabled(CustomComboPreset.DNC_DT_Simple_SS) && !HasEffect(Buffs.StandardFinish))
+                    if (standardStepReady && IsEnabled(CustomComboPreset.DNC_DT_Simple_SS))
                     {
-                        return 标准舞步StandardStep;
+                        if (HasEffect(Buffs.StandardFinish))
+                        {
+                            return 标准舞步StandardStep;
+                        }
+
+                        if (techBurstTimer > 20)
+                        {
+                            return 标准舞步StandardStep;
+                        }
                     }
 
 
@@ -352,7 +356,6 @@ namespace XIVSlothComboX.Combos.PvE
                     //     ? (GetCooldownRemainingTime(百花争艳Flourish) > 4)
                     //     : true;
 
-               
 
                     if (LevelChecked(坠喷泉Fountainfall) && flow)
                         return 坠喷泉Fountainfall;
@@ -512,8 +515,8 @@ namespace XIVSlothComboX.Combos.PvE
                 return actionID;
             }
         }
-        
-        
+
+
         /***
          * 一键跳舞
          */

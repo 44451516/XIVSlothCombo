@@ -1,13 +1,10 @@
 XIVSlothCombo
 .vs/
-XIVSlothComboX/
-XIVSlothComboX/obj/
+/XIVSlothComboX/obj/
 
-XIVSlothComboX/bin/Debug/
 
 *.v2
 
-XIVSlothComboX/bin/Release/
 
 
 .idea

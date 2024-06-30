@@ -83,17 +83,27 @@ namespace XIVSlothComboX.Combos.PvE
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
-                // if (actionID is Sprint && Service.ClientState.TerritoryType is 1055)
-                if (actionID is Sprint )
+                if (actionID is Sprint && Service.ClientState.TerritoryType is 1055)
                 {
                     
-                    // return IsleSprint;
-                    return 20;
+                    return IsleSprint;
                 }
                 else
                 {
                     return actionID;
                 }
+                
+                
+                // if (actionID is PLD.先锋剑FastBlade )
+                // {
+                //     
+                //     return 20;
+                //     // return 20;
+                // }
+                // else
+                // {
+                //     return actionID;
+                // }
 
             }
         }

@@ -151,7 +151,7 @@ namespace XIVSlothComboX.Attributes
 
         /// <summary> Gets the job role. </summary>
         public int Role => JobIDToRole(JobID);
-
+        public uint ClassJobCategory => JobIDToClassJobCategory(JobID);
         private int JobIDToRole(byte jobID)
         {
             if (Service.DataManager.GetExcelSheet<ClassJob>().HasRow(jobID))
@@ -159,6 +159,15 @@ namespace XIVSlothComboX.Attributes
 
             return 0;
         }
+
+        private uint JobIDToClassJobCategory(byte jobID)
+        {
+            if (Svc.Data.GetExcelSheet<ClassJob>().HasRow(jobID))
+                return Svc.Data.GetExcelSheet<ClassJob>().GetRow(jobID).ClassJobCategory.Row;
+
+            return 0;
+        }
+
         
         /// <summary> Gets the display order. </summary>
         public int Order { get; }

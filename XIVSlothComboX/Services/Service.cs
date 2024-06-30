@@ -65,7 +65,7 @@ namespace XIVSlothComboX.Services
 
         /// <summary> Gets the Dalamud plugin interface. </summary>
         [PluginService]
-        internal static DalamudPluginInterface Interface { get; private set; } = null!;
+        internal static IDalamudPluginInterface Interface { get; private set; } = null!;
 
         /// <summary> Gets the Dalamud job gauges. </summary>
         [PluginService]

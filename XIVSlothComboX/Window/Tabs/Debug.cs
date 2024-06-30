@@ -77,6 +77,9 @@ namespace XIVSlothComboX.Window.Tabs
                         ImGui.TextUnformatted($"恢复药状态 : {ActionManager.Instance()->GetActionStatus(ActionType.Item,itemId+ 1000000)}");
                         
                         
+                        ImGui.TextUnformatted($"TimelineList.Count : {ActionWatching.TimelineList.Count}");
+                        
+                        
                         // ActionManager.Instance()->UseActionLocation()
                         // ImGui.TextUnformatted($"恢复药状态 : {}");
                         
@@ -199,7 +202,11 @@ namespace XIVSlothComboX.Window.Tabs
                     
                     
                     
-                    
+                    //骑士 start
+                    // ImGui.TextUnformatted($"{SMN.SMN_Advanced_Combo.DemiAttackCount},{SMN.SMN_Advanced_Combo.UsedDemiAttack}");
+                    ImGui.TextUnformatted($"{CustomComboFunctions.GetCooldownRemainingTime(PLD.战逃反应FightOrFlight)}");
+                    ImGui.TextUnformatted($"{PLD.PLD_ST_AdvancedMode.使用三下赎罪剑}");
+                    //骑士 end
                 }
             }
 

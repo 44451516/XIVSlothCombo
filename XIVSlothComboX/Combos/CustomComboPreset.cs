@@ -1823,14 +1823,8 @@ namespace XIVSlothComboX.Combos
 
             
         //// Last value = 11032
-
-        [ConflictingCombos(PLD_ST_AdvancedMode)] [ReplaceSkill(PLD.先锋剑FastBlade)] [CustomComboInfo("骑士简单模式 - 单目标", $"一键输出(先锋剑)", PLD.JobID)]
-        PLD_ST_SimpleMode = 11000,
-
-        [ConflictingCombos(PLD_AoE_AdvancedMode)] [ReplaceSkill(PLD.全蚀斩TotalEclipse)] [CustomComboInfo("骑士简单模式 - AoE", $"一键输出(全蚀斩)", PLD.JobID)]
-        PLD_AoE_SimpleMode = 11001,
-
-        [ConflictingCombos(PLD_ST_SimpleMode)] [ReplaceSkill(PLD.先锋剑FastBlade)] [CustomComboInfo("骑士高级模式 - 单目标[推荐]", $"自定义循环链(先锋剑)", PLD.JobID)]
+        
+       [ReplaceSkill(PLD.先锋剑FastBlade)] [CustomComboInfo("骑士高级模式 - 单目标[推荐]", $"自定义循环链(先锋剑)", PLD.JobID)]
         PLD_ST_AdvancedMode = 11002,
 
         [ParentCombo(PLD_ST_AdvancedMode)] [CustomComboInfo("起手设置", "设置多少GCD起手", PLD.JobID)]
@@ -1839,7 +1833,7 @@ namespace XIVSlothComboX.Combos
         [ParentCombo(PLD_ST_AdvancedMode)] [CustomComboInfo("战逃反应 Option", "Adds 战逃反应 to Advanced Mode.", PLD.JobID)]
         PLD_ST_AdvancedMode_FoF = 11003,
 
-        [ParentCombo(PLD_ST_AdvancedMode)] [CustomComboInfo("投盾 Option", "Adds 投盾 to Advanced Mode if out of range.", PLD.JobID)]
+        [ParentCombo(PLD_ST_AdvancedMode)] [CustomComboInfo("投盾 Option", "Adds 调停 to Advanced Mode if out of range.", PLD.JobID)]
         PLD_ST_AdvancedMode_ShieldLob = 11004,
 
         [ParentCombo(PLD_ST_AdvancedMode)] [CustomComboInfo("厄运流转选项", "添加 厄运流转 到自定义循环.", PLD.JobID)]
@@ -1861,8 +1855,8 @@ namespace XIVSlothComboX.Combos
         PLD_ST_AdvancedMode_Requiescat = 11010,
 
 
-        [ParentCombo(PLD_ST_AdvancedMode)] [CustomComboInfo("荣誉之剑", "添加 荣誉之剑到自定义循环", PLD.JobID)]
-        PLD_ST_AdvancedMode_荣誉之剑 = 110101,
+        // [ParentCombo(PLD_ST_AdvancedMode)] [CustomComboInfo("荣誉之剑", "添加 荣誉之剑到自定义循环", PLD.JobID)]
+        // PLD_ST_AdvancedMode_荣誉之剑 = 110101,
 
         [ParentCombo(PLD_ST_AdvancedMode)] [CustomComboInfo("调停选项", "添加 调停 到自定义循环", PLD.JobID)]
         PLD_ST_AdvancedMode_Intervene = 11011,
@@ -1876,7 +1870,7 @@ namespace XIVSlothComboX.Combos
         [ParentCombo(PLD_ST_AdvancedMode)] [CustomComboInfo("信仰/真理/英勇之剑选项", "添加 信仰/真理/英勇之剑 到自定义循环", PLD.JobID)]
         PLD_ST_AdvancedMode_Blades = 11014,
 
-        [ConflictingCombos(PLD_AoE_SimpleMode)] [ReplaceSkill(PLD.全蚀斩TotalEclipse)] [CustomComboInfo("骑士高级模式 - AoE", $"自定义循环链(全蚀斩)", PLD.JobID)]
+        [ReplaceSkill(PLD.全蚀斩TotalEclipse)] [CustomComboInfo("骑士高级模式 - AoE", $"自定义循环链(全蚀斩)", PLD.JobID)]
         PLD_AoE_AdvancedMode = 11015,
 
         [ParentCombo(PLD_AoE_AdvancedMode)] [CustomComboInfo("战逃反应选项", "添加 战逃反应 到自定义循环.", PLD.JobID)]
@@ -1912,17 +1906,17 @@ namespace XIVSlothComboX.Combos
 
 
         [Variant]
-        [VariantParent(PLD_ST_SimpleMode, PLD_ST_AdvancedMode, PLD_AoE_SimpleMode, PLD_AoE_AdvancedMode)]
+        [VariantParent( PLD_ST_AdvancedMode, PLD_AoE_AdvancedMode)]
         [CustomComboInfo("精神镖选项", "当没有dot或dot剩余时间少于3s时，使用多变精神镖", PLD.JobID)]
         PLD_Variant_SpiritDart = 11030,
 
         [Variant]
-        [VariantParent(PLD_ST_SimpleMode, PLD_ST_AdvancedMode, PLD_AoE_SimpleMode, PLD_AoE_AdvancedMode)]
+        [VariantParent(PLD_ST_AdvancedMode, PLD_AoE_AdvancedMode)]
         [CustomComboInfo("治疗 选项", "在下水道使用治疗当HP低于某个值", PLD.JobID)]
         PLD_Variant_Cure = 11031,
 
         [Variant]
-        [VariantParent(PLD_ST_SimpleMode, PLD_ST_AdvancedMode, PLD_AoE_SimpleMode, PLD_AoE_AdvancedMode)]
+        [VariantParent(PLD_ST_AdvancedMode, PLD_AoE_AdvancedMode)]
         [CustomComboInfo("最后通牒 选项", "冷却结束时使用多变最后通牒", PLD.JobID)]
         PLD_Variant_Ultimatum = 11032,
 
