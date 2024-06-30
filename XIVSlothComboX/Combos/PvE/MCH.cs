@@ -21,7 +21,8 @@ namespace XIVSlothComboX.Combos.PvE
         public const byte JobID = 31;
         public static int MaxCartridges(byte level) => level >= 74 ? 2 : 1;
 
-        internal const uint 狙击弹CleanShot = 2873,
+        public  const uint 
+            狙击弹CleanShot = 2873,
             热狙击弹HeatedCleanShot = 7413,
             分裂弹SplitShot = 2866,
             热分裂弹HeatedSplitShot = 7411,
@@ -53,9 +54,10 @@ namespace XIVSlothComboX.Combos.PvE
             火焰喷射器Flamethrower = 7418;
 
 
-        internal static class Buffs
+        public  static class Buffs
         {
-            internal const ushort 整备Reassembled = 851,
+            internal const ushort 
+                整备Reassembled = 851,
                 策动Tactician = 1951,
                 野火Wildfire = 1946,
                 过热Overheated = 2688,
@@ -69,22 +71,25 @@ namespace XIVSlothComboX.Combos.PvE
 
         internal static class Config
         {
-            public static UserInt MCH_ST_SecondWindThreshold = new("MCH_ST_SecondWindThreshold"),
+            public static UserInt 
+                MCH_ST_SecondWindThreshold = new("MCH_ST_SecondWindThreshold"),
                 MCH_AoE_SecondWindThreshold = new("MCH_AoE_SecondWindThreshold"),
                 MCH_ST_RotationSelection = new("MCH_ST_RotationSelection"),
                 MCH_VariantCure = new("MCH_VariantCure"),
                 MCH_ST_TurretUsage = new("MCH_ST_Adv_TurretGauge"),
                 MCH_AoE_TurretUsage = new("MCH_AoE_TurretUsage");
 
-            public static UserBoolArray MCH_ST_Reassembled = new("MCH_ST_Reassembled"),
+            public static UserBoolArray 
+                MCH_ST_Reassembled = new("MCH_ST_Reassembled"),
                 MCH_AoE_Reassembled = new("MCH_AoE_Reassembled");
 
-            public static UserBool MCH_AoE_Hypercharge = new("MCH_AoE_Hypercharge");
+            public static UserBool 
+                MCH_AoE_Hypercharge = new("MCH_AoE_Hypercharge");
         }
 
         internal static class Levels
         {
-            internal const byte SlugShot = 2,
+            public  const byte SlugShot = 2,
                 Hotshot = 4,
                 GaussRound = 15,
                 CleanShot = 26,
