@@ -1,13 +1,6 @@
-XIVSlothCombo
 .vs/
-/XIVSlothComboX/obj/
-
-
 *.v2
-
-
-
 .idea
 *.user
-
-ECommons/
+/XIVSlothCombo/obj/
+/XIVSlothComboX/obj/
