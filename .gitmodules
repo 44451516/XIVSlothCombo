@@ -1,10 +1,9 @@
-[submodule "FFXIVClientStructs"]
-	path = FFXIVClientStructs
-	url = https://github.com/aers/FFXIVClientStructs.git
-	
-[submodule "lib/FFXIVClientStructs"]
-	path = lib/FFXIVClientStructs
-	url = https://github.com/aers/FFXIVClientStructs.git
 [submodule "ECommons"]
 	path = ECommons
 	url = https://github.com/NightmareXIV/ECommons.git
+[submodule "FFXIVClientStructs"]
+	path = FFXIVClientStructs
+	url = https://github.com/aers/FFXIVClientStructs.git
+[submodule "lib/FFXIVClientStructs"]
+	path = lib/FFXIVClientStructs
+	url = https://github.com/aers/FFXIVClientStructs.git
