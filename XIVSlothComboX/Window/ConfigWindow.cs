@@ -200,9 +200,11 @@ namespace XIVSlothComboX.Window
                             case OpenWindowEnum.About:
                                 // P.AboutUs.Draw();
                                 break;
+#if DEBUG
                             case OpenWindowEnum.Debug:
                                 Debug.Draw();
                                 break;
+#endif
                             case OpenWindowEnum.TimelineEdit:
                                 TimelineEditWindows.Draw();
                                 break;
