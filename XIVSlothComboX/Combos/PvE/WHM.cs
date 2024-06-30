@@ -31,12 +31,14 @@ namespace XIVSlothComboX.Combos.PvE
             AfflatusMisery = 16535,
             Medica1 = 124,
             Medica2 = 133,
+            Medica3 = 37010,
             Tetragrammaton = 3570,
             DivineBenison = 7432,
             Aquaveil = 25861,
             // DPS
             Glare1 = 16533,
             Glare3 = 25859,
+            Glare4 = 37009,
             Stone1 = 119,
             Stone2 = 127,
             Stone3 = 3568,
@@ -54,7 +56,7 @@ namespace XIVSlothComboX.Combos.PvE
             PlenaryIndulgence = 7433;
 
         //Action Groups
-        internal static readonly List<uint> StoneGlareList = new List<uint>() { Stone1, Stone2, Stone3, Stone4, Glare1, Glare3 };
+        internal static readonly List<uint> StoneGlareList = new List<uint>() { Stone1, Stone2, Stone3, Stone4, Glare1, Glare3,Glare4 };
 
         public static class Buffs
         {
@@ -263,7 +265,7 @@ namespace XIVSlothComboX.Combos.PvE
                     if (inOpener)
                     {
                         if (Glare3Count == 0)
-                            return OriginalHook(Glare3);
+                            return OriginalHook(Glare4);
 
                         if (DiaCount == 0)
                             return OriginalHook(Dia);
@@ -384,7 +386,7 @@ namespace XIVSlothComboX.Combos.PvE
 
 
                     if (!HasEffect(Buffs.Medica2) && Medica2.LevelChecked())
-                        return Medica2;
+                        return Medica2.OriginalHook();
 
                     if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Cure3) && ActionReady(Cure3) &&
                         (LocalPlayer.CurrentMp >= Config.WHM_AoEHeals_Cure3MP || HasEffect(Buffs.ThinAir)))
