@@ -5,11 +5,11 @@
     "Punchline": "Condenses combos and mutually exclusive abilities onto a single button - and then some.",
     "Description": "Condenses combos and mutually exclusive abilities onto a single button - and then some.",
     "InternalName": "XIVSlothComboX",
-    "AssemblyVersion": "3.0.19.13",
-    "Changelog": "Update DNC",
+    "AssemblyVersion": "3.1.2.1",
+    "Changelog": "Update APIX",
     "RepoUrl": "https://github.com/44451516/XIVSlothCombo/",
     "ApplicableVersion": "any",
-    "DalamudApiLevel": 9,
+    "DalamudApiLevel": 10,
     "IconUrl": "https://i.imgur.com/iEcxM81.png",
     "ImageUrls": [
       "https://i.imgur.com/iEcxM81.png"
