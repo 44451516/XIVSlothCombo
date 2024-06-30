@@ -14,11 +14,11 @@
     "ImageUrls": [
       "https://i.imgur.com/iEcxM81.png"
     ],
-    "DownloadLinkInstall": "https://github.com/44451516/XIVSlothCombo/raw/CN/release/XIVSlothComboX/latest.zip",
+    "DownloadLinkInstall": "https://github.com/44451516/XIVSlothCombo/actions/runs/9729817422/artifacts/1652322429",
     "IsHide": false,
     "IsTestingExclusive": false,
-    "DownloadLinkTesting": "https://github.com/44451516/XIVSlothCombo/raw/CN/release/XIVSlothComboX/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/44451516/XIVSlothCombo/raw/CN/release/XIVSlothComboX/latest.zip",
+    "DownloadLinkTesting": "https://github.com/44451516/XIVSlothCombo/actions/runs/9729817422/artifacts/1652322429",
+    "DownloadLinkUpdate": "https://github.com/44451516/XIVSlothCombo/actions/runs/9729817422/artifacts/1652322429",
     "DownloadCount": 0,
     "LastUpdated": "0"
   }
