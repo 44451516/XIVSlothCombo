@@ -78,7 +78,7 @@ namespace XIVSlothComboX.Window
         public OpenWindowEnum OpenWindow { get; set; } = OpenWindowEnum.PvE;
 
         /// <summary> Initializes a new instance of the <see cref="ConfigWindow"/> class. </summary>
-        public ConfigWindow() : base($"{P.Name} {P.GetType().Assembly.GetName().Version}###Artisan")
+        public ConfigWindow() : base($"{P.Name} {P.GetType().Assembly.GetName().Version}###SlothCombo")
         {
             RespectCloseHotkey = true;
 
