@@ -508,7 +508,7 @@ namespace XIVSlothComboX.Combos.PvE
                                 {
                                     if (灼热的闪光SearingFlash.ActionReady() && HasEffect(Buffs.RubyGlimmer))
                                     {
-                                        return OriginalHook(灼热之光SearingLight);
+                                        return OriginalHook(灼热的闪光SearingFlash);
                                     }
 
                                     if (STCombo)
@@ -537,7 +537,7 @@ namespace XIVSlothComboX.Combos.PvE
                                     {
                                         if (灼热的闪光SearingFlash.ActionReady() && HasEffect(Buffs.RubyGlimmer))
                                         {
-                                            return OriginalHook(灼热之光SearingLight);
+                                            return OriginalHook(灼热的闪光SearingFlash);
                                         }
 
                                         if (STCombo)
