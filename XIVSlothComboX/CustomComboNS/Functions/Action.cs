@@ -229,12 +229,12 @@ namespace XIVSlothComboX.CustomComboNS.Functions
         /// <summary>
         /// Returns the current combo timer.
         /// </summary>
-        public unsafe static float ComboTimer => ActionManager.Instance()->Combo.Timer;
+        public static unsafe float ComboTimer => ActionManager.Instance()->Combo.Timer;
 
         /// <summary>
         /// Returns the last combo action.
         /// </summary>
-        public unsafe static uint ComboAction => ActionManager.Instance()->Combo.Action;
+        public static unsafe uint ComboAction => ActionManager.Instance()->Combo.Action;
         
         public static bool CanDelayedWeavePlus(uint actionID, double start = 1.25, double end = 0.6)
         {
