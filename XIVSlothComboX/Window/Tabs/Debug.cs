@@ -204,7 +204,8 @@ namespace XIVSlothComboX.Window.Tabs
                     
                     //骑士 start
                     // ImGui.TextUnformatted($"{SMN.SMN_Advanced_Combo.DemiAttackCount},{SMN.SMN_Advanced_Combo.UsedDemiAttack}");
-                    ImGui.TextUnformatted($"{CustomComboFunctions.GetCooldownRemainingTime(PLD.战逃反应FightOrFlight)}");
+                    ImGui.TextUnformatted($"1-{CustomComboFunctions.GetJobGauge<ASTGauge>().DrawnCard}");
+                    ImGui.TextUnformatted($"2-{CustomComboFunctions.GetJobGauge<ASTGauge>().DrawnCrownCard}");
                     //骑士 end
                 }
             }

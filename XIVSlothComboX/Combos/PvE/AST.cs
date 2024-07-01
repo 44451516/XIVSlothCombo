@@ -30,12 +30,11 @@ namespace XIVSlothComboX.Combos.PvE
 
             //Cards
             Draw = 37017,
-            Redraw重抽 = 3593,
             
             AstralDraw星极抽卡 = 37017,
             UmbralDraw灵极抽卡 = 37018,
             
-            Play = 37019,
+            Play1 = 37019,
             Play2 = 37020,
             Play3 = 37021,
             
@@ -297,26 +296,18 @@ namespace XIVSlothComboX.Combos.PvE
                         CanSpellWeave(actionID))
                         return Astrodyne;
 
-                    //Redraw Card
-                    if (IsEnabled(CustomComboPreset.AST_DPS_AutoPlay_Redraw) && HasEffect(Buffs.ClarifyingDraw) && ActionReady(Redraw重抽))
-                    {
-                        var cardDrawn = Gauge.DrawnCard;
-                        if (((cardDrawn is CardType.BALANCE or CardType.BOLE && Gauge.Seals.Contains(SealType.SUN)) ||
-                            (cardDrawn is CardType.ARROW or CardType.EWER && Gauge.Seals.Contains(SealType.MOON)) ||
-                            (cardDrawn is CardType.SPEAR or CardType.SPIRE && Gauge.Seals.Contains(SealType.CELESTIAL))) &&
-                            CanSpellWeave(actionID) &&
-                            spellsSinceDraw >= (IsEnabled(CustomComboPreset.AST_DPS_AutoPlay) ? Config.AST_ST_DPS_Play_SpeedSetting : 1))
-                            return Redraw重抽;
-                    }
+            
 
                     //Play Card
                     if (IsEnabled(CustomComboPreset.AST_DPS_AutoPlay) &&
-                        ActionReady(Play) &&
+                        ActionReady(Play1) &&
                         Gauge.DrawnCard is not CardType.NONE &&
                         CanSpellWeave(actionID) &&
-                        spellsSinceDraw >= Config.AST_ST_DPS_Play_SpeedSetting &&
-                        !WasLastAction(Redraw重抽))
-                        return OriginalHook(Play);
+                        spellsSinceDraw >= Config.AST_ST_DPS_Play_SpeedSetting)
+                    {
+                        return OriginalHook(Play1);
+                    }
+
 
                     //Card Draw
                     if (IsEnabled(CustomComboPreset.AST_DPS_AutoDraw) &&

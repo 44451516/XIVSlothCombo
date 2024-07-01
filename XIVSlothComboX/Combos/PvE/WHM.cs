@@ -56,7 +56,7 @@ namespace XIVSlothComboX.Combos.PvE
             PlenaryIndulgence = 7433;
 
         //Action Groups
-        internal static readonly List<uint> StoneGlareList = new List<uint>() { Stone1, Stone2, Stone3, Stone4, Glare1, Glare3,Glare4 };
+        internal static readonly List<uint> StoneGlareList = new List<uint>() { Stone1, Stone2, Stone3, Stone4, Glare1, Glare3, Glare4 };
 
         public static class Buffs
         {
@@ -65,6 +65,7 @@ namespace XIVSlothComboX.Combos.PvE
                 PresenceOfMind = 157,
                 ThinAir = 1217,
                 DivineBenison = 1218,
+                Glare4Pre = 3879,
                 Aquaveil = 2708;
         }
 
@@ -117,7 +118,7 @@ namespace XIVSlothComboX.Combos.PvE
             public static UserBoolArray WHM_ST_MainCombo_Adv_Actions = new("WHM_ST_MainCombo_Adv_Actions");
         }
 
-        
+
         internal class WHM_ST_Custom : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WHM_Advanced_CustomMode;
@@ -126,7 +127,6 @@ namespace XIVSlothComboX.Combos.PvE
             {
                 if (actionID is All.Repose)
                 {
-                    
                     if (CustomTimelineIsEnable())
                     {
                         double? seconds = -9999d;
@@ -143,7 +143,7 @@ namespace XIVSlothComboX.Combos.PvE
                                 seconds = -timeRemaining;
                             }
                         }
-                        
+
                         foreach (var customAction in 药品轴)
                         {
                             if (customAction.UseTimeStart < seconds && seconds < customAction.UseTimeEnd)
@@ -151,7 +151,7 @@ namespace XIVSlothComboX.Combos.PvE
                                 Useitem(customAction.ActionId);
                             }
                         }
-                        
+
                         foreach (var customAction in 地面轴)
                         {
                             if (customAction.UseTimeStart < seconds && seconds < customAction.UseTimeEnd)
@@ -159,7 +159,7 @@ namespace XIVSlothComboX.Combos.PvE
                                 Use地面技能(customAction);
                             }
                         }
-                        
+
                         foreach (var customAction in 时间轴)
                         {
                             if (customAction.ActionId.ActionReady() && customAction.UseTimeStart < seconds && seconds < customAction.UseTimeEnd)
@@ -167,7 +167,7 @@ namespace XIVSlothComboX.Combos.PvE
                                 return customAction.ActionId;
                             }
                         }
-                        
+
                         int index = ActionWatching.CustomList.Count;
                         if (index < 序列轴.Count)
                         {
@@ -182,7 +182,7 @@ namespace XIVSlothComboX.Combos.PvE
             }
         }
 
-        
+
         internal class WHM_SolaceMisery : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WHM_SolaceMisery;
@@ -265,7 +265,7 @@ namespace XIVSlothComboX.Combos.PvE
                     if (inOpener)
                     {
                         if (Glare3Count == 0)
-                            return OriginalHook(Glare4);
+                            return OriginalHook(Glare3);
 
                         if (DiaCount == 0)
                             return OriginalHook(Dia);
@@ -337,8 +337,33 @@ namespace XIVSlothComboX.Combos.PvE
                         if (IsEnabled(CustomComboPreset.WHM_ST_MainCombo_LilyOvercap) && LevelChecked(AfflatusRapture) &&
                             (liliesFull || liliesNearlyFull))
                             return AfflatusRapture;
+
                         if (IsEnabled(CustomComboPreset.WHM_ST_MainCombo_Misery_oGCD) && LevelChecked(AfflatusMisery) && gauge.BloodLily >= 3)
                             return AfflatusMisery;
+
+                        if (IsEnabled(CustomComboPreset.WHM_ST_MainCombo_Glare4) && LevelChecked(Glare4) && HasEffect(Buffs.Glare4Pre))
+                        {
+                            if (IsMoving)
+                            {
+                                return Glare4;
+                            }
+
+                            if (GetBuffStacks(Buffs.Glare4Pre) >= 3 && GetBuffRemainingTime(Buffs.Glare4Pre) <= 7)
+                            {
+                                return Glare4;
+                            }
+                            
+                            if (GetBuffStacks(Buffs.Glare4Pre) >= 2 && GetBuffRemainingTime(Buffs.Glare4Pre) <= 5)
+                            {
+                                return Glare4;
+                            }
+                            
+                            if (GetBuffStacks(Buffs.Glare4Pre) >= 1 && GetBuffRemainingTime(Buffs.Glare4Pre) <= 3)
+                            {
+                                return Glare4;
+                            }
+                            
+                        }
 
                         return OriginalHook(Stone1);
                     }

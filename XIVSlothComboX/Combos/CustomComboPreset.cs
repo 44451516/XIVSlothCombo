@@ -209,12 +209,10 @@ namespace XIVSlothComboX.Combos
         [ParentCombo(AST_ST_DPS)] [CustomComboInfo("抽卡选项", "抽卡", AST.JobID, 5, "", "")]
         AST_DPS_AutoDraw = 1011,
 
-        [ParentCombo(AST_ST_DPS)] [CustomComboInfo("Card Play Weave Option", "Weaves your card (best used with Quick Target Cards)", AST.JobID, 6)]
+        [ParentCombo(AST_ST_DPS)] [CustomComboInfo("自动发卡", "Weaves your card (best used with Quick Target Cards)", AST.JobID, 6)]
         AST_DPS_AutoPlay = 1037,
 
-        [ParentCombo(AST_ST_DPS)]
-        [CustomComboInfo("Redraw Option", "Weaves Redraw if you pull a card with a seal you already have and you can use Redraw.", AST.JobID, 7)]
-        AST_DPS_AutoPlay_Redraw = 1038,
+       
 
         [ParentCombo(AST_ST_DPS)] [CustomComboInfo("星力选项", "当集齐三个星标时将星力加入循环", AST.JobID, 8, "", "")]
         AST_DPS_Astrodyne = 1009,
@@ -3092,6 +3090,11 @@ namespace XIVSlothComboX.Combos
         [CustomComboInfo("Aero/Dia Uptime Option",
             "Adds Aero/Dia to the single target combo if the debuff is not present on current target, or is about to expire.", WHM.JobID, 12, "", "")]
         WHM_ST_MainCombo_DoT = 19013,
+        
+        [ParentCombo(WHM_ST_MainCombo)]
+        [CustomComboInfo("闪炽",
+            "闪炽加入循环 移动或者剩余时间不够的时候", WHM.JobID, 12, "", "")]
+        WHM_ST_MainCombo_Glare4 = 19018,
 
         [ParentCombo(WHM_ST_MainCombo)] [CustomComboInfo("Assize Option", "Adds Assize to the single target combo.", WHM.JobID, 13, "", "")]
         WHM_ST_MainCombo_Assize = 19009,
