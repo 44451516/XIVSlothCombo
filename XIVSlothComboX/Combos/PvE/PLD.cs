@@ -163,69 +163,8 @@ namespace XIVSlothComboX.Combos.PvE
                     {
                         if (CanDelayedWeavePlus(actionID, 2.5f, 0.1f))
                         {
-                            if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_FoF) && ActionReady(战逃反应FightOrFlight))
-                            {
-                                if (GetBuffRemainingTime(Buffs.DivineMight) >= 14 && lastComboActionID == 暴乱剑RiotBlade && comboTime >= 16)
-                                {
-                                    return OriginalHook(战逃反应FightOrFlight);
-                                }
-
-                                if (GetBuffRemainingTime(Buffs.DivineMight) >= 14 &&
-                                    (GetBuffRemainingTime(Buffs.赎罪剑Atonement2BUFF) >= 14 || GetBuffRemainingTime(Buffs.赎罪剑Atonement3BUFF) >= 14))
-                                {
-                                    return OriginalHook(战逃反应FightOrFlight);
-                                }
-
-
-                                if (GetBuffRemainingTime(Buffs.赎罪剑Atonement1BUFF) >= 14 ||
-                                    GetBuffRemainingTime(Buffs.赎罪剑Atonement2BUFF) >= 14 ||
-                                    GetBuffRemainingTime(Buffs.赎罪剑Atonement3BUFF) >= 14)
-                                {
-                                    return OriginalHook(战逃反应FightOrFlight);
-                                }
-
-                                if (lastComboActionID == 王权剑RoyalAuthority && ActionWatching.CombatActions.Exists(x => x == 战逃反应FightOrFlight))
-                                {
-                                    return OriginalHook(战逃反应FightOrFlight);
-                                }
-
-
-                                var choice = GetOptionValue(Config.PLD_FOF_GCD);
-                                if (!ActionWatching.CombatActions.Exists(x => x == 战逃反应FightOrFlight))
-                                {
-                                    switch (choice)
-                                    {
-                                        case 1:
-                                        {
-                                            if (lastComboActionID == 暴乱剑RiotBlade)
-                                            {
-                                                return OriginalHook(战逃反应FightOrFlight);
-                                            }
-
-                                            break;
-                                        }
-
-                                        case 2:
-                                        {
-                                            if (WasLastAction(王权剑RoyalAuthority))
-                                            {
-                                                return OriginalHook(战逃反应FightOrFlight);
-                                            }
-
-                                            break;
-                                        }
-                                        default:
-                                        {
-                                            if (WasLastAction(王权剑RoyalAuthority))
-                                            {
-                                                return OriginalHook(战逃反应FightOrFlight);
-                                            }
-
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
+                            if (战逃反映判断(lastComboActionID, comboTime))
+                                return OriginalHook(战逃反应FightOrFlight);
 
                             if (ActionReady(安魂祈祷Requiescat))
                             {
@@ -266,7 +205,8 @@ namespace XIVSlothComboX.Combos.PvE
 
                             if (CanSpellWeavePlus(actionID))
                             {
-                                if (InMeleeRange() && GetCooldownRemainingTime(战逃反应FightOrFlight) > 20)
+                                if (GetCooldownRemainingTime(战逃反应FightOrFlight) > 20 &&
+                                    GetCooldownRemainingTime(战逃反应FightOrFlight) < 40)
                                 {
                                     if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_CircleOfScorn) && ActionReady(厄运流转CircleOfScorn))
                                     {
@@ -274,8 +214,8 @@ namespace XIVSlothComboX.Combos.PvE
                                     }
 
 
-                                    if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_SpiritsWithin)
-                                        && ActionReady(OriginalHook(深奥之灵SpiritsWithin)))
+                                    if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_SpiritsWithin) &&
+                                        ActionReady(OriginalHook(深奥之灵SpiritsWithin)))
                                     {
                                         return OriginalHook(深奥之灵SpiritsWithin);
                                     }
@@ -309,10 +249,10 @@ namespace XIVSlothComboX.Combos.PvE
 
                         if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_FoF) && HasEffect(Buffs.FightOrFlight))
                         {
-                            if (CanSpellWeavePlus(actionID) && !WasLastAbility(战逃反应FightOrFlight))
+                            if (CanSpellWeavePlus(actionID,0.3f) && !WasLastAbility(战逃反应FightOrFlight))
                             {
                                 //晚一点放 等安魂祈祷放了先
-                                if (InMeleeRange() && GetCooldownRemainingTime(安魂祈祷Requiescat) > 40)
+                                if (GetCooldownRemainingTime(安魂祈祷Requiescat) > 40)
                                 {
                                     if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_CircleOfScorn) && ActionReady(厄运流转CircleOfScorn))
                                     {
@@ -320,8 +260,8 @@ namespace XIVSlothComboX.Combos.PvE
                                     }
 
 
-                                    if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_SpiritsWithin)
-                                        && ActionReady(OriginalHook(深奥之灵SpiritsWithin)))
+                                    if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_SpiritsWithin) &&
+                                        ActionReady(OriginalHook(深奥之灵SpiritsWithin)))
                                     {
                                         return OriginalHook(深奥之灵SpiritsWithin);
                                     }
@@ -365,6 +305,14 @@ namespace XIVSlothComboX.Combos.PvE
                                 }
                             }
 
+                            if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_HolySpirit)
+                                && GetBuffRemainingTime(Buffs.DivineMight) >= 27
+                                && GetBuffRemainingTime(Buffs.FightOrFlight) >= 0.1f
+                                && GetResourceCost(圣灵HolySpirit) <= LocalPlayer.CurrentMp)
+                            {
+                                return 圣灵HolySpirit;
+                            }
+
                             //lastComboActionID == 王权 的时候 使用三下赎罪剑
                             //lastComboActionID == 暴乱的时候  使用赎罪剑3 王权健 圣灵
                             //lastComboActionID == 暴乱的时候  圣灵  使用赎罪剑3 王权健 
@@ -390,7 +338,6 @@ namespace XIVSlothComboX.Combos.PvE
                                 && HasEffect(Buffs.DivineMight)
                                 && GetResourceCost(圣灵HolySpirit) <= LocalPlayer.CurrentMp)
                             {
-                                // Service.ChatGui.PrintError("圣灵2");
                                 return 圣灵HolySpirit;
                             }
 
@@ -404,6 +351,11 @@ namespace XIVSlothComboX.Combos.PvE
 
                         if (GetCooldownRemainingTime(战逃反应FightOrFlight) >= 15 && RaidBuff.爆发期())
                         {
+                            if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_Atonement) && HasEffect(Buffs.赎罪剑Atonement3BUFF))
+                            {
+                                return 赎罪剑Atonement3;
+                            }
+
                             if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_HolySpirit)
                                 && HasEffect(Buffs.DivineMight)
                                 && GetResourceCost(圣灵HolySpirit) <= LocalPlayer.CurrentMp)
@@ -413,25 +365,16 @@ namespace XIVSlothComboX.Combos.PvE
                             }
 
 
-                            // if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_Atonement) && HasEffect(Buffs.忠义之剑SwordOath))
-                            //     return 赎罪剑Atonement;
-                        }
+                            if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_Atonement) && HasEffect(Buffs.赎罪剑Atonement2BUFF))
+                            {
+                                return 赎罪剑Atonement2;
+                            }
 
 
-                        if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_Atonement) && HasEffect(Buffs.赎罪剑Atonement3BUFF))
-                        {
-                            return 赎罪剑Atonement3;
-                        }
-
-                        if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_Atonement) && HasEffect(Buffs.赎罪剑Atonement2BUFF))
-                        {
-                            return 赎罪剑Atonement2;
-                        }
-
-
-                        if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_Atonement) && HasEffect(Buffs.赎罪剑Atonement1BUFF))
-                        {
-                            return 赎罪剑Atonement;
+                            if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_Atonement) && HasEffect(Buffs.赎罪剑Atonement1BUFF))
+                            {
+                                return 赎罪剑Atonement;
+                            }
                         }
 
 
@@ -480,12 +423,22 @@ namespace XIVSlothComboX.Combos.PvE
 
                             if (lastComboActionID is 暴乱剑RiotBlade && 战女神之怒RageOfHalone.LevelChecked())
                             {
+                                if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_Atonement) &&
+                                    (HasEffect(Buffs.赎罪剑Atonement1BUFF) ||
+                                     HasEffect(Buffs.赎罪剑Atonement2BUFF)
+                                    ))
+                                    return 赎罪剑Atonement.OriginalHook();
+
                                 if ((IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_HolySpirit)
                                      && HasEffect(Buffs.DivineMight)
                                      && GetResourceCost(圣灵HolySpirit) <= LocalPlayer.CurrentMp))
                                 {
                                     return 圣灵HolySpirit;
                                 }
+
+                                if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_Atonement) &&
+                                    HasEffect(Buffs.赎罪剑Atonement3BUFF))
+                                    return 赎罪剑Atonement.OriginalHook();
 
                                 return OriginalHook(战女神之怒RageOfHalone);
                             }
@@ -494,6 +447,75 @@ namespace XIVSlothComboX.Combos.PvE
                 }
 
                 return actionID;
+            }
+
+            private static bool 战逃反映判断(uint lastComboActionID, float comboTime)
+            {
+                if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_FoF) && ActionReady(战逃反应FightOrFlight))
+                {
+                    //  战逃内 打三下赎罪剑
+                    if (GetBuffRemainingTime(Buffs.赎罪剑Atonement1BUFF) >= 14)
+                    {
+                        return true;
+                    }
+
+                    //  战逃内 圣灵 3 圣灵
+                    if (GetBuffRemainingTime(Buffs.DivineMight) >= 14 && lastComboActionID == 暴乱剑RiotBlade && comboTime >= 16)
+                    {
+                        return true;
+                    }
+                    
+                    //  战逃内 赎罪剑3 3 圣灵
+                    if (GetBuffRemainingTime(Buffs.赎罪剑Atonement3BUFF) >= 14 && lastComboActionID == 暴乱剑RiotBlade && comboTime >= 16)
+                    {
+                        return true;
+                    }
+
+                    //  战逃内 赎罪剑 2 3 圣灵
+                    if (GetBuffRemainingTime(Buffs.DivineMight) >= 14 && GetBuffRemainingTime(Buffs.赎罪剑Atonement2BUFF) >= 14)
+                    {
+                        return true;
+                    }
+
+
+                    var choice = GetOptionValue(Config.PLD_FOF_GCD);
+                    if (!ActionWatching.CombatActions.Exists(x => x == 战逃反应FightOrFlight))
+                    {
+                        switch (choice)
+                        {
+                            case 1:
+                            {
+                                if (lastComboActionID == 暴乱剑RiotBlade)
+                                {
+                                    return true;
+                                }
+
+                                break;
+                            }
+
+                            case 2:
+                            {
+                                if (WasLastAction(王权剑RoyalAuthority))
+                                {
+                                    return true;
+                                }
+
+                                break;
+                            }
+                            default:
+                            {
+                                if (WasLastAction(王权剑RoyalAuthority))
+                                {
+                                    return true;
+                                }
+
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                return false;
             }
         }
 
