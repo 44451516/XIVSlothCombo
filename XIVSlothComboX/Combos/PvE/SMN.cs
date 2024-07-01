@@ -127,6 +127,7 @@ namespace XIVSlothComboX.Combos.PvE
             灼热之光SearingLight = 25801,
             EnkindleSolarBahamut = 36998,
             SummonSolarBahamut = 36992,
+            Sunflare = 36996,    
             UmbralImpulse = 36994, //Single target Solar Bahamut GCD
             UmbralFlare = 36995, //AoE Solar Bahamut GCD
             灼热的闪光SearingFlash = 36991;
@@ -412,7 +413,7 @@ namespace XIVSlothComboX.Combos.PvE
                     if (CanSpellWeavePlus(actionID))
                     {
                         // Emergency priority Demi Nuke to prevent waste if you can't get demi attacks out to satisfy the slider check.
-                        if (OriginalHook(Ruin) is 星极脉冲AstralImpulse or 灵泉之炎FountainOfFire &&
+                        if (OriginalHook(Ruin) is 星极脉冲AstralImpulse or 灵泉之炎FountainOfFire or UmbralImpulse &&
                             GetCooldown(OriginalHook(以太蓄能Aethercharge)).CooldownElapsed >= 12.5)
                         {
                             if (IsEnabled(CustomComboPreset.SMN_Advanced_Combo_DemiSummons_Attacks))
@@ -475,7 +476,7 @@ namespace XIVSlothComboX.Combos.PvE
                         }
 
                         // Demi Nuke
-                        if (OriginalHook(Ruin) is 星极脉冲AstralImpulse or 灵泉之炎FountainOfFire)
+                        if (OriginalHook(Ruin) is 星极脉冲AstralImpulse or 灵泉之炎FountainOfFire or UmbralImpulse)
                         {
                             if (IsEnabled(CustomComboPreset.SMN_Advanced_Combo_DemiSummons_Attacks) && DemiAttackCount >= 延迟几个GCD打爆发)
                             {
@@ -866,6 +867,8 @@ namespace XIVSlothComboX.Combos.PvE
                 {
                     if (CanSpellWeavePlus(actionID))
                     {
+                        
+                        
                         if (IsOffCooldown(龙神迸发EnkindleBahamut) && GetCooldownRemainingTime(灼热之光SearingLight) is >= 10 &&
                             OriginalHook(Ruin) is 星极脉冲AstralImpulse)
                             return OriginalHook(龙神迸发EnkindleBahamut);
@@ -877,6 +880,9 @@ namespace XIVSlothComboX.Combos.PvE
                              IsOffCooldown(死星核爆)) ||
                             (OriginalHook(星极超流AstralFlow) is Rekindle && IsOffCooldown(Rekindle)))
                             return OriginalHook(星极超流AstralFlow);
+                        
+                        if (OriginalHook(星极超流AstralFlow) is Sunflare && IsOffCooldown(Sunflare))
+                            return OriginalHook(Sunflare);
                     }
                 }
 
