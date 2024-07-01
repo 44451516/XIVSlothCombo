@@ -74,6 +74,10 @@ namespace XIVSlothComboX.Combos.PvE
             Horoscope = 16557,
             Exaltation = 25873,
             Macrocosmos = 25874,
+            
+            太阳神卡 = 37023,
+            战争神卡 = 37026,
+            
             Synastry = 3612;
 
         //Action Groups
@@ -165,6 +169,9 @@ namespace XIVSlothComboX.Combos.PvE
             {
                 if (actionID is All.Repose)
                 {
+                 
+                    
+                    
                     
                     if (CustomTimelineIsEnable())
                     {
@@ -246,10 +253,14 @@ namespace XIVSlothComboX.Combos.PvE
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
-                int spellsSinceDraw = ActionWatching.CombatActions.Any(x => x == Draw) ? ActionWatching.HowManyTimesUsedAfterAnotherAction(OriginalHook(Malefic), Draw) +
+                int spellsSinceDraw =
+                    ActionWatching.CombatActions.Any(x => x == Draw) ? ActionWatching.HowManyTimesUsedAfterAnotherAction(OriginalHook(Malefic), Draw) +
                     ActionWatching.HowManyTimesUsedAfterAnotherAction(OriginalHook(Combust), Draw) +
                     ActionWatching.HowManyTimesUsedAfterAnotherAction(OriginalHook(Gravity), Draw) : Config.AST_ST_DPS_Play_SpeedSetting;
 
+                
+                var 是否抽到卡 = OriginalHook(Play1) is 太阳神卡 or 战争神卡;
+                
                 if (spellsSinceDraw == 0 && DrawnCard != CardType.NONE)
                 {
                     spellsSinceDraw = 1;
@@ -301,7 +312,7 @@ namespace XIVSlothComboX.Combos.PvE
                     //Play Card
                     if (IsEnabled(CustomComboPreset.AST_DPS_AutoPlay) &&
                         ActionReady(Play1) &&
-                        Gauge.DrawnCard is not CardType.NONE &&
+                        是否抽到卡 &&
                         CanSpellWeave(actionID) &&
                         spellsSinceDraw >= Config.AST_ST_DPS_Play_SpeedSetting)
                     {
@@ -312,7 +323,7 @@ namespace XIVSlothComboX.Combos.PvE
                     //Card Draw
                     if (IsEnabled(CustomComboPreset.AST_DPS_AutoDraw) &&
                         ActionReady(Draw) &&
-                        Gauge.DrawnCard is CardType.NONE &&
+                        !是否抽到卡 &&
                         CanDelayedWeave(actionID))
                         return Draw.OriginalHook();
 

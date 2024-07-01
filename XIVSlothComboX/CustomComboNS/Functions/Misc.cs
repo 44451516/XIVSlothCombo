@@ -27,7 +27,8 @@ namespace XIVSlothComboX.CustomComboNS.Functions
                 MNK.JobID, MNK.ClassID,
                 NIN.JobID, NIN.ClassID,
                 RPR.JobID,
-                SAM.JobID
+                SAM.JobID,
+                VPR.JobID
             };
 
             public static readonly List<byte> Ranged = new()
@@ -38,7 +39,8 @@ namespace XIVSlothComboX.CustomComboNS.Functions
                 MCH.JobID,
                 RDM.JobID,
                 DNC.JobID,
-                BLU.JobID
+                BLU.JobID,
+                PCT.JobID
             };
 
             public static readonly List<byte> Tank = new()
