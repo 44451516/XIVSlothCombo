@@ -261,7 +261,7 @@ namespace XIVSlothComboX.Combos.PvE
                 
                 var 是否抽到卡 = OriginalHook(Play1) is 太阳神卡 or 战争神卡;
                 
-                if (spellsSinceDraw == 0 && DrawnCard != CardType.NONE)
+                if (spellsSinceDraw == 0 && 是否抽到卡)
                 {
                     spellsSinceDraw = 1;
                 }

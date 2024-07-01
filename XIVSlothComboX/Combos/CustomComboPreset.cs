@@ -220,7 +220,7 @@ namespace XIVSlothComboX.Combos
         [ParentCombo(AST_ST_DPS)] [CustomComboInfo("小奥秘卡 插入选项", "加入小奥秘卡（小阿卡纳）", AST.JobID, 9, "", "")]
         AST_DPS_AutoCrownDraw = 1012,
 
-        [ParentCombo(AST_ST_DPS)] [CustomComboInfo("王冠之领主选项", "循环加入王冠之领主", AST.JobID, 10, "", "")]
+        [ParentCombo(AST_ST_DPS)] [CustomComboInfo("王冠之领主选项[失效]", "循环加入王冠之领主", AST.JobID, 10, "", "")]
         AST_DPS_LazyLord = 1014,
 
         #endregion

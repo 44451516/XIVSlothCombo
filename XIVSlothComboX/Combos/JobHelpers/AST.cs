@@ -26,17 +26,24 @@ namespace XIVSlothComboX.Combos.JobHelpers
             if (Service.ClientState.LocalPlayer is null || Service.ClientState.LocalPlayer.ClassJob.Id != 33)
                 return;
 
-            if (DrawnCard != Gauge.DrawnCard)
+            bool 近战卡 = CustomComboFunctions. OriginalHook(Play1) is 太阳神卡;
+            bool 远程卡 = CustomComboFunctions. OriginalHook(Play1) is 战争神卡;
+            var 是否抽到卡 = CustomComboFunctions.OriginalHook(Play1) is 太阳神卡 or 战争神卡;
+            
+
+            if (是否抽到卡)
             {
-                DrawnCard = Gauge.DrawnCard;
                 if (CustomComboFunctions.IsEnabled(CustomComboPreset.AST_Cards_QuickTargetCards))
                 {
                     AST_QuickTargetCards.SelectedRandomMember = null;
                     AST_QuickTargetCards.Invoke();
                 }
-                if (DrawnCard == CardType.NONE)
-                    AST_QuickTargetCards.SelectedRandomMember = null;
-
+                // if (DrawnCard == CardType.NONE)
+                //     AST_QuickTargetCards.SelectedRandomMember = null;
+            }
+            else
+            {
+                AST_QuickTargetCards.SelectedRandomMember = null;
             }
         }
 
@@ -49,7 +56,12 @@ namespace XIVSlothComboX.Combos.JobHelpers
 
             public static void Invoke()
             {
-                if (GetPartySlot(2) is not null && DrawnCard is not CardType.NONE)
+                
+                bool 近战卡 = CustomComboFunctions. OriginalHook(Play1) is 太阳神卡;
+                bool 远程卡 = CustomComboFunctions. OriginalHook(Play1) is 战争神卡;
+                var 是否抽到卡 = CustomComboFunctions.OriginalHook(Play1) is 太阳神卡 or 战争神卡;
+                
+                if (GetPartySlot(2) is not null && 是否抽到卡)
                 {
                     if (SelectedRandomMember is null || SelectedRandomMember.IsDead)
                     {
@@ -64,7 +76,15 @@ namespace XIVSlothComboX.Combos.JobHelpers
 
             private static bool SetTarget()
             {
-                if (Gauge.DrawnCard.Equals(CardType.NONE)) return false;
+                bool 近战卡 = CustomComboFunctions. OriginalHook(Play1) is 太阳神卡;
+                bool 远程卡 = CustomComboFunctions. OriginalHook(Play1) is 战争神卡;
+                var 是否抽到卡 = CustomComboFunctions.OriginalHook(Play1) is 太阳神卡 or 战争神卡;
+
+                if (!是否抽到卡)
+                {
+                    return false;
+                }
+
                 CardType cardDrawn = Gauge.DrawnCard;
                 PartyTargets.Clear();
                 for (int i = 1; i <= 8; i++) //Checking all 8 available slots and skipping nulls & DCs
@@ -129,8 +149,8 @@ namespace XIVSlothComboX.Combos.JobHelpers
                     for (int i = 0; i <= PartyTargets.Count - 1; i++)
                     {
                         byte job = PartyTargets[i] is IBattleChara ? (byte)(PartyTargets[i] as IBattleChara).ClassJob.Id : (byte)0;
-                        if (((cardDrawn is CardType.BALANCE or CardType.ARROW or CardType.SPEAR) && JobIDs.Melee.Contains(job)) ||
-                            ((cardDrawn is CardType.BOLE or CardType.EWER or CardType.SPIRE) && JobIDs.Ranged.Contains(job)))
+                        if (((近战卡) && JobIDs.Melee.Contains(job)) ||
+                            ((远程卡) && JobIDs.Ranged.Contains(job)))
                         {
                             //TargetObject(PartyTargets[i]);
                             SelectedRandomMember = PartyTargets[i];
@@ -143,8 +163,8 @@ namespace XIVSlothComboX.Combos.JobHelpers
                         for (int i = 0; i <= PartyTargets.Count - 1; i++)
                         {
                             byte job = PartyTargets[i] is IBattleChara ? (byte)(PartyTargets[i] as IBattleChara).ClassJob.Id : (byte)0;
-                            if ((cardDrawn is CardType.BALANCE or CardType.ARROW or CardType.SPEAR && JobIDs.Tank.Contains(job)) ||
-                                (cardDrawn is CardType.BOLE or CardType.EWER or CardType.SPIRE && JobIDs.Healer.Contains(job)))
+                            if ((近战卡 && JobIDs.Tank.Contains(job)) ||
+                                (远程卡 && JobIDs.Healer.Contains(job)))
                             {
                                 //TargetObject(PartyTargets[i]);
                                 SelectedRandomMember = PartyTargets[i];
