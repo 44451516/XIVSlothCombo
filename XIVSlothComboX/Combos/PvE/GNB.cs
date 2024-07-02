@@ -59,7 +59,8 @@ namespace XIVSlothComboX.Combos.PvE
                 ReadyToTear = 1843,
                 ReadyToGouge = 1844,
                 ReadyToBlast = 2686,
-                ReadyToReign = 3840;
+                ReadyToReign = 3840,
+                ReadyToRaze = 3839;
         }
 
         public static class Debuffs
@@ -696,8 +697,6 @@ namespace XIVSlothComboX.Combos.PvE
 
                 return actionID;
             }
-
-      
         }
 
         private static bool 子弹连是否准备就绪()
@@ -801,16 +800,16 @@ namespace XIVSlothComboX.Combos.PvE
 
             return false;
         }
-        
-        
+
+
         private static bool 使用师心连(uint lastComboMove)
         {
             if (CustomComboFunctions.LevelChecked(师心连1FatedBrand) && CustomComboFunctions.HasEffect(Buffs.ReadyToReign))
             {
                 return true;
             }
-                
-            if (lastComboMove is 师心连1FatedBrand or 师心连2ReignOfBeasts )
+
+            if (lastComboMove is 师心连1FatedBrand or 师心连2ReignOfBeasts)
             {
                 return true;
             }
@@ -972,7 +971,7 @@ namespace XIVSlothComboX.Combos.PvE
 
                                     if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gauge.Ammo >= 2)
                                         return 倍攻DoubleDown;
-                                    
+
                                     if (使用师心连(lastComboMove))
                                     {
                                         return OriginalHook(血壤Bloodfest);
@@ -1204,6 +1203,11 @@ namespace XIVSlothComboX.Combos.PvE
 
                             if (IsEnabled(CustomComboPreset.GNB_AoE_Bloodfest) && gauge.Ammo == 0 && ActionReady(血壤Bloodfest))
                                 return 血壤Bloodfest;
+
+                            if (LevelChecked(续剑Continuation) && (HasEffect(Buffs.ReadyToRaze)))
+                            {
+                                return OriginalHook(续剑Continuation);
+                            }
                         }
 
                         if (IsEnabled(CustomComboPreset.GNB_AOE_SonicBreak) && ActionReady(音速破SonicBreak))
