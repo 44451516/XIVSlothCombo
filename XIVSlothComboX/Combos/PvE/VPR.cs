@@ -212,10 +212,10 @@ namespace XIVSlothComboX.Combos.PvE
                     {
                         if (lastComboMove is DreadFangs or SteelFangs)
                         {
-                            if (HasEffect(Buffs.FlankstungVenom) || HasEffect(Buffs.FlanksbaneVenom))
+                            if ((HasEffect(Buffs.FlankstungVenom) || HasEffect(Buffs.FlanksbaneVenom)) && LevelChecked(FlankstingStrike))
                                 return OriginalHook(SteelFangs);
 
-                            if (HasEffect(Buffs.HindstungVenom) || HasEffect(Buffs.HindsbaneVenom))
+                            if (HasEffect(Buffs.HindstungVenom) || HasEffect(Buffs.HindsbaneVenom)&& LevelChecked(HindstingStrike))
                                 return OriginalHook(DreadFangs);
                         }
 
@@ -295,7 +295,9 @@ namespace XIVSlothComboX.Combos.PvE
 
                     if (IsEnabled(CustomComboPreset.VPR_ST_RangedUptime) &&
                         LevelChecked(WrithingSnap) && !InMeleeRange() && HasBattleTarget())
-                        return WrithingSnap;
+                        return (IsEnabled(CustomComboPreset.VPR_ST_RangedUptimeUncoiledFury) && gauge.RattlingCoilStacks > 0)
+                            ? UncoiledFury
+                            : WrithingSnap;
 
 
                     if (IsEnabled(CustomComboPreset.VPR_ST_CDs))
@@ -391,10 +393,23 @@ namespace XIVSlothComboX.Combos.PvE
                             }
 
                             if (WasLastWeaponskill(SwiftskinsCoil))
+                            {
+                                if (IsEnabled(CustomComboPreset.VPR_TrueNorthDynamic) &&
+                                    trueNorthReady && !OnTargetsRear())
+                                    return All.TrueNorth;
+
                                 return HuntersCoil;
+                            }
+
 
                             if (gauge.DreadwinderReady && !WasLastWeaponskill(SwiftskinsCoil))
+                            {
+                                if (IsEnabled(CustomComboPreset.VPR_TrueNorthDynamic) &&
+                                    trueNorthReady && !OnTargetsRear())
+                                    return All.TrueNorth;
+
                                 return SwiftskinsCoil;
+                            }
                         }
                     }
 
@@ -413,10 +428,10 @@ namespace XIVSlothComboX.Combos.PvE
                     {
                         if (lastComboMove is DreadFangs or SteelFangs)
                         {
-                            if (HasEffect(Buffs.FlankstungVenom) || HasEffect(Buffs.FlanksbaneVenom))
+                            if ((HasEffect(Buffs.FlankstungVenom) || HasEffect(Buffs.FlanksbaneVenom)) && LevelChecked(FlankstingStrike))
                                 return OriginalHook(SteelFangs);
 
-                            if (HasEffect(Buffs.HindstungVenom) || HasEffect(Buffs.HindsbaneVenom))
+                            if (HasEffect(Buffs.HindstungVenom) || HasEffect(Buffs.HindsbaneVenom)&& LevelChecked(HindstingStrike))
                                 return OriginalHook(DreadFangs);
                         }
 
@@ -467,7 +482,7 @@ namespace XIVSlothComboX.Combos.PvE
                                 return Dreadwinder;
 
                             if (GetBuffRemainingTime(Buffs.Swiftscaled) < 10 ||
-                                (GetDebuffRemainingTime(Debuffs.NoxiousGnash) <= NoxiousRefreshRange))
+                                ((GetDebuffRemainingTime(Debuffs.NoxiousGnash) <= NoxiousRefreshRange) && LevelChecked(SwiftskinsSting)))
                                 return OriginalHook(DreadFangs);
 
                             if (GetBuffRemainingTime(Buffs.HuntersInstinct) < 10 ||
@@ -615,8 +630,8 @@ namespace XIVSlothComboX.Combos.PvE
                                 return OriginalHook(DreadMaw);
 
                             if (GetBuffRemainingTime(Buffs.HuntersInstinct) < 10 ||
-                                (GetDebuffRemainingTime(Debuffs.NoxiousGnash) > NoxiousRefreshRange))
-                                return OriginalHook(SteelMaw);
+                                ((GetDebuffRemainingTime(Debuffs.NoxiousGnash) > NoxiousRefreshRange) && LevelChecked(HuntersSting)))
+                                return OriginalHook(SteelFangs);
                         }
                     }
                     return OriginalHook(DreadMaw);
@@ -855,18 +870,23 @@ namespace XIVSlothComboX.Combos.PvE
 
         internal class VPR_UncoiledTwins : CustomCombo
         {
+            //UI 开关
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.VPR_UncoiledTwins;
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
+                //hook技能 ID
+                //不写 hook 所有
                 if (actionID is UncoiledFury)
                 {
+                    //有buff 返回新技能
                     if (HasEffect(Buffs.PoisedForTwinfang))
                         return OriginalHook(Twinfang);
 
                     if (HasEffect(Buffs.PoisedForTwinblood))
                         return OriginalHook(Twinblood);
                 }
+                //返回原始技能
                 return actionID;
             }
         }
