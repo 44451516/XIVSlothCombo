@@ -292,8 +292,8 @@ namespace XIVSlothComboX.Combos.PvE
                             return OriginalHook(Kassatsu);
 
                         //healing - please move if not appropriate priority
-                        if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_SecondWind) && All.内丹SecondWind.LevelChecked() && playerHP <= SecondWindThreshold && IsOffCooldown(All.内丹SecondWind))
-                            return All.内丹SecondWind;
+                        if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_SecondWind) && All.SecondWind.LevelChecked() && playerHP <= SecondWindThreshold && IsOffCooldown(All.SecondWind))
+                            return All.SecondWind;
 
                         if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_ShadeShift) && ShadeShift.LevelChecked() && playerHP <= ShadeShiftThreshold && IsOffCooldown(NIN.ShadeShift))
                             return NIN.ShadeShift;
@@ -338,8 +338,8 @@ namespace XIVSlothComboX.Combos.PvE
                                 return OriginalHook(TenChiJin);
                         }
 
-                        if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_SecondWind) && All.内丹SecondWind.LevelChecked() && playerHP <= SecondWindThreshold && IsOffCooldown(All.内丹SecondWind))
-                            return All.内丹SecondWind;
+                        if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_SecondWind) && All.SecondWind.LevelChecked() && playerHP <= SecondWindThreshold && IsOffCooldown(All.SecondWind))
+                            return All.SecondWind;
 
                         if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_ShadeShift) && ShadeShift.LevelChecked() && playerHP <= ShadeShiftThreshold && IsOffCooldown(NIN.ShadeShift))
                             return NIN.ShadeShift;
@@ -549,8 +549,8 @@ namespace XIVSlothComboX.Combos.PvE
                             return OriginalHook(Assassinate);
 
                         // healing - please move if not appropriate priority
-                        if (IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_SecondWind) && All.内丹SecondWind.LevelChecked() && playerHP <= SecondWindThreshold && IsOffCooldown(All.内丹SecondWind))
-                            return All.内丹SecondWind;
+                        if (IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_SecondWind) && All.SecondWind.LevelChecked() && playerHP <= SecondWindThreshold && IsOffCooldown(All.SecondWind))
+                            return All.SecondWind;
 
                         if (IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_ShadeShift) && ShadeShift.LevelChecked() && playerHP <= ShadeShiftThreshold && IsOffCooldown(NIN.ShadeShift))
                             return NIN.ShadeShift;

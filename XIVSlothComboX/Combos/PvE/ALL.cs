@@ -10,7 +10,8 @@ namespace XIVSlothComboX.Combos.PvE
 
         public const uint
             Rampart = 7531,
-            内丹SecondWind = 7541,
+            //内丹SecondWind
+            SecondWind = 7541,
             TrueNorth = 7546,
             Addle = 7560,
             即刻咏唱Swiftcast = 7561,

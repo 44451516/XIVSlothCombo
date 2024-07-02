@@ -295,8 +295,8 @@ namespace XIVSlothComboX.Combos.PvE
 
 
                     // healing
-                    if (CanWeave(actionID) && PlayerHealthPercentageHp() <= 20 && ActionReady(All.内丹SecondWind))
-                        return All.内丹SecondWind;
+                    if (CanWeave(actionID) && PlayerHealthPercentageHp() <= 20 && ActionReady(All.SecondWind))
+                        return All.SecondWind;
 
                     //1-2-3 Combo
                     if (comboTime > 0)
@@ -795,9 +795,9 @@ namespace XIVSlothComboX.Combos.PvE
                     if (IsEnabled(CustomComboPreset.MCH_ST_Adv_SecondWind)
                         && CanSpellWeavePlus(actionID, 0.6)
                         && PlayerHealthPercentageHp() <= Config.MCH_ST_SecondWindThreshold
-                        && ActionReady(All.内丹SecondWind))
+                        && ActionReady(All.SecondWind))
                     {
-                        return All.内丹SecondWind;
+                        return All.SecondWind;
                     }
 
                     //1-2-3 Combo
@@ -1035,8 +1035,8 @@ namespace XIVSlothComboX.Combos.PvE
                     if (ActionReady(BioBlaster) && !HasEffect(Buffs.过热Overheated) && IsEnabled(CustomComboPreset.MCH_AoE_Adv_Bioblaster))
                         return BioBlaster;
 
-                    if (CanWeave(actionID, 0.6) && PlayerHealthPercentageHp() <= 20 && ActionReady(All.内丹SecondWind))
-                        return All.内丹SecondWind;
+                    if (CanWeave(actionID, 0.6) && PlayerHealthPercentageHp() <= 20 && ActionReady(All.SecondWind))
+                        return All.SecondWind;
                 }
 
                 return actionID;
@@ -1143,8 +1143,8 @@ namespace XIVSlothComboX.Combos.PvE
 
                     if (IsEnabled(CustomComboPreset.MCH_AoE_Adv_SecondWind) && CanWeave(actionID, 0.6))
                     {
-                        if (PlayerHealthPercentageHp() <= Config.MCH_AoE_SecondWindThreshold && ActionReady(All.内丹SecondWind))
-                            return All.内丹SecondWind;
+                        if (PlayerHealthPercentageHp() <= Config.MCH_AoE_SecondWindThreshold && ActionReady(All.SecondWind))
+                            return All.SecondWind;
                     }
                 }
 

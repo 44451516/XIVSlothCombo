@@ -1670,11 +1670,11 @@ namespace XIVSlothComboX.Window.Functions
             }
 
             if (preset == CustomComboPreset.MCH_ST_Adv_SecondWind)
-                UserConfig.DrawSliderInt(0, 100, MCH.Config.MCH_ST_SecondWindThreshold, $"{ActionWatching.GetActionName(All.内丹SecondWind)} HP %", 150,
+                UserConfig.DrawSliderInt(0, 100, MCH.Config.MCH_ST_SecondWindThreshold, $"{ActionWatching.GetActionName(All.SecondWind)} HP %", 150,
                     SliderIncrements.Ones);
 
             if (preset == CustomComboPreset.MCH_AoE_Adv_SecondWind)
-                UserConfig.DrawSliderInt(0, 100, MCH.Config.MCH_AoE_SecondWindThreshold, $"{ActionWatching.GetActionName(All.内丹SecondWind)} HP %",
+                UserConfig.DrawSliderInt(0, 100, MCH.Config.MCH_AoE_SecondWindThreshold, $"{ActionWatching.GetActionName(All.SecondWind)} HP %",
                     150, SliderIncrements.Ones);
 
             if (preset == CustomComboPreset.MCH_AoE_Adv_Queen)
@@ -2509,6 +2509,27 @@ namespace XIVSlothComboX.Window.Functions
 
             // ====================================================================================
 
+            #region VIPER
+
+            if (preset == CustomComboPreset.VPR_ST_ComboHeals)
+            {
+                UserConfig.DrawSliderInt(0, 100, VPR.Config.VPR_ST_SecondWind_Threshold, "Second Wind HP percentage threshold (0 = Disabled)", 150, SliderIncrements.Ones);
+                UserConfig.DrawSliderInt(0, 100, VPR.Config.VPR_ST_Bloodbath_Threshold, "Bloodbath HP percentage threshold (0 = Disabled)", 150, SliderIncrements.Ones);
+            }
+
+            if (preset == CustomComboPreset.VPR_AoE_ComboHeals)
+            {
+                UserConfig.DrawSliderInt(0, 100, VPR.Config.VPR_AoE_SecondWind_Threshold, "Second Wind HP percentage threshold (0 = Disabled)", 150, SliderIncrements.Ones);
+                UserConfig.DrawSliderInt(0, 100, VPR.Config.VPR_AoE_Bloodbath_Threshold, "Bloodbath HP percentage threshold (0 = Disabled)", 150, SliderIncrements.Ones);
+            }
+
+            if (preset == CustomComboPreset.VPR_ST_NoxiousGnash || preset == CustomComboPreset.VPR_AoE_NoxiousGnash)
+            {
+                UserConfig.DrawSliderInt(0, 10, VPR.Config.VPR_NoxiousRefreshRange, "Seconds remaining before refreshing Noxious Gnash.", 150, SliderIncrements.Ones);
+            }
+
+            #endregion
+            
             #region WARRIOR
 
             if (preset is CustomComboPreset.WAR_Advanced_CustomMode)

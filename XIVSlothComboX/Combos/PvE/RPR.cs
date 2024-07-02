@@ -232,12 +232,12 @@ namespace XIVSlothComboX.Combos.PvE
                     if (IsEnabled(CustomComboPreset.RPR_ST_SliceCombo_ComboHeals))
                     {
                         bool bloodbathReady = LevelChecked(All.Bloodbath) && IsOffCooldown(All.Bloodbath);
-                        bool secondWindReady = LevelChecked(All.内丹SecondWind) && IsOffCooldown(All.内丹SecondWind);
+                        bool secondWindReady = LevelChecked(All.SecondWind) && IsOffCooldown(All.SecondWind);
 
                         if (bloodbathReady && playerHP < 65)
                             return All.Bloodbath;
                         if (secondWindReady && playerHP < 40)
-                            return All.内丹SecondWind;
+                            return All.SecondWind;
                     }
 
                     if (InCombat())

@@ -371,9 +371,9 @@ namespace XIVSlothComboX.Combos.PvE
                                 {
                                     if (PlayerHealthPercentageHp()
                                         <= PluginConfiguration.GetCustomIntValue(Config.DRG_STSecondWindThreshold)
-                                        && LevelChecked(All.内丹SecondWind)
-                                        && IsOffCooldown(All.内丹SecondWind))
-                                        return All.内丹SecondWind;
+                                        && LevelChecked(All.SecondWind)
+                                        && IsOffCooldown(All.SecondWind))
+                                        return All.SecondWind;
                                     if (PlayerHealthPercentageHp()
                                         <= PluginConfiguration.GetCustomIntValue(Config.DRG_STBloodbathThreshold)
                                         && LevelChecked(All.Bloodbath)
@@ -530,9 +530,9 @@ namespace XIVSlothComboX.Combos.PvE
                         {
                             if (PlayerHealthPercentageHp()
                                 <= PluginConfiguration.GetCustomIntValue(Config.DRG_AoESecondWindThreshold)
-                                && LevelChecked(All.内丹SecondWind)
-                                && IsOffCooldown(All.内丹SecondWind))
-                                return All.内丹SecondWind;
+                                && LevelChecked(All.SecondWind)
+                                && IsOffCooldown(All.SecondWind))
+                                return All.SecondWind;
                             if (PlayerHealthPercentageHp()
                                 <= PluginConfiguration.GetCustomIntValue(Config.DRG_AoEBloodbathThreshold)
                                 && LevelChecked(All.Bloodbath)

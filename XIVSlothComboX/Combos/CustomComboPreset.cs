@@ -173,13 +173,12 @@ namespace XIVSlothComboX.Combos
 
         #region ASTROLOGIAN
 
-        
         [ReplaceSkill(All.Repose)]
         [CustomComboInfo("自定义循环",
             "自定义循环",
             AST.JobID, -10, "", "")]
         AST_Advanced_CustomMode = 10180,
-        
+
         #region DPS
 
         [ReplaceSkill(AST.Malefic, AST.Malefic2, AST.Malefic3, AST.Malefic4, AST.FallMalefic, AST.Combust, AST.Combust2, AST.Combust3, AST.Gravity,
@@ -212,7 +211,6 @@ namespace XIVSlothComboX.Combos
         [ParentCombo(AST_ST_DPS)] [CustomComboInfo("自动发卡", "Weaves your card (best used with Quick Target Cards)", AST.JobID, 6)]
         AST_DPS_AutoPlay = 1037,
 
-       
 
         [ParentCombo(AST_ST_DPS)] [CustomComboInfo("星力选项", "当集齐三个星标时将星力加入循环", AST.JobID, 8, "", "")]
         AST_DPS_Astrodyne = 1009,
@@ -278,11 +276,6 @@ namespace XIVSlothComboX.Combos
 
         #region Cards
 
-
-
-   
-
-
         [CustomComboInfo("快速目标发牌", "抽卡时自动选中一个合适的队友。", AST.JobID)]
         AST_Cards_QuickTargetCards = 1029,
 
@@ -296,14 +289,13 @@ namespace XIVSlothComboX.Combos
         #endregion
 
         #region BLACK MAGE
-        
-        
+
         [ReplaceSkill(All.Sleep)]
         [CustomComboInfo("自定义循环",
             "自定义循环",
             BLM.JobID, -10, "", "")]
         BLM_Advanced_CustomMode = 20120,
-        
+
 
         [ReplaceSkill(BLM.Scathe)]
         [ConflictingCombos(BLM_Scathe_Xeno, BLM_ST_AdvancedMode, BLM_ST_AdvancedMode)]
@@ -699,8 +691,7 @@ namespace XIVSlothComboX.Combos
         [ParentCombo(DNC_DT_SimpleMode)] [CustomComboInfo("倒计时自动跳小舞", "起手自动跳舞", DNC.JobID, 0, "", "")]
         DNC_DT_Simple_AUTO_SS = 4091,
 
-        [ParentCombo(DNC_DT_SimpleMode)]
-        [CustomComboInfo("标准舞步", "Includes Standard Step (and all steps) in the rotation.", DNC.JobID, 1, "", "")]
+        [ParentCombo(DNC_DT_SimpleMode)] [CustomComboInfo("标准舞步", "Includes Standard Step (and all steps) in the rotation.", DNC.JobID, 1, "", "")]
         DNC_DT_Simple_SS = 4066,
 
         [ParentCombo(DNC_DT_SimpleMode)]
@@ -721,28 +712,20 @@ namespace XIVSlothComboX.Combos
 
         [ParentCombo(DNC_DT_Simple_SaberDance)] [CustomComboInfo("伶俐防止溢出[测试中]", "大舞快好的时候并且伶俐>=70的时候放剑舞。", DNC.JobID, 2, "", "")]
         DNC_DT_Simple_SaberDance_1 = 4082,
-        
+
         [ParentCombo(DNC_DT_SimpleMode)] [CustomComboInfo("最后一舞", "最后一舞加入循环", DNC.JobID, 2, "", "")]
         DNC_DT_Simple_最后一舞 = 4092,
-        
-        [ParentCombo(DNC_DT_SimpleMode)] [CustomComboInfo("舞步终结", "舞步终结加入循环", DNC.JobID, 2, "", "")]
-        DNC_DT_Simple_舞步终结 = 4093,    
-        
-  
 
+        [ParentCombo(DNC_DT_SimpleMode)] [CustomComboInfo("舞步终结", "舞步终结加入循环", DNC.JobID, 2, "", "")]
+        DNC_DT_Simple_舞步终结 = 4093,
 
         #endregion
 
 
-
-        [ReplaceSkill(DNC.标准舞步StandardStep, DNC.技巧舞步TechnicalStep)]
-        [CustomComboInfo("舞步连击相关", "在跳舞时将标准舞步和技巧舞步更改为每个舞步.", DNC.JobID, 1, "", "")]
+        [ReplaceSkill(DNC.标准舞步StandardStep, DNC.技巧舞步TechnicalStep)] [CustomComboInfo("舞步连击相关", "在跳舞时将标准舞步和技巧舞步更改为每个舞步.", DNC.JobID, 1, "", "")]
         DNC_DanceStepCombo = 4039,
-       
 
 
-        
-        
         #region Simple Dancer (AoE)
 
         [ReplaceSkill(DNC.风车Windmill)]
@@ -811,7 +794,7 @@ namespace XIVSlothComboX.Combos
         DNC_AoE_Simple_Improvisation = 4080,
 
 
-        [Variant] [VariantParent( DNC_AoE_SimpleMode)] [CustomComboInfo("铁壁 选项", "冷却结束时使用多变铁壁", DNC.JobID)]
+        [Variant] [VariantParent(DNC_AoE_SimpleMode)] [CustomComboInfo("铁壁 选项", "冷却结束时使用多变铁壁", DNC.JobID)]
         DNC_Variant_Rampart = 4085,
 
         [Variant] [VariantParent(DNC_DT_SimpleMode, DNC_AoE_SimpleMode)] [CustomComboInfo("治疗 选项", "在下水道使用治疗当HP低于某个值", DNC.JobID)]
@@ -822,14 +805,13 @@ namespace XIVSlothComboX.Combos
         #endregion
 
         #region DARK KNIGHT
-        
+
         [ReplaceSkill(DRK.SyphonStrike)]
         [CustomComboInfo("自定义循环",
             "自定义循环",
             DRK.JobID, -10, "", "")]
         DRK_Advanced_CustomMode = 50981,
 
-        
 
         [ParentCombo(DRK_SouleaterCombo)] [CustomComboInfo("主连击Buff整合", "将所有增益技能整合至噬魂斩连击中.", DRK.JobID, 0, "", "")]
         DRK_MainComboBuffs_Group = 5098,
@@ -902,7 +884,7 @@ namespace XIVSlothComboX.Combos
 
         [ParentCombo(DRK_MainComboCDs_Group)] [CustomComboInfo("精雕怒斩特性", "当自身存在暗影状态时插入精雕怒斩至主连击中.", DRK.JobID, 0, "", "")]
         DRK_CarveAndSpit = 5022,
-        
+
 
         [ParentCombo(DRK_MainComboCDs_Group)] [CustomComboInfo("腐秽大地特性", "若自身存在暗影状态且腐秽大地未在冷却中.", DRK.JobID, 0, "", "")]
         DRK_SaltedEarth = 5024,
@@ -946,7 +928,7 @@ namespace XIVSlothComboX.Combos
             "自定义循环",
             DRG.JobID, -10, "", "")]
         DRG_Advanced_CustomMode = 60001,
-        
+
         [ReplaceSkill(DRG.Jump, DRG.HighJump)]
         [CustomComboInfo("Jump to Mirage Dive", "Replace (High) Jump with Mirage Dive when Dive Ready.", DRG.JobID, 0)]
         DRG_Jump = 6000,
@@ -1110,7 +1092,7 @@ namespace XIVSlothComboX.Combos
             "自定义循环",
             BLM.JobID, -10, "", "")]
         GNB_Advanced_CustomMode = 69999,
-        
+
         [ParentCombo(GNB_ST_MainCombo)] [CustomComboInfo("起手设置", "设置多少GCD起手", GNB.JobID, 0)]
         GNB_START_GCD = 6999,
 
@@ -1146,8 +1128,7 @@ namespace XIVSlothComboX.Combos
         [ParentCombo(GNB_ST_MainCombo_CooldownsGroup)] [CustomComboInfo("血壤整合到主连击", "当晶壤为0时在主连击中插入血壤.", GNB.JobID, 0, "", "")]
         GNB_ST_Bloodfest = 7007,
 
-        [ParentCombo(GNB_ST_MainCombo_CooldownsGroup)]
-        [CustomComboInfo("无情整合到主连击", "当晶壤积累满时在主连击中插入无情.", GNB.JobID, 0, "", "")]
+        [ParentCombo(GNB_ST_MainCombo_CooldownsGroup)] [CustomComboInfo("无情整合到主连击", "当晶壤积累满时在主连击中插入无情.", GNB.JobID, 0, "", "")]
         GNB_ST_NoMercy = 7008,
 
         [ParentCombo(GNB_ST_MainCombo_CooldownsGroup)] [CustomComboInfo("弓形冲波整合到主连击", "弓形冲波整合到主连击", GNB.JobID, 0, "", "")]
@@ -1160,7 +1141,6 @@ namespace XIVSlothComboX.Combos
         GNB_ST_BurstStrike = 7011,
 
         #endregion
-
 
 
         [ParentCombo(GNB_ST_MainCombo)] [CustomComboInfo("闪雷弹激活", "当自身与所选目标在近战距离外时，插入闪雷弹.", GNB.JobID, 0, "", "")]
@@ -1190,8 +1170,7 @@ namespace XIVSlothComboX.Combos
         [ReplaceSkill(GNB.恶魔切DemonSlice)] [CustomComboInfo("绝枪战士AOE功能", "将恶魔杀替换为恶魔杀连击。", GNB.JobID, 0, "", "")]
         GNB_AoE_MainCombo = 7300,
 
-        [ParentCombo(GNB_AoE_MainCombo)]
-        [CustomComboInfo("无情整合至AoE连击", "当无情可用时在AoE连击中插入无情.", GNB.JobID, 0, "", "")]
+        [ParentCombo(GNB_AoE_MainCombo)] [CustomComboInfo("无情整合至AoE连击", "当无情可用时在AoE连击中插入无情.", GNB.JobID, 0, "", "")]
         GNB_AoE_NoMercy = 7301,
 
         [ParentCombo(GNB_AoE_MainCombo)] [CustomComboInfo("弓形冲波整合到AOE连击", "当可用时在AoE连击中插入弓形冲波.", GNB.JobID, 0, "", "")]
@@ -1231,7 +1210,6 @@ namespace XIVSlothComboX.Combos
 
         #endregion
 
-      
 
         [CustomComboInfo("极光保护机制", "自身身上有极光，将极光变为原初的勇猛", GNB.JobID, 0, "", "")]
         GNB_AuroraProtection = 7600,
@@ -1262,14 +1240,14 @@ namespace XIVSlothComboX.Combos
         #endregion
 
         #region 自定义循环
-        
+
         [ReplaceSkill(MCH.独头弹SlugShot)]
         // [ConflictingCombos(MCH_ST_AdvancedMode)]
-        [CustomComboInfo("自定义循环", "自定义循环",MCH.JobID)]
+        [CustomComboInfo("自定义循环", "自定义循环", MCH.JobID)]
         MCH_ST_CustomMode = 81001,
-        
+
         #endregion
-            
+
         #region Advanced ST
 
         [ReplaceSkill(MCH.分裂弹SplitShot)]
@@ -1802,17 +1780,16 @@ namespace XIVSlothComboX.Combos
 
         #region PALADIN
 
-        
         [ReplaceSkill(PLD.暴乱剑RiotBlade)]
         [CustomComboInfo("自定义循环",
             "自定义循环",
             PLD.JobID, -10, "", "")]
         PLD_Advanced_CustomMode = 110001,
 
-            
+
         //// Last value = 11032
-        
-       [ReplaceSkill(PLD.先锋剑FastBlade)] [CustomComboInfo("骑士高级模式 - 单目标[推荐]", $"自定义循环链(先锋剑)", PLD.JobID)]
+
+        [ReplaceSkill(PLD.先锋剑FastBlade)] [CustomComboInfo("骑士高级模式 - 单目标[推荐]", $"自定义循环链(先锋剑)", PLD.JobID)]
         PLD_ST_AdvancedMode = 11002,
 
         [ParentCombo(PLD_ST_AdvancedMode)] [CustomComboInfo("起手设置", "设置多少GCD起手", PLD.JobID)]
@@ -1893,19 +1870,13 @@ namespace XIVSlothComboX.Combos
         PLD_SpiritsWithin = 11025,
 
 
-        [Variant]
-        [VariantParent( PLD_ST_AdvancedMode, PLD_AoE_AdvancedMode)]
-        [CustomComboInfo("精神镖选项", "当没有dot或dot剩余时间少于3s时，使用多变精神镖", PLD.JobID)]
+        [Variant] [VariantParent(PLD_ST_AdvancedMode, PLD_AoE_AdvancedMode)] [CustomComboInfo("精神镖选项", "当没有dot或dot剩余时间少于3s时，使用多变精神镖", PLD.JobID)]
         PLD_Variant_SpiritDart = 11030,
 
-        [Variant]
-        [VariantParent(PLD_ST_AdvancedMode, PLD_AoE_AdvancedMode)]
-        [CustomComboInfo("治疗 选项", "在下水道使用治疗当HP低于某个值", PLD.JobID)]
+        [Variant] [VariantParent(PLD_ST_AdvancedMode, PLD_AoE_AdvancedMode)] [CustomComboInfo("治疗 选项", "在下水道使用治疗当HP低于某个值", PLD.JobID)]
         PLD_Variant_Cure = 11031,
 
-        [Variant]
-        [VariantParent(PLD_ST_AdvancedMode, PLD_AoE_AdvancedMode)]
-        [CustomComboInfo("最后通牒 选项", "冷却结束时使用多变最后通牒", PLD.JobID)]
+        [Variant] [VariantParent(PLD_ST_AdvancedMode, PLD_AoE_AdvancedMode)] [CustomComboInfo("最后通牒 选项", "冷却结束时使用多变最后通牒", PLD.JobID)]
         PLD_Variant_Ultimatum = 11032,
 
         //// Last value = 11032
@@ -2119,7 +2090,7 @@ namespace XIVSlothComboX.Combos
         If more than 10 sub features, use the next feature number if available
         The three digets after RDM.JobID can be used to reorder items in the list
         */
-        
+
         [ReplaceSkill(All.Sleep)]
         [CustomComboInfo("自定义循环",
             "自定义循环",
@@ -2266,7 +2237,7 @@ namespace XIVSlothComboX.Combos
             SGE.JobID, -10, "", "")]
         SGE_Advanced_CustomMode = 141001,
 
-        
+
         #region Single Target DPS Feature
 
         [ReplaceSkill(SGE.Dosis, SGE.Dosis2, SGE.Dosis3)] [CustomComboInfo("整合单体输出技能", "注药I/II/III 各种选项", SGE.JobID, 100, "", "")]
@@ -2685,14 +2656,14 @@ namespace XIVSlothComboX.Combos
         Example: 16110 (Feature Number 1, Option 1, no suboption)
         New features should be added to the appropriate sections.
         */
-        
-        
+
+
         [ReplaceSkill(All.Repose)]
         [CustomComboInfo("自定义循环",
             "自定义循环",
             SCH.JobID, -10, "", "")]
-        SCH_Advanced_CustomMode = 161001, 
-        
+        SCH_Advanced_CustomMode = 161001,
+
 
         #region DPS
 
@@ -2838,7 +2809,7 @@ namespace XIVSlothComboX.Combos
             "自定义循环",
             SMN.JobID, -10, "", "")]
         SMN_Advanced_CustomMode = 170000,
-        
+
         [ReplaceSkill(SMN.Ruin, SMN.Ruin2, SMN.Outburst, SMN.Tridisaster)]
         [CustomComboInfo("高级自定义循环开关",
             "Advanced combo features for a greater degree of customisation.\nAccommodates SpS builds.\nRuin III is left unchanged for mobility purposes.",
@@ -2948,7 +2919,6 @@ namespace XIVSlothComboX.Combos
             "", "")]
         SMN_Ifrit_Cyclone_Option = 17040,
 
- 
 
         // [ParentCombo(SMN_DemiEgiMenu_oGCDPooling)] [CustomComboInfo("爆发延迟开关", "自定义爆发延迟设置\n适用于咏速套装", SMN.JobID, 2, "", "")]
         // SMN_Advanced_Burst_Delay_Option = 17043,
@@ -2958,16 +2928,159 @@ namespace XIVSlothComboX.Combos
         [CustomComboInfo("灼热之光防顶", "检查任何 灼热之光 状态，而不仅仅是你自己的。\n如果有多个召唤师并担心你的灼热之光被覆盖，请使用此选项。", SMN.JobID, 1, "", "")]
         SMN_Advanced_Burst_Any_Option = 17044,
 
-        [Variant] [VariantParent( SMN_Advanced_Combo)] [CustomComboInfo("铁壁 选项", "冷却结束时使用多变铁壁", SMN.JobID)]
+        [Variant] [VariantParent(SMN_Advanced_Combo)] [CustomComboInfo("铁壁 选项", "冷却结束时使用多变铁壁", SMN.JobID)]
         SMN_Variant_Rampart = 17045,
 
         [Variant] [VariantParent(SMN_Raise)] [CustomComboInfo("复活 选项", "当你有即刻BUFF时，替换即刻为成多变复活", SMN.JobID)]
         SMN_Variant_Raise = 17046,
 
-        [Variant] [VariantParent( SMN_Advanced_Combo)] [CustomComboInfo("治疗 选项", "在下水道使用治疗当HP低于某个值", SMN.JobID)]
+        [Variant] [VariantParent(SMN_Advanced_Combo)] [CustomComboInfo("治疗 选项", "在下水道使用治疗当HP低于某个值", SMN.JobID)]
         SMN_Variant_Cure = 17047,
 
         // Last value = 17047 (170181)
+
+        #endregion
+
+        #region VIPER
+
+        [ReplaceSkill(VPR.SteelFangs)]
+        [ConflictingCombos(VPR_ST_AdvancedMode)]
+        [CustomComboInfo("Simple Mode - Single Target",
+            "Replaces Steel Fangs with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.", VPR.JobID)]
+        VPR_ST_SimpleMode = 20000,
+
+        #region Advanced ST Viper
+
+        [ReplaceSkill(VPR.SteelFangs)]
+        [ConflictingCombos(VPR_ST_SimpleMode)]
+        [CustomComboInfo("Advanced Mode - Single Target",
+            "Replaces Steel Fangs with a full one-button single target rotation.\nThese features are ideal if you want to customize the rotation.",
+            VPR.JobID)]
+        VPR_ST_AdvancedMode = 20001,
+
+        [ParentCombo(VPR_ST_AdvancedMode)] [CustomComboInfo("Level 100 Opener", "Adds the Balance opener to the rotation.", VPR.JobID)]
+        VPR_ST_Opener = 20002,
+
+        [ParentCombo(VPR_ST_AdvancedMode)]
+        [CustomComboInfo("Noxious Gnash", "Adds Noxious Gnash if it is not present on current target, or is about to expire.", VPR.JobID)]
+        VPR_ST_NoxiousGnash = 20003,
+
+        #region Cooldowns ST
+
+        [ParentCombo(VPR_ST_AdvancedMode)] [CustomComboInfo("Cooldowns Option", "Adds various cooldowns to the rotation.", VPR.JobID)]
+        VPR_ST_CDs = 20004,
+
+        [ParentCombo(VPR_ST_CDs)] [CustomComboInfo("Serpents Ire", "Adds Serpents Ire to the rotation.", VPR.JobID)]
+        VPR_ST_SerpentsIre = 20005,
+
+        [ParentCombo(VPR_ST_CDs)] [CustomComboInfo("Dreadwinder", "Adds Dreadwinder to the rotation.", VPR.JobID)]
+        VPR_ST_Dreadwinder = 20006,
+
+        [ParentCombo(VPR_ST_Dreadwinder)]
+        [CustomComboInfo("Dreadwinder Combo", "Adds Swiftskin's Coil and Hunter's Coil to the rotation.", VPR.JobID)]
+        VPR_ST_DreadwinderCombo = 20007,
+
+        #endregion
+
+        [ParentCombo(VPR_ST_AdvancedMode)] [CustomComboInfo("Serpents Tail", "Adds Serpents Tail to the rotation.", VPR.JobID)]
+        VPR_ST_SerpentsTail = 20008,
+
+        [ParentCombo(VPR_ST_AdvancedMode)] [CustomComboInfo("Uncoiled Fury", "Adds Uncoiled Fury to the rotation.", VPR.JobID)]
+        VPR_ST_UncoiledFury = 20009,
+
+        [ParentCombo(VPR_ST_UncoiledFury)]
+        [CustomComboInfo("Uncoiled Fury Combo", "Adds Uncoiled Twinfang and Uncoiled Twinblood to the rotation.", VPR.JobID)]
+        VPR_ST_UncoiledFuryCombo = 200010,
+
+        [ParentCombo(VPR_ST_AdvancedMode)] [CustomComboInfo("Reawaken", "Adds Reawaken to the rotation.", VPR.JobID)]
+        VPR_ST_Reawaken = 20011,
+
+        [ParentCombo(VPR_ST_AdvancedMode)] [CustomComboInfo("Reawaken Combo", "Adds Generation and Legacy to the rotation.", VPR.JobID)]
+        VPR_ST_ReawakenCombo = 20012,
+
+        [ParentCombo(VPR_ST_AdvancedMode)]
+        [CustomComboInfo("Ranged Uptime Option", "Adds Writhing Snap to the rotation when you are out of melee range.", VPR.JobID)]
+        VPR_ST_RangedUptime = 20097,
+
+        [ParentCombo(VPR_ST_AdvancedMode)] [CustomComboInfo("Combo Heals Option", "Adds Bloodbath and Second Wind to the rotation.", VPR.JobID)]
+        VPR_ST_ComboHeals = 20098,
+
+        [ParentCombo(VPR_ST_AdvancedMode)]
+        [CustomComboInfo("Dynamic True North Option", "Adds True North when you are not in the correct position for the enhanced potency bonus.",
+            VPR.JobID)]
+        VPR_TrueNorthDynamic = 20099,
+
+        #endregion
+
+        [ReplaceSkill(VPR.SteelMaw)]
+        [ConflictingCombos(VPR_AoE_AdvancedMode)]
+        [CustomComboInfo("Simple Mode - AoE",
+            "Replaces Steel Maw with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.", VPR.JobID)]
+        VPR_AoE_SimpleMode = 20100,
+
+        #region Advanced AoE Viper
+
+        [ReplaceSkill(VPR.SteelMaw)]
+        [ConflictingCombos(VPR_AoE_SimpleMode)]
+        [CustomComboInfo("Advanced Mode AoE",
+            "Replaces Steel Maw with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.", VPR.JobID)]
+        VPR_AoE_AdvancedMode = 20101,
+
+        [ParentCombo(VPR_AoE_AdvancedMode)]
+        [CustomComboInfo("Noxious Gnash", "Adds Noxious Gnash if it is not present on current target, or is about to expire.", VPR.JobID)]
+        VPR_AoE_NoxiousGnash = 20102,
+
+        #region Cooldowns AoE
+
+        [ParentCombo(VPR_AoE_AdvancedMode)] [CustomComboInfo("Cooldowns Option", "Adds various cooldowns to the rotation.", VPR.JobID)]
+        VPR_AoE_CDs = 20103,
+
+        [ParentCombo(VPR_AoE_CDs)] [CustomComboInfo("Serpents Ire", "Adds Serpents Ire to the rotation.", VPR.JobID)]
+        VPR_AoE_SerpentsIre = 20104,
+
+        [ParentCombo(VPR_AoE_CDs)] [CustomComboInfo("Pit Of Dread", "Adds Pit Of Dread to the rotation.", VPR.JobID)]
+        VPR_AoE_PitOfDread = 20105,
+
+        [ParentCombo(VPR_AoE_PitOfDread)] [CustomComboInfo("Pit Of Dread Combo", "Adds Swiftskin's Den and Hunter's Den to the rotation.", VPR.JobID)]
+        VPR_AoE_PitOfDreadCombo = 20106,
+
+        #endregion
+
+        [ParentCombo(VPR_AoE_AdvancedMode)] [CustomComboInfo("Serpents Tail", "Adds Serpents Tail to the rotation.", VPR.JobID)]
+        VPR_AoE_SerpentsTail = 20107,
+
+        [ParentCombo(VPR_AoE_AdvancedMode)] [CustomComboInfo("Uncoiled Fury", "Adds Uncoiled Fury to the rotation.", VPR.JobID)]
+        VPR_AoE_UncoiledFury = 20108,
+
+        [ParentCombo(VPR_AoE_UncoiledFury)]
+        [CustomComboInfo("Uncoiled Fury Combo", "Adds Uncoiled Twinfang and Uncoiled Twinblood to the rotation.", VPR.JobID)]
+        VPR_AoE_UncoiledFuryCombo = 20109,
+
+        [ParentCombo(VPR_AoE_AdvancedMode)] [CustomComboInfo("Reawaken", "Adds Reawaken to the rotation.", VPR.JobID)]
+        VPR_AoE_Reawaken = 20110,
+
+        [ParentCombo(VPR_AoE_AdvancedMode)] [CustomComboInfo("Reawaken Combo", "Adds Generation and Legacy to the rotation.", VPR.JobID)]
+        VPR_AoE_ReawakenCombo = 20112,
+
+        [ParentCombo(VPR_AoE_AdvancedMode)] [CustomComboInfo("Combo Heals Option", "Adds Bloodbath and Second Wind to the rotation.", VPR.JobID)]
+        VPR_AoE_ComboHeals = 20199,
+
+        #endregion
+
+        [ReplaceSkill(VPR.Dreadwinder)]
+        [CustomComboInfo("Dreadwinder - Coils", "Replaces Dreadwinder with the Coils.\n Also adds Twinfang and Twinblood to the button.", VPR.JobID)]
+        VPR_DreadwinderCoils = 20200,
+
+        [ReplaceSkill(VPR.PitofDread)]
+        [CustomComboInfo("Pit Of Dread - Dens", "Replaces Pits Of Dread with the Dens.\n Also adds Twinfang and Twinblood to the button.", VPR.JobID)]
+        VPR_PitOfDreadDens = 20201,
+
+        [ReplaceSkill(VPR.UncoiledFury)]
+        [CustomComboInfo("Uncoiled - Twins", "Replaces Uncoiled Fury with Uncoiled Twinfang and Uncoiled Twinblood.", VPR.JobID)]
+        VPR_UncoiledTwins = 20202,
+
+        [ReplaceSkill(VPR.Reawaken)] [CustomComboInfo("Reawawken - Legacy", "Replaces Reawaken with the Generations and Legacy's.", VPR.JobID)]
+        VPR_ReawakenLegacy = 20203,
 
         #endregion
 
@@ -2978,7 +3091,7 @@ namespace XIVSlothComboX.Combos
             "自定义循环",
             WAR.JobID, -10, "", "")]
         WAR_Advanced_CustomMode = 180001,
-        
+
         [ReplaceSkill(WAR.StormsPath)]
         [CustomComboInfo("暴风斩连击", "战士主连击整合，加入暴风斩/碎.\n如果下面的所有子选项和裂石飞环/地毁人亡都被打开并加以设定，会形成一个完整的一键连击（高级战士，有一定智力的战士0.0）.", WAR.JobID, 0, "", "")]
         WAR_ST_StormsPath = 18000,
@@ -3069,14 +3182,13 @@ namespace XIVSlothComboX.Combos
 
         #region WHITE MAGE
 
-        
         [ReplaceSkill(All.Repose)]
         [CustomComboInfo("自定义循环",
             "自定义循环",
             WHM.JobID, -10, "", "")]
         WHM_Advanced_CustomMode = 190999,
 
-        
+
         #region Single Target DPS Feature
 
         [ReplaceSkill(WHM.Stone1, WHM.Stone2, WHM.Stone3, WHM.Stone4, WHM.Glare1, WHM.Glare3)]
@@ -3090,7 +3202,7 @@ namespace XIVSlothComboX.Combos
         [CustomComboInfo("Aero/Dia Uptime Option",
             "Adds Aero/Dia to the single target combo if the debuff is not present on current target, or is about to expire.", WHM.JobID, 12, "", "")]
         WHM_ST_MainCombo_DoT = 19013,
-        
+
         [ParentCombo(WHM_ST_MainCombo)]
         [CustomComboInfo("闪炽",
             "闪炽加入循环 移动或者剩余时间不够的时候", WHM.JobID, 12, "", "")]

@@ -185,8 +185,8 @@ namespace XIVSlothComboX.Combos.PvE
                         // healing - please move if not appropriate this high priority
                         if (IsEnabled(CustomComboPreset.MNK_ST_ComboHeals))
                         {
-                            if (PlayerHealthPercentageHp() <= PluginConfiguration.GetCustomIntValue(Config.MNK_AoESecondWindThreshold) && LevelChecked(All.内丹SecondWind) && IsOffCooldown(All.内丹SecondWind))
-                                return All.内丹SecondWind;
+                            if (PlayerHealthPercentageHp() <= PluginConfiguration.GetCustomIntValue(Config.MNK_AoESecondWindThreshold) && LevelChecked(All.SecondWind) && IsOffCooldown(All.SecondWind))
+                                return All.SecondWind;
                             if (PlayerHealthPercentageHp() <= PluginConfiguration.GetCustomIntValue(Config.MNK_AoEBloodbathThreshold) && LevelChecked(All.Bloodbath) && IsOffCooldown(All.Bloodbath))
                                 return All.Bloodbath;
                         }
@@ -438,8 +438,8 @@ namespace XIVSlothComboX.Combos.PvE
                                     // healing - please move if not appropriate this high priority
                                     if (IsEnabled(CustomComboPreset.MNK_ST_ComboHeals))
                                     {
-                                        if (PlayerHealthPercentageHp() <= PluginConfiguration.GetCustomIntValue(Config.MNK_STSecondWindThreshold) && LevelChecked(All.内丹SecondWind) && IsOffCooldown(All.内丹SecondWind))
-                                            return All.内丹SecondWind;
+                                        if (PlayerHealthPercentageHp() <= PluginConfiguration.GetCustomIntValue(Config.MNK_STSecondWindThreshold) && LevelChecked(All.SecondWind) && IsOffCooldown(All.SecondWind))
+                                            return All.SecondWind;
                                         if (PlayerHealthPercentageHp() <= PluginConfiguration.GetCustomIntValue(Config.MNK_STBloodbathThreshold) && LevelChecked(All.Bloodbath) && IsOffCooldown(All.Bloodbath))
                                             return All.Bloodbath;
                                     }
@@ -547,8 +547,8 @@ namespace XIVSlothComboX.Combos.PvE
                                 // healing - please move if not appropriate this high priority
                                 if (IsEnabled(CustomComboPreset.MNK_ST_ComboHeals))
                                 {
-                                    if (PlayerHealthPercentageHp() <= PluginConfiguration.GetCustomIntValue(Config.MNK_STSecondWindThreshold) && LevelChecked(All.内丹SecondWind) && IsOffCooldown(All.内丹SecondWind))
-                                        return All.内丹SecondWind;
+                                    if (PlayerHealthPercentageHp() <= PluginConfiguration.GetCustomIntValue(Config.MNK_STSecondWindThreshold) && LevelChecked(All.SecondWind) && IsOffCooldown(All.SecondWind))
+                                        return All.SecondWind;
                                     if (PlayerHealthPercentageHp() <= PluginConfiguration.GetCustomIntValue(Config.MNK_STBloodbathThreshold) && LevelChecked(All.Bloodbath) && IsOffCooldown(All.Bloodbath))
                                         return All.Bloodbath;
                                 }
