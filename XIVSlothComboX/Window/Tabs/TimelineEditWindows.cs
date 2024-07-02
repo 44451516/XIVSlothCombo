@@ -93,8 +93,16 @@ namespace XIVSlothComboX.Window.Tabs
 
                 if (ImGui.Button("保存".Loc()))
                 {
-                    int index = customTimelineList.Last().Index;
-
+                    int index = 1;
+                    if (customTimelineList.Count == 0)
+                    {
+                        index = 1;
+                    }
+                    else
+                    {
+                        index = customTimelineList.Last().Index;
+                    }
+                    
                     var customTimeline = new CustomTimeline();
                     customTimeline.Index = ++index;
                     customTimeline.JobId = Service.ClientState.LocalPlayer.ClassJob.Id;
