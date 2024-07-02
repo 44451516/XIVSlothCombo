@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Dalamud.Game;
 using Dalamud.Game.ClientState.JobGauge.Types;
@@ -14,16 +15,16 @@ namespace XIVSlothComboX.Data
     /// <summary> Cached conditional combo logic. </summary>
     internal partial class CustomComboCache : IDisposable
     {
-        private const uint InvalidObjectID = 0xE000_0000;
+         private const uint InvalidObjectID = 0xE000_0000;
 
         // Invalidate these
-        private readonly Dictionary<(uint statusID, ulong? GameObjectId, ulong? sourceID), DalamudStatus.Status?> statusCache = new();
-        private readonly Dictionary<uint, CooldownData> cooldownCache = new();
+        private readonly ConcurrentDictionary<(uint StatusID, ulong? TargetID, ulong? SourceID), DalamudStatus.Status?> statusCache = new();
+        private readonly ConcurrentDictionary<uint, CooldownData> cooldownCache = new();
 
         // Do not invalidate these
-        private readonly Dictionary<uint, byte> cooldownGroupCache = new();
-        private readonly Dictionary<Type, JobGaugeBase> jobGaugeCache = new();
-        private readonly Dictionary<(uint ActionID, uint ClassJobID, byte Level), (ushort CurrentMax, ushort Max)> chargesCache = new();
+        private readonly ConcurrentDictionary<uint, byte> cooldownGroupCache = new();
+        private readonly ConcurrentDictionary<Type, JobGaugeBase> jobGaugeCache = new();
+        private readonly ConcurrentDictionary<(uint ActionID, uint ClassJobID, byte Level), (ushort CurrentMax, ushort Max)> chargesCache = new();
 
         /// <summary> Initializes a new instance of the <see cref="CustomComboCache"/> class. </summary>
         public CustomComboCache() => Service.Framework.Update += Framework_Update;
@@ -51,7 +52,6 @@ namespace XIVSlothComboX.Data
         /// <returns> Status object or null. </returns>
         internal DalamudStatus.Status? GetStatus(uint statusID, IGameObject? obj, ulong? sourceID)
         {
-            // var key = (statusID, obj?.ObjectId, sourceID);
             var key = (statusID, obj?.GameObjectId, sourceID);
             if (statusCache.TryGetValue(key, out DalamudStatus.Status? found))
                 return found;
@@ -59,7 +59,7 @@ namespace XIVSlothComboX.Data
             if (obj is null)
                 return statusCache[key] = null;
 
-            if (obj is not Dalamud.Game.ClientState.Objects.Types.IBattleChara chara)
+            if (obj is not IBattleChara chara)
                 return statusCache[key] = null;
 
             foreach (DalamudStatus.Status? status in chara.StatusList)
@@ -70,8 +70,6 @@ namespace XIVSlothComboX.Data
 
             return statusCache[key] = null;
         }
-        
-        
 
         /// <summary> Gets the cooldown data for an action. </summary>
         /// <param name="actionID"> Action ID to check. </param>
@@ -90,8 +88,10 @@ namespace XIVSlothComboX.Data
             RecastDetail* cooldownPtr = actionManager->GetRecastGroupDetail(cooldownGroup - 1);
             if (cooldownPtr is null)
             {
-                CooldownData data = new();
-                data.CooldownTotal = -1;
+                CooldownData data = new()
+                {
+                    CooldownTotal = -1
+                };
 
                 return cooldownCache[actionID] = data;
             }
