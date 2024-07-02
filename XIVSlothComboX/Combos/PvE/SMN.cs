@@ -127,7 +127,7 @@ namespace XIVSlothComboX.Combos.PvE
             灼热之光SearingLight = 25801,
             EnkindleSolarBahamut = 36998,
             SummonSolarBahamut = 36992,
-            Sunflare = 36996,    
+            Sunflare = 36996,
             UmbralImpulse = 36994, //Single target Solar Bahamut GCD
             UmbralFlare = 36995, //AoE Solar Bahamut GCD
             灼热的闪光SearingFlash = 36991;
@@ -480,16 +480,24 @@ namespace XIVSlothComboX.Combos.PvE
                         {
                             if (IsEnabled(CustomComboPreset.SMN_Advanced_Combo_DemiSummons_Attacks) && DemiAttackCount >= 延迟几个GCD打爆发)
                             {
-                                if (IsSolarBahamutReady && IsOffCooldown(OriginalHook(EnkindleSolarBahamut)) && LevelChecked(SummonSolarBahamut))
-                                    return OriginalHook(EnkindleSolarBahamut);
+                                if (GetCooldownRemainingTime(灼热之光SearingLight) is >= 10)
+                                {
+                                    if (IsSolarBahamutReady)
+                                    {
+                                        if (Sunflare.ActionReady())
+                                            return OriginalHook(星极超流AstralFlow);
 
-                                if (IsOffCooldown(OriginalHook(龙神迸发EnkindleBahamut)) && GetCooldownRemainingTime(灼热之光SearingLight) is >= 10 &&
-                                    LevelChecked(龙神召唤SummonBahamut))
-                                    return OriginalHook(龙神迸发EnkindleBahamut);
+                                        if (IsOffCooldown(OriginalHook(EnkindleSolarBahamut)) &&
+                                            LevelChecked(SummonSolarBahamut))
+                                            return OriginalHook(EnkindleSolarBahamut);
+                                    }
 
-                                if (IsOffCooldown(死星核爆) && LevelChecked(死星核爆) && GetCooldownRemainingTime(灼热之光SearingLight) is >= 10 &&
-                                    OriginalHook(Ruin) is 星极脉冲AstralImpulse)
-                                    return OriginalHook(星极超流AstralFlow);
+                                    if (IsOffCooldown(OriginalHook(龙神迸发EnkindleBahamut)) && LevelChecked(龙神召唤SummonBahamut))
+                                        return OriginalHook(龙神迸发EnkindleBahamut);
+
+                                    if (死星核爆.ActionReady())
+                                        return OriginalHook(星极超流AstralFlow);
+                                }
                             }
 
                             // Demi Nuke 2: Electric Boogaloo
@@ -867,8 +875,6 @@ namespace XIVSlothComboX.Combos.PvE
                 {
                     if (CanSpellWeavePlus(actionID))
                     {
-                        
-                        
                         if (IsOffCooldown(龙神迸发EnkindleBahamut) && GetCooldownRemainingTime(灼热之光SearingLight) is >= 10 &&
                             OriginalHook(Ruin) is 星极脉冲AstralImpulse)
                             return OriginalHook(龙神迸发EnkindleBahamut);
@@ -880,7 +886,7 @@ namespace XIVSlothComboX.Combos.PvE
                              IsOffCooldown(死星核爆)) ||
                             (OriginalHook(星极超流AstralFlow) is Rekindle && IsOffCooldown(Rekindle)))
                             return OriginalHook(星极超流AstralFlow);
-                        
+
                         if (OriginalHook(星极超流AstralFlow) is Sunflare && IsOffCooldown(Sunflare))
                             return OriginalHook(Sunflare);
                     }
