@@ -5,6 +5,7 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.Game.Gauge;
 using ImGuiNET;
 using XIVSlothComboX.Combos;
 using XIVSlothComboX.Combos.JobHelpers;
@@ -85,6 +86,25 @@ namespace XIVSlothComboX.Window.Tabs
                         
                         // ImGui.TextUnformatted($"恢复药状态 : {ActionManager.Addresses.GetAdjustedActionIdwas}");
                     }
+                    var gauge = new TmpPCTGauge();
+                    
+                    ImGui.TextUnformatted($"豆子: {gauge.豆子}");
+                    ImGui.TextUnformatted($"能量: {gauge.能量}");
+                    ImGui.TextUnformatted($"CreatureFlags: {gauge.CreatureFlags}");
+                    ImGui.TextUnformatted($"CanvasFlags: {gauge.CanvasFlags}");
+                    ImGui.TextUnformatted($"CreatureMotifDrawn: {gauge.生物画}");
+                    ImGui.TextUnformatted($"LandscapeMotifDrawn: {gauge.风景画}");
+                    ImGui.TextUnformatted($"WeaponMotifDrawn: {gauge.武器画}");
+                    ImGui.TextUnformatted($"MadeenPortraitReady: {gauge.蔬菜准备}");
+                    ImGui.TextUnformatted($"MooglePortraitReady: {gauge.莫古准备}");
+                    /*ImGui.TextUnformatted($"PalleteGauge: {gauge.PalleteGauge}");
+                    ImGui.TextUnformatted($"CanvasFlags: {gauge.CanvasFlags}");
+                    ImGui.TextUnformatted($"CreatureFlags: {gauge.CreatureFlags}");
+                    ImGui.TextUnformatted($"CreatureMotifDrawn: {gauge.CreatureMotifDrawn}");
+                    ImGui.TextUnformatted($"LandscapeMotifDrawn: {gauge.LandscapeMotifDrawn}");
+                    ImGui.TextUnformatted($"WeaponMotifDrawn: {gauge.WeaponMotifDrawn}");
+                    ImGui.TextUnformatted($"MadeenPortraitReady: {gauge.MadeenPortraitReady}");
+                    ImGui.TextUnformatted($"MooglePortraitReady: {gauge.MooglePortraitReady}");*/
 
 
                     // ImGui.TextUnformatted($"buff : {CustomComboFunctions.GetBuffRemainingTime(PLD.Buffs.DivineMight)}");

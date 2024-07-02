@@ -249,6 +249,29 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             return false;
 
         }
+        private unsafe uint GetActionState(uint actionID)
+        {
+            return ActionManager.Instance()->GetActionStatus(ActionType.Action, actionID);
+        }
+
+        public bool CanUse(uint actionID)
+        {
+            if (GetActionState(actionID)==572)//黑的
+            {
+                return false;
+            }
+            if (GetActionState(actionID)==573)//没学技能
+            {
+                return false;
+            }
+
+            if (GetActionState(actionID)==582)//没准备好
+            {
+                return false;
+            }
+
+            return true;
+        }
         private static bool checkUseAbility()
         {
 

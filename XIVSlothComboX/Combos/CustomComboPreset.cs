@@ -3359,6 +3359,16 @@ namespace XIVSlothComboX.Combos
 
         #endregion
 
+        #region PICTOMANCER
+
+        [CustomComboInfo("一键模式 - 单目标", "将1替换为一键单目标连击。", PCT.JobID)]
+        PCT_ST_EasyMode = 21000,
+        
+        [CustomComboInfo("一键模式 - 多目标", "将aoe1替换为一键多目标连击。", PCT.JobID)]
+        PCT_AOE_EasyMode = 21001,
+
+        #endregion
+
         // Non-combat
 
         #region DOH
