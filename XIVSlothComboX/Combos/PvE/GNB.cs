@@ -238,7 +238,7 @@ namespace XIVSlothComboX.Combos.PvE
                                             return OriginalHook(烈牙GnashingFang);
                                         }
 
-                                        if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gnbGauge.Ammo >= 2)
+                                        if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gnbGauge.Ammo >= 1)
                                         {
                                             return 倍攻DoubleDown;
                                         }
@@ -264,7 +264,7 @@ namespace XIVSlothComboX.Combos.PvE
                                             return OriginalHook(烈牙GnashingFang);
                                         }
 
-                                        if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gnbGauge.Ammo >= 2)
+                                        if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gnbGauge.Ammo >= 1)
                                         {
                                             return 倍攻DoubleDown;
                                         }
@@ -295,7 +295,7 @@ namespace XIVSlothComboX.Combos.PvE
                                             return OriginalHook(烈牙GnashingFang);
                                         }
 
-                                        if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gnbGauge.Ammo >= 2)
+                                        if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gnbGauge.Ammo >= 1)
                                         {
                                             return 倍攻DoubleDown;
                                         }
@@ -316,7 +316,7 @@ namespace XIVSlothComboX.Combos.PvE
                                             return OriginalHook(血壤Bloodfest);
                                         }
 
-                                        if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gnbGauge.Ammo >= 2)
+                                        if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gnbGauge.Ammo >= 1)
                                         {
                                             return 倍攻DoubleDown;
                                         }
@@ -337,7 +337,7 @@ namespace XIVSlothComboX.Combos.PvE
 
                                     case 5:
                                     {
-                                        if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gnbGauge.Ammo >= 2)
+                                        if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gnbGauge.Ammo >= 1)
                                         {
                                             return 倍攻DoubleDown;
                                         }
@@ -363,7 +363,7 @@ namespace XIVSlothComboX.Combos.PvE
 
                                     case 6:
                                     {
-                                        if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gnbGauge.Ammo >= 2)
+                                        if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gnbGauge.Ammo >= 1)
                                         {
                                             return 倍攻DoubleDown;
                                         }
@@ -390,7 +390,7 @@ namespace XIVSlothComboX.Combos.PvE
                                     }
                                     default:
                                     {
-                                        if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gnbGauge.Ammo >= 2)
+                                        if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && 倍攻是否准备就绪() && gnbGauge.Ammo >= 1)
                                         {
                                             return 倍攻DoubleDown;
                                         }
@@ -615,7 +615,7 @@ namespace XIVSlothComboX.Combos.PvE
                         return true;
                     }
 
-                    if (gnbGauge.Ammo >= 2 && lastComboMove == 残暴弹BrutalShell)
+                    if (gnbGauge.Ammo >= 1 && lastComboMove == 残暴弹BrutalShell)
                     {
                         if (子弹连是否准备就绪())
                         {
@@ -650,7 +650,7 @@ namespace XIVSlothComboX.Combos.PvE
                         return true;
                     }
 
-                    if (gnbGauge.AmmoComboStep is 1 && gnbGauge.Ammo >= 2)
+                    if (gnbGauge.AmmoComboStep is 1 && gnbGauge.Ammo >= 1)
                     {
                         return true;
                     }
