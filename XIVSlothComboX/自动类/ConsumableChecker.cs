@@ -2,11 +2,10 @@
 using System.Linq;
 using Artisan.GameInterop;
 using ECommons.DalamudServices;
-using ECommons.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 
 namespace XIVSlothComboX.自动类
 {
@@ -23,7 +22,7 @@ namespace XIVSlothComboX.自动类
         internal static void Init()
         {
             itemContextMenuAgent = Framework.Instance()->UIModule->GetAgentModule()->GetAgentByInternalId(AgentId.InventoryContext);
-            Usables = Svc.Data.GetExcelSheet<Item>().Where(i => i.ItemAction.Row > 0).ToDictionary(i => i.RowId, i => i.Name.ToString().ToLower()).Concat(Svc.Data.GetExcelSheet<EventItem>().Where(i => i.Action.Row > 0).ToDictionary(i => i.RowId, i => i.Name.ToString().ToLower())).ToDictionary(kv => kv.Key, kv => kv.Value);
+            Usables = Svc.Data.GetExcelSheet<Item>().Where(i => i.ItemAction.RowId > 0).ToDictionary(i => i.RowId, i => i.Name.ToString().ToLower()).Concat(Svc.Data.GetExcelSheet<EventItem>().Where(i => i.Action.RowId > 0).ToDictionary(i => i.RowId, i => i.Name.ToString().ToLower())).ToDictionary(kv => kv.Key, kv => kv.Value);
             Food = Svc.Data.GetExcelSheet<Item>().Where(IsFood).Select(x => (x.RowId, x.Name.ToString())).ToArray();
             Pots = Svc.Data.GetExcelSheet<Item>().Where(IsCraftersPot).Select(x => (x.RowId, x.Name.ToString())).ToArray();
             Manuals = Svc.Data.GetExcelSheet<Item>().Where(IsManual).Select(x => (x.RowId, x.Name.ToString())).ToArray();
@@ -65,9 +64,7 @@ namespace XIVSlothComboX.自动类
         internal static ItemFood? GetItemConsumableProperties(Item item, bool hq)
         {
             var action = item.ItemAction.Value;
-            if (action == null)
-                return null;
-
+            
             var actionParams = hq ? action.DataHQ : action.Data; // [0] = status, [1] = extra == ItemFood row, [2] = duration
             if (actionParams[0] is not 48 and not 49)
                 return null; // not 'well fed' or 'medicated'
@@ -78,7 +75,7 @@ namespace XIVSlothComboX.自动类
         
         internal static bool IsFood(Item item)
         {
-            if (item.ItemUICategory.Row == 46)
+            if (item.ItemUICategory.RowId == 46)
             {
                 var consumable = GetItemConsumableProperties(item, false);
                 return consumable != null; // cp/craftsmanship/control
@@ -88,7 +85,7 @@ namespace XIVSlothComboX.自动类
         }
         internal static bool IsCraftersFood(Item item)
         {
-            if (item.ItemUICategory.Row == 45 || item.ItemUICategory.Row == 46)
+            if (item.ItemUICategory.RowId == 45 || item.ItemUICategory.RowId == 46)
             {
                 var consumable = GetItemConsumableProperties(item, false);
                 return consumable != null; // cp/craftsmanship/control
@@ -99,29 +96,30 @@ namespace XIVSlothComboX.自动类
 
         internal static bool IsCraftersPot(Item item)
         {
-            if (item.ItemUICategory.Row != 44)
+            if (item.ItemUICategory.RowId != 44)
                 return false; // not a 'medicine'
 
             var consumable = GetItemConsumableProperties(item, false);
-            return consumable != null && consumable.UnkData1.Any(p => p.BaseParam is 11 or 70 or 71 or 69 or 68); // cp/craftsmanship/control/increased spiritbond/reduced durability loss
+            
+            return consumable != null && consumable.Value.Params.Any(p => p.BaseParam.RowId is 11 or 70 or 71 or 69 or 68); // cp/craftsmanship/control/increased spiritbond/reduced durability loss
         }
 
         internal static bool IsManual(Item item)
         {
-            if (item.ItemUICategory.Row != 63)
+            if (item.ItemUICategory.RowId != 63)
                 return false; // not 'other'
 
             var action = item.ItemAction.Value;
-            return action != null && action.Type == 816 && action.Data[0] is 300 or 301 or 1751 or 5329;
+            return  action.Type == 816 && action.Data[0] is 300 or 301 or 1751 or 5329;
         }
 
         internal static bool IsSquadronManual(Item item)
         {
-            if (item.ItemUICategory.Row != 63)
+            if (item.ItemUICategory.RowId != 63)
                 return false; // not 'other'
 
             var action = item.ItemAction.Value;
-            return action != null && action.Type == 816 && action.Data[0] is 2291 or 2292 or 2293 or 2294;
+            return  action.Type == 816 && action.Data[0] is 2291 or 2292 or 2293 or 2294;
         }
 
 

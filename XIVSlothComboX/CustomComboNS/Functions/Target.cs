@@ -4,8 +4,11 @@ using System.Numerics;
 using Dalamud.Game.ClientState.Objects;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
+using ECommons;
+using ECommons.DalamudServices;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
+using Lumina.Excel.Sheets;
 using XIVSlothComboX.Data;
 using XIVSlothComboX.Services;
 
@@ -245,8 +248,8 @@ namespace XIVSlothComboX.CustomComboNS.Functions
                 return false;
             if (TargetHasEffectAny(3808)) 
                 return false; // Directional Disregard Effect (Patch 7.01)
-            if (ActionWatching.BNpcSheet.TryGetValue(CurrentTarget.DataId, out var bnpc) && !bnpc.Unknown10)
-                return true;
+                if (Svc.Data.Excel.GetSheet<BNpcBase>().TryGetFirst(x => x.RowId == CurrentTarget.DataId, out var bnpc) && !bnpc.IsOmnidirectional) 
+                    return true;
             return false;
         }
 

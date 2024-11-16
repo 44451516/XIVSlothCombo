@@ -13,7 +13,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
+		<DalamudLibPath>F:\下载\latestAPI11\</DalamudLibPath>
+<!--		<DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>-->
 		<AssemblyName>XIVSlothComboX</AssemblyName>
 		<RootNamespace>XIVSlothComboX</RootNamespace>
 		<PackageId>XIVSlothComboX</PackageId>
@@ -44,7 +45,7 @@
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 <!--		<OutputPath>$(appdata)\XIVLauncher\devPlugins\XIVSlothComboX7.0\</OutputPath>-->
-		<OutputPath>E:\Games\FFVIX\Dalamud6.0\XIVLauncher\devPlugins\XIVSlothComboX\</OutputPath>
+<!--		<OutputPath>E:\Games\FFVIX\Dalamud6.0\XIVLauncher\devPlugins\XIVSlothComboX\</OutputPath>-->
 		<NoWarn>CS1591</NoWarn>
 	</PropertyGroup>
 
@@ -115,8 +116,12 @@
 
 		<Reference Include="InteropGenerator.Runtime">
 			<HintPath>$(DalamudLibPath)InteropGenerator.Runtime.dll</HintPath>
-<!--			<HintPath>C:\Users\Omnicrone\AppData\Roaming\XIVLauncher\dev\InteropGenerator.Runtime.dll</HintPath>-->
 			<Private>false</Private>
+		</Reference>		
+		
+		<Reference Include="ECommons">
+			<HintPath>F:\下载\ECommons-20241116\ECommons-master\ECommons\bin\Release\</HintPath>
+			<Private>True</Private>
 		</Reference>
 
 	</ItemGroup>

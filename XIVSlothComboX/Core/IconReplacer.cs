@@ -74,8 +74,8 @@ namespace XIVSlothComboX.Core
                     return OriginalHook(actionID);
 
                 if (ClassLocked() || 
-                    (DisabledJobsPVE.Any(x => x == Service.ClientState.LocalPlayer.ClassJob.Id) && !Service.ClientState.IsPvP) || 
-                    (DisabledJobsPVP.Any(x => x == Service.ClientState.LocalPlayer.ClassJob.Id) && Service.ClientState.IsPvP)) 
+                    (DisabledJobsPVE.Any(x => x == Service.ClientState.LocalPlayer.ClassJob.RowId) && !Service.ClientState.IsPvP) || 
+                    (DisabledJobsPVP.Any(x => x == Service.ClientState.LocalPlayer.ClassJob.RowId) && Service.ClientState.IsPvP)) 
                     return OriginalHook(actionID);
 
                 uint lastComboMove =  ActionManager.Instance()->Combo.Action;
@@ -108,14 +108,14 @@ namespace XIVSlothComboX.Core
             if (Service.ClientState.LocalPlayer.Level <= 35) 
                 return false;
 
-            if (Service.ClientState.LocalPlayer.ClassJob.Id is
+            if (Service.ClientState.LocalPlayer.ClassJob.RowId is
                 (>= 8 and <= 25) or 27 or 28 or >= 30)
                 return false;
 
             if (!UIState.Instance()->IsUnlockLinkUnlockedOrQuestCompleted(66049))
                 return false;
 
-            if ((Service.ClientState.LocalPlayer.ClassJob.Id is 1 or 2 or 3 or 4 or 5 or 6 or 7 or 26 or 29) &&
+            if ((Service.ClientState.LocalPlayer.ClassJob.RowId is 1 or 2 or 3 or 4 or 5 or 6 or 7 or 26 or 29) &&
                 Service.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty] &&
                 Service.ClientState.LocalPlayer.Level > 35) 
                 return true;

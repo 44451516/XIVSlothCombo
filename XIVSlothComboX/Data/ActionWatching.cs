@@ -7,38 +7,35 @@ using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Hooking;
 using ECommons.GameFunctions;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.Game.Object;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 using XIVSlothComboX.Combos.PvE;
 using XIVSlothComboX.Core;
 using XIVSlothComboX.CustomComboNS.Functions;
 using XIVSlothComboX.Services;
-using Action = Lumina.Excel.GeneratedSheets.Action;
 using AST = XIVSlothComboX.Combos.PvE.AST;
-using Status = Lumina.Excel.GeneratedSheets.Status;
+using Status = FFXIVClientStructs.FFXIV.Client.Game.Status;
 using Vector3Struct = FFXIVClientStructs.FFXIV.Common.Math.Vector3;
 
 namespace XIVSlothComboX.Data
 {
     public static class ActionWatching
     {
-        internal static Dictionary<uint, Action> ActionSheet =
-            Service.DataManager.GetExcelSheet<Action>()!
+        internal static Dictionary<uint, Lumina.Excel.Sheets.Action> ActionSheet =
+            Service.DataManager.GetExcelSheet<Lumina.Excel.Sheets.Action>()!
                 .Where(i => i.RowId is not 7)
                 .ToDictionary(i => i.RowId, i => i);
 
-        internal static Dictionary<uint, Status> StatusSheet =
-            Service.DataManager.GetExcelSheet<Status>()!
+        internal static Dictionary<uint, Lumina.Excel.Sheets.Status> StatusSheet =
+            Service.DataManager.GetExcelSheet<Lumina.Excel.Sheets.Status>()!
                 .ToDictionary(i => i.RowId, i => i);
 
         internal static Dictionary<uint, Item> ItemsSheet =
             Service.DataManager.GetExcelSheet<Item>()!
                 .ToDictionary(i => i.RowId, i => i);
 
-
+        
         internal static Dictionary<uint, Trait> TraitSheet = Service.DataManager.GetExcelSheet<Trait>()!
-            .Where(i =>
-                i.ClassJobCategory is not null) //All player traits are assigned to a category. Chocobo and other garbage lacks this, thus excluded.
+            .Where(i => i.ClassJobCategory.IsValid) //All player traits are assigned to a category. Chocobo and other garbage lacks this, thus excluded.
             .ToDictionary(i => i.RowId, i => i);
 
         internal static Dictionary<uint, BNpcBase> BNpcSheet = Service.DataManager.GetExcelSheet<BNpcBase>()!
@@ -197,7 +194,6 @@ namespace XIVSlothComboX.Data
                 LastAction = header.ActionId;
 
                 ActionSheet.TryGetValue(header.ActionId, out var sheet);
-                if (sheet != null)
                 {
                     switch (sheet.ActionCategory.Value.RowId)
                     {
@@ -537,8 +533,7 @@ namespace XIVSlothComboX.Data
             CustomList.Clear();
         }
 
-        public static int GetLevel(uint id) =>
-            ActionSheet.TryGetValue(id, out var action) && action.ClassJobCategory is not null ? action.ClassJobLevel : 255;
+        public static int GetLevel(uint id) => ActionSheet.TryGetValue(id, out var action) && action.ClassJobCategory.IsValid ? action.ClassJobLevel : 255;
 
         public static float GetActionCastTime(uint id) => ActionSheet.TryGetValue(id, out var action) ? action.Cast100ms / (float)10 : 0;
 
@@ -546,17 +541,18 @@ namespace XIVSlothComboX.Data
             ActionSheet.TryGetValue(id, out var action) ? action.Range : -2; // 0 & -1 are valid numbers. -2 is our failure code for InActionRange
 
         public static int GetActionEffectRange(uint id) => ActionSheet.TryGetValue(id, out var action) ? action.EffectRange : -1;
-        public static int GetTraitLevel(uint id) => TraitSheet.TryGetValue(id, out var trait) ? trait.Level : 255;
-        public static string GetActionName(uint id) => ActionSheet.TryGetValue(id, out var action) ? (string)action.Name : "UNKNOWN ABILITY";
-        public static string GetItemName(uint id) => ItemsSheet.TryGetValue(id, out var item) ? (string)item.Name : "UNKNOWN ITEM";
-        public static string GetStatusName(uint id) => StatusSheet.TryGetValue(id, out var status) ? (string)status.Name : "Unknown Status";
+        public static int GetTraitLevel(uint        id) => TraitSheet.TryGetValue(id, out var trait) ? trait.Level : 255;
+        public static string GetActionName(uint     id) => ActionSheet.TryGetValue(id, out var action) ? action.Name.ToString() : "UNKNOWN ABILITY";
+
+        public static string GetItemName(uint id) => ItemsSheet.TryGetValue(id, out var item) ? item.Name.ToString() : "UNKNOWN ITEM";
+        public static string GetStatusName(uint id) => StatusSheet.TryGetValue(id, out var status) ? status.Name.ToString() : "Unknown Status";
 
         
      
         
         public static string GetBLUIndex(uint id)
         {
-            var aozKey = Service.DataManager.GetExcelSheet<AozAction>()!.First(x => x.Action.Row == id).RowId;
+            var aozKey = Service.DataManager.GetExcelSheet<AozAction>()!.First(x => x.Action.RowId == id).RowId;
             var index = Service.DataManager.GetExcelSheet<AozActionTransient>().GetRow(aozKey).Number;
 
             return $"#{index} ";
@@ -578,7 +574,7 @@ namespace XIVSlothComboX.Data
         {
             if (!ActionSheet.TryGetValue(id, out var action)) return ActionAttackType.Unknown;
 
-            return action.ActionCategory.Row switch
+            return action.ActionCategory.RowId switch
             {
                 2 => ActionAttackType.Spell,
                 3 => ActionAttackType.Weaponskill,

@@ -194,7 +194,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
                 return false;
             }
 
-            if (LocalPlayer.ClassJob.Id == _CustomTimeline.JobId)
+            if (LocalPlayer.ClassJob.RowId == _CustomTimeline.JobId)
             {
                 return true;
             }
