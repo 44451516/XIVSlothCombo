@@ -37,7 +37,7 @@ namespace XIVSlothComboX.Window.Tabs
          
             if (ImGui.Button("有问题来这里提"))
             {
-                Util.OpenLink("https://docs.qq.com/sheet/DT2JDcGl0SGhKWUFD?tab=BB08J2");
+                Util.OpenLink("https://docs.qq.com/sheet/DT0JZdlVHaklSSkN6&tab=cr8tma");
                 // Util.OpenLink("https://github.com/44451516/XIVSlothCombo/issues");
             }
 

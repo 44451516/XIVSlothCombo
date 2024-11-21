@@ -21,6 +21,7 @@ public class RaidBuff
         罐毒之术 = 3849,
         受伤加重 = 638,
         技巧舞步结束TechnicalFinish = 1822,
+        战斗之声 = 141,
         留空 = 0;
 
 
@@ -31,27 +32,29 @@ public class RaidBuff
             return true;
         }
 
-        if (CustomComboFunctions.HasEffect(灼热之光))
+        if (CustomComboFunctions.HasEffectAny(灼热之光))
         {
             return true;
         }
 
-        if (CustomComboFunctions.HasEffect(技巧舞步结束TechnicalFinish))
+        if (CustomComboFunctions.HasEffectAny(技巧舞步结束TechnicalFinish))
         {
             return true;
         }
 
-
-        if (CustomComboFunctions.HasEffect(星空))
+        if (CustomComboFunctions.HasEffectAny(星空))
             return true;
 
-        if (CustomComboFunctions.HasEffect(占卜))
+        if (CustomComboFunctions.HasEffectAny(占卜))
             return true;
 
-        if (CustomComboFunctions.HasEffect(义结金兰))
+        if (CustomComboFunctions.HasEffectAny(义结金兰))
             return true;
 
-        if (CustomComboFunctions.HasEffect(战斗连祷))
+        if (CustomComboFunctions.HasEffectAny(战斗连祷))
+            return true;
+        
+        if (CustomComboFunctions.HasEffectAny(战斗之声))
             return true;
 
 

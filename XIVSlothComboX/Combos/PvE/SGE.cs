@@ -1,17 +1,13 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
-using System.Collections.Generic;
-using System.Linq;
-using XIVSlothComboX.Combos.JobHelpers;
 using XIVSlothComboX.Combos.PvE.Content;
-using XIVSlothComboX.Core;
 using XIVSlothComboX.CustomComboNS;
 using XIVSlothComboX.CustomComboNS.Functions;
-using XIVSlothComboX.Data;
 using XIVSlothComboX.Extensions;
-using XIVSlothComboX.Services;
 
 namespace XIVSlothComboX.Combos.PvE
 {
@@ -409,7 +405,7 @@ namespace XIVSlothComboX.Combos.PvE
                         if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Phlegma) && InCombat())
                         {
                             uint phlegma = OriginalHook(Phlegma);
-                            if (InActionRange(phlegma) && GetCooldownRemainingTime(phlegma) < 5)
+                            if (InActionRange(phlegma) && phlegma.LevelChecked() && GetCooldownRemainingTime(phlegma) < 5)
                             {
                                 return phlegma;
                             }

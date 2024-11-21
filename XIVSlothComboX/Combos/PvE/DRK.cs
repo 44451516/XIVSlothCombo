@@ -312,11 +312,11 @@ namespace XIVSlothComboX.Combos.PvE
                         }
 
 
-                        if (IsEnabled(CustomComboPreset.DRK_MainComboCDs_Group) && combatTotalSeconds > burstDelayGCD)
+                        if (IsEnabled(CustomComboPreset.DRK_MainComboCDs_Group))
                         {
                             if (IsEnabled(CustomComboPreset.DRK_蔑视厌恶))
                             {
-                                if (蔑视厌恶Disesteem.LevelChecked() && HasEffect(Buffs.Scorn))
+                                if (GetBuffRemainingTime(Buffs.Scorn) is > 0 and <= 4)
                                 {
                                     return 蔑视厌恶Disesteem;
                                 }
@@ -425,7 +425,14 @@ namespace XIVSlothComboX.Combos.PvE
                                 }
                             }
                         }
-
+                        
+                        if (IsEnabled(CustomComboPreset.DRK_蔑视厌恶))
+                        {
+                            if (蔑视厌恶Disesteem.LevelChecked()  && RaidBuff.爆发期() && HasEffect(Buffs.Scorn))
+                            {
+                                return 蔑视厌恶Disesteem;
+                            }
+                        }
 
                         // 1-2-3 combo
                         if (comboTime > 0)

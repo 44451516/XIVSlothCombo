@@ -89,7 +89,20 @@ namespace XIVSlothComboX.Data
                     }
                     else
                     {
-                        CustomList.Add(actionId);
+                        if (CustomComboFunctions._CustomTimeline != null)
+                        {
+                            foreach (var tCustomAction in CustomComboFunctions._CustomTimeline.ActionList)
+                            {
+                                if (tCustomAction.CustomActionType == CustomType.序列)
+                                {
+                                    if (tCustomAction.ActionId == actionId)
+                                    {
+                                        CustomList.Add(actionId);
+                                    }
+                                }
+                            }
+                        }
+                     
                     }
                 }
             }

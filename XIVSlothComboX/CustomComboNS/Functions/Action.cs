@@ -69,7 +69,8 @@ namespace XIVSlothComboX.CustomComboNS.Functions
                     if (radius > 0)
                     {
                         //Do not nest with above
-                        if (HasTarget()) return GetTargetDistance() <= (radius - 0.5f);
+                        if (HasTarget())
+                            return GetTargetDistance() <= (radius - 0.5f);
                         else return false;
                     }
                     else return true; //Self use targets (Second Wind) have no radius
