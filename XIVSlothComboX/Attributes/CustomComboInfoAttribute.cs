@@ -192,19 +192,13 @@ namespace XIVSlothComboX.Attributes
 
 
         private static readonly Dictionary<uint, ClassJob> ClassJobs = Service.DataManager.GetExcelSheet<ClassJob>()!.ToDictionary(i => i.RowId, i => i);
-
+   
+        
         public static string JobIDToName(byte key)
         {
             if (key == 0)
                 return "通用职业";
-
-            if (key == 51)
-            {
-                ;
-                ;
-                ;
-            }
-
+            
             //Override DOH/DOL
             if (key is DOH.JobID) 
                 key = 08; //Set to Carpenter
@@ -214,23 +208,24 @@ namespace XIVSlothComboX.Attributes
             {
                 //Grab Category name for DOH/DOL, else the normal Name for the rest
                 // string jobname = key is 08 or 16 ? job.ClassJobCategory.Value.Name : job.Name;
-                string jobname = key is 08 or 16 ? "大地使者" : job.ToString();
+                string jobname = key is 08 or 16 ? job.ClassJobCategory.Value.Name.ToString() : job.Name.ToString();
                 //Job names are all lowercase by default. This capitalizes based on regional rules
-                string cultureID = Service.ClientState.ClientLanguage switch
+                string cultureID = Svc.ClientState.ClientLanguage switch
                 {
                     ClientLanguage.French => "fr-FR",
                     ClientLanguage.Japanese => "ja-JP",
                     ClientLanguage.German => "de-DE",
                     _ => "en-us",
                 };
+                
                 TextInfo textInfo = new CultureInfo(cultureID, false).TextInfo;
                 jobname = textInfo.ToTitleCase(jobname);
-                //if (key is 0) jobname = " " + jobname; //Adding space to the front of Global moves it to the top. Shit hack but works
                 return jobname;
 
             } //Misc or unknown
             else return key == 99 ? "Global" : "Unknown";
         }
+        
 
         /// <summary> Gets the meme job name. </summary>
         public string MemeJobName => MemeJobIDToName(JobID);
