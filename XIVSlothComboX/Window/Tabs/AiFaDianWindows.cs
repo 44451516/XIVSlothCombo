@@ -1,23 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Numerics;
-using Dalamud.Interface;
-using Dalamud.Interface.Colors;
-using Dalamud.Interface.Internal;
-using Dalamud.Interface.Textures.TextureWraps;
-using Dalamud.Interface.Utility;
+﻿using Dalamud.Interface.Colors;
 using Dalamud.Utility;
-using ECommons.ImGuiMethods;
-using ECommons.LanguageHelpers;
-using ECommons.Logging;
 using ImGuiNET;
-using Lumina.Excel;
-using Newtonsoft.Json;
-using XIVSlothComboX.Combos.PvE;
-using XIVSlothComboX.Core;
-using XIVSlothComboX.CustomComboNS.Functions;
-using XIVSlothComboX.Data;
-using XIVSlothComboX.Services;
-using Action = Lumina.Excel.Sheets.Action;
 
 namespace XIVSlothComboX.Window.Tabs
 {

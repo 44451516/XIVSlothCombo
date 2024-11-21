@@ -9,7 +9,6 @@
       "XIVSlothComboX/3.2.0.56": {
         "dependencies": {
           "DalamudPackager": "2.1.12",
-          "ECommons": "2.2.0.2",
           "ILRepack": "2.0.18"
         },
         "runtime": {
@@ -17,12 +16,7 @@
         }
       },
       "DalamudPackager/2.1.12": {},
-      "ILRepack/2.0.18": {},
-      "ECommons/2.2.0.2": {
-        "runtime": {
-          "ECommons.dll": {}
-        }
-      }
+      "ILRepack/2.0.18": {}
     }
   },
   "libraries": {
@@ -44,11 +38,6 @@
       "sha512": "sha512-sR5Aj3JLDbA8JwESfWYfigSz5k1oNSHPN434W1LX8sboWJYEOSQP/KkvZGmJKPgajzSUKkl2jDar3LPZiMFU4Q==",
       "path": "ilrepack/2.0.18",
       "hashPath": "ilrepack.2.0.18.nupkg.sha512"
-    },
-    "ECommons/2.2.0.2": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
     }
   }
 }

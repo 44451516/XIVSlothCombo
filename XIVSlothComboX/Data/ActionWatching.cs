@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Hooking;
+using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.Sheets;
@@ -12,34 +13,36 @@ using XIVSlothComboX.Combos.PvE;
 using XIVSlothComboX.Core;
 using XIVSlothComboX.CustomComboNS.Functions;
 using XIVSlothComboX.Services;
+using Action = Lumina.Excel.Sheets.Action;
 using AST = XIVSlothComboX.Combos.PvE.AST;
-using Status = FFXIVClientStructs.FFXIV.Client.Game.Status;
+using Status = Lumina.Excel.Sheets.Status;
 using Vector3Struct = FFXIVClientStructs.FFXIV.Common.Math.Vector3;
 
 namespace XIVSlothComboX.Data
 {
     public static class ActionWatching
     {
-        internal static Dictionary<uint, Lumina.Excel.Sheets.Action> ActionSheet =
-            Service.DataManager.GetExcelSheet<Lumina.Excel.Sheets.Action>()!
-                .Where(i => i.RowId is not 7)
-                .ToDictionary(i => i.RowId, i => i);
+        
+        internal static Dictionary<uint, Action> ActionSheet = Svc.Data.GetExcelSheet<Action>()!
+            .Where(i => i.RowId is not 7)
+            .ToDictionary(i => i.RowId, i => i);
 
-        internal static Dictionary<uint, Lumina.Excel.Sheets.Status> StatusSheet =
-            Service.DataManager.GetExcelSheet<Lumina.Excel.Sheets.Status>()!
-                .ToDictionary(i => i.RowId, i => i);
+        internal static Dictionary<uint, Status> StatusSheet = Svc.Data.GetExcelSheet<Status>()!
+            .ToDictionary(i => i.RowId, i => i);
+
+        internal static Dictionary<uint, Trait> TraitSheet = Svc.Data.GetExcelSheet<Trait>()!
+            .Where(i => i.ClassJobCategory.IsValid) //All player traits are assigned to a category. Chocobo and other garbage lacks this, thus excluded.
+            .ToDictionary(i => i.RowId, i => i);
+        
+        
 
         internal static Dictionary<uint, Item> ItemsSheet =
-            Service.DataManager.GetExcelSheet<Item>()!
+            Svc.Data.GetExcelSheet<Item>()!
                 .ToDictionary(i => i.RowId, i => i);
 
         
-        internal static Dictionary<uint, Trait> TraitSheet = Service.DataManager.GetExcelSheet<Trait>()!
-            .Where(i => i.ClassJobCategory.IsValid) //All player traits are assigned to a category. Chocobo and other garbage lacks this, thus excluded.
-            .ToDictionary(i => i.RowId, i => i);
-
-        internal static Dictionary<uint, BNpcBase> BNpcSheet = Service.DataManager.GetExcelSheet<BNpcBase>()!
-            .ToDictionary(i => i.RowId, i => i);
+   
+        
         
         internal static readonly Dictionary<uint, long> ChargeTimestamps = [];
         internal static readonly Dictionary<uint, long> ActionTimestamps = [];

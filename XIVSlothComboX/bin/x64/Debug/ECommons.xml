@@ -73,18 +73,6 @@
             <param name="message">Full text of the command.</param>
             <exception cref="T:System.InvalidOperationException">If you didn't prefixed it with a slash.</exception>
         </member>
-        <member name="M:ECommons.Automation.Chat.ExecuteGeneralAction(System.UInt32)">
-            <summary>
-            Executes General Action by ID via chat.
-            </summary>
-            <param name="generalActionId"></param>
-        </member>
-        <member name="M:ECommons.Automation.Chat.ExecuteAction(System.UInt32)">
-            <summary>
-            Executes Action by ID via chat.
-            </summary>
-            <param name="actionId"></param>
-        </member>
         <member name="M:ECommons.Automation.Chat.SanitiseText(System.String)">
             <summary>
             <para>
@@ -589,11 +577,6 @@
             <param name="other"></param>
             <param name="copyEvents">Whether to copy events. If true, events from other current configuration will be used, if false - from other.</param>
             <returns></returns>
-        </member>
-        <member name="T:ECommons.Automation.NeoTaskManager.Tasks.NeoTasks">
-            <summary>
-            A collection of functions that are very commonly used in various plugins
-            </summary>
         </member>
         <member name="M:ECommons.Automation.UIInput.ClickHelper.SendClick(System.String,System.IntPtr)">
             <summary>
@@ -1690,106 +1673,6 @@
             <param name="DefaultValue">Default value when creating data that doesn't exists.</param>
             <returns>Whether data could be obtained</returns>
         </member>
-        <member name="F:ECommons.GameFunctions.NameplateKind.PlayerCharacterSelf">
-            <summary>
-            Represents the player's own character.
-            </summary>
-        </member>
-        <member name="F:ECommons.GameFunctions.NameplateKind.InDutyPartyMember">
-            <summary>
-            Represents another party member in duty (job agnostic, likely only applicable in PVP).
-            </summary>
-        </member>
-        <member name="F:ECommons.GameFunctions.NameplateKind.InDutyPCNotInParty">
-            <summary>
-            Represents another player character in duty but not in the party.
-            </summary>
-        </member>
-        <member name="F:ECommons.GameFunctions.NameplateKind.EnemyMalestromPVPPC">
-            <summary>
-            Represents an enemy player character in Maelstrom PVP.
-            </summary>
-        </member>
-        <member name="F:ECommons.GameFunctions.NameplateKind.EnemyAdderPVPPC">
-            <summary>
-            Represents an enemy player character in Adder PVP.
-            </summary>
-        </member>
-        <member name="F:ECommons.GameFunctions.NameplateKind.EnemyFlamesPVPPC">
-            <summary>
-            Represents an enemy player character in Flames PVP.
-            </summary>
-        </member>
-        <member name="F:ECommons.GameFunctions.NameplateKind.HostileNotEngaged">
-            <summary>
-            Represents a hostile character that is not engaged.
-            </summary>
-        </member>
-        <member name="F:ECommons.GameFunctions.NameplateKind.Dead">
-            <summary>
-            Represents a dead character.
-            </summary>
-        </member>
-        <member name="F:ECommons.GameFunctions.NameplateKind.HostileEngagedSelfDamaged">
-            <summary>
-            Represents a hostile character engaged with the player and damaged.
-            </summary>
-        </member>
-        <member name="F:ECommons.GameFunctions.NameplateKind.HostileEngagedOther">
-            <summary>
-            Represents a hostile character engaged with another player.
-            </summary>
-        </member>
-        <member name="F:ECommons.GameFunctions.NameplateKind.HostileEngagedSelfUndamaged">
-            <summary>
-            Represents a hostile character engaged with the player but undamaged.
-            </summary>
-        </member>
-        <member name="F:ECommons.GameFunctions.NameplateKind.FriendlyBattleNPC">
-            <summary>
-            Represents a friendly battle NPC.
-            </summary>
-        </member>
-        <member name="F:ECommons.GameFunctions.NameplateKind.PlayerCharacterChocobo">
-            <summary>
-            Represents the player's own chocobo.
-            </summary>
-        </member>
-        <member name="F:ECommons.GameFunctions.NameplateKind.OtherPlayerCharacterChocobo">
-            <summary>
-            Represents another player's chocobo.
-            </summary>
-        </member>
-        <member name="F:ECommons.GameFunctions.NameplateKind.OtherAlliancePlayerCharacter">
-            <summary>
-            Represents another player character in another alliance.
-            </summary>
-        </member>
-        <member name="F:ECommons.GameFunctions.NameplateKind.AnyPlayerCharacterDead">
-            <summary>
-            Represents any dead player character.
-            </summary>
-        </member>
-        <member name="F:ECommons.GameFunctions.NameplateKind.OutOfDutyandPartyPC">
-            <summary>
-            Represents another player character out of duty and party.
-            </summary>
-        </member>
-        <member name="F:ECommons.GameFunctions.NameplateKind.InDutyPCInPartyTank">
-            <summary>
-            Represents another tank role player character in duty and in party.
-            </summary>
-        </member>
-        <member name="F:ECommons.GameFunctions.NameplateKind.InDutyPCInPartyHealer">
-            <summary>
-            Represents another healer role player character in duty and in party.
-            </summary>
-        </member>
-        <member name="F:ECommons.GameFunctions.NameplateKind.InDutyPCInPartyDPS">
-            <summary>
-            Represents another DPS role player character in duty and in party.
-            </summary>
-        </member>
         <member name="F:ECommons.Gamepad.GamePad.ControllerButtons">
             <summary>
             Dictionary containing a mapping of <see cref="T:Dalamud.Game.ClientState.GamePad.GamepadButtons"/> to Playstation / Xbox button names.
@@ -2234,85 +2117,6 @@
             <param name="delayedOperation">When set to true, will schedule the change in next framework update. Useful when you want to modify a collection while iterating over it.</param>
             <returns></returns>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.InputInt(System.Single,System.String,System.Nullable{System.Int32}@,System.Int32,System.Int32,ImGuiNET.ImGuiInputTextFlags)">
-            <summary>
-            An <see cref="M:ImGuiNET.ImGui.InputInt(System.String,System.Int32@)"/> for nullable int. Consists of checkbox and input component that is enabled/disabled based on checkbox state.
-            </summary>
-            <param name="width"></param>
-            <param name="label"></param>
-            <param name="valueNullable"></param>
-            <param name="step"></param>
-            <param name="step_fast"></param>
-            <param name="flags"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.Pagination(System.Action[],System.Int32,System.Int32)">
-            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.Pagination(System.String,System.Action[],System.Action@,System.Int32,System.Int32)"/>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.Pagination(System.String,System.Action[],System.Int32,System.Int32)">
-            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.Pagination(System.String,System.Action[],System.Action@,System.Int32,System.Int32)"/>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.Pagination(System.Action[],System.Action@,System.Int32,System.Int32)">
-            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.Pagination(System.String,System.Action[],System.Action@,System.Int32,System.Int32)"/>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.Pagination(System.String,System.Action[],System.Action@,System.Int32,System.Int32)">
-            <summary>
-            Splits array of draw actions into few pages.
-            </summary>
-            <param name="id">Unique ID of your paginator. Must be unique on plugin level.</param>
-            <param name="actions">Array of actions to paginate</param>
-            <param name="paginator">Page switcher that you have to draw. May be absent if there's no page.</param>
-            <param name="perPage">How much elements to display per page. If set to 0, it will be automatically calculated as actions.Length / maxPages. If set to 0, maxPages must be more than 0.</param>
-            <param name="maxPages">Maximum amount of pages that are allowed to be displayed. If this amount is reached, new perPage amount will be actions.Length / maxPages.</param>
-            <returns>Array of actions in the selected by user page for you to draw.</returns>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.TreeNodeCollapsingHeader(System.String,System.Action)">
-            <summary>
-            Another interpretation of <see cref="M:ImGuiNET.ImGui.CollapsingHeader(System.String)"/> but with narrow design and border.
-            </summary>
-            <param name="name"></param>
-            <param name="action"></param>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.PluginAvailabilityIndicator(System.Collections.Generic.IEnumerable{ECommons.ImGuiMethods.ImGuiEx.RequiredPluginInfo},System.String,System.Boolean)">
-            <summary>
-            Draws plugin availability checkmark. Allows to check by name and version. When hovered, will display tooltip with info about which plugins are installed, outdated or missing.
-            </summary>
-            <param name="pluginInfos">RequiredPluginInfos of plugins that are required</param>
-            <param name="prependText">Override first tooltip line if you want</param>
-            <param name="all">Whether to check for all plugins from the list or just one of them</param>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.Selectable(System.Nullable{System.Numerics.Vector4},System.String)">
-            <summary>Selectable item made from TreeNode with bullet mark in front</summary>
-            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.Selectable(System.Nullable{System.Numerics.Vector4},System.String,System.Boolean@,ImGuiNET.ImGuiTreeNodeFlags)"/>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.Selectable(System.String)">
-            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.Selectable(System.Nullable{System.Numerics.Vector4},System.String)"/>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.Selectable(System.String,System.Boolean@)">
-            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.Selectable(System.Nullable{System.Numerics.Vector4},System.String)"/>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.Selectable(System.Nullable{System.Numerics.Vector4},System.String,System.Boolean@,ImGuiNET.ImGuiTreeNodeFlags)">
-            <summary>
-            Selectable item made from TreeNode
-            </summary>
-            <param name="color">Text color</param>
-            <param name="id">ImGui ID</param>
-            <param name="selected">Selected state storage field</param>
-            <param name="extraFlags">Extra tree node flags</param>
-            <returns><see langword="true"/> when clicked</returns>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.TreeNode(System.String,ImGuiNET.ImGuiTreeNodeFlags)">
-            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.TreeNode(System.Nullable{System.Numerics.Vector4},System.String,ImGuiNET.ImGuiTreeNodeFlags)"/>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.TreeNode(System.Nullable{System.Numerics.Vector4},System.String,ImGuiNET.ImGuiTreeNodeFlags)">
-            <summary>
-            Just like <see cref="M:ImGuiNET.ImGui.TreeNode(System.String)"/> but with color option and that spans full width by default.
-            </summary>
-            <param name="color"></param>
-            <param name="name"></param>
-            <param name="flags"></param>
-            <returns></returns>
-        </member>
         <member name="F:ECommons.ImGuiMethods.ImGuiEx.JobSelectorOption.IncludeBase">
             <summary>
             With this option, base jobs will be included as well.
@@ -2334,68 +2138,6 @@
             <param name="noJobSelectedPreview">Preview value that should be displayed when no job is selected.</param>
             <param name="jobDisplayFilter">Optional extra filter for jobs to be displayed.</param>
             <returns><see langword="true"/> every time <paramref name="selectedJobs"/> is modified.</returns>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.HelpMarker(System.String,System.Nullable{System.Numerics.Vector4},System.String,System.Boolean)">
-            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.InfoMarker(System.String,System.Nullable{System.Numerics.Vector4},System.String,System.Boolean)"/>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.InfoMarker(System.String,System.Nullable{System.Numerics.Vector4},System.String,System.Boolean)">
-            <summary>
-            <see cref="M:Dalamud.Interface.Components.ImGuiComponents.HelpMarker(System.String)"/> but with more options
-            </summary>
-            <param name="helpText"></param>
-            <param name="color"></param>
-            <param name="symbolOverride"></param>
-            <param name="sameLine">Whether to call SameLine before drawing marker</param>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.SliderInt(System.String,System.Int32@,System.Int32,System.Int32,System.String,ImGuiNET.ImGuiSliderFlags)">
-            <summary>
-            <see cref="M:ImGuiNET.ImGui.SliderInt(System.String,System.Int32@,System.Int32,System.Int32)"/> but with double-click to edit support.
-            </summary>
-            <param name="label"></param>
-            <param name="v"></param>
-            <param name="v_min"></param>
-            <param name="v_max"></param>
-            <param name="format"></param>
-            <param name="flags"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.SliderInt(System.String,System.Int32@,System.Int32,System.Int32,System.String)">
-            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.SliderInt(System.String,System.Int32@,System.Int32,System.Int32,System.String,ImGuiNET.ImGuiSliderFlags)"/>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.SliderInt(System.String,System.Int32@,System.Int32,System.Int32)">
-            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.SliderInt(System.String,System.Int32@,System.Int32,System.Int32,System.String,ImGuiNET.ImGuiSliderFlags)"/>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.SliderFloat(System.String,System.Single@,System.Single,System.Single,System.String,ImGuiNET.ImGuiSliderFlags)">
-            <summary>
-            <see cref="M:ImGuiNET.ImGui.SliderFloat(System.String,System.Single@,System.Single,System.Single)"/> but with double-click to edit support.
-            </summary>
-            <param name="label"></param>
-            <param name="v"></param>
-            <param name="v_min"></param>
-            <param name="v_max"></param>
-            <param name="format"></param>
-            <param name="flags"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.SliderFloat(System.String,System.Single@,System.Single,System.Single,System.String)">
-            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.SliderFloat(System.String,System.Single@,System.Single,System.Single,System.String,ImGuiNET.ImGuiSliderFlags)"/>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.SliderFloat(System.String,System.Single@,System.Single,System.Single)">
-            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.SliderFloat(System.String,System.Single@,System.Single,System.Single,System.String,ImGuiNET.ImGuiSliderFlags)"/>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ActivateIfDoubleClicked">
-            <summary>
-            Activates item when double-clicked. Place after any ImGui Slider component to enable edit on double-click.
-            </summary>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.HoveredAndClicked(System.String,ImGuiNET.ImGuiMouseButton,System.Boolean)">
-            <summary>
-            Checks whether item is hovered and double-clicked. Sets cursor to hand to indicate that it can be clicked.
-            </summary>
-            <param name="tooltip">Optional tooltip</param>
-            <param name="btn">Which button to check</param>
-            <param name="requireCtrl">Whether to require CTRL when clicking</param>
-            <returns></returns>
         </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.ButtonCheckbox(System.String,System.Nullable{System.Boolean}@,System.Nullable{System.Numerics.Vector4},System.Nullable{System.Numerics.Vector4},System.Boolean)">
             <summary>
@@ -2887,12 +2629,6 @@
             Saves the Dalamud Configuration.
             </summary>
         </member>
-        <member name="M:ECommons.Reflection.DalamudReflector.DeleteSharedData(System.String)">
-            <summary>
-            Deletes specified shared data
-            </summary>
-            <param name="name"></param>
-        </member>
         <member name="T:ECommons.Reflection.FieldPropertyUnion.IFieldPropertyUnion">
             <summary>
             Interface that represents union of FieldInfo and PropertyInfo. Allows access to common methods and properties.
@@ -3276,31 +3012,6 @@
             - Make sure that class is a nested class inside partial AddonMaster class;<br></br>
             - Make sure to implement both nint and void* constructors<br></br>
             <b>- Prefer NOT to use indexes; instead, create an array of entries and create internal method to click an item. See RetainerList and SelectString for examples.</b>
-            </summary>
-        </member>
-        <member name="P:ECommons.UIHelpers.AddonMasterImplementations.AddonMaster.BannerList.Portraits.ListIndex">
-            <summary>
-            1-based index
-            </summary>
-        </member>
-        <member name="P:ECommons.UIHelpers.AddonMasterImplementations.AddonMaster.BannerList.Portraits.PortraitBroken">
-            <summary>
-            1 = broken <br></br>
-            0 = not broken
-            </summary>
-        </member>
-        <member name="P:ECommons.UIHelpers.AddonMasterImplementations.AddonMaster.BannerList.Portraits.Unk06">
-            <summary>
-            7 = unable to retrieve glamour plate data <br></br>
-            5 = broken portrait <br></br>
-            1 = unbroken portrait and UseAsInstantPortrait is off <br></br>
-            0 = unbroken portrait and UseAsInstantPortrait is on
-            </summary>
-        </member>
-        <member name="P:ECommons.UIHelpers.AddonMasterImplementations.AddonMaster.BannerList.Portraits.UseAsInstantPortrait">
-            <summary>
-            0 = on <br></br>
-            1 = off
             </summary>
         </member>
         <member name="M:ECommons.UIHelpers.AddonMasterImplementations.AddonMaster.Gathering.ExtractNumber">

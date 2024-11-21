@@ -44,7 +44,7 @@
 		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-<!--		<OutputPath>$(appdata)\XIVLauncher\devPlugins\XIVSlothComboX7.0\</OutputPath>-->
+		<OutputPath>$(appdata)\XIVLauncher\devPlugins\XIVSlothComboX7.0\</OutputPath>
 <!--		<OutputPath>E:\Games\FFVIX\Dalamud6.0\XIVLauncher\devPlugins\XIVSlothComboX\</OutputPath>-->
 		<NoWarn>CS1591</NoWarn>
 	</PropertyGroup>
@@ -64,17 +64,16 @@
 
 	<ItemGroup>
 		<None Include="..\.editorconfig" Link=".editorconfig" />
-		<None Include="Combos\PvE\MCH.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DalamudPackager" Version="2.1.12" />
+		<PackageReference Include="DalamudPackager" Version="11.0.0" />
 		<PackageReference Include="ILRepack" Version="2.0.18" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />
-	</ItemGroup>
+<!--	<ItemGroup>-->
+<!--		<ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />-->
+<!--	</ItemGroup>-->
 	
 	<ItemGroup>
 		<Reference Include="Dalamud">
@@ -120,8 +119,8 @@
 		</Reference>		
 		
 		<Reference Include="ECommons">
-			<HintPath>F:\下载\ECommons-20241116\ECommons-master\ECommons\bin\Release\</HintPath>
-			<Private>True</Private>
+			<HintPath>F:\下载\ECommons-20241116\ECommons-master\ECommons\bin\Release\ECommons.dll</HintPath>
+			<Private>false</Private>
 		</Reference>
 
 	</ItemGroup>
