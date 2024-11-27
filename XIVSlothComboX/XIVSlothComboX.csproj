@@ -13,8 +13,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<DalamudLibPath>F:\下载\latestAPI11\</DalamudLibPath>
-<!--		<DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>-->
+<!--		<DalamudLibPath>F:\下载\latestAPI11\</DalamudLibPath>-->
+		<DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
 		<AssemblyName>XIVSlothComboX</AssemblyName>
 		<RootNamespace>XIVSlothComboX</RootNamespace>
 		<PackageId>XIVSlothComboX</PackageId>
@@ -71,9 +71,9 @@
 		<PackageReference Include="ILRepack" Version="2.0.18" />
 	</ItemGroup>
 
-<!--	<ItemGroup>-->
-<!--		<ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />-->
-<!--	</ItemGroup>-->
+	<ItemGroup>
+		<ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />
+	</ItemGroup>
 	
 	<ItemGroup>
 		<Reference Include="Dalamud">
@@ -118,10 +118,10 @@
 			<Private>false</Private>
 		</Reference>		
 		
-		<Reference Include="ECommons">
-			<HintPath>F:\下载\ECommons-20241116\ECommons-master\ECommons\bin\Release\ECommons.dll</HintPath>
-			<Private>false</Private>
-		</Reference>
+<!--		<Reference Include="ECommons">-->
+<!--			<HintPath>F:\下载\ECommons-20241116\ECommons-master\ECommons\bin\Release\ECommons.dll</HintPath>-->
+<!--			<Private>false</Private>-->
+<!--		</Reference>-->
 
 	</ItemGroup>
 	
