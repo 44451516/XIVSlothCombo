@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-    - CN
+    - API11
 
 env:
 #  PUBLIC_NAME: XIVSlothComboX
