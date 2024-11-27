@@ -42,7 +42,7 @@ jobs:
         echo "::set-output name=timestamp::$(date +'%Y-%m-%d-%H-%M-%S')"
     - uses: actions/upload-artifact@v4
       with:
-        name: "XIVSlothComboX-7.0-${{ steps.timestamp.outputs.timestamp }}"
+        name: "XIVSlothComboX-7.1-${{ steps.timestamp.outputs.timestamp }}"
         path: ${{ env.RELEASE_DIR }}
         if-no-files-found: error
 
