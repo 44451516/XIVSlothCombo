@@ -33,7 +33,6 @@ using XIVSlothComboX.自动类;
 using AST = XIVSlothComboX.Combos.JobHelpers.AST;
 using ObjectKind = Dalamud.Game.ClientState.Objects.Enums.ObjectKind;
 using Status = Dalamud.Game.ClientState.Statuses.Status;
-
 namespace XIVSlothComboX
 {
     /// <summary> Main plugin implementation. </summary>

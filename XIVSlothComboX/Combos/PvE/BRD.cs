@@ -5,9 +5,6 @@ using Dalamud.Game.ClientState.Statuses;
 using XIVSlothComboX.Combos.PvE.Content;
 using XIVSlothComboX.Core;
 using XIVSlothComboX.CustomComboNS;
-using XIVSlothComboX.CustomComboNS.Functions;
-using XIVSlothComboX.Data;
-using XIVSlothComboX.Extensions;
 
 namespace XIVSlothComboX.Combos.PvE
 {
@@ -704,6 +701,9 @@ namespace XIVSlothComboX.Combos.PvE
                                 return 军神的赞美歌ArmysPaeon;
                         }
                     }
+                    
+                    
+                    
 
                     if (IsEnabled(CustomComboPreset.BRD_Adv_Buffs) && (!songNone || !LevelChecked(贤者的叙事谣MagesBallad)) && isEnemyHealthHigh)
                     {
@@ -728,6 +728,15 @@ namespace XIVSlothComboX.Combos.PvE
                         if (canWeaveBuffs && ragingReady && (HasEffect(Buffs.RadiantFinale) || !LevelChecked(光明神的最终乐章RadiantFinale)))
                             return 猛者强击RagingStrikes;
 
+                        
+                        if (canWeaveBuffs && IsEnabled(CustomComboPreset.BRD_ST_Adv_oGCD))
+                        {
+                            if (ActionReady(九天连箭EmpyrealArrow) && HasEffect(Buffs.战斗之声BattleVoice) && HasEffect(Buffs.强者猛击RagingStrikes))
+                            {
+                                return 九天连箭EmpyrealArrow;
+                            }
+                        }
+                        
                         //removed requirement to not have hawks eye, it is better to maybe lose 60 potency than allow it to drift a 1000 potency gain out of the window
                         if (canWeaveBuffs && barrageReady && HasEffect(Buffs.强者猛击RagingStrikes))
                         {
@@ -740,6 +749,7 @@ namespace XIVSlothComboX.Combos.PvE
                         }
                     }
 
+                    
                     if (canWeave && IsEnabled(CustomComboPreset.BRD_ST_Adv_oGCD))
                     {
                         float battleVoiceCD = GetCooldownRemainingTime(战斗之声BattleVoice);
