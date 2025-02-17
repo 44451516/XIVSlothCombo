@@ -2,8 +2,11 @@
 *.v2
 .idea
 *.user
-/XIVSlothCombo/obj/
-/XIVSlothComboX/obj/
+XIVSlothCombo/obj/
+XIVSlothComboX/obj/
+.XIVSlothComboX/bin/
+/XIVSlothComboX/bin/x64/
+/XIVSlothComboX/bin/x64/Debug
 CN_tools/action.txt
 CN_tools/actionCn.txt
 CN_tools/status.txt

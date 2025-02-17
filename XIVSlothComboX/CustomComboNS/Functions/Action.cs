@@ -307,7 +307,6 @@ namespace XIVSlothComboX.CustomComboNS.Functions
                 var 能力技数量 = 0;
 
                 ActionWatching.ActionSheet.TryGetValue(ActionWatching.CombatActions.Last(), out var Last);
-                if (Last != null)
                 {
                     switch (Last.ActionCategory.Value.RowId)
                     {
@@ -334,7 +333,6 @@ namespace XIVSlothComboX.CustomComboNS.Functions
                     ActionWatching.CombatActions[^2],
                     out var Last_2
                 );
-                if (Last_2 != null)
                 {
                     switch (Last_2.ActionCategory.Value.RowId)
                     {

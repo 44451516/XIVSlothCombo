@@ -4,7 +4,7 @@
 	<PropertyGroup>
 		<Authors>Team Sloth</Authors>
 		<Company>-</Company>
-		<Version>3.2.0.64</Version>
+		<Version>3.2.0.56</Version>
 		<!-- This is the version that will be used when pushing to the repo.-->
 		<Description>XIVCombo for lazy players</Description>
 		<Copyright>Copyleft attick 2021 thanks attick UwU</Copyright>
@@ -13,8 +13,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-<!--		<DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>-->
-		<DalamudLibPath>E:\Games\FFVIX\Dalamud6.0\XIVLauncher\addon\Hooks\10.0.0.16\</DalamudLibPath>
+<!--		<DalamudLibPath>F:\下载\latestAPI11\</DalamudLibPath>-->
+		<DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
 		<AssemblyName>XIVSlothComboX</AssemblyName>
 		<RootNamespace>XIVSlothComboX</RootNamespace>
 		<PackageId>XIVSlothComboX</PackageId>
@@ -44,8 +44,8 @@
 		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-<!--		<OutputPath>$(appdata)\XIVLauncher\devPlugins\XIVSlothComboX7.0\</OutputPath>-->
-		<OutputPath>E:\Games\FFVIX\Dalamud6.0\XIVLauncher\devPlugins\XIVSlothComboX\</OutputPath>
+		<OutputPath>$(appdata)\XIVLauncher\devPlugins\XIVSlothComboX7.0\</OutputPath>
+<!--		<OutputPath>E:\Games\FFVIX\Dalamud6.0\XIVLauncher\devPlugins\XIVSlothComboX\</OutputPath>-->
 		<NoWarn>CS1591</NoWarn>
 	</PropertyGroup>
 
@@ -64,11 +64,10 @@
 
 	<ItemGroup>
 		<None Include="..\.editorconfig" Link=".editorconfig" />
-		<None Include="Combos\PvE\MCH.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DalamudPackager" Version="2.1.12" />
+		<PackageReference Include="DalamudPackager" Version="11.0.0" />
 		<PackageReference Include="ILRepack" Version="2.0.18" />
 	</ItemGroup>
 
@@ -117,7 +116,12 @@
 		<Reference Include="InteropGenerator.Runtime">
 			<HintPath>$(DalamudLibPath)InteropGenerator.Runtime.dll</HintPath>
 			<Private>false</Private>
-		</Reference>
+		</Reference>		
+		
+<!--		<Reference Include="ECommons">-->
+<!--			<HintPath>F:\下载\ECommons-20241116\ECommons-master\ECommons\bin\Release\ECommons.dll</HintPath>-->
+<!--			<Private>false</Private>-->
+<!--		</Reference>-->
 
 	</ItemGroup>
 	

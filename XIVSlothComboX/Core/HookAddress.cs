@@ -3,7 +3,8 @@ namespace XIVSlothComboX.Core;
 internal class HookAddress
 {
     // public const string ActionIdReplaceable = "E8 ?? ?? ?? ?? 84 C0 74 4C 8B D3";
-    public const string ActionIdReplaceable = "40 53 48 83 EC 20 8B D9 48 8B 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 85 C0 74 1F";
+    //7.01-7.05 public const string ActionIdReplaceable = "40 53 48 83 EC 20 8B D9 48 8B 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 85 C0 74 1F";
+    public const string ActionIdReplaceable = "40 53 48 83 EC 20 8B D9 48 8B 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 85 C0 74 1B";
     
     // public const string ReceiveActionEffect = "E8 ?? ?? ?? ?? 48 8B 8D F0 03 00 00";
     public const string ReceiveActionEffect = "40 55 56 57 41 54 41 55 41 56 48 8D AC 24";

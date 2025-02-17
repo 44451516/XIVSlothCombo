@@ -1,4 +1,3 @@
-using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -6,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Dalamud.Game;
 using ECommons.DalamudServices;
+using Lumina.Excel.Sheets;
 using XIVSlothComboX.Combos.PvE;
 using XIVSlothComboX.Services;
 
@@ -163,7 +163,7 @@ namespace XIVSlothComboX.Attributes
         private uint JobIDToClassJobCategory(byte jobID)
         {
             if (Svc.Data.GetExcelSheet<ClassJob>().HasRow(jobID))
-                return Svc.Data.GetExcelSheet<ClassJob>().GetRow(jobID).ClassJobCategory.Row;
+                return Svc.Data.GetExcelSheet<ClassJob>().GetRow(jobID).ClassJobCategory.RowId;
 
             return 0;
         }
@@ -181,7 +181,8 @@ namespace XIVSlothComboX.Attributes
         {
             if (ClassJobs.TryGetValue(key, out var job))
             {
-                return job.Abbreviation.RawString;
+                // return job.Abbreviation.RawString;
+                return job.Abbreviation.ToString();
             }
             else
             {
@@ -191,45 +192,40 @@ namespace XIVSlothComboX.Attributes
 
 
         private static readonly Dictionary<uint, ClassJob> ClassJobs = Service.DataManager.GetExcelSheet<ClassJob>()!.ToDictionary(i => i.RowId, i => i);
-
+   
+        
         public static string JobIDToName(byte key)
         {
             if (key == 0)
                 return "通用职业";
-
-            if (key == 51)
-            {
-                ;
-                ;
-                ;
-            }
-
+            
             //Override DOH/DOL
             if (key is DOH.JobID) 
                 key = 08; //Set to Carpenter
             if (key is DOL.JobID) 
                 key = 16; //Set to Miner
-            if (ClassJobs.TryGetValue(key, out ClassJob? job))
+            if (ClassJobs.TryGetValue(key, out ClassJob job))
             {
                 //Grab Category name for DOH/DOL, else the normal Name for the rest
                 // string jobname = key is 08 or 16 ? job.ClassJobCategory.Value.Name : job.Name;
-                string jobname = key is 08 or 16 ? "大地使者" : job.Name;
+                string jobname = key is 08 or 16 ? job.ClassJobCategory.Value.Name.ToString() : job.Name.ToString();
                 //Job names are all lowercase by default. This capitalizes based on regional rules
-                string cultureID = Service.ClientState.ClientLanguage switch
+                string cultureID = Svc.ClientState.ClientLanguage switch
                 {
                     ClientLanguage.French => "fr-FR",
                     ClientLanguage.Japanese => "ja-JP",
                     ClientLanguage.German => "de-DE",
                     _ => "en-us",
                 };
+                
                 TextInfo textInfo = new CultureInfo(cultureID, false).TextInfo;
                 jobname = textInfo.ToTitleCase(jobname);
-                //if (key is 0) jobname = " " + jobname; //Adding space to the front of Global moves it to the top. Shit hack but works
                 return jobname;
 
             } //Misc or unknown
             else return key == 99 ? "Global" : "Unknown";
         }
+        
 
         /// <summary> Gets the meme job name. </summary>
         public string MemeJobName => MemeJobIDToName(JobID);

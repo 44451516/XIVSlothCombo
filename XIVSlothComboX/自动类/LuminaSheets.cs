@@ -7,9 +7,9 @@ using ECommons;
 using ECommons.DalamudServices;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Data;
-using Lumina.Excel.GeneratedSheets;
-using Action = Lumina.Excel.GeneratedSheets.Action;
-using Status = Lumina.Excel.GeneratedSheets.Status;
+using Lumina.Excel.Sheets;
+using Action = Lumina.Excel.Sheets.Action;
+using Status = Lumina.Excel.Sheets.Status;
 
 namespace XIVSlothComboX.自动类
 {
@@ -63,10 +63,10 @@ namespace XIVSlothComboX.自动类
         public static void Init()
         {
             RecipeSheet = Svc.Data?.GetExcelSheet<Recipe>()?
-           .Where(x => x.ItemResult.Row > 0)
+           .Where(x => x.ItemResult.RowId > 0)
                 .DistinctBy(x => x.RowId)
                 .OrderBy(x => x.RecipeLevelTable.Value.ClassJobLevel)
-                .ThenBy(x => x.ItemResult.Value.Name.RawString)
+                .ThenBy(x => x.ItemResult.Value.Name.ToString())
                 .ToDictionary(x => x.RowId, x => x);
 
             GatheringItemSheet = Svc.Data?.GetExcelSheet<GatheringItem>()?

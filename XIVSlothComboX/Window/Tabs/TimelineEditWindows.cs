@@ -11,20 +11,20 @@ using ECommons.ImGuiMethods;
 using ECommons.LanguageHelpers;
 using ImGuiNET;
 using Lumina.Excel;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 using Newtonsoft.Json;
 using XIVSlothComboX.Combos.PvE;
 using XIVSlothComboX.Core;
 using XIVSlothComboX.CustomComboNS.Functions;
 using XIVSlothComboX.Data;
 using XIVSlothComboX.Services;
-using Action = Lumina.Excel.GeneratedSheets.Action;
+using Action = Lumina.Excel.Sheets.Action;
 
 namespace XIVSlothComboX.Window.Tabs
 {
     internal class TimelineEditWindows : ConfigWindow
     {
-        // static Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>()
+        // static Service.DataManager.GetExcelSheet<Lumina.Excel.Sheets.Action>()
 
 
         private const string 前插窗口 = "add";
@@ -127,7 +127,7 @@ namespace XIVSlothComboX.Window.Tabs
                         customTimeline.Index = ++newIndex;
                     }
 
-                    customTimeline.JobId = Service.ClientState.LocalPlayer.ClassJob.Id;
+                    customTimeline.JobId = Service.ClientState.LocalPlayer.ClassJob.RowId;
                     customTimeline.Name = saveAs;
                     customTimeline.Enable = false;
                     customTimeline.ActionList = new List<CustomAction>();
@@ -180,10 +180,10 @@ namespace XIVSlothComboX.Window.Tabs
                         }
 
 
-                        IDalamudTextureWrap? textureWrap = Service.IconManager.GetActionIcon(action);
+                        IDalamudTextureWrap? textureWrap = Service.IconManager.GetActionIcon(action.Value);
 
 
-                        switch (action.ActionCategory.Value.RowId)
+                        switch (action.Value.ActionCategory.Value.RowId)
                         {
                             //Spell GCD
                             case 2:
@@ -235,7 +235,7 @@ namespace XIVSlothComboX.Window.Tabs
                     {
                         var itemsSheet = Service.DataManager.GetExcelSheet<Item>();
                         Item? item = itemsSheet.GetRow(customAction.ActionId);
-                        IDalamudTextureWrap? textureWrap = Service.IconManager.GetIconTexture(item.Icon);
+                        IDalamudTextureWrap? textureWrap = Service.IconManager.GetIconTexture(item.Value.Icon);
                         if (textureWrap != null)
                         {
 
@@ -404,7 +404,7 @@ namespace XIVSlothComboX.Window.Tabs
 
             if (ImGui.Button("保存".Loc()))
             {
-                if (actionSheet.GetRow(customAction.ActionId) != null)
+                // if (actionSheet.GetRow(customAction.ActionId) != null)
                 {
                     switch (窗口类型)
                     {

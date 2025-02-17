@@ -6,7 +6,6 @@ on:
   workflow_dispatch:
   push:
     branches:
-    - CN
 
 env:
 #  PUBLIC_NAME: XIVSlothComboX
@@ -28,9 +27,8 @@ jobs:
       uses: microsoft/setup-msbuild@v2
     - name: Download Dalamud
       run: |
-        Invoke-WebRequest -Uri https://raw.githubusercontent.com/ottercorp/dalamud-distrib/refs/heads/main/stg/latest.zip -OutFile latest.zip
+        Invoke-WebRequest -Uri https://goatcorp.github.io/dalamud-distrib/stg/latest.zip -OutFile latest.zip
         Expand-Archive -Force latest.zip "$env:AppData\XIVLauncher\addon\Hooks\dev\"   
-        Expand-Archive -Force latest.zip "E:\Games\FFVIX\Dalamud6.0\XIVLauncher\addon\Hooks\10.0.0.16\"  
     - name: Build
       run: |
         dotnet restore -r win ${{ env.SOLUTION_NAME }}.sln
@@ -43,7 +41,7 @@ jobs:
         echo "::set-output name=timestamp::$(date +'%Y-%m-%d-%H-%M-%S')"
     - uses: actions/upload-artifact@v4
       with:
-        name: "XIVSlothComboX-7.0-${{ steps.timestamp.outputs.timestamp }}"
+        name: "XIVSlothComboX-7.1-${{ steps.timestamp.outputs.timestamp }}"
         path: ${{ env.RELEASE_DIR }}
         if-no-files-found: error
 

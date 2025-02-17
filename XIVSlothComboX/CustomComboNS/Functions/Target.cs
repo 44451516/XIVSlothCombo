@@ -4,10 +4,14 @@ using System.Numerics;
 using Dalamud.Game.ClientState.Objects;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
-using FFXIVClientStructs.FFXIV.Client.Game.Character;
+using ECommons;
+using ECommons.DalamudServices;
+using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
+using Lumina.Excel.Sheets;
 using XIVSlothComboX.Data;
 using XIVSlothComboX.Services;
+using ObjectKind = Dalamud.Game.ClientState.Objects.Enums.ObjectKind;
 
 namespace XIVSlothComboX.CustomComboNS.Functions
 {
@@ -192,7 +196,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             if (checkMOPartyUI)
             {
                 // FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* t = PartyTargetingService.UITarget;
-                FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* t = Framework.Instance()->GetUIModule()->GetPronounModule()->UiMouseOverTarget;
+                GameObject* t = Framework.Instance()->GetUIModule()->GetPronounModule()->UiMouseOverTarget;
                 // if (t != null && t->ObjectID != 0)
                 if (t != null && t->GetGameObjectId() != 0)
                 {
@@ -245,8 +249,8 @@ namespace XIVSlothComboX.CustomComboNS.Functions
                 return false;
             if (TargetHasEffectAny(3808)) 
                 return false; // Directional Disregard Effect (Patch 7.01)
-            if (ActionWatching.BNpcSheet.TryGetValue(CurrentTarget.DataId, out var bnpc) && !bnpc.Unknown10)
-                return true;
+                if (Svc.Data.Excel.GetSheet<BNpcBase>().TryGetFirst(x => x.RowId == CurrentTarget.DataId, out var bnpc) && !bnpc.IsOmnidirectional) 
+                    return true;
             return false;
         }
 
@@ -254,7 +258,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
         /// <param name="target"></param>
         protected static unsafe void TargetObject(TargetType target)
         {
-            FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* t = GetTarget(target);
+            GameObject* t = GetTarget(target);
             if (t == null) return;
             ulong o = PartyTargetingService.GetObjectID(t);
             IGameObject? p = Service.ObjectTable.Where(x => x.GameObjectId == o).First();
@@ -267,7 +271,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             if (IsInRange(target)) SetTarget(target);
         }
 
-        public unsafe static FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* GetTarget(TargetType target)
+        public unsafe static GameObject* GetTarget(TargetType target)
         {
             IGameObject? o = null;
 
@@ -316,7 +320,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
                     return PartyTargetingService.GetGameObjectFromPronounID(50);
             }
 
-            return o != null ? (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)o.Address : null;
+            return o != null ? (GameObject*)o.Address : null;
         }
 
 
@@ -443,7 +447,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             if (CurrentTarget is null || LocalPlayer is null)
                 return 0;
 
-            if (CurrentTarget is not IBattleChara chara || CurrentTarget.ObjectKind != Dalamud.Game.ClientState.Objects.Enums.ObjectKind.BattleNpc)
+            if (CurrentTarget is not IBattleChara chara || CurrentTarget.ObjectKind != ObjectKind.BattleNpc)
                 return 0;
 
             var targetPosition = new Vector2(CurrentTarget.Position.X, CurrentTarget.Position.Z);
@@ -487,7 +491,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             if (CurrentTarget is null || LocalPlayer is null)
                 return false;
 
-            if (CurrentTarget is not IBattleChara chara || CurrentTarget.ObjectKind != Dalamud.Game.ClientState.Objects.Enums.ObjectKind.BattleNpc)
+            if (CurrentTarget is not IBattleChara chara || CurrentTarget.ObjectKind != ObjectKind.BattleNpc)
                 return false;
 
             var targetPosition = new Vector2(CurrentTarget.Position.X, CurrentTarget.Position.Z);
@@ -516,7 +520,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             if (CurrentTarget is null || LocalPlayer is null)
                 return false;
 
-            if (CurrentTarget is not IBattleChara chara || CurrentTarget.ObjectKind != Dalamud.Game.ClientState.Objects.Enums.ObjectKind.BattleNpc)
+            if (CurrentTarget is not IBattleChara chara || CurrentTarget.ObjectKind != ObjectKind.BattleNpc)
                 return false;
 
             var targetPosition = new Vector2(CurrentTarget.Position.X, CurrentTarget.Position.Z);

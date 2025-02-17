@@ -453,7 +453,9 @@ namespace XIVSlothComboX.Combos
         
         [ParentCombo(BLM_ST_AdvancedMode)]
         [CustomComboInfo("Use Flarestar", "Add Flarestar to the rotation.", BLM.JobID)]
-        BLM_ST_Flarestar = 2112,
+        BLM_ST_FlareStar = 2112,
+            
+       
         
         #endregion
         

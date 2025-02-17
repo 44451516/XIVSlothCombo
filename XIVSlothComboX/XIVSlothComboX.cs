@@ -233,7 +233,7 @@ namespace XIVSlothComboX
         {
             if (Service.ClientState.LocalPlayer is not null)
             {
-                JobID = Service.ClientState.LocalPlayer?.ClassJob?.Id;
+                JobID = Service.ClientState.LocalPlayer?.ClassJob.RowId;
                 BlueMageService.PopulateBLUSpells();
                 _TargetHelper.Draw();
 
@@ -606,13 +606,13 @@ namespace XIVSlothComboX
                         (
                             $"Current Job: "
                             + // Current Job
-                            $"{localPlayer.ClassJob.GameData.Name} / "
+                            $"{localPlayer.ClassJob.Value.Name} / "
                             + // - Client Name
-                            $"{localPlayer.ClassJob.GameData.NameEnglish} / "
+                            $"{localPlayer.ClassJob.Value.NameEnglish} / "
                             + // - EN Name
-                            $"{localPlayer.ClassJob.GameData.Abbreviation}"
+                            $"{localPlayer.ClassJob.Value.Abbreviation}"
                         ); // - Abbreviation
-                        file.WriteLine($"Current Job Index: {localPlayer.ClassJob.GameData.JobIndex}"); // Job Index
+                        file.WriteLine($"Current Job Index: {localPlayer.ClassJob.Value.JobIndex}"); // Job Index
                         file.WriteLine("");
                         file.WriteLine($"Current Zone: {Service.ClientState.TerritoryType}"); // Current zone location
                         file.WriteLine($"Current Party Size: {Service.PartyList.Length}"); // Current party size
@@ -760,7 +760,7 @@ namespace XIVSlothComboX
                     if (localPlayer == null)
                         return;
 
-                    switch (localPlayer.ClassJob.Id)
+                    switch (localPlayer.ClassJob.RowId)
                     {
                         case GNB.JobID:
                         {
