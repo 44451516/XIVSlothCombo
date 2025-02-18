@@ -9,7 +9,7 @@
     "Changelog": "更新内容看更新日志",
     "RepoUrl": "https://github.com/44451516/XIVSlothCombo/",
     "ApplicableVersion": "any",
-    "DalamudApiLevel": 10,
+    "DalamudApiLevel": 11,
     "LoadPriority": 0,
     "IconUrl": "https://raw.githubusercontent.com/44451516/XIVSlothCombo/main/res/plugin/xivslothcombo.png",
     "DownloadLinkInstall": "https://raw.githubusercontent.com/44451516/XIVSlothCombo/CN/release/XIVSlothComboX/latest.zip",
