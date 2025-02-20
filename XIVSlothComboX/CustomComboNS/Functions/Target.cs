@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Dalamud.Game.ClientState.Objects;
@@ -17,6 +18,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
 {
     internal abstract partial class CustomComboFunctions
     {
+        private static Dictionary<uint, bool> NPCPositionals = new Dictionary<uint, bool>();
         /// <summary> Gets the current target or null. </summary>
         public static IGameObject? CurrentTarget => Service.TargetManager.Target;
 
@@ -60,7 +62,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
 
             return true;
         }
-        
+
         public static bool InMeleeRange3()
         {
             if (LocalPlayer.TargetObject == null)
@@ -71,13 +73,13 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             if (distance == 0)
                 return true;
 
-            if (distance > 3 )
+            if (distance > 3)
                 return false;
 
             return true;
         }
-        
-        
+
+
         public static bool InMeleeRange5()
         {
             if (LocalPlayer.TargetObject == null)
@@ -88,12 +90,12 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             if (distance == 0)
                 return true;
 
-            if (distance > 3 )
+            if (distance > 3)
                 return false;
 
             return true;
         }
-        
+
         public static bool InMeleeRange(float distance)
         {
             if (LocalPlayer?.TargetObject == null)
@@ -104,7 +106,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             if (targetDistance == 0)
                 return true;
 
-            if (targetDistance > distance )
+            if (targetDistance > distance)
                 return false;
 
             return true;
@@ -125,7 +127,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
                 ? 0
                 : (float)chara.CurrentHp / chara.MaxHp * 100;
         }
-        
+
         public static uint GetTargetHP(IGameObject? OurTarget = null)
         {
             if (OurTarget is null)
@@ -135,7 +137,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
                     return 0;
             }
 
-            return OurTarget is not IBattleChara chara ? 0 : chara.CurrentHp ;
+            return OurTarget is not IBattleChara chara ? 0 : chara.CurrentHp;
         }
 
         public static float EnemyHealthMaxHp()
@@ -175,8 +177,10 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             //Humans and Trusts
             if (OurTarget.ObjectKind is ObjectKind.Player)
                 return true;
+
             //AI
             if (OurTarget is IBattleNpc) return (OurTarget as IBattleNpc).BattleNpcKind is not BattleNpcSubKind.Enemy and not (BattleNpcSubKind)1;
+
             return false;
         }
 
@@ -188,9 +192,9 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             IGameObject? healTarget = null;
             ITargetManager tm = Service.TargetManager;
 
-            if (HasFriendlyTarget(tm.SoftTarget)) 
+            if (HasFriendlyTarget(tm.SoftTarget))
                 healTarget = tm.SoftTarget;
-            if (healTarget is null && HasFriendlyTarget(CurrentTarget) && !restrictToMouseover) 
+            if (healTarget is null && HasFriendlyTarget(CurrentTarget) && !restrictToMouseover)
                 healTarget = CurrentTarget;
             //if (checkMO && HasFriendlyTarget(tm.MouseOverTarget)) healTarget = tm.MouseOverTarget;
             if (checkMOPartyUI)
@@ -245,13 +249,15 @@ namespace XIVSlothComboX.CustomComboNS.Functions
 
         public static bool TargetNeedsPositionals()
         {
-            if (!HasBattleTarget()) 
-                return false;
+            if (!HasBattleTarget()) return false;
             if (TargetHasEffectAny(3808)) 
                 return false; // Directional Disregard Effect (Patch 7.01)
-                if (Svc.Data.Excel.GetSheet<BNpcBase>().TryGetFirst(x => x.RowId == CurrentTarget.DataId, out var bnpc) && !bnpc.IsOmnidirectional) 
-                    return true;
-            return false;
+            if (!NPCPositionals.ContainsKey(CurrentTarget.DataId))
+            {
+                if (Svc.Data.GetExcelSheet<BNpcBase>().TryGetFirst(x => x.RowId == CurrentTarget.DataId, out var bnpc))
+                    NPCPositionals[CurrentTarget.DataId] = bnpc.IsOmnidirectional;
+            }
+            return !NPCPositionals[CurrentTarget.DataId];
         }
 
         /// <summary> Attempts to target the given party member </summary>
@@ -260,6 +266,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
         {
             GameObject* t = GetTarget(target);
             if (t == null) return;
+
             ulong o = PartyTargetingService.GetObjectID(t);
             IGameObject? p = Service.ObjectTable.Where(x => x.GameObjectId == o).First();
 
@@ -288,7 +295,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
                     break;
                 case TargetType.UITarget:
                     return PartyTargetingService.UITarget;
-                    // return Framework.Instance()->GetUIModule()->GetPronounModule()->UiMouseOverTarget;
+                // return Framework.Instance()->GetUIModule()->GetPronounModule()->UiMouseOverTarget;
                 case TargetType.FieldTarget:
                     o = Service.TargetManager.MouseOverTarget;
                     break;
@@ -331,26 +338,26 @@ namespace XIVSlothComboX.CustomComboNS.Functions
 
                 if (gameObject != null)
                 {
-                    if (ObjectId ==gameObject.GameObjectId)
+                    if (ObjectId == gameObject.GameObjectId)
                     {
                         return 2;
                     }
-                }   
+                }
             }
-        
+
 
             {
                 IGameObject? gameObject = GetPartySlot(3);
 
                 if (gameObject != null)
                 {
-                    if (ObjectId ==  gameObject.GameObjectId)
+                    if (ObjectId == gameObject.GameObjectId)
                     {
                         return 3;
                     }
-                }  
+                }
             }
-            
+
             {
                 IGameObject? gameObject = GetPartySlot(4);
 
@@ -360,23 +367,23 @@ namespace XIVSlothComboX.CustomComboNS.Functions
                     {
                         return 4;
                     }
-                }  
+                }
             }
-            
-            
+
+
             {
                 IGameObject? gameObject = GetPartySlot(5);
 
                 if (gameObject != null)
                 {
-                    if (ObjectId ==  gameObject.GameObjectId)
+                    if (ObjectId == gameObject.GameObjectId)
                     {
                         return 5;
                     }
-                }  
+                }
             }
 
-            
+
             {
                 IGameObject? gameObject = GetPartySlot(6);
 
@@ -386,19 +393,19 @@ namespace XIVSlothComboX.CustomComboNS.Functions
                     {
                         return 6;
                     }
-                } 
+                }
             }
-            
+
             {
                 IGameObject? gameObject = GetPartySlot(7);
 
                 if (gameObject != null)
                 {
-                    if (ObjectId ==  gameObject.GameObjectId)
+                    if (ObjectId == gameObject.GameObjectId)
                     {
                         return 7;
                     }
-                } 
+                }
             }
 
             {
@@ -406,11 +413,11 @@ namespace XIVSlothComboX.CustomComboNS.Functions
 
                 if (gameObject != null)
                 {
-                    if (ObjectId ==  gameObject.GameObjectId)
+                    if (ObjectId == gameObject.GameObjectId)
                     {
                         return 8;
                     }
-                } 
+                }
             }
 
             return 1;
@@ -567,7 +574,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
         }
 
         // internal unsafe static bool OutOfRange(uint actionID, IGameObject target) => ActionWatching.OutOfRange(actionID, (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)Service.ClientState.LocalPlayer.Address, (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)target.Address);
-        
+
         internal unsafe static bool OutOfRange(uint actionID, IGameObject target) => ActionWatching.OutOfRange(actionID, Service.ClientState.LocalPlayer!, target);
     }
 }
