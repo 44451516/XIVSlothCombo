@@ -246,6 +246,9 @@ namespace XIVSlothComboX.Core
 
         /// <summary> Hides the message of the day. </summary>
         public bool HideMessageOfTheDay { get; set; } = false;
+        
+        
+        public float MovementLeeway = 0f;
 
         public bool RecommendedSettingsViewed { get; set; } = false;
 

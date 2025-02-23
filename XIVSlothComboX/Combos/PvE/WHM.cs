@@ -307,7 +307,7 @@ namespace XIVSlothComboX.Combos.PvE
 
                             if (GetBuffRemainingTime(Buffs.SacredSight) > 0)
                             {
-                                if (IsMoving)
+                                if (IsMoving())
                                 {
                                     return Glare4;
                                 }
@@ -477,7 +477,7 @@ namespace XIVSlothComboX.Combos.PvE
                     bool liliesNearlyFull = gauge.Lily == 2 && gauge.LilyTimer >= 17000;
                     bool PresenceOfMindReady = ActionReady(PresenceOfMind) && (!Config.WHM_AoEDPS_PresenceOfMindWeave);
 
-                    if (IsEnabled(CustomComboPreset.WHM_AoE_DPS_SwiftHoly) && ActionReady(All.Swiftcast) && AssizeCount == 0 && !IsMoving && InCombat())
+                    if (IsEnabled(CustomComboPreset.WHM_AoE_DPS_SwiftHoly) && ActionReady(All.Swiftcast) && AssizeCount == 0 && !IsMoving() && InCombat())
                         return All.Swiftcast;
                     if (IsEnabled(CustomComboPreset.WHM_AoE_DPS_SwiftHoly) && WasLastAction(All.Swiftcast))
                         return actionID;
@@ -494,7 +494,7 @@ namespace XIVSlothComboX.Combos.PvE
                     if (IsEnabled(CustomComboPreset.WHM_DPS_Variant_SpiritDart) && IsEnabled(Variant.VariantSpiritDart) && GetDebuffRemainingTime(Variant.Debuffs.SustainedDamage) <= 3 && HasBattleTarget())
                         return Variant.VariantSpiritDart;
 
-                    if (CanSpellWeave(ActionWatching.LastSpell) || IsMoving)
+                    if (CanSpellWeave(ActionWatching.LastSpell) || IsMoving())
                     {
                         if (IsEnabled(CustomComboPreset.WHM_AoE_DPS_PresenceOfMind) && ActionReady(PresenceOfMind))
                             return PresenceOfMind;

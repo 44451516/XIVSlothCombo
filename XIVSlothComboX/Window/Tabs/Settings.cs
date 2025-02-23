@@ -220,6 +220,10 @@ namespace XIVSlothComboX.Window.Tabs
             }
 
             #endregion
+            
+            // ImGui.PushItemWidth(75);
+            if (ImGui.InputFloat("移动延时", ref Service.Configuration.MovementLeeway))
+                Service.Configuration.Save();
 
             ImGui.EndChild();
         }

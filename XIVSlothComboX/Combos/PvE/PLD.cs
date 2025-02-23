@@ -228,7 +228,7 @@ namespace XIVSlothComboX.Combos.PvE
                                         return 圣灵HolySpirit;
                                     }
                                     
-                                    if (!IsMoving)
+                                    if (!IsMoving())
                                     {
                                         return 圣灵HolySpirit;
                                     }

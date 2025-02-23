@@ -417,7 +417,7 @@ namespace XIVSlothComboX.Combos.PvE
 
 
                         // Movement Options
-                        if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Movement) && InCombat() && IsMoving)
+                        if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Movement) && InCombat() && IsMoving())
                         {
                             // phlegma 发炎
                             uint phlegma = OriginalHook(Phlegma);

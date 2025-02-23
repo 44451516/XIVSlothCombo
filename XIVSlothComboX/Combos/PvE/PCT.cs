@@ -223,7 +223,7 @@ namespace XIVSlothComboX.Combos.PvE
 
                         // Swiftcast
 
-                        if (IsMoving && IsOffCooldown(All.Swiftcast) && All.Swiftcast.LevelChecked() && !HasEffect(Buffs.HammerTime) && gauge.Paint < 1 && (!gauge.CreatureMotifDrawn || !gauge.WeaponMotifDrawn || !gauge.LandscapeMotifDrawn))
+                        if (IsMoving() && IsOffCooldown(All.Swiftcast) && All.Swiftcast.LevelChecked() && !HasEffect(Buffs.HammerTime) && gauge.Paint < 1 && (!gauge.CreatureMotifDrawn || !gauge.WeaponMotifDrawn || !gauge.LandscapeMotifDrawn))
                         {
                             return All.Swiftcast;
                         }
@@ -257,7 +257,7 @@ namespace XIVSlothComboX.Combos.PvE
                     
 
                     // IsMoving logic
-                    if (IsMoving && InCombat())
+                    if (IsMoving() && InCombat())
                     {
                         if (HammerStamp.LevelChecked() && HasEffect(Buffs.HammerTime))
                             return OriginalHook(HammerStamp);
@@ -503,7 +503,7 @@ namespace XIVSlothComboX.Combos.PvE
                     }
 
                     // IsMoving logic
-                    if (IsMoving && InCombat())
+                    if (IsMoving() && InCombat())
                     {
                         if (IsEnabled(CustomComboPreset.PCT_ST_AdvancedMode_MovementOption_HammerStampCombo) && HammerStamp.LevelChecked() && HasEffect(Buffs.HammerTime))
                             return OriginalHook(HammerStamp);
@@ -685,7 +685,7 @@ namespace XIVSlothComboX.Combos.PvE
                             return OriginalHook(MogoftheAges);
                         }
 
-                        if (IsMoving && IsOffCooldown(All.Swiftcast) && All.Swiftcast.LevelChecked() && !HasEffect(Buffs.HammerTime) && gauge.Paint < 1 && (!gauge.CreatureMotifDrawn || !gauge.WeaponMotifDrawn || !gauge.LandscapeMotifDrawn))
+                        if (IsMoving() && IsOffCooldown(All.Swiftcast) && All.Swiftcast.LevelChecked() && !HasEffect(Buffs.HammerTime) && gauge.Paint < 1 && (!gauge.CreatureMotifDrawn || !gauge.WeaponMotifDrawn || !gauge.LandscapeMotifDrawn))
                         {
                             return All.Swiftcast;
                         }
@@ -708,7 +708,7 @@ namespace XIVSlothComboX.Combos.PvE
                             return OriginalHook(风景彩绘LandscapeMotif);
                     }
 
-                    if (IsMoving && InCombat())
+                    if (IsMoving() && InCombat())
                     {
                         if (HammerStamp.LevelChecked() && HasEffect(Buffs.HammerTime))
                             return OriginalHook(HammerStamp);
@@ -892,7 +892,7 @@ namespace XIVSlothComboX.Combos.PvE
                             return OriginalHook(风景彩绘LandscapeMotif);
                     }
 
-                    if (IsMoving && InCombat())
+                    if (IsMoving() && InCombat())
                     {
                         if (IsEnabled(CustomComboPreset.PCT_AoE_AdvancedMode_MovementOption_HammerStampCombo) && HammerStamp.LevelChecked() && HasEffect(Buffs.HammerTime))
                             return OriginalHook(HammerStamp);

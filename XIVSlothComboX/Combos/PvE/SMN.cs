@@ -551,7 +551,7 @@ namespace XIVSlothComboX.Combos.PvE
 
                     //Ruin4 in Egi Phases
                     if (IsEnabled(CustomComboPreset.SMN_Advanced_Combo_Ruin4) && HasEffect(Buffs.FurtherRuin) &&
-                        ((!HasEffect(All.Buffs.Swiftcast) && IsMoving && ((HasEffect(Buffs.螺旋气流GarudasFavor) && !IsGarudaAttuned) ||
+                        ((!HasEffect(All.Buffs.Swiftcast) && IsMoving() && ((HasEffect(Buffs.螺旋气流GarudasFavor) && !IsGarudaAttuned) ||
                                                                           (IsIfritAttuned && lastComboMove is not CrimsonCyclone))) ||
                          GetCooldownRemainingTime(OriginalHook(以太蓄能Aethercharge)) is < 2.5f and > 0))
                         return 毁绝Ruin4;
@@ -623,7 +623,7 @@ namespace XIVSlothComboX.Combos.PvE
                     // Gemshine/Precious Brilliance priority casting
                     if (IsEnabled(CustomComboPreset.SMN_Advanced_Combo_EgiSummons_Attacks) &&
                         ((IsIfritAttuned && gauge.Attunement >= 1 && HasEffect(All.Buffs.Swiftcast) && lastComboMove is not CrimsonCyclone) ||
-                         (HasEffect(Buffs.螺旋气流GarudasFavor) && gauge.Attunement >= 1 && !HasEffect(All.Buffs.Swiftcast) && IsMoving)))
+                         (HasEffect(Buffs.螺旋气流GarudasFavor) && gauge.Attunement >= 1 && !HasEffect(All.Buffs.Swiftcast) && IsMoving())))
                     {
                         if (STCombo)
                             return OriginalHook(宝石耀Gemshine);
@@ -638,7 +638,7 @@ namespace XIVSlothComboX.Combos.PvE
                         lastComboMove is TopazRite or TopazCata && CanSpellWeavePlus(actionID) || // Titan
                         IsEnabled(CustomComboPreset.SMN_Ifrit_Cyclone) &&
                         ((HasEffect(Buffs.IfritsFavor) &&
-                          (IsNotEnabled(CustomComboPreset.SMN_Ifrit_Cyclone_Option) || (IsMoving || gauge.Attunement == 0))) ||
+                          (IsNotEnabled(CustomComboPreset.SMN_Ifrit_Cyclone_Option) || (IsMoving() || gauge.Attunement == 0))) ||
                          (lastComboMove == CrimsonCyclone && InMeleeRange()))) // Ifrit
                     {
                         return OriginalHook(星极超流AstralFlow);

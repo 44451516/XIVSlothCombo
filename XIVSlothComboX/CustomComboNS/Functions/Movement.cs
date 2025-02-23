@@ -1,11 +1,30 @@
-﻿using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+﻿using System;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using XIVSlothComboX.Services;
 
 namespace XIVSlothComboX.CustomComboNS.Functions
 {
     internal abstract partial class CustomComboFunctions
     {
-        /// <summary> Checks player movement </summary>
-        public static unsafe bool IsMoving =>
-            AgentMap.Instance() is not null && AgentMap.Instance()->IsPlayerMoving > 0;
+        
+        private static DateTime? movementStarted;
+     
+        
+        
+        public static unsafe bool IsMoving()
+        {
+            bool isMoving = AgentMap.Instance() is not null && AgentMap.Instance()->IsPlayerMoving > 0;
+
+            if (IsMoving() && movementStarted is null)
+                movementStarted = DateTime.Now;
+
+            if (!IsMoving())
+                movementStarted = null;
+
+            return IsMoving() && (TimeMoving.TotalMilliseconds / 1000f) >= Service.Configuration.MovementLeeway;
+        }
+
+        public static TimeSpan TimeMoving => movementStarted is null ? TimeSpan.Zero : (DateTime.Now - movementStarted.Value);
+
     }
 }

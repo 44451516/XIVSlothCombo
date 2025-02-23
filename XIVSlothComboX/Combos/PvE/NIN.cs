@@ -316,7 +316,7 @@ namespace XIVSlothComboX.Combos.PvE
                             if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_AssassinateDWAD) && IsOffCooldown(OriginalHook(Assassinate)) && Assassinate.LevelChecked())
                                 return OriginalHook(Assassinate);
 
-                            if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_TCJ) && IsOffCooldown(TenChiJin) && !IsMoving && TenChiJin.LevelChecked())
+                            if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_TCJ) && IsOffCooldown(TenChiJin) && !IsMoving() && TenChiJin.LevelChecked())
                                 return OriginalHook(TenChiJin);
                         }
 
@@ -563,7 +563,7 @@ namespace XIVSlothComboX.Combos.PvE
                         if (IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_Bloodbath) && All.Bloodbath.LevelChecked() && playerHP <= BloodbathThreshold && IsOffCooldown(All.Bloodbath))
                             return All.Bloodbath;
 
-                        if (IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_TCJ) && IsOffCooldown(TenChiJin) && !IsMoving && TenChiJin.LevelChecked())
+                        if (IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_TCJ) && IsOffCooldown(TenChiJin) && !IsMoving() && TenChiJin.LevelChecked())
                         {
                             if ((IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_Ninjitsus_Doton) && tcjPath == 1 && (dotonBuff?.RemainingTime <= dotonTimer || dotonBuff is null) && GetTargetHPPercent() >= dotonThreshold && !WasLastAction(Doton)) || tcjPath == 0)
                                 return OriginalHook(TenChiJin);

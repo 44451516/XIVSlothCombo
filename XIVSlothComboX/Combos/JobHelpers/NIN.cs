@@ -596,7 +596,7 @@ namespace XIVSlothComboX.Combos.JobHelpers
 
 
                     //Failure states
-                    if ((OpenerStep is 13 or 14 or 15 && CustomComboFunctions.IsMoving) ||
+                    if ((OpenerStep is 13 or 14 or 15 && CustomComboFunctions.IsMoving()) ||
                         (OpenerStep is 8 && !CustomComboFunctions.HasEffect(Buffs.ShadowWalker)) ||
                         (OpenerStep is 18 or 21 && CustomComboFunctions.GetJobGauge<NINGauge>().Ninki < 40) ||
                         (OpenerStep is 17 or 20 && !CustomComboFunctions.HasEffect(Buffs.RaijuReady)) ||

@@ -291,7 +291,7 @@ namespace XIVSlothComboX.Combos.PvE
 
                     //End opener
 
-                    if (IsEnabled(CustomComboPreset.AST_DPS_LightSpeed) && ActionReady(Lightspeed) && GetTargetHPPercent() > Config.AST_DPS_LightSpeedOption && IsMoving && !HasEffect(Buffs.Lightspeed))
+                    if (IsEnabled(CustomComboPreset.AST_DPS_LightSpeed) && ActionReady(Lightspeed) && GetTargetHPPercent() > Config.AST_DPS_LightSpeedOption && IsMoving() && !HasEffect(Buffs.Lightspeed))
                         return Lightspeed;
 
 
@@ -385,7 +385,7 @@ namespace XIVSlothComboX.Combos.PvE
                     if (IsEnabled(CustomComboPreset.AST_Variant_SpiritDart) && IsEnabled(Variant.VariantSpiritDart) && (sustainedDamage is null || sustainedDamage?.RemainingTime <= 3) && CanSpellWeave(actionID) && IsEnabled(CustomComboPreset.AST_AOE_DPS) && GravityList.Contains(actionID))
                         return Variant.VariantSpiritDart;
 
-                    if (IsEnabled(CustomComboPreset.AST_AOE_LightSpeed) && ActionReady(Lightspeed) && GetTargetHPPercent() > Config.AST_AOE_LightSpeedOption && IsMoving && !HasEffect(Buffs.Lightspeed))
+                    if (IsEnabled(CustomComboPreset.AST_AOE_LightSpeed) && ActionReady(Lightspeed) && GetTargetHPPercent() > Config.AST_AOE_LightSpeedOption && IsMoving() && !HasEffect(Buffs.Lightspeed))
                         return Lightspeed;
 
                     if (IsEnabled(CustomComboPreset.AST_AOE_Lucid) && ActionReady(All.LucidDreaming) && LocalPlayer.CurrentMp <= Config.AST_LucidDreaming && CanSpellWeave(actionID))
@@ -410,7 +410,7 @@ namespace XIVSlothComboX.Combos.PvE
                         return Divination;
 
                     //Earthly Star
-                    if (IsEnabled(CustomComboPreset.AST_AOE_DPS_EarthlyStar) && !IsMoving && ActionReady(EarthlyStar) && CanSpellWeave(actionID))
+                    if (IsEnabled(CustomComboPreset.AST_AOE_DPS_EarthlyStar) && !IsMoving() && ActionReady(EarthlyStar) && CanSpellWeave(actionID))
                         return EarthlyStar;
 
                     if (IsEnabled(CustomComboPreset.AST_AOE_Oracle) && HasEffect(Buffs.Divining) && CanSpellWeave(actionID))

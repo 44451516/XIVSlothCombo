@@ -8,6 +8,8 @@ using Dalamud.Hooking;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.Game.Character;
+using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using Lumina.Excel.Sheets;
 using XIVSlothComboX.Combos.PvE;
 using XIVSlothComboX.Core;
@@ -170,16 +172,14 @@ namespace XIVSlothComboX.Data
             return ret;
         }
 
-        private delegate void ReceiveActionEffectDelegate(ulong sourceObjectId, IntPtr sourceActor, IntPtr position, IntPtr effectHeader,
-            IntPtr effectArray, IntPtr effectTrail);
+        private unsafe delegate void ReceiveActionEffectDelegate(uint casterEntityId, Character* casterPtr, System.Numerics.Vector3* targetPos, ActionEffectHandler.Header* header, ActionEffectHandler.TargetEffects* effects, GameObjectId* targetEntityIds);
 
         private static readonly Hook<ReceiveActionEffectDelegate>? ReceiveActionEffectHook;
 
 
         
 
-        private static void ReceiveActionEffectDetour(ulong sourceObjectId, IntPtr sourceActor, IntPtr position, IntPtr effectHeader,
-            IntPtr effectArray, IntPtr effectTrail)
+        private unsafe static void ReceiveActionEffectDetour(uint casterEntityId, Character* casterPtr, System.Numerics.Vector3* targetPos, ActionEffectHandler.Header* header, ActionEffectHandler.TargetEffects* effects, GameObjectId* targetEntityIds)
         {
             if (!CustomComboFunctions.InCombat())
             {
@@ -192,40 +192,40 @@ namespace XIVSlothComboX.Data
             //     MCHOpenerLogic.isInit = false;
             // }
 
-            ReceiveActionEffectHook!.Original(sourceObjectId, sourceActor, position, effectHeader, effectArray, effectTrail);
-            ActionEffectHeader header = Marshal.PtrToStructure<ActionEffectHeader>(effectHeader);
+            ReceiveActionEffectHook!.Original(casterEntityId, casterPtr, targetPos, header, effects, targetEntityIds);
+            
 
             if (ActionType is 13 or 2) return;
-            if (header.ActionId != 7 &&
-                header.ActionId != 8 &&
-                sourceObjectId == Service.ClientState.LocalPlayer.GameObjectId)
+            if (header->ActionId != 7 &&
+                header->ActionId != 8 &&
+                casterEntityId == Service.ClientState.LocalPlayer.GameObjectId)
             {
                 TimeLastActionUsed = DateTime.Now;
                 LastActionUseCount++;
-                if (header.ActionId != LastAction)
+                if (header->ActionId != LastAction)
                 {
                     LastActionUseCount = 1;
                 }
 
-                LastAction = header.ActionId;
+                LastAction = header->ActionId;
 
-                ActionSheet.TryGetValue(header.ActionId, out var sheet);
+                ActionSheet.TryGetValue(header->ActionId, out var sheet);
                 {
                     switch (sheet.ActionCategory.Value.RowId)
                     {
                         case 2: //Spell
-                            LastSpell = header.ActionId;
+                            LastSpell = header->ActionId;
                             break;
                         case 3: //Weaponskill
-                            LastWeaponskill = header.ActionId;
+                            LastWeaponskill = header->ActionId;
                             break;
                         case 4: //Ability
-                            LastAbility = header.ActionId;
+                            LastAbility = header->ActionId;
                             break;
                     }
                 }
 
-                CombatActions.Add(header.ActionId);
+                CombatActions.Add(header->ActionId);
                 // 特殊起手Actions.Add(header.ActionId);
 
 
@@ -476,9 +476,8 @@ namespace XIVSlothComboX.Data
 
         static unsafe ActionWatching()
         {
-            ReceiveActionEffectHook ??=
-                Service.GameInteropProvider.HookFromSignature<ReceiveActionEffectDelegate>(HookAddress.ReceiveActionEffect,
-                    ReceiveActionEffectDetour);
+            // ReceiveActionEffectHook ??= Service.GameInteropProvider.HookFromSignature<ReceiveActionEffectDelegate>(HookAddress.ReceiveActionEffect,ReceiveActionEffectDetour);
+            ReceiveActionEffectHook ??= Service.GameInteropProvider.HookFromAddress<ReceiveActionEffectDelegate>(HookAddress.ReceiveActionEffect,ReceiveActionEffectDetour);
 
             SendActionHook ??= Service.GameInteropProvider.HookFromSignature<SendActionDelegate>(HookAddress.SendAction, SendActionDetour);
 

@@ -187,7 +187,7 @@ namespace XIVSlothComboX.Combos.PvE
                             {
                                 if (IsNotEnabled(CustomComboPreset.WAR_ST_StormsPath_Onslaught_MeleeSpender)
                                     || (IsEnabled(CustomComboPreset.WAR_ST_StormsPath_Onslaught_MeleeSpender)
-                                        && !IsMoving
+                                        && !IsMoving()
                                         && GetTargetDistance() <= 1
                                         && (GetCooldownRemainingTime(原初的解放InnerRelease) > 40 || !LevelChecked(原初的解放InnerRelease))))
                                     return Onslaught;
@@ -213,7 +213,7 @@ namespace XIVSlothComboX.Combos.PvE
                         if (IsEnabled(CustomComboPreset.WAR_ST_StormsPath_PrimalRend) && HasEffect(Buffs.PrimalRendReady) && LevelChecked(蛮荒崩裂PrimalRend))
                         {
                             if (IsEnabled(CustomComboPreset.WAR_ST_StormsPath_PrimalRend_CloseRange)
-                                && !IsMoving
+                                && !IsMoving()
                                 && (GetTargetDistance() <= 1 || GetBuffRemainingTime(Buffs.PrimalRendReady) <= 10))
                                 return 蛮荒崩裂PrimalRend;
                             if (IsNotEnabled(CustomComboPreset.WAR_ST_StormsPath_PrimalRend_CloseRange))

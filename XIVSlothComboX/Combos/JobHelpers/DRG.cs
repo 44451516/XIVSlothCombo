@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Dalamud.Game.ClientState.Statuses;
 using ECommons.DalamudServices;
 using XIVSlothComboX.Combos.JobHelpers.Enums;
 using XIVSlothComboX.Combos.PvE;
 using XIVSlothComboX.CustomComboNS.Functions;
 using XIVSlothComboX.Data;
-
+using static XIVSlothComboX.CustomComboNS.Functions.CustomComboFunctions;
+using static XIVSlothComboX.Combos.PvE.DRG;
 namespace XIVSlothComboX.Combos.JobHelpers
 {
     internal class DRGOpenerLogic : PvE.DRG
@@ -38,6 +40,11 @@ namespace XIVSlothComboX.Combos.JobHelpers
         private static bool CanOpener => HasCooldowns() && LevelChecked;
 
         private OpenerState currentState = OpenerState.PrePull;
+        
+        internal static Status? ChaosDoTDebuff =>
+            FindTargetEffect(LevelChecked(ChaoticSpring)
+                ? Debuffs.ChaoticSpring
+                : Debuffs.ChaosThrust);
 
         public OpenerState CurrentState
         {
@@ -133,8 +140,8 @@ namespace XIVSlothComboX.Combos.JobHelpers
                 if (CustomComboFunctions.WasLastAction(DragonfireDive) && OpenerStep == 10) OpenerStep++;
                 else if (OpenerStep == 10) actionID = DragonfireDive;
 
-                if (CustomComboFunctions.WasLastAction(Nastrond) && OpenerStep == 11) OpenerStep++;
-                else if (OpenerStep == 11) actionID = Nastrond;
+                if (CustomComboFunctions.WasLastAction(死者之岸Nastrond) && OpenerStep == 11) OpenerStep++;
+                else if (OpenerStep == 11) actionID = 死者之岸Nastrond;
 
                 if (CustomComboFunctions.WasLastAction(RaidenThrust) && OpenerStep == 12) OpenerStep++;
                 else if (OpenerStep == 12) actionID = RaidenThrust;
@@ -153,33 +160,25 @@ namespace XIVSlothComboX.Combos.JobHelpers
 
                 if (CustomComboFunctions.WasLastAction(HeavensThrust) && OpenerStep == 17) OpenerStep++;
                 else if (OpenerStep == 17) actionID = HeavensThrust;
-
-                if (CustomComboFunctions.WasLastAction(Nastrond) && OpenerStep == 18) OpenerStep++;
-                else if (OpenerStep == 18) actionID = Nastrond;
-
-                if (CustomComboFunctions.WasLastAction(RiseOfTheDragon) && OpenerStep == 19) OpenerStep++;
-                else if (OpenerStep == 19) actionID = RiseOfTheDragon;
+                
+                if (CustomComboFunctions.WasLastAction(RiseOfTheDragon) && OpenerStep == 18) OpenerStep++;
+                else if (OpenerStep == 18) actionID = RiseOfTheDragon;
+                
+                if (CustomComboFunctions.WasLastAction(MirageDive) && OpenerStep == 19) OpenerStep++;
+                else if (OpenerStep == 19) actionID = MirageDive;
 
                 if (CustomComboFunctions.WasLastAction(FangAndClaw) && OpenerStep == 20) OpenerStep++;
                 else if (OpenerStep == 20) actionID = FangAndClaw;
+                
+                if (CustomComboFunctions.WasLastAction(Drakesbane) && OpenerStep == 21) OpenerStep++;
+                else if (OpenerStep == 21) actionID = Drakesbane;
 
-                if (CustomComboFunctions.WasLastAction(Nastrond) && OpenerStep == 21) OpenerStep++;
-                else if (OpenerStep == 21) actionID = Nastrond;
+                if (CustomComboFunctions.WasLastAction(RaidenThrust) && OpenerStep == 22) OpenerStep++;
+                else if (OpenerStep == 22) actionID = RaidenThrust;
 
-                if (CustomComboFunctions.WasLastAction(MirageDive) && OpenerStep == 22) OpenerStep++;
-                else if (OpenerStep == 22) actionID = MirageDive;
+                if (CustomComboFunctions.WasLastAction(WyrmwindThrust) && OpenerStep == 23) OpenerStep++;
+                else if (OpenerStep == 23) actionID = WyrmwindThrust;
 
-                if (CustomComboFunctions.WasLastAction(Drakesbane) && OpenerStep == 23) OpenerStep++;
-                else if (OpenerStep == 23) actionID = Drakesbane;
-
-                if (CustomComboFunctions.WasLastAction(RaidenThrust) && OpenerStep == 24) OpenerStep++;
-                else if (OpenerStep == 24) actionID = RaidenThrust;
-
-                if (CustomComboFunctions.WasLastAction(WyrmwindThrust) && OpenerStep == 25) OpenerStep++;
-                else if (OpenerStep == 25) actionID = WyrmwindThrust;
-
-                if (CustomComboFunctions.WasLastAction(SpiralBlow) && OpenerStep == 26) CurrentState = OpenerState.OpenerFinished;
-                else if (OpenerStep == 26) actionID = SpiralBlow;
 
                 if (ActionWatching.TimeSinceLastAction.TotalSeconds >= 5)
                     CurrentState = OpenerState.FailedOpener;
@@ -234,7 +233,7 @@ namespace XIVSlothComboX.Combos.JobHelpers
             PvE.DRG.LanceCharge,
             PvE.DRG.LifeSurge,
             PvE.DRG.Geirskogul,
-            PvE.DRG.Nastrond,
+            PvE.DRG.死者之岸Nastrond,
             PvE.DRG.MirageDive,
             PvE.DRG.WyrmwindThrust,
             PvE.DRG.RiseOfTheDragon,
@@ -279,6 +278,25 @@ namespace XIVSlothComboX.Combos.JobHelpers
 
             if (SlowLock == oGCD && gcdTimer >= 1.5f)
                 return true;
+
+            return false;
+        }
+        
+        internal static bool TrueNorthReady =>
+            TargetNeedsPositionals() && ActionReady(All.TrueNorth) &&
+            !HasEffect(All.Buffs.TrueNorth);
+        
+        internal static bool UseLifeSurge()
+        {
+            if (ActionReady(LifeSurge) && CanDRGWeave(LifeSurge) && !HasEffect(Buffs.LifeSurge))
+            {
+                if (LevelChecked(Drakesbane) && Gauge.IsLOTDActive &&
+                    (HasEffect(Buffs.LanceCharge) || HasEffect(Buffs.BattleLitany)) &&
+                    (JustUsed(WheelingThrust) ||
+                     JustUsed(FangAndClaw) ||
+                     JustUsed(OriginalHook(VorpalThrust)) && LevelChecked(HeavensThrust)))
+                    return true;
+            }
 
             return false;
         }

@@ -46,7 +46,7 @@ namespace XIVSlothComboX.Combos.PvP
              protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
                 #region Variables
-                bool isMoving = IsMoving;
+                bool isMoving = IsMoving();
                 bool hasTarget = HasTarget();
                 bool hasStarPrism = HasEffect(Buffs.Starstruck);
                 bool targetHasGuard = TargetHasEffectAny(PvPCommon.Buffs.Guard);
@@ -85,12 +85,12 @@ namespace XIVSlothComboX.Combos.PvP
                     }
 
                     // Creature Motif
-                    if (!hasMotifDrawn && !isMoving)
+                    if (!hasMotifDrawn && !IsMoving())
                         return OriginalHook(CreatureMotif);
 
                     // Subtractive Palette
                     if (IsEnabled(CustomComboPreset.PCTPvP_SubtractivePalette) && IsOffCooldown(OriginalHook(SubtractivePalette)) &&
-                        hasTarget && ((isMoving && hasSubtractivePalette) || (!isMoving && !hasSubtractivePalette)))
+                        hasTarget && ((IsMoving() && hasSubtractivePalette) || (!IsMoving() && !hasSubtractivePalette)))
                         return OriginalHook(SubtractivePalette);
                 }
 

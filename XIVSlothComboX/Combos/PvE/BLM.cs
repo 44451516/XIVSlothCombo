@@ -217,7 +217,7 @@ namespace XIVSlothComboX.Combos.PvE
                 (thunderDebuffST is null || thunderDebuffST?.RemainingTime < 3))
                 return OriginalHook(Thunder);
 
-            if (IsMoving)
+            if (IsMoving())
             {
                 if (IsEnabled(CustomComboPreset.BLM_ST_Amplifier) &&
                     ActionReady(Amplifier) && Gauge.PolyglotStacks < maxPolyglot)
@@ -412,7 +412,7 @@ namespace XIVSlothComboX.Combos.PvE
             if (ActionReady(Amplifier) && remainingPolyglotCD >= 20000 && CanSpellWeave(ActionWatching.LastSpell))
                 return Amplifier;
 
-            if (IsMoving)
+            if (IsMoving())
             {
                 if (ActionReady(Amplifier) && Gauge.PolyglotStacks < maxPolyglot)
                     return Amplifier;
@@ -561,7 +561,7 @@ namespace XIVSlothComboX.Combos.PvE
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Amplifier) && ActionReady(Amplifier) && remainingPolyglotCD >= 20000 && CanSpellWeave(ActionWatching.LastSpell))
                     return Amplifier;
 
-                if (IsMoving)
+                if (IsMoving())
                 {
                     if (IsEnabled(CustomComboPreset.BLM_AoE_Amplifier) && ActionReady(Amplifier) && Gauge.PolyglotStacks < maxPolyglot)
                         return Amplifier;
@@ -732,7 +732,7 @@ namespace XIVSlothComboX.Combos.PvE
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
-                return actionID is AetherialManipulation && ActionReady(BetweenTheLines) && HasEffect(Buffs.LeyLines) && !HasEffect(Buffs.CircleOfPower) && !IsMoving
+                return actionID is AetherialManipulation && ActionReady(BetweenTheLines) && HasEffect(Buffs.LeyLines) && !HasEffect(Buffs.CircleOfPower) && !IsMoving()
                     ? BetweenTheLines
                     : actionID;
             }
