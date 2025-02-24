@@ -7,6 +7,7 @@ using XIVSlothComboX.Core;
 using XIVSlothComboX.CustomComboNS.Functions;
 using XIVSlothComboX.Data;
 using XIVSlothComboX.Extensions;
+using XIVSlothComboX.Services;
 using static XIVSlothComboX.CustomComboNS.Functions.CustomComboFunctions;
 
 
@@ -33,7 +34,7 @@ namespace XIVSlothComboX.Combos.PvE
             SonicThrust = 7397,
             ChaosThrust = 88,
             RaidenThrust = 16479,
-            TrueThrust = 75,
+            精准刺TrueThrust = 75,
             Disembowel = 87,
             FangAndClaw = 3554,
             WheelingThrust = 3556,
@@ -127,7 +128,7 @@ namespace XIVSlothComboX.Combos.PvE
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
                 // Don't change anything if not basic skill
-                if (actionID is not TrueThrust)
+                if (actionID is not 精准刺TrueThrust)
                     return actionID;
 
                 if (IsEnabled(CustomComboPreset.DRG_Variant_Cure) && IsEnabled(Variant.VariantCure) && PlayerHealthPercentageHp() <= Config.DRG_Variant_Cure)
@@ -200,7 +201,7 @@ namespace XIVSlothComboX.Combos.PvE
                 //1-2-3 Combo
                 if (ComboTimer > 0)
                 {
-                    if (ComboAction is TrueThrust or RaidenThrust && LevelChecked(VorpalThrust))
+                    if (ComboAction is 精准刺TrueThrust or RaidenThrust && LevelChecked(VorpalThrust))
                         return LevelChecked(Disembowel) && (LevelChecked(ChaosThrust) && DRGOpenerLogic.ChaosDoTDebuff is null || GetBuffRemainingTime(Buffs.PowerSurge) < 15)
                             ? OriginalHook(Disembowel)
                             : OriginalHook(VorpalThrust);
@@ -256,7 +257,7 @@ namespace XIVSlothComboX.Combos.PvE
                     ChaosDoTDebuff = FindTargetEffect(Debuffs.ChaoticSpring);
                 else ChaosDoTDebuff = FindTargetEffect(Debuffs.ChaosThrust);
 
-                if (actionID is TrueThrust)
+                if (actionID is 精准刺TrueThrust)
                 {
                     if (IsEnabled(CustomComboPreset.DRG_Variant_Cure) && IsEnabled(Variant.VariantCure) && PlayerHealthPercentageHp() <= Config.DRG_Variant_Cure)
                         return Variant.VariantCure;
@@ -266,8 +267,12 @@ namespace XIVSlothComboX.Combos.PvE
 
                     // Opener for DRG
                     if (IsEnabled(CustomComboPreset.DRG_ST_Opener))
+                    {
                         if (DRGOpener.DoFullOpener(ref actionID))
                             return actionID;
+                        // Service.ChatGui.PrintError($"起手循环1");
+                    }
+
 
                     // Piercing Talon Uptime Option
                     if (IsEnabled(CustomComboPreset.DRG_ST_RangedUptime) && LevelChecked(标枪PiercingTalon) && !InMeleeRange() && HasBattleTarget())
@@ -343,7 +348,7 @@ namespace XIVSlothComboX.Combos.PvE
                     //1-2-3 Combo
                     if (comboTime > 0)
                     {
-                        if (lastComboMove is TrueThrust or RaidenThrust && LevelChecked(VorpalThrust))
+                        if (lastComboMove is 精准刺TrueThrust or RaidenThrust && LevelChecked(VorpalThrust))
                             return LevelChecked(Disembowel) && ((ChaosDoTDebuff is null && LevelChecked(ChaosThrust)) || GetBuffRemainingTime(Buffs.PowerSurge) < 15)
                                 ? OriginalHook(Disembowel)
                                 : OriginalHook(VorpalThrust);
@@ -379,7 +384,7 @@ namespace XIVSlothComboX.Combos.PvE
                             return Drakesbane;
                     }
 
-                    return OriginalHook(TrueThrust);
+                    return OriginalHook(精准刺TrueThrust);
                 }
 
                 return actionID;
@@ -459,7 +464,7 @@ namespace XIVSlothComboX.Combos.PvE
                     {
                         if (!SonicThrust.LevelChecked())
                         {
-                            if (lastComboMove == TrueThrust && LevelChecked(Disembowel))
+                            if (lastComboMove == 精准刺TrueThrust && LevelChecked(Disembowel))
                                 return Disembowel;
 
                             if (lastComboMove == Disembowel && LevelChecked(ChaosThrust))
@@ -477,7 +482,7 @@ namespace XIVSlothComboX.Combos.PvE
                     }
 
                     return !HasEffect(Buffs.PowerSurge) && !LevelChecked(SonicThrust)
-                        ? OriginalHook(TrueThrust)
+                        ? OriginalHook(精准刺TrueThrust)
                         : OriginalHook(DoomSpike);
                 }
 
@@ -574,7 +579,7 @@ namespace XIVSlothComboX.Combos.PvE
                     {
                         if (IsEnabled(CustomComboPreset.DRG_AoE_Disembowel) && !SonicThrust.LevelChecked())
                         {
-                            if (lastComboMove == TrueThrust && LevelChecked(Disembowel))
+                            if (lastComboMove == 精准刺TrueThrust && LevelChecked(Disembowel))
                                 return Disembowel;
 
                             if (lastComboMove == Disembowel && LevelChecked(ChaosThrust))
@@ -592,7 +597,7 @@ namespace XIVSlothComboX.Combos.PvE
                     }
 
                     return IsEnabled(CustomComboPreset.DRG_AoE_Disembowel) && !HasEffect(Buffs.PowerSurge) && !LevelChecked(SonicThrust)
-                        ? OriginalHook(TrueThrust)
+                        ? OriginalHook(精准刺TrueThrust)
                         : OriginalHook(DoomSpike);
                 }
 

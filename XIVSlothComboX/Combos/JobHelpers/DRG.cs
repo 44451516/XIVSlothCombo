@@ -6,8 +6,10 @@ using XIVSlothComboX.Combos.JobHelpers.Enums;
 using XIVSlothComboX.Combos.PvE;
 using XIVSlothComboX.CustomComboNS.Functions;
 using XIVSlothComboX.Data;
+using XIVSlothComboX.Services;
 using static XIVSlothComboX.CustomComboNS.Functions.CustomComboFunctions;
 using static XIVSlothComboX.Combos.PvE.DRG;
+
 namespace XIVSlothComboX.Combos.JobHelpers
 {
     internal class DRGOpenerLogic : PvE.DRG
@@ -40,18 +42,18 @@ namespace XIVSlothComboX.Combos.JobHelpers
         private static bool CanOpener => HasCooldowns() && LevelChecked;
 
         private OpenerState currentState = OpenerState.PrePull;
-        
+
         internal static Status? ChaosDoTDebuff =>
-            FindTargetEffect(LevelChecked(ChaoticSpring)
-                ? Debuffs.ChaoticSpring
-                : Debuffs.ChaosThrust);
+            FindTargetEffect
+            (
+                LevelChecked(ChaoticSpring)
+                    ? Debuffs.ChaoticSpring
+                    : Debuffs.ChaosThrust
+            );
 
         public OpenerState CurrentState
         {
-            get
-            {
-                return currentState;
-            }
+            get { return currentState; }
             set
             {
                 if (value != currentState)
@@ -68,7 +70,8 @@ namespace XIVSlothComboX.Combos.JobHelpers
 
                         ResetOpener();
                     }
-                    if (value == OpenerState.OpenerFinished) Svc.Log.Information("Opener Finished");
+                    if (value == OpenerState.OpenerFinished) 
+                        Svc.Log.Information("Opener Finished");
 
                     currentState = value;
                 }
@@ -91,8 +94,10 @@ namespace XIVSlothComboX.Combos.JobHelpers
 
             if (CurrentState == OpenerState.PrePull && PrePullStep > 0)
             {
-                if (CustomComboFunctions.WasLastAction(TrueThrust) && PrePullStep == 1) CurrentState = OpenerState.InOpener;
-                else if (PrePullStep == 1) actionID = TrueThrust;
+                if (CustomComboFunctions.WasLastAction(精准刺TrueThrust) && PrePullStep == 1) 
+                    CurrentState = OpenerState.InOpener;
+                else if (PrePullStep == 1) 
+                    actionID = 精准刺TrueThrust;
 
                 if (ActionWatching.CombatActions.Count > 2 && CustomComboFunctions.InCombat())
                     CurrentState = OpenerState.FailedOpener;
@@ -110,87 +115,85 @@ namespace XIVSlothComboX.Combos.JobHelpers
 
             if (currentState == OpenerState.InOpener)
             {
-                if (CustomComboFunctions.WasLastAction(SpiralBlow) && OpenerStep == 1) OpenerStep++;
+                if (WasLastAction(SpiralBlow) && OpenerStep == 1) OpenerStep++;
                 else if (OpenerStep == 1) actionID = SpiralBlow;
 
-                if (CustomComboFunctions.WasLastAction(LanceCharge) && OpenerStep == 2) OpenerStep++;
+                if (WasLastAction(LanceCharge) && OpenerStep == 2) OpenerStep++;
                 else if (OpenerStep == 2) actionID = LanceCharge;
 
-                if (CustomComboFunctions.WasLastAction(ChaoticSpring) && OpenerStep == 3) OpenerStep++;
+                if (WasLastAction(ChaoticSpring) && OpenerStep == 3) OpenerStep++;
                 else if (OpenerStep == 3) actionID = ChaoticSpring;
 
-                if (CustomComboFunctions.WasLastAction(BattleLitany) && OpenerStep == 4) OpenerStep++;
+                if (WasLastAction(BattleLitany) && OpenerStep == 4) OpenerStep++;
                 else if (OpenerStep == 4) actionID = BattleLitany;
 
-                if (CustomComboFunctions.WasLastAction(Geirskogul) && OpenerStep == 5) OpenerStep++;
+                if (WasLastAction(Geirskogul) && OpenerStep == 5) OpenerStep++;
                 else if (OpenerStep == 5) actionID = Geirskogul;
 
-                if (CustomComboFunctions.WasLastAction(WheelingThrust) && OpenerStep == 6) OpenerStep++;
+                if (WasLastAction(WheelingThrust) && OpenerStep == 6) OpenerStep++;
                 else if (OpenerStep == 6) actionID = WheelingThrust;
 
-                if (CustomComboFunctions.WasLastAction(HighJump) && OpenerStep == 7) OpenerStep++;
+                if (WasLastAction(HighJump) && OpenerStep == 7) OpenerStep++;
                 else if (OpenerStep == 7) actionID = HighJump;
 
-                if (CustomComboFunctions.WasLastAction(LifeSurge) && OpenerStep == 8) OpenerStep++;
+                if (WasLastAction(LifeSurge) && OpenerStep == 8) OpenerStep++;
                 else if (OpenerStep == 8) actionID = LifeSurge;
 
-                if (CustomComboFunctions.WasLastAction(Drakesbane) && OpenerStep == 9) OpenerStep++;
+                if (WasLastAction(Drakesbane) && OpenerStep == 9) OpenerStep++;
                 else if (OpenerStep == 9) actionID = Drakesbane;
 
-                if (CustomComboFunctions.WasLastAction(DragonfireDive) && OpenerStep == 10) OpenerStep++;
+                if (WasLastAction(DragonfireDive) && OpenerStep == 10) OpenerStep++;
                 else if (OpenerStep == 10) actionID = DragonfireDive;
 
-                if (CustomComboFunctions.WasLastAction(死者之岸Nastrond) && OpenerStep == 11) OpenerStep++;
+                if (WasLastAction(死者之岸Nastrond) && OpenerStep == 11) OpenerStep++;
                 else if (OpenerStep == 11) actionID = 死者之岸Nastrond;
 
-                if (CustomComboFunctions.WasLastAction(RaidenThrust) && OpenerStep == 12) OpenerStep++;
+                if (WasLastAction(RaidenThrust) && OpenerStep == 12) OpenerStep++;
                 else if (OpenerStep == 12) actionID = RaidenThrust;
 
-                if (CustomComboFunctions.WasLastAction(坠星冲Stardiver) && OpenerStep == 13) OpenerStep++;
+                if (WasLastAction(坠星冲Stardiver) && OpenerStep == 13) OpenerStep++;
                 else if (OpenerStep == 13) actionID = 坠星冲Stardiver;
 
-                if (CustomComboFunctions.WasLastAction(LanceBarrage) && OpenerStep == 14) OpenerStep++;
+                if (WasLastAction(LanceBarrage) && OpenerStep == 14) OpenerStep++;
                 else if (OpenerStep == 14) actionID = LanceBarrage;
 
-                if (CustomComboFunctions.WasLastAction(渡星冲Starcross) && OpenerStep == 15) OpenerStep++;
+                if (WasLastAction(渡星冲Starcross) && OpenerStep == 15) OpenerStep++;
                 else if (OpenerStep == 15) actionID = 渡星冲Starcross;
 
-                if (CustomComboFunctions.WasLastAction(LifeSurge) && OpenerStep == 16) OpenerStep++;
+                if (WasLastAction(LifeSurge) && OpenerStep == 16) OpenerStep++;
                 else if (OpenerStep == 16) actionID = LifeSurge;
 
-                if (CustomComboFunctions.WasLastAction(HeavensThrust) && OpenerStep == 17) OpenerStep++;
+                if (WasLastAction(HeavensThrust) && OpenerStep == 17) OpenerStep++;
                 else if (OpenerStep == 17) actionID = HeavensThrust;
-                
-                if (CustomComboFunctions.WasLastAction(RiseOfTheDragon) && OpenerStep == 18) OpenerStep++;
+
+                if (WasLastAction(RiseOfTheDragon) && OpenerStep == 18) OpenerStep++;
                 else if (OpenerStep == 18) actionID = RiseOfTheDragon;
-                
-                if (CustomComboFunctions.WasLastAction(MirageDive) && OpenerStep == 19) OpenerStep++;
+
+                if (WasLastAction(MirageDive) && OpenerStep == 19) OpenerStep++;
                 else if (OpenerStep == 19) actionID = MirageDive;
 
-                if (CustomComboFunctions.WasLastAction(FangAndClaw) && OpenerStep == 20) OpenerStep++;
+                if (WasLastAction(FangAndClaw) && OpenerStep == 20) OpenerStep++;
                 else if (OpenerStep == 20) actionID = FangAndClaw;
-                
-                if (CustomComboFunctions.WasLastAction(Drakesbane) && OpenerStep == 21) OpenerStep++;
+
+                if (WasLastAction(Drakesbane) && OpenerStep == 21) OpenerStep++;
                 else if (OpenerStep == 21) actionID = Drakesbane;
 
-                if (CustomComboFunctions.WasLastAction(RaidenThrust) && OpenerStep == 22) OpenerStep++;
+                if (WasLastAction(RaidenThrust) && OpenerStep == 22) OpenerStep++;
                 else if (OpenerStep == 22) actionID = RaidenThrust;
 
-                if (CustomComboFunctions.WasLastAction(WyrmwindThrust) && OpenerStep == 23) OpenerStep++;
+                if (WasLastAction(WyrmwindThrust) && OpenerStep == 23) CurrentState = OpenerState.OpenerFinished;
                 else if (OpenerStep == 23) actionID = WyrmwindThrust;
-
-
+                
                 if (ActionWatching.TimeSinceLastAction.TotalSeconds >= 5)
                     CurrentState = OpenerState.FailedOpener;
 
-                if (((actionID == DragonfireDive && CustomComboFunctions.IsOnCooldown(DragonfireDive)) ||
-                    (actionID == BattleLitany && CustomComboFunctions.IsOnCooldown(BattleLitany)) ||
-                    (actionID == LanceCharge && CustomComboFunctions.IsOnCooldown(LanceCharge)) ||
-                    (actionID == LifeSurge && CustomComboFunctions.GetRemainingCharges(LifeSurge) < 2)) && ActionWatching.TimeSinceLastAction.TotalSeconds >= 3)
+                if (((actionID == DragonfireDive && IsOnCooldown(DragonfireDive)) || (actionID == BattleLitany && IsOnCooldown(BattleLitany)) || (actionID == LanceCharge && IsOnCooldown(LanceCharge)) || (actionID == LifeSurge && GetRemainingCharges(LifeSurge) < 2)) && ActionWatching.TimeSinceLastAction.TotalSeconds >= 3)
                 {
                     CurrentState = OpenerState.FailedOpener;
+                    // Service.ChatGui.PrintError("起手循环3");
                     return false;
                 }
+                
                 return true;
             }
             return false;
@@ -208,8 +211,11 @@ namespace XIVSlothComboX.Combos.JobHelpers
                 return false;
 
             if (CurrentState == OpenerState.PrePull)
+            {
                 if (DoPrePullSteps(ref actionID))
                     return true;
+            }
+
 
             if (CurrentState == OpenerState.InOpener)
             {
@@ -225,6 +231,7 @@ namespace XIVSlothComboX.Combos.JobHelpers
             return false;
         }
     }
+
     internal class AnimationLock
     {
         internal static readonly List<uint> FastLocks =
@@ -254,7 +261,7 @@ namespace XIVSlothComboX.Combos.JobHelpers
         internal static bool CanDRGWeave(uint oGCD)
         {
             //GCD Ready - No Weave
-            if (CustomComboFunctions.IsOffCooldown(PvE.DRG.TrueThrust))
+            if (CustomComboFunctions.IsOffCooldown(PvE.DRG.精准刺TrueThrust))
                 return false;
 
             if (CustomComboFunctions.WasLastAction(DRG.坠星冲Stardiver))
@@ -268,7 +275,7 @@ namespace XIVSlothComboX.Combos.JobHelpers
             // }
 
 
-            var gcdTimer = CustomComboFunctions.GetCooldownRemainingTime(PvE.DRG.TrueThrust);
+            var gcdTimer = CustomComboFunctions.GetCooldownRemainingTime(PvE.DRG.精准刺TrueThrust);
 
             if (FastLocks.Any(x => x == oGCD) && gcdTimer >= 0.6f)
                 return true;
@@ -281,20 +288,15 @@ namespace XIVSlothComboX.Combos.JobHelpers
 
             return false;
         }
-        
+
         internal static bool TrueNorthReady =>
-            TargetNeedsPositionals() && ActionReady(All.TrueNorth) &&
-            !HasEffect(All.Buffs.TrueNorth);
-        
+            TargetNeedsPositionals() && ActionReady(All.TrueNorth) && !HasEffect(All.Buffs.TrueNorth);
+
         internal static bool UseLifeSurge()
         {
             if (ActionReady(LifeSurge) && CanDRGWeave(LifeSurge) && !HasEffect(Buffs.LifeSurge))
             {
-                if (LevelChecked(Drakesbane) && Gauge.IsLOTDActive &&
-                    (HasEffect(Buffs.LanceCharge) || HasEffect(Buffs.BattleLitany)) &&
-                    (JustUsed(WheelingThrust) ||
-                     JustUsed(FangAndClaw) ||
-                     JustUsed(OriginalHook(VorpalThrust)) && LevelChecked(HeavensThrust)))
+                if (LevelChecked(Drakesbane) && Gauge.IsLOTDActive && (HasEffect(Buffs.LanceCharge) || HasEffect(Buffs.BattleLitany)) && (JustUsed(WheelingThrust) || JustUsed(FangAndClaw) || JustUsed(OriginalHook(VorpalThrust)) && LevelChecked(HeavensThrust)))
                     return true;
             }
 

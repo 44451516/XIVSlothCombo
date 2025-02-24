@@ -525,15 +525,15 @@ namespace XIVSlothComboX.Data
         public static void Dispose()
         {
             
+            Disable();
             ReceiveActionEffectHook?.Dispose();
             SendActionHook?.Dispose();
             UseActionLocationHook?.Dispose();
-            Disable();
         }
         
         public static void Disable()
         {
-            // ReceiveActionEffectHook.Disable();
+            ReceiveActionEffectHook.Disable();
             SendActionHook?.Disable();
             UseActionLocationHook?.Disable();
             

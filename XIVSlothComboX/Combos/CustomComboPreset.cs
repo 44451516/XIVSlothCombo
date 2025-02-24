@@ -1184,14 +1184,14 @@ namespace XIVSlothComboX.Combos
         [CustomComboInfo("自定义循环", "自定义循环", DRG.JobID, -10)]
         DRG_Advanced_CustomMode = 60001,
 
-        [ReplaceSkill(DRG.TrueThrust)]
+        [ReplaceSkill(DRG.精准刺TrueThrust)]
         [ConflictingCombos(DRG_ST_AdvancedMode)]
         [CustomComboInfo("Simple Mode - Single Target", "Replaces True Thrust with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.", DRG.JobID)]
         DRG_ST_SimpleMode = 6001,
 
         #region Advanced ST Dragoon
 
-        [ReplaceSkill(DRG.TrueThrust)]
+        [ReplaceSkill(DRG.精准刺TrueThrust)]
         [ConflictingCombos(DRG_ST_SimpleMode)]
         [CustomComboInfo("Advanced Mode - Single Target", "Replaces True Thrust with a full one-button single target rotation.\nThese features are ideal if you want to customize the rotation.", DRG.JobID)]
         DRG_ST_AdvancedMode = 6100,
