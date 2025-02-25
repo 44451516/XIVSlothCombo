@@ -101,7 +101,6 @@ namespace XIVSlothComboX.CustomComboNS.Functions
 
         /// <summary> Returns how many times in a row the last action was used. </summary>
         /// <returns></returns>
-        public static int LastActionCounter() => ActionWatching.LastActionUseCount;
 
         /// <summary> Checks if the last weaponskill used was the passed ID. Does not have to be the last action performed, just the last weaponskill used. </summary>
         /// <param name="id"> ID of the action. </param>

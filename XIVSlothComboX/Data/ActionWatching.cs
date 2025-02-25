@@ -24,28 +24,22 @@ namespace XIVSlothComboX.Data
 {
     public static class ActionWatching
     {
-        
-        internal static Dictionary<uint, Action> ActionSheet = Svc.Data.GetExcelSheet<Action>()!
-            .Where(i => i.RowId is not 7)
+        internal static Dictionary<uint, Action> ActionSheet = Svc.Data.GetExcelSheet<Action>().Where(i => i.RowId is not 7).ToDictionary(i => i.RowId, i => i);
+
+        internal static Dictionary<uint, Status> StatusSheet = Svc.Data.GetExcelSheet<Status>().ToDictionary(i => i.RowId, i => i);
+
+        internal static Dictionary<uint, Trait> TraitSheet = Svc.Data.GetExcelSheet<Trait>()!.Where(i => i.ClassJobCategory.IsValid) //All player traits are assigned to a category. Chocobo and other garbage lacks this, thus excluded.
             .ToDictionary(i => i.RowId, i => i);
 
-        internal static Dictionary<uint, Status> StatusSheet = Svc.Data.GetExcelSheet<Status>()!
-            .ToDictionary(i => i.RowId, i => i);
 
-        internal static Dictionary<uint, Trait> TraitSheet = Svc.Data.GetExcelSheet<Trait>()!
-            .Where(i => i.ClassJobCategory.IsValid) //All player traits are assigned to a category. Chocobo and other garbage lacks this, thus excluded.
-            .ToDictionary(i => i.RowId, i => i);
-        
-        
 
         internal static Dictionary<uint, Item> ItemsSheet =
-            Svc.Data.GetExcelSheet<Item>()!
-                .ToDictionary(i => i.RowId, i => i);
+            Svc.Data.GetExcelSheet<Item>()!.ToDictionary(i => i.RowId, i => i);
 
-        
-   
-        
-        
+
+
+
+
         internal static readonly Dictionary<uint, long> ChargeTimestamps = [];
         internal static readonly Dictionary<uint, long> ActionTimestamps = [];
         private static readonly Dictionary<string, List<uint>> statusCache = new();
@@ -65,15 +59,27 @@ namespace XIVSlothComboX.Data
         internal static readonly List<uint> CustomList = new();
 
 
-        private delegate byte UseActionLocationDelegate(IntPtr actionManager,  uint actionType, uint actionID, ulong targetedActorID,
-            IntPtr                                             vectorLocation, uint param);
+        private delegate byte UseActionLocationDelegate
+        (
+            IntPtr actionManager,
+            uint   actionType,
+            uint   actionID,
+            ulong  targetedActorID,
+            IntPtr vectorLocation,
+            uint   param);
 
         private static readonly Hook<UseActionLocationDelegate>? UseActionLocationHook;
 
-        private static byte UseActionLocationDetour(IntPtr actionManager, uint actionType, uint actionId, ulong targetedActorID, IntPtr vectorLocation,
-            uint                                           param)
+        private static byte UseActionLocationDetour
+        (
+            IntPtr actionManager,
+            uint   actionType,
+            uint   actionId,
+            ulong  targetedActorID,
+            IntPtr vectorLocation,
+            uint   param)
         {
-            
+
             if (CustomComboFunctions.CustomTimelineIsEnable())
             {
                 if (actionType == (byte)FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action)
@@ -107,11 +113,11 @@ namespace XIVSlothComboX.Data
                                 }
                             }
                         }
-                     
+
                     }
                 }
             }
-            
+
             // Service.ChatGui.PrintError($"UseActionLocationDetour{GetActionName(actionId)} - {actionType}");
 
             Vector3Struct vector3 = Marshal.PtrToStructure<Vector3Struct>(vectorLocation);
@@ -177,7 +183,7 @@ namespace XIVSlothComboX.Data
         private static readonly Hook<ReceiveActionEffectDelegate>? ReceiveActionEffectHook;
 
 
-        
+
 
         private unsafe static void ReceiveActionEffectDetour(uint casterEntityId, Character* casterPtr, System.Numerics.Vector3* targetPos, ActionEffectHandler.Header* header, ActionEffectHandler.TargetEffects* effects, GameObjectId* targetEntityIds)
         {
@@ -193,22 +199,18 @@ namespace XIVSlothComboX.Data
             // }
 
             ReceiveActionEffectHook!.Original(casterEntityId, casterPtr, targetPos, header, effects, targetEntityIds);
-            
 
-            if (ActionType is 13 or 2) return;
-            if (header->ActionId != 7 &&
-                header->ActionId != 8 &&
-                casterEntityId == Service.ClientState.LocalPlayer.GameObjectId)
+            if (ActionType is 13 or 2)
+                return;
+
+            if (ActionSheet.ContainsKey(header->ActionId) == false)
             {
-                TimeLastActionUsed = DateTime.Now;
-                LastActionUseCount++;
-                if (header->ActionId != LastAction)
-                {
-                    LastActionUseCount = 1;
-                }
+                return;
+            }
 
-                LastAction = header->ActionId;
-
+            if (header->ActionId != 7 && header->ActionId != 8 && casterEntityId == Service.ClientState.LocalPlayer.GameObjectId)
+            {
+                
                 ActionSheet.TryGetValue(header->ActionId, out var sheet);
                 {
                     switch (sheet.ActionCategory.Value.RowId)
@@ -224,7 +226,9 @@ namespace XIVSlothComboX.Data
                             break;
                     }
                 }
+                TimeLastActionUsed = DateTime.Now;
 
+                LastAction = header->ActionId;
                 CombatActions.Add(header->ActionId);
                 // 特殊起手Actions.Add(header.ActionId);
 
@@ -234,13 +238,31 @@ namespace XIVSlothComboX.Data
             }
         }
 
-        private delegate void SendActionDelegate(ulong targetObjectId, byte actionType, uint actionId, ushort sequence, long a5, long a6, long a7,
-            long a8, long a9);
+        private delegate void SendActionDelegate
+        (
+            ulong  targetObjectId,
+            byte   actionType,
+            uint   actionId,
+            ushort sequence,
+            long   a5,
+            long   a6,
+            long   a7,
+            long   a8,
+            long   a9);
 
         private static readonly Hook<SendActionDelegate>? SendActionHook;
 
-        private static unsafe void SendActionDetour(ulong targetObjectId, byte actionType, uint actionId, ushort sequence, long a5, long a6, long a7,
-            long a8, long a9)
+        private static unsafe void SendActionDetour
+        (
+            ulong  targetObjectId,
+            byte   actionType,
+            uint   actionId,
+            ushort sequence,
+            long   a5,
+            long   a6,
+            long   a7,
+            long   a8,
+            long   a9)
         {
             // Service.ChatGui.PrintError($"1 {actionType} - {actionId}");
             if (actionType == (byte)FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action)
@@ -300,7 +322,7 @@ namespace XIVSlothComboX.Data
                 SendActionHook!.Original(targetObjectId, actionType, actionId, sequence, a5, a6, a7, a8, a9);
                 TimeLastActionUsed = DateTime.Now;
                 ActionType = actionType;
-                
+
                 UpdateHelpers(actionId);
 
             }
@@ -348,9 +370,7 @@ namespace XIVSlothComboX.Data
             // }
 
 
-            if (actionId is AST.Balance or AST.Bole or AST.Ewer or AST.Arrow or AST.Spire or AST.Spear &&
-                Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember is not null &&
-                !OutOfRange(actionId, Service.ClientState.LocalPlayer!, Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember))
+            if (actionId is AST.Balance or AST.Bole or AST.Ewer or AST.Arrow or AST.Spire or AST.Spear && Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember is not null && !OutOfRange(actionId, Service.ClientState.LocalPlayer!, Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember))
             {
                 int targetOptions = AST.Config.AST_QuickTarget_Override;
 
@@ -382,7 +402,7 @@ namespace XIVSlothComboX.Data
             return ActionManager.GetActionInRangeOrLoS(actionId, source.Struct(), target.Struct()) is 566;
         }
 
-        
+
         /// <summary>
         /// Returns the amount of time since an action was last used.
         /// </summary>
@@ -431,21 +451,23 @@ namespace XIVSlothComboX.Data
 
             return count;
         }
-        
+
 
         public static bool HasDoubleWeaved()
         {
-            if (CombatActions.Count < 2) 
+            if (CombatActions.Count < 2)
                 return false;
+
             var lastAction = CombatActions.Last();
             var secondLastAction = CombatActions[^2];
 
             return (GetAttackType(lastAction) == GetAttackType(secondLastAction) && GetAttackType(lastAction) == ActionAttackType.Ability);
         }
-        
+
         public static bool WasLast2ActionsAbilities()
         {
             if (CombatActions.Count < 2) return false;
+
             var lastAction = CombatActions.Last();
             var secondLastAction = CombatActions[^2];
 
@@ -457,7 +479,6 @@ namespace XIVSlothComboX.Data
             CombatActions.Count(x => GetAttackType(x) == ActionAttackType.Weaponskill || GetAttackType(x) == ActionAttackType.Spell);
 
         public static uint LastAction { get; set; } = 0;
-        public static int LastActionUseCount { get; set; } = 0;
         public static uint ActionType { get; set; } = 0;
         public static uint LastWeaponskill { get; set; } = 0;
         public static uint LastAbility { get; set; } = 0;
@@ -472,12 +493,12 @@ namespace XIVSlothComboX.Data
             Service.ChatGui.Print($"You just used: {GetActionName(LastAction)}-{LastAction}");
         }
 
-    
+
 
         static unsafe ActionWatching()
         {
             // ReceiveActionEffectHook ??= Service.GameInteropProvider.HookFromSignature<ReceiveActionEffectDelegate>(HookAddress.ReceiveActionEffect,ReceiveActionEffectDetour);
-            ReceiveActionEffectHook ??= Service.GameInteropProvider.HookFromAddress<ReceiveActionEffectDelegate>(HookAddress.ReceiveActionEffect,ReceiveActionEffectDetour);
+            ReceiveActionEffectHook ??= Service.GameInteropProvider.HookFromAddress<ReceiveActionEffectDelegate>(HookAddress.ReceiveActionEffect, ReceiveActionEffectDetour);
 
             SendActionHook ??= Service.GameInteropProvider.HookFromSignature<SendActionDelegate>(HookAddress.SendAction, SendActionDetour);
 
@@ -488,15 +509,13 @@ namespace XIVSlothComboX.Data
             UseActionLocationHook ??= Service.GameInteropProvider.HookFromSignature<UseActionLocationDelegate>(HookAddress.UseActionLocation, UseActionLocationDetour);
 
 
-
-
             Service.PluginLog.Error($"{nameof(ReceiveActionEffectHook)}         0x{ReceiveActionEffectHook.Address:X}");
             Service.PluginLog.Error($"{nameof(SendActionHook)}                  0x{SendActionHook.Address:X}");
             Service.PluginLog.Error($"{nameof(UseActionLocationHook)}           0x{UseActionLocationHook.Address:X}");
         }
 
 
-     
+
         private static void ResetActions(ConditionFlag flag, bool value)
         {
             if (flag == ConditionFlag.InCombat && !value)
@@ -510,7 +529,7 @@ namespace XIVSlothComboX.Data
             }
         }
 
-        
+
         public static void Enable()
         {
             ReceiveActionEffectHook?.Enable();
@@ -521,22 +540,22 @@ namespace XIVSlothComboX.Data
             Service.ClientState.TerritoryChanged += TerritoryChangedEvent;
         }
 
-        
+
         public static void Dispose()
         {
-            
+
             Disable();
             ReceiveActionEffectHook?.Dispose();
             SendActionHook?.Dispose();
             UseActionLocationHook?.Dispose();
         }
-        
+
         public static void Disable()
         {
             ReceiveActionEffectHook.Disable();
             SendActionHook?.Disable();
             UseActionLocationHook?.Disable();
-            
+
             Service.Condition.ConditionChange -= ResetActions;
             Service.ClientState.TerritoryChanged -= TerritoryChangedEvent;
         }
@@ -558,12 +577,12 @@ namespace XIVSlothComboX.Data
         public static int GetTraitLevel(uint        id) => TraitSheet.TryGetValue(id, out var trait) ? trait.Level : 255;
         public static string GetActionName(uint     id) => ActionSheet.TryGetValue(id, out var action) ? action.Name.ToString() : "UNKNOWN ABILITY";
 
-        public static string GetItemName(uint id) => ItemsSheet.TryGetValue(id, out var item) ? item.Name.ToString() : "UNKNOWN ITEM";
+        public static string GetItemName(uint   id) => ItemsSheet.TryGetValue(id, out var item) ? item.Name.ToString() : "UNKNOWN ITEM";
         public static string GetStatusName(uint id) => StatusSheet.TryGetValue(id, out var status) ? status.Name.ToString() : "Unknown Status";
 
-        
-     
-        
+
+
+
         public static string GetBLUIndex(uint id)
         {
             var aozKey = Service.DataManager.GetExcelSheet<AozAction>()!.First(x => x.Action.RowId == id).RowId;
@@ -578,8 +597,11 @@ namespace XIVSlothComboX.Data
                 return list;
 
 
-            return statusCache.TryAdd(status,
-                StatusSheet.Where(x => x.Value.Name.ToString().Equals(status, StringComparison.CurrentCultureIgnoreCase)).Select(x => x.Key).ToList())
+            return statusCache.TryAdd
+            (
+                status,
+                StatusSheet.Where(x => x.Value.Name.ToString().Equals(status, StringComparison.CurrentCultureIgnoreCase)).Select(x => x.Key).ToList()
+            )
                 ? statusCache[status]
                 : null;
         }
@@ -623,13 +645,28 @@ namespace XIVSlothComboX.Data
     [StructLayout(LayoutKind.Explicit)]
     public struct ActionEffectHeader
     {
-        [FieldOffset(0x0)] public long TargetObjectId;
-        [FieldOffset(0x8)] public uint ActionId;
-        [FieldOffset(0x14)] public uint UnkObjectId;
-        [FieldOffset(0x18)] public ushort Sequence;
-        [FieldOffset(0x1A)] public ushort Unk_1A;
-        [FieldOffset(0X1C)] public ushort AnimationId;
-        [FieldOffset(0X1F)] public byte Type;
-        [FieldOffset(0x21)] public byte TargetCount;
+        [FieldOffset(0x0)]
+        public long TargetObjectId;
+
+        [FieldOffset(0x8)]
+        public uint ActionId;
+
+        [FieldOffset(0x14)]
+        public uint UnkObjectId;
+
+        [FieldOffset(0x18)]
+        public ushort Sequence;
+
+        [FieldOffset(0x1A)]
+        public ushort Unk_1A;
+
+        [FieldOffset(0X1C)]
+        public ushort AnimationId;
+
+        [FieldOffset(0X1F)]
+        public byte Type;
+
+        [FieldOffset(0x21)]
+        public byte TargetCount;
     }
 }
