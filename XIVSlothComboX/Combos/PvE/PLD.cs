@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Statuses;
 using System.Linq;
+using ECommons.DalamudServices;
 using XIVSlothComboX.Combos.PvE.Content;
 using XIVSlothComboX.Core;
 using XIVSlothComboX.CustomComboNS;
@@ -413,13 +414,16 @@ namespace XIVSlothComboX.Combos.PvE
                             return 赎罪剑Atonement.OriginalHook();
                         }
 
-
+                      
                         // Base combo
                         if (comboTime > 0)
                         {
+                           
                             if (lastComboActionID is 先锋剑FastBlade && 暴乱剑RiotBlade.LevelChecked())
                                 return 暴乱剑RiotBlade;
 
+                            Svc.Log.Debug($"我是你爹啊2 {lastComboActionID} {暴乱剑RiotBlade.LevelChecked()}");
+                            
                             if (lastComboActionID is 暴乱剑RiotBlade && 战女神之怒RageOfHalone.LevelChecked())
                             {
                                 if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_Atonement) && (HasEffect(Buffs.赎罪剑Atonement2BUFF)))

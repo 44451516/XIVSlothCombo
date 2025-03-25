@@ -17,6 +17,7 @@ using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
 using ECommons;
+using ECommons.DalamudServices;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using XIVSlothComboX.Attributes;
@@ -233,7 +234,11 @@ namespace XIVSlothComboX
         {
             if (Service.ClientState.LocalPlayer is not null)
             {
-                JobID = Service.ClientState.LocalPlayer?.ClassJob.RowId;
+                // JobID = Service.ClientState.LocalPlayer.ClassJob.Value.RowId;
+                JobID = 19;
+                // JobID = Service.ClientState.LocalPlayer.ClassJob.RowId;
+                // Svc.Log.Debug($"1{Service.ClientState.LocalPlayer.ClassJob.Value.}");
+                // Svc.Log.Debug($"2 {Service.ClientState.LocalPlayer.ClassJob.Value.JobIndex}");
                 BlueMageService.PopulateBLUSpells();
                 _TargetHelper.Draw();
 
@@ -715,7 +720,7 @@ namespace XIVSlothComboX
                             file.WriteLine($"START STATUS EFFECTS");
                             foreach (Status? status in localPlayer.StatusList)
                             {
-                                file.WriteLine($"ID: {status.StatusId}, COUNT: {status.StackCount}, SOURCE: {status.SourceId}");
+                                file.WriteLine($"ID: {status.StatusId}, COUNT: {status.Param}, SOURCE: {status.SourceId}");
                             }
 
                             file.WriteLine($"END STATUS EFFECTS");

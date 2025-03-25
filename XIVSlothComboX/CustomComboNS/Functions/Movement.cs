@@ -13,7 +13,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
         
         public static unsafe bool IsMoving()
         {
-            bool isMoving = AgentMap.Instance() is not null && AgentMap.Instance()->IsPlayerMoving > 0;
+            bool isMoving = AgentMap.Instance() is not null && AgentMap.Instance()->IsPlayerMoving;
 
             if (isMoving && movementStarted is null)
                 movementStarted = DateTime.Now;

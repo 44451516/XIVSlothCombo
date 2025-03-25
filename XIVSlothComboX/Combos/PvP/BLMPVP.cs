@@ -64,7 +64,7 @@ namespace XIVSlothComboX.Combos.PvP
                     if (!TargetHasEffect(Debuffs.AstralWarmth))
                         return OriginalHook(Fire);
 
-                    if (FindTargetEffect(Debuffs.AstralWarmth).StackCount < 3 &&
+                    if (FindTargetEffect(Debuffs.AstralWarmth).Param < 3 &&
                         IsOffCooldown(Paradox))
                         return Paradox;
 
@@ -72,7 +72,7 @@ namespace XIVSlothComboX.Combos.PvP
                         IsOffCooldown(NightWing))
                         return NightWing;
 
-                    if (FindTargetEffect(Debuffs.AstralWarmth).StackCount == 3 &&
+                    if (FindTargetEffect(Debuffs.AstralWarmth).Param == 3 &&
                         GetCooldown(Superflare).RemainingCharges > 0 &&
                         !TargetHasEffect(Debuffs.Burns))
                         return Superflare;
@@ -100,7 +100,7 @@ namespace XIVSlothComboX.Combos.PvP
                     if (!TargetHasEffect(Debuffs.UmbralFreeze))
                         return OriginalHook(Blizzard);
 
-                    if (FindTargetEffect(Debuffs.UmbralFreeze).StackCount < 3 &&
+                    if (FindTargetEffect(Debuffs.UmbralFreeze).Param < 3 &&
                         IsOffCooldown(Paradox))
                         return Paradox;
 
@@ -108,7 +108,7 @@ namespace XIVSlothComboX.Combos.PvP
                         IsOffCooldown(NightWing))
                         return NightWing;
 
-                    if (FindTargetEffect(Debuffs.UmbralFreeze).StackCount == 3 &&
+                    if (FindTargetEffect(Debuffs.UmbralFreeze).Param == 3 &&
                         GetCooldown(Superflare).RemainingCharges > 0 &&
                         !TargetHasEffect(Debuffs.DeepFreeze))
                         return Superflare;

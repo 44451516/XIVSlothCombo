@@ -217,7 +217,7 @@ namespace XIVSlothComboX.Combos.PvE
             {
                 int spellsSinceDraw = ActionWatching.CombatActions.Any(x => x == OriginalHook(AstralDraw)) ? ActionWatching.HowManyTimesUsedAfterAnotherAction(OriginalHook(Malefic), OriginalHook(AstralDraw)) + ActionWatching.HowManyTimesUsedAfterAnotherAction(OriginalHook(Combust), OriginalHook(AstralDraw)) + ActionWatching.HowManyTimesUsedAfterAnotherAction(OriginalHook(Gravity), OriginalHook(AstralDraw)) : Config.AST_ST_DPS_Play_SpeedSetting;
 
-                if (spellsSinceDraw == 0 && DrawnCard != CardType.NONE)
+                if (spellsSinceDraw == 0 && DrawnCard != CardType.None)
                 {
                     spellsSinceDraw = 1;
                 }
@@ -228,7 +228,7 @@ namespace XIVSlothComboX.Combos.PvE
                 // Out of combat Card Draw
                 if (((!AlternateMode && MaleficList.Contains(actionID)) || (AlternateMode && CombustList.ContainsKey(actionID)) && !InCombat()))
 
-                    if (IsEnabled(CustomComboPreset.AST_DPS_AutoDraw) && ActionReady(OriginalHook(AstralDraw)) && (Gauge.DrawnCards.All(x => x is CardType.NONE) || (DrawnCard == CardType.NONE && Config.AST_ST_DPS_OverwriteCards)))
+                    if (IsEnabled(CustomComboPreset.AST_DPS_AutoDraw) && ActionReady(OriginalHook(AstralDraw)) && (Gauge.DrawnCards.All(x => x is CardType.None) || (DrawnCard == CardType.None && Config.AST_ST_DPS_OverwriteCards)))
                         return OriginalHook(AstralDraw);
 
                 //In combat
@@ -264,21 +264,21 @@ namespace XIVSlothComboX.Combos.PvE
                                 && CanWeave(actionID))
                                 return Divination;
 
-                            if (IsEnabled(CustomComboPreset.AST_DPS_AutoPlay) && ActionReady(Play1) && Gauge.DrawnCards[0] is not CardType.NONE)
+                            if (IsEnabled(CustomComboPreset.AST_DPS_AutoPlay) && ActionReady(Play1) && Gauge.DrawnCards[0] is not CardType.None)
                                 return OriginalHook(Play1);
                         }
 
                         if (MaleficCount == 4 && CanWeave(actionID))
                         {
-                            if (ActionReady(OriginalHook(MinorArcana)) && IsEnabled(CustomComboPreset.AST_DPS_LazyLord) && Gauge.DrawnCrownCard is CardType.LORD && HasBattleTarget())
+                            if (ActionReady(OriginalHook(MinorArcana)) && IsEnabled(CustomComboPreset.AST_DPS_LazyLord) && Gauge.DrawnCrownCard is CardType.Lord && HasBattleTarget())
                                 return OriginalHook(MinorArcana);
 
-                            if (IsEnabled(CustomComboPreset.AST_DPS_AutoDraw) && Gauge.DrawnCrownCard is not CardType.LORD && CanDelayedWeave(actionID))
+                            if (IsEnabled(CustomComboPreset.AST_DPS_AutoDraw) && Gauge.DrawnCrownCard is not CardType.Lord && CanDelayedWeave(actionID))
                                 return OriginalHook(AstralDraw);
                         }
                         if (MaleficCount == 5 && CanWeave(actionID))
                         {
-                            if (IsEnabled(CustomComboPreset.AST_DPS_AutoPlay) && ActionReady(Play1) && Gauge.DrawnCards[0] is not CardType.NONE)
+                            if (IsEnabled(CustomComboPreset.AST_DPS_AutoPlay) && ActionReady(Play1) && Gauge.DrawnCards[0] is not CardType.None)
                                 return OriginalHook(Play1);
 
                             if (IsEnabled(CustomComboPreset.AST_DPS_Oracle) && HasEffect(Buffs.Divining) && CanSpellWeave(actionID))
@@ -300,7 +300,7 @@ namespace XIVSlothComboX.Combos.PvE
 
 
                     //Play Card
-                    if (IsEnabled(CustomComboPreset.AST_DPS_AutoPlay) && ActionReady(Play1) && Gauge.DrawnCards[0] is not CardType.NONE && CanSpellWeave(actionID) && spellsSinceDraw >= Config.AST_ST_DPS_Play_SpeedSetting)
+                    if (IsEnabled(CustomComboPreset.AST_DPS_AutoPlay) && ActionReady(Play1) && Gauge.DrawnCards[0] is not CardType.None && CanSpellWeave(actionID) && spellsSinceDraw >= Config.AST_ST_DPS_Play_SpeedSetting)
                     {
                         if (HasEffect(Buffs.占卜Divination))
                         {
@@ -314,7 +314,7 @@ namespace XIVSlothComboX.Combos.PvE
                     }
 
                     //Card Draw
-                    if (IsEnabled(CustomComboPreset.AST_DPS_AutoDraw) && ActionReady(OriginalHook(AstralDraw)) && (Gauge.DrawnCards.All(x => x is CardType.NONE) || (DrawnCard == CardType.NONE && Config.AST_ST_DPS_OverwriteCards)) && CanDelayedWeave(actionID))
+                    if (IsEnabled(CustomComboPreset.AST_DPS_AutoDraw) && ActionReady(OriginalHook(AstralDraw)) && (Gauge.DrawnCards.All(x => x is CardType.None) || (DrawnCard == CardType.None && Config.AST_ST_DPS_OverwriteCards)) && CanDelayedWeave(actionID))
                         return OriginalHook(AstralDraw);
 
                     //Divination
@@ -335,7 +335,7 @@ namespace XIVSlothComboX.Combos.PvE
                         return Oracle;
 
                     //Minor Arcana / Lord of Crowns
-                    if (ActionReady(OriginalHook(MinorArcana)) && IsEnabled(CustomComboPreset.AST_DPS_LazyLord) && Gauge.DrawnCrownCard is CardType.LORD && HasBattleTarget() && CanDelayedWeave(actionID))
+                    if (ActionReady(OriginalHook(MinorArcana)) && IsEnabled(CustomComboPreset.AST_DPS_LazyLord) && Gauge.DrawnCrownCard is CardType.Lord && HasBattleTarget() && CanDelayedWeave(actionID))
                         return OriginalHook(MinorArcana);
 
                     if (HasBattleTarget())
@@ -367,7 +367,7 @@ namespace XIVSlothComboX.Combos.PvE
             {
                 int spellsSinceDraw = ActionWatching.CombatActions.Any(x => x == OriginalHook(AstralDraw)) ? ActionWatching.HowManyTimesUsedAfterAnotherAction(OriginalHook(Malefic), OriginalHook(AstralDraw)) + ActionWatching.HowManyTimesUsedAfterAnotherAction(OriginalHook(Combust), OriginalHook(AstralDraw)) + ActionWatching.HowManyTimesUsedAfterAnotherAction(OriginalHook(Gravity), OriginalHook(AstralDraw)) : Config.AST_ST_DPS_Play_SpeedSetting;
 
-                if (spellsSinceDraw == 0 && DrawnCard != CardType.NONE)
+                if (spellsSinceDraw == 0 && DrawnCard != CardType.None)
                 {
                     spellsSinceDraw = 1;
                 }
@@ -392,11 +392,11 @@ namespace XIVSlothComboX.Combos.PvE
                         return All.LucidDreaming;
 
                     //Play Card
-                    if (IsEnabled(CustomComboPreset.AST_AOE_AutoPlay) && ActionReady(Play1) && Gauge.DrawnCards[0] is not CardType.NONE && CanSpellWeave(actionID))
+                    if (IsEnabled(CustomComboPreset.AST_AOE_AutoPlay) && ActionReady(Play1) && Gauge.DrawnCards[0] is not CardType.None && CanSpellWeave(actionID))
                         return OriginalHook(Play1);
 
                     //Card Draw
-                    if (IsEnabled(CustomComboPreset.AST_AOE_AutoDraw) && ActionReady(OriginalHook(AstralDraw)) && (Gauge.DrawnCards.All(x => x is CardType.NONE) || (DrawnCard == CardType.NONE && Config.AST_AOE_DPS_OverwriteCards)) && CanDelayedWeave(actionID))
+                    if (IsEnabled(CustomComboPreset.AST_AOE_AutoDraw) && ActionReady(OriginalHook(AstralDraw)) && (Gauge.DrawnCards.All(x => x is CardType.None) || (DrawnCard == CardType.None && Config.AST_AOE_DPS_OverwriteCards)) && CanDelayedWeave(actionID))
                         return OriginalHook(AstralDraw);
 
                     //Divination
@@ -417,7 +417,7 @@ namespace XIVSlothComboX.Combos.PvE
                         return Oracle;
 
                     //Minor Arcana / Lord of Crowns
-                    if (ActionReady(OriginalHook(MinorArcana)) && IsEnabled(CustomComboPreset.AST_AOE_LazyLord) && Gauge.DrawnCrownCard is CardType.LORD && HasBattleTarget() && CanDelayedWeave(actionID))
+                    if (ActionReady(OriginalHook(MinorArcana)) && IsEnabled(CustomComboPreset.AST_AOE_LazyLord) && Gauge.DrawnCrownCard is CardType.Lord && HasBattleTarget() && CanDelayedWeave(actionID))
                         return OriginalHook(MinorArcana);
                 }
                 return actionID;
@@ -443,7 +443,7 @@ namespace XIVSlothComboX.Combos.PvE
 
                     if (IsEnabled(CustomComboPreset.AST_AoE_SimpleHeals_LazyLady)
                         && ActionReady(MinorArcana)
-                        && Gauge.DrawnCrownCard is CardType.LADY
+                        && Gauge.DrawnCrownCard is CardType.Lady
                         && canLady)
                         return OriginalHook(MinorArcana);
 
@@ -503,16 +503,16 @@ namespace XIVSlothComboX.Combos.PvE
                     if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Esuna) && ActionReady(All.Esuna) && GetTargetHPPercent(healTarget) >= Config.AST_ST_SimpleHeals_Esuna && HasCleansableDebuff(healTarget))
                         return All.Esuna;
 
-                    if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Spire) && Gauge.DrawnCards[2] == CardType.SPIRE && GetTargetHPPercent(healTarget) <= Config.AST_Spire && ActionReady(Play3) && canSpire)
+                    if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Spire) && Gauge.DrawnCards[2] == CardType.Spire && GetTargetHPPercent(healTarget) <= Config.AST_Spire && ActionReady(Play3) && canSpire)
                         return OriginalHook(Play3);
 
-                    if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Ewer) && Gauge.DrawnCards[2] == CardType.EWER && GetTargetHPPercent(healTarget) <= Config.AST_Ewer && ActionReady(Play3) && canEwer)
+                    if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Ewer) && Gauge.DrawnCards[2] == CardType.Ewer && GetTargetHPPercent(healTarget) <= Config.AST_Ewer && ActionReady(Play3) && canEwer)
                         return OriginalHook(Play3);
 
-                    if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Arrow) && Gauge.DrawnCards[1] == CardType.ARROW && GetTargetHPPercent(healTarget) <= Config.AST_Arrow && ActionReady(Play2) && canArrow)
+                    if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Arrow) && Gauge.DrawnCards[1] == CardType.Arrow && GetTargetHPPercent(healTarget) <= Config.AST_Arrow && ActionReady(Play2) && canArrow)
                         return OriginalHook(Play2);
 
-                    if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Bole) && Gauge.DrawnCards[1] == CardType.BOLE && GetTargetHPPercent(healTarget) <= Config.AST_Bole && ActionReady(Play2) && canBole)
+                    if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Bole) && Gauge.DrawnCards[1] == CardType.Bole && GetTargetHPPercent(healTarget) <= Config.AST_Bole && ActionReady(Play2) && canBole)
                         return OriginalHook(Play2);
 
                     if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_EssentialDignity) && ActionReady(EssentialDignity) && GetTargetHPPercent(healTarget) <= Config.AST_EssentialDignity && canDignity)

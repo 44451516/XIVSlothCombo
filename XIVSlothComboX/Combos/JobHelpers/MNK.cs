@@ -106,7 +106,7 @@ namespace XIVSlothComboX.Combos.JobHelpers
             if (!ActionReady(Meditation) && Gauge.Chakra < 5)
                 return false;
 
-            if (Gauge.Nadi != Nadi.NONE)
+            if (Gauge.Nadi != Nadi.None)
                 return false;
 
             if (Gauge.RaptorFury != 0)

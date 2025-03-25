@@ -114,11 +114,11 @@ namespace XIVSlothComboX.Combos.PvE
         protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
         {
             bool bothNadisOpen = Gauge.Nadi.ToString() == "LUNAR, SOLAR";
-            bool solarNadi = Gauge.Nadi == Nadi.SOLAR;
-            bool lunarNadi = Gauge.Nadi == Nadi.LUNAR;
-            int opoOpoChakra = Gauge.BeastChakra.Count(x => x == BeastChakra.OPOOPO);
-            int raptorChakra = Gauge.BeastChakra.Count(x => x == BeastChakra.RAPTOR);
-            int coeurlChakra = Gauge.BeastChakra.Count(x => x == BeastChakra.COEURL);
+            bool solarNadi = Gauge.Nadi == Nadi.Solar;
+            bool lunarNadi = Gauge.Nadi == Nadi.Lunar;
+            int opoOpoChakra = Gauge.BeastChakra.Count(x => x == BeastChakra.OpoOpo);
+            int raptorChakra = Gauge.BeastChakra.Count(x => x == BeastChakra.Raptor);
+            int coeurlChakra = Gauge.BeastChakra.Count(x => x == BeastChakra.Coeurl);
             float GCD = GetCooldown(OriginalHook(Bootshine)).CooldownTotal;
 
             if (actionID is Bootshine or LeapingOpo)
@@ -277,11 +277,11 @@ namespace XIVSlothComboX.Combos.PvE
         protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
         {
             bool bothNadisOpen = Gauge.Nadi.ToString() == "LUNAR, SOLAR";
-            bool solarNadi = Gauge.Nadi == Nadi.SOLAR;
-            bool lunarNadi = Gauge.Nadi == Nadi.LUNAR;
-            int opoOpoChakra = Gauge.BeastChakra.Count(x => x == BeastChakra.OPOOPO);
-            int raptorChakra = Gauge.BeastChakra.Count(x => x == BeastChakra.RAPTOR);
-            int coeurlChakra = Gauge.BeastChakra.Count(x => x == BeastChakra.COEURL);
+            bool solarNadi = Gauge.Nadi == Nadi.Solar;
+            bool lunarNadi = Gauge.Nadi == Nadi.Lunar;
+            int opoOpoChakra = Gauge.BeastChakra.Count(x => x == BeastChakra.OpoOpo);
+            int raptorChakra = Gauge.BeastChakra.Count(x => x == BeastChakra.Raptor);
+            int coeurlChakra = Gauge.BeastChakra.Count(x => x == BeastChakra.Coeurl);
             float GCD = GetCooldown(OriginalHook(Bootshine)).CooldownTotal;
 
             if (actionID is Bootshine or LeapingOpo)
@@ -471,8 +471,8 @@ namespace XIVSlothComboX.Combos.PvE
         protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
         {
             Status? pbStacks = FindEffectAny(Buffs.PerfectBalance);
-            bool lunarNadi = Gauge.Nadi == Nadi.LUNAR;
-            bool nadiNone = Gauge.Nadi == Nadi.NONE;
+            bool lunarNadi = Gauge.Nadi == Nadi.Lunar;
+            bool nadiNone = Gauge.Nadi == Nadi.None;
 
             if (actionID is ArmOfTheDestroyer or ShadowOfTheDestroyer)
             {
@@ -541,13 +541,13 @@ namespace XIVSlothComboX.Combos.PvE
                 if (HasEffect(Buffs.PerfectBalance))
                 {
                     if (nadiNone || !lunarNadi)
-                        if (pbStacks?.StackCount > 0)
+                        if (pbStacks?.Param > 0)
                             return LevelChecked(ShadowOfTheDestroyer)
                                 ? ShadowOfTheDestroyer
                                 : Rockbreaker;
 
                     if (lunarNadi)
-                        switch (pbStacks?.StackCount)
+                        switch (pbStacks?.Param)
                         {
                             case 3:
                                 return OriginalHook(ArmOfTheDestroyer);
@@ -588,8 +588,8 @@ namespace XIVSlothComboX.Combos.PvE
         protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
         {
             Status? pbStacks = FindEffectAny(Buffs.PerfectBalance);
-            bool lunarNadi = Gauge.Nadi == Nadi.LUNAR;
-            bool nadiNone = Gauge.Nadi == Nadi.NONE;
+            bool lunarNadi = Gauge.Nadi == Nadi.Lunar;
+            bool nadiNone = Gauge.Nadi == Nadi.None;
 
             if (actionID is ArmOfTheDestroyer or ShadowOfTheDestroyer)
             {
@@ -689,13 +689,13 @@ namespace XIVSlothComboX.Combos.PvE
                     if (HasEffect(Buffs.PerfectBalance))
                     {
                         if (nadiNone || !lunarNadi)
-                            if (pbStacks?.StackCount > 0)
+                            if (pbStacks?.Param > 0)
                                 return LevelChecked(ShadowOfTheDestroyer)
                                     ? ShadowOfTheDestroyer
                                     : Rockbreaker;
 
                         if (lunarNadi)
-                            switch (pbStacks?.StackCount)
+                            switch (pbStacks?.Param)
                             {
                                 case 3:
                                     return OriginalHook(ArmOfTheDestroyer);

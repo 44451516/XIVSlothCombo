@@ -43,7 +43,7 @@ namespace XIVSlothComboX.Combos.JobHelpers
                 }
             }
 
-            if (DrawnCard == CardType.NONE)
+            if (DrawnCard == CardType.None)
                 AST_QuickTargetCards.SelectedRandomMember = null;
 
         }
@@ -54,7 +54,7 @@ namespace XIVSlothComboX.Combos.JobHelpers
                 return true;
 
             var m = AST_QuickTargetCards.SelectedRandomMember as IBattleChara;
-            if ((DrawnCard is CardType.BALANCE && CustomComboFunctions.JobIDs.Melee.Any(x => x == m.ClassJob.RowId)) || (DrawnCard is CardType.SPEAR && CustomComboFunctions.JobIDs.Ranged.Any(x => x == m.ClassJob.RowId)))
+            if ((DrawnCard is CardType.Balance && CustomComboFunctions.JobIDs.Melee.Any(x => x == m.ClassJob.RowId)) || (DrawnCard is CardType.Spear && CustomComboFunctions.JobIDs.Ranged.Any(x => x == m.ClassJob.RowId)))
                 return false;
 
             var targets = new List<IBattleChara>();
@@ -79,7 +79,7 @@ namespace XIVSlothComboX.Combos.JobHelpers
 
             if (targets.Count == 0) return false;
 
-            if ((DrawnCard is CardType.BALANCE && targets.Any(x => CustomComboFunctions.JobIDs.Melee.Any(y => y == x.ClassJob.RowId))) || (DrawnCard is CardType.SPEAR && targets.Any(x => CustomComboFunctions.JobIDs.Ranged.Any(y => y == x.ClassJob.RowId))))
+            if ((DrawnCard is CardType.Balance && targets.Any(x => CustomComboFunctions.JobIDs.Melee.Any(y => y == x.ClassJob.RowId))) || (DrawnCard is CardType.Spear && targets.Any(x => CustomComboFunctions.JobIDs.Ranged.Any(y => y == x.ClassJob.RowId))))
             {
                 AST_QuickTargetCards.SelectedRandomMember = null;
                 return true;
@@ -97,7 +97,7 @@ namespace XIVSlothComboX.Combos.JobHelpers
 
             public static void Invoke()
             {
-                if (DrawnCard is not CardType.NONE)
+                if (DrawnCard is not CardType.None)
                 {
                     if (GetPartySlot(2) is not null)
                     {
@@ -118,7 +118,7 @@ namespace XIVSlothComboX.Combos.JobHelpers
 
             private static bool SetTarget()
             {
-                if (Gauge.DrawnCards[0].Equals(CardType.NONE)) return false;
+                if (Gauge.DrawnCards[0].Equals(CardType.None)) return false;
 
                 CardType cardDrawn = Gauge.DrawnCards[0];
                 PartyTargets.Clear();
@@ -171,7 +171,7 @@ namespace XIVSlothComboX.Combos.JobHelpers
                     for (int i = 0; i <= PartyTargets.Count - 1; i++)
                     {
                         byte job = PartyTargets[i] is IBattleChara ? (byte)(PartyTargets[i] as IBattleChara).ClassJob.RowId : (byte)0;
-                        if (((cardDrawn is CardType.BALANCE) && JobIDs.Melee.Contains(job)) || ((cardDrawn is CardType.SPEAR) && JobIDs.Ranged.Contains(job)))
+                        if (((cardDrawn is CardType.Balance) && JobIDs.Melee.Contains(job)) || ((cardDrawn is CardType.Spear) && JobIDs.Ranged.Contains(job)))
                         {
                             //TargetObject(PartyTargets[i]);
                             SelectedRandomMember = PartyTargets[i];
@@ -182,7 +182,7 @@ namespace XIVSlothComboX.Combos.JobHelpers
                     for (int i = 0; i <= PartyTargets.Count - 1; i++)
                     {
                         byte job = PartyTargets[i] is IBattleChara ? (byte)(PartyTargets[i] as IBattleChara).ClassJob.RowId : (byte)0;
-                        if (((cardDrawn is CardType.BALANCE) && JobIDs.Ranged.Contains(job)) || ((cardDrawn is CardType.SPEAR) && JobIDs.Melee.Contains(job)))
+                        if (((cardDrawn is CardType.Balance) && JobIDs.Ranged.Contains(job)) || ((cardDrawn is CardType.Spear) && JobIDs.Melee.Contains(job)))
                         {
                             //TargetObject(PartyTargets[i]);
                             SelectedRandomMember = PartyTargets[i];
@@ -196,7 +196,7 @@ namespace XIVSlothComboX.Combos.JobHelpers
                         for (int i = 0; i <= PartyTargets.Count - 1; i++)
                         {
                             byte job = PartyTargets[i] is IBattleChara ? (byte)(PartyTargets[i] as IBattleChara).ClassJob.RowId : (byte)0;
-                            if (cardDrawn is CardType.BALANCE && JobIDs.Tank.Contains(job))
+                            if (cardDrawn is CardType.Balance && JobIDs.Tank.Contains(job))
                             {
                                 SelectedRandomMember = PartyTargets[i];
                                 return true;
@@ -209,7 +209,7 @@ namespace XIVSlothComboX.Combos.JobHelpers
                         for (int i = 0; i <= PartyTargets.Count - 1; i++)
                         {
                             byte job = PartyTargets[i] is IBattleChara ? (byte)(PartyTargets[i] as IBattleChara).ClassJob.RowId : (byte)0;
-                            if (cardDrawn is CardType.SPEAR && JobIDs.Healer.Contains(job))
+                            if (cardDrawn is CardType.Spear && JobIDs.Healer.Contains(job))
                             {
                                 SelectedRandomMember = PartyTargets[i];
                                 return true;

@@ -23,8 +23,8 @@ namespace XIVSlothComboX.Combos.JobHelpers
             {
                 if (LevelChecked(Manafication))
                 {
-                    byte magickedSword = GetBuffStacks(Buffs.MagickedSwordPlay);
-                    byte magickedSwordMana = magickedSword switch
+                    var magickedSword = GetBuffStacks(Buffs.MagickedSwordPlay);
+                    var magickedSwordMana = magickedSword switch
                     {
                         3 => 50,
                         2 => 30,

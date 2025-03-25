@@ -15,10 +15,10 @@ namespace XIVSlothComboX.CustomComboNS.Functions
         /// <returns> A value indicating if the effect exists. </returns>
         public static bool HasEffect(ushort effectID) => FindEffect(effectID) is not null;
 
-        public static byte GetBuffStacks(ushort effectId)
+        public static ushort GetBuffStacks(ushort effectId)
         {
             Status? eff = FindEffect(effectId);
-            return eff?.StackCount ?? 0;
+            return eff?.Param ?? 0;
         }
 
    

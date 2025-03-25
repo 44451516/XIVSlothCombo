@@ -92,9 +92,9 @@ namespace XIVSlothComboX.Combos.PvE
 
         #region Song status
 
-        internal static bool SongIsNotNone(Song        value) => value != Song.NONE;
-        internal static bool SongIsNone(Song           value) => value == Song.NONE;
-        internal static bool SongIsWandererMinuet(Song value) => value == Song.WANDERER;
+        internal static bool SongIsNotNone(Song        value) => value != Song.None;
+        internal static bool SongIsNone(Song           value) => value == Song.None;
+        internal static bool SongIsWandererMinuet(Song value) => value == Song.Wanderer;
 
         #endregion
 
@@ -307,7 +307,7 @@ namespace XIVSlothComboX.Combos.PvE
                 if (actionID is RainOfDeath)
                 {
                     BRDGauge? gauge = GetJobGauge<BRDGauge>();
-                    bool songWanderer = gauge.Song == Song.WANDERER;
+                    bool songWanderer = gauge.Song == Song.Wanderer;
 
                     if (LevelChecked(放浪神的小步舞曲WanderersMinuet) && songWanderer && gauge.Repertoire == 3)
                         return OriginalHook(放浪神的小步舞曲WanderersMinuet);
@@ -339,10 +339,10 @@ namespace XIVSlothComboX.Combos.PvE
                     bool canWeaveBuffs = CanWeave(actionID, 0.6);
                     bool canWeaveDelayed = CanDelayedWeave(actionID, 0.9);
                     int songTimerInSeconds = gauge.SongTimer / 1000;
-                    bool songNone = gauge.Song == Song.NONE;
-                    bool songWanderer = gauge.Song == Song.WANDERER;
-                    bool songMage = gauge.Song == Song.MAGE;
-                    bool songArmy = gauge.Song == Song.ARMY;
+                    bool songNone = gauge.Song == Song.None;
+                    bool songWanderer = gauge.Song == Song.Wanderer;
+                    bool songMage = gauge.Song == Song.Mage;
+                    bool songArmy = gauge.Song == Song.Army;
                     int targetHPThreshold = PluginConfiguration.GetCustomIntValue(Config.BRD_AoENoWasteHPPercentage);
                     bool isEnemyHealthHigh = !IsEnabled(CustomComboPreset.BRD_AoE_Adv_NoWaste) || GetTargetHPPercent() > targetHPThreshold;
 
@@ -531,8 +531,8 @@ namespace XIVSlothComboX.Combos.PvE
                 if (actionID is Bloodletter or HeartbreakShot)
                 {
                     BRDGauge? gauge = GetJobGauge<BRDGauge>();
-                    bool songArmy = gauge.Song == Song.ARMY;
-                    bool songWanderer = gauge.Song == Song.WANDERER;
+                    bool songArmy = gauge.Song == Song.Army;
+                    bool songWanderer = gauge.Song == Song.Wanderer;
                     bool minuetReady = LevelChecked(放浪神的小步舞曲WanderersMinuet) && IsOffCooldown(放浪神的小步舞曲WanderersMinuet);
                     bool balladReady = LevelChecked(贤者的叙事谣MagesBallad) && IsOffCooldown(贤者的叙事谣MagesBallad);
                     bool paeonReady = LevelChecked(军神的赞美歌ArmysPaeon) && IsOffCooldown(军神的赞美歌ArmysPaeon);
@@ -616,10 +616,10 @@ namespace XIVSlothComboX.Combos.PvE
                     bool canWeave = CanWeave(actionID);
                     bool canWeaveBuffs = CanWeave(actionID, 0.6);
                     bool canWeaveDelayed = CanDelayedWeave(actionID, 0.9);
-                    bool songNone = gauge.Song == Song.NONE;
-                    bool songWanderer = gauge.Song == Song.WANDERER;
-                    bool songMage = gauge.Song == Song.MAGE;
-                    bool songArmy = gauge.Song == Song.ARMY;
+                    bool songNone = gauge.Song == Song.None;
+                    bool songWanderer = gauge.Song == Song.Wanderer;
+                    bool songMage = gauge.Song == Song.Mage;
+                    bool songArmy = gauge.Song == Song.Army;
                     bool canInterrupt = CanInterruptEnemy() && IsOffCooldown(All.HeadGraze);
                     int targetHPThreshold = PluginConfiguration.GetCustomIntValue(Config.BRD_NoWasteHPPercentage);
                     bool isEnemyHealthHigh = !IsEnabled(CustomComboPreset.BRD_Adv_NoWaste) || GetTargetHPPercent() > targetHPThreshold;
@@ -942,13 +942,13 @@ namespace XIVSlothComboX.Combos.PvE
                     BRDGauge? gauge = GetJobGauge<BRDGauge>();
                     int songTimerInSeconds = gauge.SongTimer / 1000;
 
-                    if (ActionReady(放浪神的小步舞曲WanderersMinuet) || (gauge.Song == Song.WANDERER && songTimerInSeconds > 11))
+                    if (ActionReady(放浪神的小步舞曲WanderersMinuet) || (gauge.Song == Song.Wanderer && songTimerInSeconds > 11))
                         return 放浪神的小步舞曲WanderersMinuet;
 
-                    if (ActionReady(贤者的叙事谣MagesBallad) || (gauge.Song == Song.MAGE && songTimerInSeconds > 2))
+                    if (ActionReady(贤者的叙事谣MagesBallad) || (gauge.Song == Song.Mage && songTimerInSeconds > 2))
                         return 贤者的叙事谣MagesBallad;
 
-                    if (ActionReady(军神的赞美歌ArmysPaeon) || (gauge.Song == Song.ARMY && songTimerInSeconds > 2))
+                    if (ActionReady(军神的赞美歌ArmysPaeon) || (gauge.Song == Song.Army && songTimerInSeconds > 2))
                         return 军神的赞美歌ArmysPaeon;
 
                 }
@@ -973,10 +973,10 @@ namespace XIVSlothComboX.Combos.PvE
                     bool canWeaveBuffs = CanWeave(actionID, 0.6);
                     bool canWeaveDelayed = CanDelayedWeave(actionID, 0.9);
                     int songTimerInSeconds = gauge.SongTimer / 1000;
-                    bool songNone = gauge.Song == Song.NONE;
-                    bool songWanderer = gauge.Song == Song.WANDERER;
-                    bool songMage = gauge.Song == Song.MAGE;
-                    bool songArmy = gauge.Song == Song.ARMY;
+                    bool songNone = gauge.Song == Song.None;
+                    bool songWanderer = gauge.Song == Song.Wanderer;
+                    bool songMage = gauge.Song == Song.Mage;
+                    bool songArmy = gauge.Song == Song.Army;
                     int targetHPThreshold = PluginConfiguration.GetCustomIntValue(Config.BRD_AoENoWasteHPPercentage);
                     bool isEnemyHealthHigh = GetTargetHPPercent() > 1;
 
@@ -1173,10 +1173,10 @@ namespace XIVSlothComboX.Combos.PvE
                     bool canWeave = CanWeave(actionID);
                     bool canWeaveBuffs = CanWeave(actionID, 0.6);
                     bool canWeaveDelayed = CanDelayedWeave(actionID, 0.9);
-                    bool songNone = gauge.Song == Song.NONE;
-                    bool songWanderer = gauge.Song == Song.WANDERER;
-                    bool songMage = gauge.Song == Song.MAGE;
-                    bool songArmy = gauge.Song == Song.ARMY;
+                    bool songNone = gauge.Song == Song.None;
+                    bool songWanderer = gauge.Song == Song.Wanderer;
+                    bool songMage = gauge.Song == Song.Mage;
+                    bool songArmy = gauge.Song == Song.Army;
                     bool canInterrupt = CanInterruptEnemy() && IsOffCooldown(All.HeadGraze);
                     bool isEnemyHealthHigh = GetTargetHPPercent() > 1;
 
