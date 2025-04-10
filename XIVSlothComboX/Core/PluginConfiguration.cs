@@ -249,6 +249,8 @@ namespace XIVSlothComboX.Core
         
         
         public float MovementLeeway = 0f;
+        //性能模式
+        public bool PerformanceMode;
 
         public bool RecommendedSettingsViewed { get; set; } = false;
 

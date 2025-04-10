@@ -229,7 +229,7 @@ namespace XIVSlothComboX.Combos.PvE
                                         return 圣灵HolySpirit;
                                     }
                                     
-                                    if (!IsMoving())
+                                    if (InCombat()&&!IsMoving())
                                     {
                                         return 圣灵HolySpirit;
                                     }
@@ -422,7 +422,6 @@ namespace XIVSlothComboX.Combos.PvE
                             if (lastComboActionID is 先锋剑FastBlade && 暴乱剑RiotBlade.LevelChecked())
                                 return 暴乱剑RiotBlade;
 
-                            Svc.Log.Debug($"我是你爹啊2 {lastComboActionID} {暴乱剑RiotBlade.LevelChecked()}");
                             
                             if (lastComboActionID is 暴乱剑RiotBlade && 战女神之怒RageOfHalone.LevelChecked())
                             {

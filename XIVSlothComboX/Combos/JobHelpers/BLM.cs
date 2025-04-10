@@ -27,7 +27,7 @@ namespace XIVSlothComboX.Combos.JobHelpers
 
         public static int Fire4Count => ActionWatching.CombatActions.Count(x => x == Fire4);
 
-        public static float elementTimer => Gauge.ElementTimeRemaining / 1000f;
+        public static float elementTimer => Gauge.EnochianTimer / 1000f;
 
         public static double gcdsInTimer => Math.Floor(elementTimer / GetActionCastTime(ActionWatching.LastSpell));
 

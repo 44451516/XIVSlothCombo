@@ -67,6 +67,8 @@ namespace XIVSlothComboX.Core
             this.actionManager = actionManager;
 
             // Service.PluginLog.Error($"{actionID}");
+            // if (Service.Configuration.PerformanceMode)
+            //     return OriginalHook(actionID);
             
             try
             {

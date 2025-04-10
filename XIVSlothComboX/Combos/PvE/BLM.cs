@@ -536,7 +536,7 @@ namespace XIVSlothComboX.Combos.PvE
 
                 Status? thunderDebuffAoE =
                     FindEffect(ThunderList[OriginalHook(Thunder2)], CurrentTarget, LocalPlayer.GameObjectId);
-                float elementTimer = Gauge.ElementTimeRemaining / 1000f;
+                float elementTimer = Gauge.EnochianTimer / 1000f;
                 double gcdsInTimer = Math.Floor(elementTimer / GetActionCastTime(ActionWatching.LastSpell));
 
                 bool canSwiftF = TraitLevelChecked(Traits.AspectMasteryIII) && IsOffCooldown(All.Swiftcast);

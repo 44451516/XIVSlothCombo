@@ -225,6 +225,9 @@ namespace XIVSlothComboX.Window.Tabs
             if (ImGui.InputFloat("移动延时", ref Service.Configuration.MovementLeeway))
                 Service.Configuration.Save();
 
+            // if (ImGui.Checkbox("Performance Mode", ref Service.Configuration.PerformanceMode))
+            //     Service.Configuration.Save();
+            
             ImGui.EndChild();
         }
     }
