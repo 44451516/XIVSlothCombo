@@ -616,7 +616,7 @@ namespace XIVSlothComboX.Combos.PvE
                     }
 
 
-                    if (gnbGauge.Ammo >= 3)
+                    if (gnbGauge.Ammo >= 2)
                     {
                         return true;
                     }
