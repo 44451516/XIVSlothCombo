@@ -1472,6 +1472,7 @@ namespace XIVSlothComboX.Combos
         [ParentCombo(GNB_ST_MainCombo_CooldownsGroup)]
         [CustomComboInfo("爆发击整合到主连击", "在主连击中插入爆发击和超高速(若可用).", GNB.JobID)]
         GNB_ST_BurstStrike = 7011,
+        
 
         #endregion
 

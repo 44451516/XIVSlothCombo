@@ -40,7 +40,8 @@ namespace XIVSlothComboX.Core
             
             
             // getIconHook = Service.GameInteropProvider.HookFromAddress<GetIconDelegate>(ActionManager.Addresses.GetAdjustedActionId.Value, GetIconDetour);
-            getIconHook = Service.GameInteropProvider.HookFromSignature<GetIconDelegate>(HookAddress.GetAdjustedActionId, GetIconDetour);
+            getIconHook = Service.GameInteropProvider.HookFromAddress<GetIconDelegate>( ActionManager.Addresses.GetAdjustedActionId.Value, GetIconDetour);
+            // getIconHook = Service.GameInteropProvider.HookFromSignature<GetIconDelegate>(HookAddress.GetAdjustedActionId, GetIconDetour);
             getIconHook.Enable();
             
             isIconReplaceableHook = Service.GameInteropProvider.HookFromAddress<IsIconReplaceableDelegate>(Service.Address.IsActionIdReplaceable, IsIconReplaceableDetour);

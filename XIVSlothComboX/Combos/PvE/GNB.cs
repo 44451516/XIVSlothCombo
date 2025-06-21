@@ -469,12 +469,15 @@ namespace XIVSlothComboX.Combos.PvE
                                     && LevelChecked(倍攻DoubleDown)
                                     && GetCooldownRemainingTime(倍攻DoubleDown) > 20
                                     && GetCooldownRemainingTime(烈牙GnashingFang) > 10)
+                                {
                                     return 爆发击BurstStrike;
+                                }
 
                                 if (gnbGauge.Ammo != 0 && GetCooldownRemainingTime(烈牙GnashingFang) > 7.5f && GetCooldownRemainingTime(倍攻DoubleDown) > 40)
                                 {
                                     return 爆发击BurstStrike;
                                 }
+                                
                             }
 
                             if (LevelChecked(血壤Bloodfest)
@@ -483,9 +486,18 @@ namespace XIVSlothComboX.Combos.PvE
                                 && GetCooldownRemainingTime(血壤Bloodfest) <= GetCooldownRemainingTime(利刃斩KeenEdge))
                                 return 爆发击BurstStrike;
                         }
+                        
+                        
+                       
 
                         if (师心连1FatedBrand.LevelChecked())
                         {
+                            
+                            if (gnbGauge.Ammo != 0 && GetCooldownRemainingTime(血壤Bloodfest)  <=10f && GetCooldownRemainingTime(无情NoMercy) <= 10f )
+                            {
+                                return 爆发击BurstStrike;
+                            }
+                            
                             // if (GetCooldownRemainingTime(血壤Bloodfest) < 7 && gnbGauge.Ammo != 0 && GetCooldownRemainingTime(无情NoMercy) > 2.4f)
                             // {
                             //     return 爆发击BurstStrike;

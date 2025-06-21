@@ -262,7 +262,9 @@ namespace XIVSlothComboX.Window.Tabs
                     // ImGui.TextUnformatted($"Timer-{ActionManager.Instance()->Combo.Timer}");
                     // ImGui.TextUnformatted($"GCD-{GCD}");
                     var healTarget = GetHealTarget(WHM.Config.WHM_AoEHeals_MedicaMO);
-                    ImGui.TextUnformatted($"ShadowTimeRemaining-{GetJobGauge<DRKGauge>().ShadowTimeRemaining}");
+                    // ImGui.TextUnformatted($"ShadowTimeRemaining-{GetJobGauge<DRKGauge>().ShadowTimeRemaining}");
+                    ImGui.TextUnformatted($"血壤Bloodfest-{GetCooldownRemainingTime(GNB.血壤Bloodfest)}");
+                    ImGui.TextUnformatted($"无情NoMercy-{GetCooldownRemainingTime(GNB.无情NoMercy)}");
                   
                     
                     // ImGui.TextUnformatted($"GetActionStatus-{ActionManager.Instance()->GetActionStatus(ActionType.Item, 29492+ 1000000)}");

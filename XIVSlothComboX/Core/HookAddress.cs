@@ -7,8 +7,8 @@ internal class HookAddress
     //public const string ActionIdReplaceable = "40 53 48 83 EC 20 8B D9 48 8B 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 85 C0 74 1B";
     //7.2
     //
-    //public const string ActionIdReplaceable = "40 53 48 83 EC 20 8B D9 48 8B 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 85 C0 74 1F";
-    public const string ActionIdReplaceable = "E8 ?? ?? ?? ?? 84 C0 74 67 8B D3";
+    public const string ActionIdReplaceable = "40 53 48 83 EC 20 8B D9 48 8B 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 85 C0 74 1F";
+    // public const string ActionIdReplaceable = "E8 ?? ?? ?? ?? 84 C0 74 67 8B D3";
     
     // public const string ReceiveActionEffect = "E8 ?? ?? ?? ?? 48 8B 8D F0 03 00 00";
     public static nint ReceiveActionEffect = FFXIVClientStructs.FFXIV.Client.Game.Character.ActionEffectHandler.Addresses.Receive.Value;
