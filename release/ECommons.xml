@@ -953,148 +953,6 @@
             <param name="serializationFactory">If null, then default factory will be used.</param>
             <returns></returns>
         </member>
-        <member name="M:ECommons.ExcelServices.ExcelCombos.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},ImGuiNET.ImGuiComboFlags)">
-            <summary>
-            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
-            </summary>
-            <typeparam name="T">ExcelSheet</typeparam>
-            <param name="id">ID of the combo box.</param>
-            <param name="selected">Excel row returned when selected.</param>
-            <param name="getPreview">The format of the initial value in the combo box.</param>
-            <param name="flags">Any ImGuiComboFlags</param>
-            <returns>Bool when item is selected.</returns>
-        </member>
-        <member name="M:ECommons.ExcelServices.ExcelCombos.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String,System.Boolean},ImGuiNET.ImGuiComboFlags)">
-            <summary>
-            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
-            </summary>
-            <typeparam name="T">ExcelSheet</typeparam>
-            <param name="id">ID of the combo box.</param>
-            <param name="selected">Excel row returned when selected.</param>
-            <param name="getPreview">The format of the initial value in the combo box.</param>
-            <param name="searchPredicate">Initial filter to apply to the sheet for which items to display.</param>
-            <param name="flags">Any ImGuiComboFlags</param>
-            <returns>Bool when item is selected.</returns>
-        </member>
-        <member name="M:ECommons.ExcelServices.ExcelCombos.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.Boolean},ImGuiNET.ImGuiComboFlags)">
-            <summary>
-            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
-            </summary>
-            <typeparam name="T">ExcelSheet</typeparam>
-            <param name="id">ID of the combo box.</param>
-            <param name="selected">Excel row returned when selected.</param>
-            <param name="getPreview">The format of the initial value in the combo box.</param>
-            <param name="preFilter"></param>
-            <param name="flags">Any ImGuiComboFlags</param>
-            <returns>Bool when item is selected.</returns>
-        </member>
-        <member name="M:ECommons.ExcelServices.ExcelCombos.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String,System.Boolean},System.Func{``0,System.Boolean},ImGuiNET.ImGuiComboFlags)">
-            <summary>
-            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
-            </summary>
-            <typeparam name="T">ExcelSheet</typeparam>
-            <param name="id">ID of the combo box.</param>
-            <param name="selected">Excel row returned when selected.</param>
-            <param name="getPreview">The format of the initial value in the combo box.</param>
-            <param name="searchPredicate">Secondary filter to apply to the sheet for which items to display.</param>
-            <param name="preFilter">Initial filter to apply to the sheet for which items to display.</param>
-            <param name="flags">Any ImGuiComboFlags</param>
-            <returns>Bool when item is selected.</returns>
-        </member>
-        <member name="M:ECommons.ExcelServices.ExcelCombos.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String},ImGuiNET.ImGuiComboFlags)">
-            <summary>
-            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
-            </summary>
-            <typeparam name="T">ExcelSheet</typeparam>
-            <param name="id">ID of the combo box.</param>
-            <param name="selected">Excel row returned when selected.</param>
-            <param name="getPreview">The format of the initial value in the combo box.</param>
-            <param name="toName">The format of each item in the combo box.</param>
-            <param name="flags">Any ImGuiComboFlags</param>
-            <returns>Bool when item is selected.</returns>
-        </member>
-        <member name="M:ECommons.ExcelServices.ExcelCombos.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String},System.Func{``0,System.String,System.Boolean},ImGuiNET.ImGuiComboFlags)">
-            <summary>
-            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
-            </summary>
-            <typeparam name="T">ExcelSheet</typeparam>
-            <param name="id">ID of the combo box.</param>
-            <param name="selected">Excel row returned when selected.</param>
-            <param name="getPreview">The format of the initial value in the combo box.</param>
-            <param name="toName">The format of each item in the combo box.</param>
-            <param name="searchPredicate">Initial filter to apply to the sheet for which items to display.</param>
-            <param name="flags">Any ImGuiComboFlags</param>
-            <returns>Bool when item is selected.</returns>
-        </member>
-        <member name="M:ECommons.ExcelServices.ExcelCombos.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String},System.Func{``0,System.Boolean},ImGuiNET.ImGuiComboFlags)">
-            <summary>
-            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
-            </summary>
-            <typeparam name="T">ExcelSheet</typeparam>
-            <param name="id">ID of the combo box.</param>
-            <param name="selected">Excel row returned when selected.</param>
-            <param name="getPreview">The format of the initial value in the combo box.</param>
-            <param name="toName">The format of each item in the combo box.</param>
-            <param name="preFilter">Initial filter to apply to the sheet for which items to display.</param>
-            <param name="flags">Any ImGuiComboFlags</param>
-            <returns>Bool when item is selected.</returns>
-        </member>
-        <member name="M:ECommons.ExcelServices.ExcelCombos.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String},System.Func{``0,System.String,System.Boolean},System.Func{``0,System.Boolean},ImGuiNET.ImGuiComboFlags)">
-            <summary>
-            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
-            </summary>
-            <typeparam name="T">ExcelSheet</typeparam>
-            <param name="id">ID of the combo box.</param>
-            <param name="selected">Excel row returned when selected.</param>
-            <param name="getPreview">The format of the initial value in the combo box.</param>
-            <param name="toName">The format of the initial value in the combo box.</param>
-            <param name="searchPredicate">Secondary filter to apply to the sheet for which items to display.</param>
-            <param name="preFilter">Initial filter to apply to the sheet for which items to display.</param>
-            <param name="flags">Any ImGuiComboFlags</param>
-            <returns>Bool when item is selected.</returns>
-        </member>
-        <member name="M:ECommons.ExcelServices.ExcelCombos.SearchableCombo``1(System.String,``0@,System.String,System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.String},ImGuiNET.ImGuiComboFlags)">
-            <summary>
-            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
-            </summary>
-            <typeparam name="T">ExcelSheet</typeparam>
-            <param name="id">ID of the combo box.</param>
-            <param name="selected">Excel row returned when selected.</param>
-            <param name="preview">The format of the initial value in the combo box.</param>
-            <param name="possibilities">The initial excel sheet.</param>
-            <param name="toName">The format of the initial value in the combo box.</param>
-            <param name="flags">Any ImGuiComboFlags</param>
-            <returns>Bool when item is selected.</returns>
-        </member>
-        <member name="M:ECommons.ExcelServices.ExcelCombos.SearchableCombo``1(System.String,``0@,System.String,System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.String},System.Func{``0,System.String,System.Boolean},ImGuiNET.ImGuiComboFlags)">
-            <summary>
-            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
-            </summary>
-            <typeparam name="T">ExcelSheet</typeparam>
-            <param name="id">ID of the combo box.</param>
-            <param name="selected">Excel row returned when selected.</param>
-            <param name="preview">The format of the initial value in the combo box.</param>
-            <param name="possibilities">The initial excel sheet.</param>
-            <param name="toName">The format of each item in the combo box.</param>
-            <param name="searchPredicate">Initial filter to apply to the sheet for which items to display.</param>
-            <param name="flags">Any ImGuiComboFlags</param>
-            <returns>Bool when item is selected.</returns>
-        </member>
-        <member name="M:ECommons.ExcelServices.ExcelCombos.SearchableCombo``1(System.String,``0@,System.String,System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.String},System.Func{``0,System.String,System.Boolean},System.Func{``0,System.Boolean},ImGuiNET.ImGuiComboFlags)">
-            <summary>
-            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
-            </summary>
-            <typeparam name="T">ExcelSheet</typeparam>
-            <param name="id">ID of the combo box.</param>
-            <param name="selected">Excel row returned when selected.</param>
-            <param name="preview">The format of the initial value in the combo box.</param>
-            <param name="possibilities">The initial excel sheet.</param>
-            <param name="toName">The format of each item in the combo box.</param>
-            <param name="searchPredicate">Secondary filter to apply to the sheet for which items to display.</param>
-            <param name="preFilter">Initial filter to apply to the sheet for which items to display.</param>
-            <param name="flags">Any ImGuiComboFlags</param>
-            <returns>Bool when item is selected.</returns>
-        </member>
         <member name="M:ECommons.ExcelServices.ExcelItemHelper.Get(System.Int32)">
             <summary>
             Gets <see cref="T:Lumina.Excel.Sheets.Item"/> by id or null if not found.
@@ -1994,6 +1852,51 @@
             <param name="button">Button to check.</param>
             <returns>Button has just been released.</returns>
         </member>
+        <member name="M:ECommons.GenericHelpers.GetNodeByIDChain(FFXIVClientStructs.FFXIV.Component.GUI.AtkResNode*,System.Int32[])">
+            <summary>
+            Gets a node given a chain of node IDs
+            </summary>
+            <param name="node">Root node of the addon</param>
+            <param name="ids">Node IDs (starting from root) to the desired node</param>
+        </member>
+        <member name="M:ECommons.GenericHelpers.GetRootNode(FFXIVClientStructs.FFXIV.Component.GUI.AtkResNode*)">
+            <summary>
+            Recursively gets the root node of an addon
+            </summary>
+            <param name="node">Starting node to search from</param>
+            <returns></returns>
+        </member>
+        <member name="M:ECommons.GenericHelpers.IsSelectItemEnabled(FFXIVClientStructs.FFXIV.Component.GUI.AtkTextNode*)">
+            <summary>
+            Attempts to find out whether SelectString entry is enabled based on text color. 
+            </summary>
+            <param name="textNodePtr"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ECommons.GenericHelpers.IsScreenReady">
+            <summary>
+            Returns <see langword="true"/> if screen isn't faded. 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ECommons.GenericHelpers.TryGetAddonMaster``1(System.String,``0@)">
+            <summary>
+            Slower than <see cref="M:ECommons.GenericHelpers.TryGetAddonByName``1(System.String,``0*@)"/>
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="addon"></param>
+            <param name="addonMaster"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ECommons.GenericHelpers.TryGetAddonByName``1(System.String,``0*@)">
+            <summary>
+            Attempts to get first instance of addon by name.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="Addon"></param>
+            <param name="AddonPtr"></param>
+            <returns></returns>
+        </member>
         <member name="M:ECommons.GenericHelpers.AddRange``1(System.Collections.Generic.ICollection{``0},System.Collections.Generic.IEnumerable{``0})">
             <summary>
             Adds all <paramref name="values"/> to the <paramref name="collection"/>.
@@ -2002,48 +1905,12 @@
             <param name="collection"></param>
             <param name="values"></param>
         </member>
-        <member name="M:ECommons.GenericHelpers.Range(System.UInt32,System.UInt32)">
-            <summary>
-            Generates range of numbers with step = 1.
-            </summary>
-            <param name="inclusiveStart"></param>
-            <param name="inclusiveEnd"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ECommons.GenericHelpers.Range(System.Int32,System.Int32)">
-            <summary>
-            Generates range of numbers with step = 1.
-            </summary>
-            <param name="inclusiveStart"></param>
-            <param name="inclusiveEnd"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ECommons.GenericHelpers.Read(FFXIVClientStructs.FFXIV.Client.System.String.Utf8String)">
-            <summary>
-            Reads SeString.
-            </summary>
-            <param name="str"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ECommons.GenericHelpers.Read(System.Span{System.Byte})">
-            <summary>
-            Reads Span of bytes into <see langword="string"/>.
-            </summary>
-            <param name="bytes"></param>
-            <returns></returns>
-        </member>
         <member name="M:ECommons.GenericHelpers.GetRandom``1(System.Collections.Generic.IEnumerable{``0})">
             <summary>
             Returns random element from <paramref name="enumerable"/>.
             </summary>
             <typeparam name="T"></typeparam>
             <param name="enumerable"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ECommons.GenericHelpers.IsScreenReady">
-            <summary>
-            Returns <see langword="true"/> if screen isn't faded. 
-            </summary>
             <returns></returns>
         </member>
         <member name="M:ECommons.GenericHelpers.SafeSelect``2(System.Collections.Generic.IReadOnlyDictionary{``0,``1},``0)">
@@ -2076,30 +1943,6 @@
             <typeparam name="T"></typeparam>
             <param name="array"></param>
             <param name="index"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ECommons.GenericHelpers.TryParseByteArray(System.String,System.Byte[]@,System.Char)">
-            <summary>
-            Attempts to parse byte array string separated by specified character.
-            </summary>
-            <param name="input"></param>
-            <param name="output"></param>
-            <param name="separator"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ECommons.GenericHelpers.GetCallStackID(System.Int32)">
-            <summary>
-            Retrieves entries from call stack in a form of single string. <b>Expensive.</b>
-            </summary>
-            <param name="maxFrames"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ECommons.GenericHelpers.ToHexString(System.Collections.Generic.IEnumerable{System.Byte},System.Char)">
-            <summary>
-            Converts byte array to hex string where bytes are separated by a specified character
-            </summary>
-            <param name="bytes"></param>
-            <param name="separator"></param>
             <returns></returns>
         </member>
         <member name="M:ECommons.GenericHelpers.TryDequeue``1(System.Collections.Generic.IList{``0},``0@)">
@@ -2154,28 +1997,6 @@
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:ECommons.GenericHelpers.NullWhenFalse(System.String,System.Boolean)">
-            <summary>
-            Returns <paramref name="s"/> when <paramref name="b"/> is <see langword="true"/>, <see langword="null"/> otherwise
-            </summary>
-            <param name="s"></param>
-            <param name="b"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ECommons.GenericHelpers.AsUInt32(System.Single)">
-            <summary>
-            Returns <see cref="T:System.UInt32"/> representation of <see cref="T:System.Single"/>.
-            </summary>
-            <param name="f"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ECommons.GenericHelpers.AsFloat(System.UInt32)">
-            <summary>
-            Converts <see cref="T:System.UInt32"/> representation of <see cref="T:System.Single"/> into <see cref="T:System.Single"/>.
-            </summary>
-            <param name="u"></param>
-            <returns></returns>
-        </member>
         <member name="M:ECommons.GenericHelpers.Add``1(System.Collections.Generic.ICollection{``0},``0[])">
             <summary>
             Tries to add multiple items to collection
@@ -2191,47 +2012,6 @@
             <typeparam name="T">Collection type</typeparam>
             <param name="collection">Collection</param>
             <param name="values">Items</param>
-        </member>
-        <member name="F:ECommons.GenericHelpers.UseAsyncKeyCheck">
-            <summary>
-            Sets whether <see cref="M:PInvoke.User32.GetKeyState(System.Int32)"/> or <see cref="M:PInvoke.User32.GetAsyncKeyState(System.Int32)"/> will be used when calling <see cref="!:IsKeyPressed(Keys)"/> or <see cref="M:ECommons.GenericHelpers.IsKeyPressed(ECommons.Interop.LimitedKeys)"/>
-            </summary>
-        </member>
-        <member name="M:ECommons.GenericHelpers.IsKeyPressed(System.Int32)">
-            <summary>
-            Checks if a key is pressed via winapi.
-            </summary>
-            <param name="key">Key</param>
-            <returns>Whether the key is currently pressed</returns>
-        </member>
-        <member name="M:ECommons.GenericHelpers.IsKeyPressed(ECommons.Interop.LimitedKeys)">
-            <summary>
-            Checks if a key is pressed via winapi.
-            </summary>
-            <param name="key">Key</param>
-            <returns>Whether the key is currently pressed</returns>
-        </member>
-        <member name="M:ECommons.GenericHelpers.IsTarget(Dalamud.Game.ClientState.Objects.Types.IGameObject)">
-            <summary>
-            Checks if you are targeting object <paramref name="obj"/>.
-            </summary>
-            <param name="obj">Object to check</param>
-            <returns>Whether you are targeting object <paramref name="obj"/>; <see langword="false"/> if <paramref name="obj"/> is <see langword="null"/></returns>
-        </member>
-        <member name="M:ECommons.GenericHelpers.JSONClone``1(``0)">
-            <summary>
-            Serializes and then deserializes object, returning result of deserialization using <see cref="N:Newtonsoft.Json"/>
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="obj"></param>
-            <returns>Deserialized copy of <paramref name="obj"/></returns>
-        </member>
-        <member name="M:ECommons.GenericHelpers.ParseInt(System.String)">
-            <summary>
-            Attempts to parse integer
-            </summary>
-            <param name="number">Input string</param>
-            <returns>Integer if parsing was successful, <see langword="null"/> if failed</returns>
         </member>
         <member name="M:ECommons.GenericHelpers.GetOrCreate``2(System.Collections.Generic.IDictionary{``0,``1},``0)">
             <summary>
@@ -2250,59 +2030,6 @@
             <typeparam name="T"></typeparam>
             <param name="collection"></param>
             <param name="function"></param>
-        </member>
-        <member name="M:ECommons.GenericHelpers.TryDecodeSender(Dalamud.Game.Text.SeStringHandling.SeString,ECommons.ChatMethods.Sender@)">
-            <summary>
-            Attempts to parse player in a <see cref="T:Dalamud.Game.Text.SeStringHandling.SeString"/>. 
-            </summary>
-            <param name="sender"><see cref="T:Dalamud.Game.Text.SeStringHandling.SeString"/> from which to read player</param>
-            <param name="senderStruct">Resulting player data</param>
-            <returns>Whether operation succeeded</returns>
-        </member>
-        <member name="M:ECommons.GenericHelpers.GetNodeByIDChain(FFXIVClientStructs.FFXIV.Component.GUI.AtkResNode*,System.Int32[])">
-            <summary>
-            Gets a node given a chain of node IDs
-            </summary>
-            <param name="node">Root node of the addon</param>
-            <param name="ids">Node IDs (starting from root) to the desired node</param>
-        </member>
-        <member name="M:ECommons.GenericHelpers.GetRootNode(FFXIVClientStructs.FFXIV.Component.GUI.AtkResNode*)">
-            <summary>
-            Recursively gets the root node of an addon
-            </summary>
-            <param name="node">Starting node to search from</param>
-            <returns></returns>
-        </member>
-        <member name="M:ECommons.GenericHelpers.Cleanup(System.String)">
-            <summary>
-            Removes whitespaces, line breaks, tabs, etc from string.
-            </summary>
-            <param name="s"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ECommons.GenericHelpers.GetText(Lumina.Text.ReadOnly.ReadOnlySeString,System.Boolean)">
-            <summary>
-            Discards any non-text payloads from <see cref="T:Dalamud.Game.Text.SeStringHandling.SeString"/>
-            </summary>
-            <param name="s"></param>
-            <param name="onlyFirst">Whether to find first text payload and only return it</param>
-            <returns>String that only includes text payloads</returns>
-        </member>
-        <member name="M:ECommons.GenericHelpers.GetText(FFXIVClientStructs.FFXIV.Client.System.String.Utf8String,System.Boolean)">
-            <summary>
-            Reads SeString from unmanaged memory and discards any non-text payloads from <see cref="T:Dalamud.Game.Text.SeStringHandling.SeString"/>
-            </summary>
-            <param name="s"></param>
-            <param name="onlyFirst">Whether to find first text payload and only return it</param>
-            <returns>String that only includes text payloads</returns>
-        </member>
-        <member name="M:ECommons.GenericHelpers.GetText(Dalamud.Game.Text.SeStringHandling.SeString,System.Boolean)">
-            <summary>
-            Discards any non-text payloads from <see cref="T:Dalamud.Game.Text.SeStringHandling.SeString"/>
-            </summary>
-            <param name="seStr"></param>
-            <param name="onlyFirst">Whether to find first text payload and only return it</param>
-            <returns>String that only includes text payloads</returns>
         </member>
         <member name="M:ECommons.GenericHelpers.Toggle``1(System.Collections.Generic.HashSet{``0},``0)">
             <summary>
@@ -2342,30 +2069,108 @@
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:ECommons.GenericHelpers.TryGetAddonMaster``1(System.String,``0@)">
+        <member name="M:ECommons.GenericHelpers.AsUInt32(System.Single)">
             <summary>
-            Slower than <see cref="M:ECommons.GenericHelpers.TryGetAddonByName``1(System.String,``0*@)"/>
+            Returns <see cref="T:System.UInt32"/> representation of <see cref="T:System.Single"/>.
             </summary>
-            <typeparam name="T"></typeparam>
-            <param name="addon"></param>
-            <param name="addonMaster"></param>
+            <param name="f"></param>
             <returns></returns>
         </member>
-        <member name="M:ECommons.GenericHelpers.TryGetAddonByName``1(System.String,``0*@)">
+        <member name="M:ECommons.GenericHelpers.AsFloat(System.UInt32)">
             <summary>
-            Attempts to get first instance of addon by name.
+            Converts <see cref="T:System.UInt32"/> representation of <see cref="T:System.Single"/> into <see cref="T:System.Single"/>.
             </summary>
-            <typeparam name="T"></typeparam>
-            <param name="Addon"></param>
-            <param name="AddonPtr"></param>
+            <param name="u"></param>
             <returns></returns>
         </member>
-        <member name="M:ECommons.GenericHelpers.IsSelectItemEnabled(FFXIVClientStructs.FFXIV.Component.GUI.AtkTextNode*)">
+        <member name="M:ECommons.GenericHelpers.ParseInt(System.String)">
             <summary>
-            Attempts to find out whether SelectString entry is enabled based on text color. 
+            Attempts to parse integer
             </summary>
-            <param name="textNodePtr"></param>
+            <param name="number">Input string</param>
+            <returns>Integer if parsing was successful, <see langword="null"/> if failed</returns>
+        </member>
+        <member name="M:ECommons.GenericHelpers.TryParseByteArray(System.String,System.Byte[]@,System.Char)">
+            <summary>
+            Attempts to parse byte array string separated by specified character.
+            </summary>
+            <param name="input"></param>
+            <param name="output"></param>
+            <param name="separator"></param>
             <returns></returns>
+        </member>
+        <member name="M:ECommons.GenericHelpers.ToHexString(System.Collections.Generic.IEnumerable{System.Byte},System.Char)">
+            <summary>
+            Converts byte array to hex string where bytes are separated by a specified character
+            </summary>
+            <param name="bytes"></param>
+            <param name="separator"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ECommons.GenericHelpers.Range(System.UInt32,System.UInt32)">
+            <summary>
+            Generates range of numbers with step = 1.
+            </summary>
+            <param name="inclusiveStart"></param>
+            <param name="inclusiveEnd"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ECommons.GenericHelpers.Range(System.Int32,System.Int32)">
+            <summary>
+            Generates range of numbers with step = 1.
+            </summary>
+            <param name="inclusiveStart"></param>
+            <param name="inclusiveEnd"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ECommons.GenericHelpers.GetCallStackID(System.Int32)">
+            <summary>
+            Retrieves entries from call stack in a form of single string. <b>Expensive.</b>
+            </summary>
+            <param name="maxFrames"></param>
+            <returns></returns>
+        </member>
+        <member name="F:ECommons.GenericHelpers.UseAsyncKeyCheck">
+            <summary>
+            Sets whether <see cref="M:PInvoke.User32.GetKeyState(System.Int32)"/> or <see cref="M:PInvoke.User32.GetAsyncKeyState(System.Int32)"/> will be used when calling <see cref="!:IsKeyPressed(Keys)"/> or <see cref="M:ECommons.GenericHelpers.IsKeyPressed(ECommons.Interop.LimitedKeys)"/>
+            </summary>
+        </member>
+        <member name="M:ECommons.GenericHelpers.IsKeyPressed(System.Int32)">
+            <summary>
+            Checks if a key is pressed via winapi.
+            </summary>
+            <param name="key">Key</param>
+            <returns>Whether the key is currently pressed</returns>
+        </member>
+        <member name="M:ECommons.GenericHelpers.IsKeyPressed(ECommons.Interop.LimitedKeys)">
+            <summary>
+            Checks if a key is pressed via winapi.
+            </summary>
+            <param name="key">Key</param>
+            <returns>Whether the key is currently pressed</returns>
+        </member>
+        <member name="M:ECommons.GenericHelpers.IsTarget(Dalamud.Game.ClientState.Objects.Types.IGameObject)">
+            <summary>
+            Checks if you are targeting object <paramref name="obj"/>.
+            </summary>
+            <param name="obj">Object to check</param>
+            <returns>Whether you are targeting object <paramref name="obj"/>; <see langword="false"/> if <paramref name="obj"/> is <see langword="null"/></returns>
+        </member>
+        <member name="M:ECommons.GenericHelpers.JSONClone``1(``0)">
+            <summary>
+            Serializes and then deserializes object, returning result of deserialization using <see cref="N:Newtonsoft.Json"/>
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="obj"></param>
+            <returns>Deserialized copy of <paramref name="obj"/></returns>
+        </member>
+        <member name="M:ECommons.GenericHelpers.TryDecodeSender(Dalamud.Game.Text.SeStringHandling.SeString,ECommons.ChatMethods.Sender@)">
+            <summary>
+            Attempts to parse player in a <see cref="T:Dalamud.Game.Text.SeStringHandling.SeString"/>. 
+            </summary>
+            <param name="sender"><see cref="T:Dalamud.Game.Text.SeStringHandling.SeString"/> from which to read player</param>
+            <param name="senderStruct">Resulting player data</param>
+            <returns>Whether operation succeeded</returns>
         </member>
         <member name="M:ECommons.GenericHelpers.Copy(System.String,System.Boolean)">
             <summary>
@@ -2381,6 +2186,60 @@
             </summary>
             <param name="silent">Whether to display popup when error occurs.</param>
             <returns>Contents of the clipboard; null if clipboard couldn't be read.</returns>
+            <remarks>Be sure to run on the framework/draw thread if using ImGui to avoid potential crashes.</remarks>
+        </member>
+        <member name="M:ECommons.GenericHelpers.Cleanup(System.String)">
+            <summary>
+            Removes whitespaces, line breaks, tabs, etc from string.
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ECommons.GenericHelpers.NullWhenFalse(System.String,System.Boolean)">
+            <summary>
+            Returns <paramref name="s"/> when <paramref name="b"/> is <see langword="true"/>, <see langword="null"/> otherwise
+            </summary>
+            <param name="s"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ECommons.GenericHelpers.GetText(Lumina.Text.ReadOnly.ReadOnlySeString,System.Boolean)">
+            <summary>
+            Discards any non-text payloads from <see cref="T:Dalamud.Game.Text.SeStringHandling.SeString"/>
+            </summary>
+            <param name="s"></param>
+            <param name="onlyFirst">Whether to find first text payload and only return it</param>
+            <returns>String that only includes text payloads</returns>
+        </member>
+        <member name="M:ECommons.GenericHelpers.GetText(FFXIVClientStructs.FFXIV.Client.System.String.Utf8String,System.Boolean)">
+            <summary>
+            Reads SeString from unmanaged memory and discards any non-text payloads from <see cref="T:Dalamud.Game.Text.SeStringHandling.SeString"/>
+            </summary>
+            <param name="s"></param>
+            <param name="onlyFirst">Whether to find first text payload and only return it</param>
+            <returns>String that only includes text payloads</returns>
+        </member>
+        <member name="M:ECommons.GenericHelpers.GetText(Dalamud.Game.Text.SeStringHandling.SeString,System.Boolean)">
+            <summary>
+            Discards any non-text payloads from <see cref="T:Dalamud.Game.Text.SeStringHandling.SeString"/>
+            </summary>
+            <param name="seStr"></param>
+            <param name="onlyFirst">Whether to find first text payload and only return it</param>
+            <returns>String that only includes text payloads</returns>
+        </member>
+        <member name="M:ECommons.GenericHelpers.Read(FFXIVClientStructs.FFXIV.Client.System.String.Utf8String)">
+            <summary>
+            Reads SeString.
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ECommons.GenericHelpers.Read(System.Span{System.Byte})">
+            <summary>
+            Reads Span of bytes into <see langword="string"/>.
+            </summary>
+            <param name="bytes"></param>
+            <returns></returns>
         </member>
         <member name="M:ECommons.Hooks.ActionEffect.Init(System.Action{System.UInt32,System.UInt16,ECommons.Hooks.ActionEffectTypes.ActionEffectType,System.UInt32,System.UInt64,System.UInt32},System.Boolean)">
             <summary>
@@ -2400,6 +2259,24 @@
         <member name="T:ECommons.ImGuiMethods.EColor">
             <summary>
             A set of fancy color for use in plugins. You can redefine them after calling ECommonsMain.Init to match necessary style!
+            </summary>
+        </member>
+        <member name="T:ECommons.ImGuiMethods.EzColor">
+            <summary>
+            Unified colour wrapper. Implicitly converts to needed formats and supports importing from most formats.
+            </summary>
+            <remarks>
+            <para>Contains built in redefinable colors (refinable after calling ECommonsMain.Init)</para>
+            </remarks>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.EzColor.#ctor(System.UInt32)">
+            <summary>
+            Takes in uints as 0xRRGGBB or 0xRRGGBBAA
+            </summary>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.EzColor.From(System.UInt32)">
+            <summary>
+            Takes in uints as 0xRRGGBB or 0xRRGGBBAA
             </summary>
         </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.RightFloat(System.Action)">
@@ -2439,6 +2316,69 @@
             <param name="inputAction">A single element that accepts transformation by ImGui.SetNextItemWidth method</param>
             <param name="rightAction">A line of elements on the right side. Can contain multiple elements but only one line.</param>
         </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ButtonCopy(System.String,System.String)">
+            <summary>
+            Draws a button that will copy text to clipboard when clicked.
+            </summary>
+            <remarks>Will also replace any <c>$COPY</c> in the button text with the text to copy</remarks>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ButtonWrapped(System.String)">
+            <summary>
+            Draws a button that will be on the same line as previous if there is space, otherwise will move to the next line.
+            </summary>
+            <param name="label">Button label</param>
+            <remarks><see cref="M:ImGuiNET.ImGui.SameLine"/> does not need to be called just before using this.</remarks>
+            <returns></returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ButtonCtrl(System.String,System.Nullable{System.Numerics.Vector2},System.String)">
+            <summary>
+            Button that is disabled unless CTRL key is held
+            </summary>
+            <param name="text">Button ID</param>
+            <param name="size">Optional size of the button, null if size is to be calculated automatically</param>
+            <param name="affix">Button affix</param>
+            <returns></returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ButtonCheckbox(System.String,System.Boolean@,System.Boolean)">
+            <summary>
+            Draws a button that acts like a checkbox.
+            </summary>
+            <param name="name">Button text</param>
+            <param name="value">Value</param>
+            <param name="smallButton">Whether button should be small</param>
+            <returns>true when clicked, otherwise false</returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ButtonCheckbox(System.String,System.Boolean@,System.UInt32,System.Boolean)">
+            <summary>
+            Draws a button that acts like a checkbox.
+            </summary>
+            <param name="name">Button text</param>
+            <param name="value">Value</param>
+            <param name="color">Active button color</param>
+            <param name="smallButton">Whether button should be small</param>
+            <returns>true when clicked, otherwise false</returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ButtonCheckbox(System.String,System.Boolean@,System.Numerics.Vector4,System.Boolean)">
+            <summary>
+            Draws a button that acts like a checkbox.
+            </summary>
+            <param name="name">Button text</param>
+            <param name="value">Value</param>
+            <param name="color">Active button color</param>
+            <param name="smallButton">Whether button should be small</param>
+            <returns>true when clicked, otherwise false</returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ButtonCheckbox(System.String,System.Nullable{System.Boolean}@,System.Nullable{System.Numerics.Vector4},System.Nullable{System.Numerics.Vector4},System.Boolean)">
+            <summary>
+            Provides a button that can be used to switch <see langword="bool"/>? variables. Left click - to toggle between <see langword="true"/> and <see langword="null"/>, right click - to toggle between <see langword="false"/> and <see langword="null"/>.
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+            <param name="TrueColor">Color when <paramref name="value"/> is true</param>
+            <param name="FalseColor">Color when <paramref name="value"/> is false</param>
+            <param name="smallButton">Whether a button should be small</param>
+            <returns></returns>
+        </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.CheckboxBullet(System.String,System.Boolean@)">
             <summary>
             <see cref="M:ImGuiNET.ImGui.Checkbox(System.String,System.Boolean@)"/> that has bullet marker instead of normal check mark when enabled.
@@ -2469,6 +2409,15 @@
             </summary>
             <param name="label"></param>
             <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.CheckboxWrapped(System.String,System.Boolean@)">
+            <summary>
+            Draws a checkbox that will be on the same line as previous if there is space, otherwise will move to the next line.
+            </summary>
+            <param name="label">Checkbox label</param>
+            <param name="v">Boolean to toggle</param>
+            <remarks><see cref="M:ImGuiNET.ImGui.SameLine"/> does not need to be called just before using this.</remarks>
             <returns></returns>
         </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.CollectionCheckbox``1(System.String,System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.ICollection{``0},System.Boolean,System.Boolean)">
@@ -2532,17 +2481,163 @@
             </summary>
             <param name="numRows">How many lines is in your biggest row.</param>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.InputInt(System.Single,System.String,System.Nullable{System.Int32}@,System.Int32,System.Int32,ImGuiNET.ImGuiInputTextFlags)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},ImGuiNET.ImGuiComboFlags)">
             <summary>
-            An <see cref="M:ImGuiNET.ImGui.InputInt(System.String,System.Int32@)"/> for nullable int. Consists of checkbox and input component that is enabled/disabled based on checkbox state.
+            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
             </summary>
-            <param name="width"></param>
-            <param name="label"></param>
-            <param name="valueNullable"></param>
-            <param name="step"></param>
-            <param name="step_fast"></param>
-            <param name="flags"></param>
-            <returns></returns>
+            <typeparam name="T">ExcelSheet</typeparam>
+            <param name="id">ID of the combo box.</param>
+            <param name="selected">Excel row returned when selected.</param>
+            <param name="getPreview">The format of the initial value in the combo box.</param>
+            <param name="flags">Any ImGuiComboFlags</param>
+            <returns>Bool when item is selected.</returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String,System.Boolean},ImGuiNET.ImGuiComboFlags)">
+            <summary>
+            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
+            </summary>
+            <typeparam name="T">ExcelSheet</typeparam>
+            <param name="id">ID of the combo box.</param>
+            <param name="selected">Excel row returned when selected.</param>
+            <param name="getPreview">The format of the initial value in the combo box.</param>
+            <param name="searchPredicate">Initial filter to apply to the sheet for which items to display.</param>
+            <param name="flags">Any ImGuiComboFlags</param>
+            <returns>Bool when item is selected.</returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.Boolean},ImGuiNET.ImGuiComboFlags)">
+            <summary>
+            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
+            </summary>
+            <typeparam name="T">ExcelSheet</typeparam>
+            <param name="id">ID of the combo box.</param>
+            <param name="selected">Excel row returned when selected.</param>
+            <param name="getPreview">The format of the initial value in the combo box.</param>
+            <param name="preFilter"></param>
+            <param name="flags">Any ImGuiComboFlags</param>
+            <returns>Bool when item is selected.</returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String,System.Boolean},System.Func{``0,System.Boolean},ImGuiNET.ImGuiComboFlags)">
+            <summary>
+            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
+            </summary>
+            <typeparam name="T">ExcelSheet</typeparam>
+            <param name="id">ID of the combo box.</param>
+            <param name="selected">Excel row returned when selected.</param>
+            <param name="getPreview">The format of the initial value in the combo box.</param>
+            <param name="searchPredicate">Secondary filter to apply to the sheet for which items to display.</param>
+            <param name="preFilter">Initial filter to apply to the sheet for which items to display.</param>
+            <param name="flags">Any ImGuiComboFlags</param>
+            <returns>Bool when item is selected.</returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String},ImGuiNET.ImGuiComboFlags)">
+            <summary>
+            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
+            </summary>
+            <typeparam name="T">ExcelSheet</typeparam>
+            <param name="id">ID of the combo box.</param>
+            <param name="selected">Excel row returned when selected.</param>
+            <param name="getPreview">The format of the initial value in the combo box.</param>
+            <param name="toName">The format of each item in the combo box.</param>
+            <param name="flags">Any ImGuiComboFlags</param>
+            <returns>Bool when item is selected.</returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String},System.Func{``0,System.String,System.Boolean},ImGuiNET.ImGuiComboFlags)">
+            <summary>
+            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
+            </summary>
+            <typeparam name="T">ExcelSheet</typeparam>
+            <param name="id">ID of the combo box.</param>
+            <param name="selected">Excel row returned when selected.</param>
+            <param name="getPreview">The format of the initial value in the combo box.</param>
+            <param name="toName">The format of each item in the combo box.</param>
+            <param name="searchPredicate">Initial filter to apply to the sheet for which items to display.</param>
+            <param name="flags">Any ImGuiComboFlags</param>
+            <returns>Bool when item is selected.</returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String},System.Func{``0,System.Boolean},ImGuiNET.ImGuiComboFlags)">
+            <summary>
+            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
+            </summary>
+            <typeparam name="T">ExcelSheet</typeparam>
+            <param name="id">ID of the combo box.</param>
+            <param name="selected">Excel row returned when selected.</param>
+            <param name="getPreview">The format of the initial value in the combo box.</param>
+            <param name="toName">The format of each item in the combo box.</param>
+            <param name="preFilter">Initial filter to apply to the sheet for which items to display.</param>
+            <param name="flags">Any ImGuiComboFlags</param>
+            <returns>Bool when item is selected.</returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String},System.Func{``0,System.String,System.Boolean},System.Func{``0,System.Boolean},ImGuiNET.ImGuiComboFlags)">
+            <summary>
+            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
+            </summary>
+            <typeparam name="T">ExcelSheet</typeparam>
+            <param name="id">ID of the combo box.</param>
+            <param name="selected">Excel row returned when selected.</param>
+            <param name="getPreview">The format of the initial value in the combo box.</param>
+            <param name="toName">The format of the initial value in the combo box.</param>
+            <param name="searchPredicate">Secondary filter to apply to the sheet for which items to display.</param>
+            <param name="preFilter">Initial filter to apply to the sheet for which items to display.</param>
+            <param name="flags">Any ImGuiComboFlags</param>
+            <returns>Bool when item is selected.</returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.SearchableCombo``1(System.String,``0@,System.String,System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.String},ImGuiNET.ImGuiComboFlags)">
+            <summary>
+            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
+            </summary>
+            <typeparam name="T">ExcelSheet</typeparam>
+            <param name="id">ID of the combo box.</param>
+            <param name="selected">Excel row returned when selected.</param>
+            <param name="preview">The format of the initial value in the combo box.</param>
+            <param name="possibilities">The initial excel sheet.</param>
+            <param name="toName">The format of the initial value in the combo box.</param>
+            <param name="flags">Any ImGuiComboFlags</param>
+            <returns>Bool when item is selected.</returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.SearchableCombo``1(System.String,``0@,System.String,System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.String},System.Func{``0,System.String,System.Boolean},ImGuiNET.ImGuiComboFlags)">
+            <summary>
+            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
+            </summary>
+            <typeparam name="T">ExcelSheet</typeparam>
+            <param name="id">ID of the combo box.</param>
+            <param name="selected">Excel row returned when selected.</param>
+            <param name="preview">The format of the initial value in the combo box.</param>
+            <param name="possibilities">The initial excel sheet.</param>
+            <param name="toName">The format of each item in the combo box.</param>
+            <param name="searchPredicate">Initial filter to apply to the sheet for which items to display.</param>
+            <param name="flags">Any ImGuiComboFlags</param>
+            <returns>Bool when item is selected.</returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.SearchableCombo``1(System.String,``0@,System.String,System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.String},System.Func{``0,System.String,System.Boolean},System.Func{``0,System.Boolean},ImGuiNET.ImGuiComboFlags)">
+            <summary>
+            Creates a searchable combo box for a given Excel sheet with an optional custom filter.
+            </summary>
+            <typeparam name="T">ExcelSheet</typeparam>
+            <param name="id">ID of the combo box.</param>
+            <param name="selected">Excel row returned when selected.</param>
+            <param name="preview">The format of the initial value in the combo box.</param>
+            <param name="possibilities">The initial excel sheet.</param>
+            <param name="toName">The format of each item in the combo box.</param>
+            <param name="searchPredicate">Secondary filter to apply to the sheet for which items to display.</param>
+            <param name="preFilter">Initial filter to apply to the sheet for which items to display.</param>
+            <param name="flags">Any ImGuiComboFlags</param>
+            <returns>Bool when item is selected.</returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.Scale(System.Nullable{System.Numerics.Vector2})">
+            <seealso cref="M:ECommons.ImGuiMethods.ImGuiEx.Scale(System.Single)"/>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.Scale(System.Numerics.Vector2)">
+            <seealso cref="M:ECommons.ImGuiMethods.ImGuiEx.Scale(System.Single)"/>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.Scale(System.Single)">
+            <summary>
+                Scale a float value based on the two independent Dalamud UI scaling factors.
+            </summary>
+            <param name="f">The float value to scale.</param>
+            <returns>The float value scaled with the user's style settings.</returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.Scale(System.Nullable{System.Single})">
+            <seealso cref="M:ECommons.ImGuiMethods.ImGuiEx.Scale(System.Single)"/>
         </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.Pagination(System.Action[],System.Int32,System.Int32)">
             <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.Pagination(System.String,System.Action[],System.Action@,System.Int32,System.Int32)"/>
@@ -2648,6 +2743,76 @@
             <param name="symbolOverride"></param>
             <param name="sameLine">Whether to call SameLine before drawing marker</param>
         </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ActivateIfDoubleClicked">
+            <summary>
+            Activates item when double-clicked. Place after any ImGui Slider component to enable edit on double-click.
+            </summary>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.HoveredAndClicked(System.String,ImGuiNET.ImGuiMouseButton,System.Boolean)">
+            <summary>
+            Checks whether item is hovered and clicked. Sets cursor to hand to indicate that it can be clicked.
+            </summary>
+            <param name="tooltip">Optional tooltip</param>
+            <param name="btn">Which button to check</param>
+            <param name="requireCtrl">Whether to require CTRL when clicking</param>
+            <returns></returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.Vector4FromRGB(System.UInt32,System.Single)">
+            <summary>
+            Converts RGB color to <see cref="T:System.Numerics.Vector4"/> for ImGui
+            </summary>
+            <param name="col">Color in format 0xRRGGBB</param>
+            <param name="alpha">Optional transparency value between 0 and 1</param>
+            <returns>Color in <see cref="T:System.Numerics.Vector4"/> format ready to be used with <see cref="T:ImGuiNET.ImGui"/> functions</returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.Vector4FromRGBA(System.UInt32)">
+            <summary>
+            Converts RGBA color to <see cref="T:System.Numerics.Vector4"/> for ImGui
+            </summary>
+            <param name="col">Color in format 0xRRGGBBAA</param>
+            <returns>Color in <see cref="T:System.Numerics.Vector4"/> format ready to be used with <see cref="T:ImGuiNET.ImGui"/> functions</returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.EzTableColumns(System.String,System.Action[],System.Nullable{System.Int32},ImGuiNET.ImGuiTableFlags)">
+            <summary>
+            Draws equally sized columns without ability to resize
+            </summary>
+            <param name="id">Unique ImGui ID</param>
+            <param name="values">List of actions for each column</param>
+            <param name="columns">Force number of columns</param>
+            <param name="extraFlags">Add extra flags to the table</param>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.PushCursor(System.Numerics.Vector2)">
+            <summary>
+            Move the cursor by the vector relative to the current position
+            </summary>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.PushCursor(System.Single,System.Single)">
+            <summary>
+            Move the cursor by the coordinates relative to the current position
+            </summary>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.PushCursorX(System.Single)">
+            <summary>
+            Move the cursor horizontally x units relative to the current position
+            </summary>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.PushCursorY(System.Single)">
+            <summary>
+            Move the cursor vertically y units relative to the current position
+            </summary>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.InputInt(System.Single,System.String,System.Nullable{System.Int32}@,System.Int32,System.Int32,ImGuiNET.ImGuiInputTextFlags)">
+            <summary>
+            An <see cref="M:ImGuiNET.ImGui.InputInt(System.String,System.Int32@)"/> for nullable int. Consists of checkbox and input component that is enabled/disabled based on checkbox state.
+            </summary>
+            <param name="width"></param>
+            <param name="label"></param>
+            <param name="valueNullable"></param>
+            <param name="step"></param>
+            <param name="step_fast"></param>
+            <param name="flags"></param>
+            <returns></returns>
+        </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.SliderInt(System.String,System.Int32@,System.Int32,System.Int32,System.String,ImGuiNET.ImGuiSliderFlags)">
             <summary>
             <see cref="M:ImGuiNET.ImGui.SliderInt(System.String,System.Int32@,System.Int32,System.Int32)"/> but with double-click to edit support.
@@ -2684,104 +2849,6 @@
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.SliderFloat(System.String,System.Single@,System.Single,System.Single)">
             <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.SliderFloat(System.String,System.Single@,System.Single,System.Single,System.String,ImGuiNET.ImGuiSliderFlags)"/>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ActivateIfDoubleClicked">
-            <summary>
-            Activates item when double-clicked. Place after any ImGui Slider component to enable edit on double-click.
-            </summary>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.HoveredAndClicked(System.String,ImGuiNET.ImGuiMouseButton,System.Boolean)">
-            <summary>
-            Checks whether item is hovered and double-clicked. Sets cursor to hand to indicate that it can be clicked.
-            </summary>
-            <param name="tooltip">Optional tooltip</param>
-            <param name="btn">Which button to check</param>
-            <param name="requireCtrl">Whether to require CTRL when clicking</param>
-            <returns></returns>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ButtonCheckbox(System.String,System.Nullable{System.Boolean}@,System.Nullable{System.Numerics.Vector4},System.Nullable{System.Numerics.Vector4},System.Boolean)">
-            <summary>
-            Provides a button that can be used to switch <see langword="bool"/>? variables. Left click - to toggle between <see langword="true"/> and <see langword="null"/>, right click - to toggle between <see langword="false"/> and <see langword="null"/>.
-            </summary>
-            <param name="name"></param>
-            <param name="value"></param>
-            <param name="TrueColor">Color when <paramref name="value"/> is true</param>
-            <param name="FalseColor">Color when <paramref name="value"/> is false</param>
-            <param name="smallButton">Whether a button should be small</param>
-            <returns></returns>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.Vector4FromRGB(System.UInt32,System.Single)">
-            <summary>
-            Converts RGB color to <see cref="T:System.Numerics.Vector4"/> for ImGui
-            </summary>
-            <param name="col">Color in format 0xRRGGBB</param>
-            <param name="alpha">Optional transparency value between 0 and 1</param>
-            <returns>Color in <see cref="T:System.Numerics.Vector4"/> format ready to be used with <see cref="T:ImGuiNET.ImGui"/> functions</returns>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.Vector4FromRGBA(System.UInt32)">
-            <summary>
-            Converts RGBA color to <see cref="T:System.Numerics.Vector4"/> for ImGui
-            </summary>
-            <param name="col">Color in format 0xRRGGBBAA</param>
-            <returns>Color in <see cref="T:System.Numerics.Vector4"/> format ready to be used with <see cref="T:ImGuiNET.ImGui"/> functions</returns>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ButtonCheckbox(System.String,System.Boolean@,System.Boolean)">
-            <summary>
-            Draws a button that acts like a checkbox.
-            </summary>
-            <param name="name">Button text</param>
-            <param name="value">Value</param>
-            <param name="smallButton">Whether button should be small</param>
-            <returns>true when clicked, otherwise false</returns>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ButtonCheckbox(System.String,System.Boolean@,System.UInt32,System.Boolean)">
-            <summary>
-            Draws a button that acts like a checkbox.
-            </summary>
-            <param name="name">Button text</param>
-            <param name="value">Value</param>
-            <param name="color">Active button color</param>
-            <param name="smallButton">Whether button should be small</param>
-            <returns>true when clicked, otherwise false</returns>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ButtonCheckbox(System.String,System.Boolean@,System.Numerics.Vector4,System.Boolean)">
-            <summary>
-            Draws a button that acts like a checkbox.
-            </summary>
-            <param name="name">Button text</param>
-            <param name="value">Value</param>
-            <param name="color">Active button color</param>
-            <param name="smallButton">Whether button should be small</param>
-            <returns>true when clicked, otherwise false</returns>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.RadioButtonBool(System.String,System.String,System.Boolean@,System.Boolean,System.Action,System.Action)">
-            <summary>
-            Draws two radio buttons for a boolean value.
-            </summary>
-            <param name="labelTrue">True choice radio button text</param>
-            <param name="labelFalse">False choice radio button text</param>
-            <param name="value">Value</param>
-            <param name="sameLine">Whether to draw radio buttons on the same line</param>
-            <param name="prefix">Will be invoked before each radio button draw</param>
-            <param name="suffix">Will be invoked after each radio button draw</param>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.EzTableColumns(System.String,System.Action[],System.Nullable{System.Int32},ImGuiNET.ImGuiTableFlags)">
-            <summary>
-            Draws equally sized columns without ability to resize
-            </summary>
-            <param name="id">Unique ImGui ID</param>
-            <param name="values">List of actions for each column</param>
-            <param name="columns">Force number of columns</param>
-            <param name="extraFlags">Add extra flags to the table</param>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ButtonCtrl(System.String,System.Nullable{System.Numerics.Vector2},System.String)">
-            <summary>
-            Button that is disabled unless CTRL key is held
-            </summary>
-            <param name="text">Button ID</param>
-            <param name="size">Optional size of the button, null if size is to be calculated automatically</param>
-            <param name="affix">Button affix</param>
-            <returns></returns>
-        </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.SliderIntAsFloat(System.String,System.Int32@,System.Int32,System.Int32,System.Single)">
             <summary>
             Displays ImGui.SliderFloat for internal int value.
@@ -2791,36 +2858,6 @@
             <param name="min">Minimal value</param>
             <param name="max">Maximum value</param>
             <param name="divider">Value is divided by divider before being presented to user</param>
-            <returns></returns>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.TextV(System.Nullable{System.Numerics.Vector4},System.String)">
-            <summary>
-            Aligns text vertically to a standard size button.
-            </summary>
-            <param name="col">Color</param>
-            <param name="s">Text</param>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.TextV(System.String)">
-            <summary>
-            Aligns text vertically to a standard size button.
-            </summary>
-            <param name="s">Text</param>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.CheckboxWrapped(System.String,System.Boolean@)">
-            <summary>
-            Draws a checkbox that will be on the same line as previous if there is space, otherwise will move to the next line.
-            </summary>
-            <param name="label">Checkbox label</param>
-            <param name="v">Boolean to toggle</param>
-            <remarks><see cref="M:ImGuiNET.ImGui.SameLine"/> does not need to be called just before using this.</remarks>
-            <returns></returns>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ButtonWrapped(System.String)">
-            <summary>
-            Draws a button that will be on the same line as previous if there is space, otherwise will move to the next line.
-            </summary>
-            <param name="label">Button label</param>
-            <remarks><see cref="M:ImGuiNET.ImGui.SameLine"/> does not need to be called just before using this.</remarks>
             <returns></returns>
         </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.EnumCombo``1(System.String,``0@,System.Collections.Generic.IDictionary{``0,System.String})">
@@ -2843,25 +2880,45 @@
             <param name="names">Optional Name overrides</param>
             <returns></returns>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.PushCursor(System.Numerics.Vector2)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.RadioButtonBool(System.String,System.String,System.Boolean@,System.Boolean,System.Action,System.Action)">
             <summary>
-            Move the cursor by the vector relative to the current position
+            Draws two radio buttons for a boolean value.
+            </summary>
+            <param name="labelTrue">True choice radio button text</param>
+            <param name="labelFalse">False choice radio button text</param>
+            <param name="value">Value</param>
+            <param name="sameLine">Whether to draw radio buttons on the same line</param>
+            <param name="prefix">Will be invoked before each radio button draw</param>
+            <param name="suffix">Will be invoked after each radio button draw</param>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.TextV(System.Nullable{System.Numerics.Vector4},System.String)">
+            <summary>
+            Aligns text vertically to a standard size button.
+            </summary>
+            <param name="col">Color</param>
+            <param name="s">Text</param>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.TextV(System.String)">
+            <summary>
+            Aligns text vertically to a standard size button.
+            </summary>
+            <param name="s">Text</param>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.TextCopy(System.Numerics.Vector4,System.String)">
+            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.TextCopy(System.String)"/>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.TextCopy(System.String)">
+            <summary>
+            Displays text that will also be copied to clipboard if clicked.
             </summary>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.PushCursor(System.Single,System.Single)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.TextWrappedCopy(System.String)">
             <summary>
-            Move the cursor by the coordinates relative to the current position
+            Displays wrapped text that will also be copied to clipboard if clicked.
             </summary>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.PushCursorX(System.Single)">
-            <summary>
-            Move the cursor horizontally x units relative to the current position
-            </summary>
-        </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.PushCursorY(System.Single)">
-            <summary>
-            Move the cursor vertically y units relative to the current position
-            </summary>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.TextWrappedCopy(System.Numerics.Vector4,System.String)">
+            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.TextWrappedCopy(System.String)"/>
         </member>
         <member name="M:ECommons.ImGuiMethods.ThreadLoadImageHandler.ClearAll">
             <summary>
