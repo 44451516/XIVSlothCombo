@@ -19,7 +19,7 @@ namespace XIVSlothComboX.Core
 
             Service.PluginLog.Verbose("===== X I V S L O T H C O M B O =====");
             
-            Service.PluginLog.Error($"{nameof(IsActionIdReplaceable)} 0x{IsActionIdReplaceable:X}");
+            Service.PluginLog.Debug($"{nameof(IsActionIdReplaceable)} 0x{IsActionIdReplaceable:X}");
         }
     }
 }

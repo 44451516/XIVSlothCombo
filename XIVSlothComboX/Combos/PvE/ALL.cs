@@ -1,4 +1,5 @@
-﻿using ECommons.DalamudServices;
+﻿using System.Collections.Generic;
+using ECommons.DalamudServices;
 using XIVSlothComboX.CustomComboNS;
 using XIVSlothComboX.CustomComboNS.Functions;
 
@@ -70,6 +71,28 @@ namespace XIVSlothComboX.Combos.PvE
                 Feint = 1195;
         }
 
+
+
+        public static readonly List<uint> Dot排除 = [
+            怪物ID.松鼠,
+            怪物ID.羊,
+            怪物ID.马,
+            怪物ID.鱼,
+            怪物ID.猫];
+        
+        public static class 怪物ID
+        {
+            public const ushort
+                松鼠 = 18343,
+                羊 = 18344,
+                马 = 18345,
+                鱼 = 18346,
+                猫 = 18347,
+                Addle = 1203,
+                Reprisal = 1193,
+                Feint = 1195;
+        }
+        
         /// <summary>
         /// Quick Level, Offcooldown, spellweave, and MP check of Lucid Dreaming
         /// </summary>

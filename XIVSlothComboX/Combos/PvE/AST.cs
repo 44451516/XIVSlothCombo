@@ -73,7 +73,8 @@ namespace XIVSlothComboX.Combos.PvE
         //Action Groups
         internal static readonly List<uint>
             MaleficList = [Malefic, Malefic2, Malefic3, Malefic4, FallMalefic],
-            GravityList = [Gravity, Gravity2];
+            GravityList = [Gravity, Gravity2],
+            Dot排除 = [18346];
 
         internal static class Buffs
         {
@@ -347,11 +348,23 @@ namespace XIVSlothComboX.Combos.PvE
                                 return Variant.VariantSpiritDart;
 
                             float refreshTimer = Config.AST_ST_DPS_CombustUptime_Adv ? Config.AST_ST_DPS_CombustUptime_Threshold : 3;
-                            if (GetDebuffRemainingTime(dotDebuffID) <= refreshTimer && GetTargetHPPercent() > Config.AST_DPS_CombustOption)
-                                return OriginalHook(Combust);
+
+
+                            if (GetDebuffRemainingTime(dotDebuffID) <= refreshTimer)
+                            {
+                                if (GetTargetHPPercent() > Config.AST_DPS_CombustOption)
+                                {
+                                    if (!All.Dot排除.Contains(CurrentTarget.DataId))
+                                    {
+                                        return OriginalHook(Combust);
+                                    }
+                                }
+                            }
+
 
                             //Alternate Mode (idles as Malefic)
-                            if (AlternateMode) return OriginalHook(Malefic);
+                            if (AlternateMode)
+                                return OriginalHook(Malefic);
                         }
                     }
                 }

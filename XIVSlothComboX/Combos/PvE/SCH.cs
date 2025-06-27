@@ -434,8 +434,14 @@ namespace XIVSlothComboX.Combos.PvE
 
                             float refreshtimer = Config.SCH_ST_DPS_Bio_Adv ? Config.SCH_ST_DPS_Bio_Threshold : 3;
                             if (GetDebuffRemainingTime(dotDebuffID) <= refreshtimer && GetTargetHPPercent() > Config.SCH_ST_DPS_BioOption)
-                                return OriginalHook(Bio); //Use appropriate DoT Action
+                            {
+                                if (!All.Dot排除.Contains(CurrentTarget.DataId))
+                                {
+                                    return OriginalHook(Bio); //Use appropriate DoT Action
+                                }
+                            }
                         }
+
 
                         //Ruin 2 Movement 
                         if (IsEnabled(CustomComboPreset.SCH_DPS_Ruin2Movement) && LevelChecked(Ruin2) && IsMoving()) return OriginalHook(Ruin2);

@@ -397,7 +397,12 @@ namespace XIVSlothComboX.Combos.PvE
                                 float refreshtimer = Config.SGE_ST_DPS_EDosis_Adv ? Config.SGE_ST_DPS_EDosisThreshold : 3;
 
                                 if (dotDebuff <= refreshtimer && GetTargetHPPercent() > Config.SGE_ST_DPS_EDosisHPPer)
-                                    return Eukrasia;
+                                {
+                                    if (!All.Dot排除.Contains(CurrentTarget.DataId))
+                                    {
+                                        return Eukrasia;
+                                    }
+                                }
                             }
                         }
 

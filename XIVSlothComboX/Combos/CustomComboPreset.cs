@@ -188,7 +188,7 @@ namespace XIVSlothComboX.Combos
         AST_ST_DPS = 1004,
 
         [ParentCombo(AST_ST_DPS)]
-        [CustomComboInfo("烧灼上线选项", "Adds Combust to the DPS feature if it's not present on current target, or is about to expire.", AST.JobID)]
+        [CustomComboInfo("烧灼选项", "Adds Combust to the DPS feature if it's not present on current target, or is about to expire.", AST.JobID)]
         AST_ST_DPS_CombustUptime = 1018,
 
 

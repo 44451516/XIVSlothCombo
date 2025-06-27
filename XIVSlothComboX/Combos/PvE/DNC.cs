@@ -194,7 +194,7 @@ namespace XIVSlothComboX.Combos.PvE
                     // if (CanWeave(actionID,0.6f))
                     // if (CanSpellWeavePlus(actionID,0.6f))
                     {
-                        bool devilmentReady = IsEnabled(CustomComboPreset.DNC_DT_Simple_Devilment) && 进攻之探戈Devilment.ActionReady() ;
+                        bool devilmentReady = IsEnabled(CustomComboPreset.DNC_DT_Simple_Devilment) && 进攻之探戈Devilment.ActionReady();
 
                         if (devilmentReady)
                         {
@@ -202,16 +202,15 @@ namespace XIVSlothComboX.Combos.PvE
                             {
                                 return 进攻之探戈Devilment;
                             }
-                        
+
                             if (devilmentReady && (techBurst || !LevelChecked(技巧舞步TechnicalStep)))
                             {
                                 return 进攻之探戈Devilment;
-                            } 
-                        }  
+                            }
+                        }
                     }
 
-                   
-                    
+
                     // Devilment
                     if (canWeave)
                     {
@@ -222,11 +221,14 @@ namespace XIVSlothComboX.Combos.PvE
                                              && !HasEffect(Buffs.对称投掷_百花争艳FlourishingSymmetry)
                                              && !HasEffect(Buffs.非对称投掷_百花争艳FlourishingFlow);
 
-                        if (IsEnabled(CustomComboPreset.DNC_DT_Simple_Flourish) && flourishReady && GetCooldownRemainingTime(进攻之探戈Devilment) > 0 && 技巧舞步倒计时 > 0 
+                        if (IsEnabled(CustomComboPreset.DNC_DT_Simple_Flourish)
+                            && flourishReady
+                            && GetCooldownRemainingTime(进攻之探戈Devilment) > 0
+                            && 技巧舞步倒计时 > 0
                             && !WasLastAction(进攻之探戈Devilment)
                             && !WasLastAction(四色技巧舞步结束TechnicalFinish4_0)
                             && !WasLastAction(四色技巧舞步结束TechnicalFinish4)
-                            )
+                           )
                         {
                             return 百花争艳Flourish;
                         }
@@ -319,7 +321,9 @@ namespace XIVSlothComboX.Combos.PvE
 
                     if (IsEnabled(CustomComboPreset.DNC_DT_Simple_SS))
                     {
-                        if (标准舞步倒计时 - GCD <= 0 || 标准舞步StandardStep.ActionReady())
+
+
+                        if ((标准舞步倒计时 - GCD <= 0 && techBurstTimer == 0) || 标准舞步StandardStep.ActionReady())
                         {
                             if (HasEffect(Buffs.舞步终结预备))
                             {
@@ -391,7 +395,7 @@ namespace XIVSlothComboX.Combos.PvE
                     {
                         return 流星舞StarfallDance;
                     }
-                    
+
 
                     if (LevelChecked(剑舞SaberDance) && IsEnabled(CustomComboPreset.DNC_DT_Simple_SaberDance))
                     {
@@ -457,8 +461,7 @@ namespace XIVSlothComboX.Combos.PvE
                         return 流星舞StarfallDance;
                     }
 
-              
-                    
+
                     if (LevelChecked(喷泉Fountain) && lastComboMove is 瀑泻Cascade && comboTime is < 2 and > 0)
                     {
                         return 喷泉Fountain;
@@ -551,8 +554,8 @@ namespace XIVSlothComboX.Combos.PvE
                         && !HasEffect(Buffs.标准舞步预备StandardStep))
                         return 技巧舞步TechnicalStep;
 
-                    
-                    bool devilmentReady = IsEnabled(CustomComboPreset.DNC_AoE_Simple_Devilment) && 进攻之探戈Devilment.ActionReady() ;
+
+                    bool devilmentReady = IsEnabled(CustomComboPreset.DNC_AoE_Simple_Devilment) && 进攻之探戈Devilment.ActionReady();
 
                     if (devilmentReady)
                     {
@@ -560,13 +563,13 @@ namespace XIVSlothComboX.Combos.PvE
                         {
                             return 进攻之探戈Devilment;
                         }
-                        
+
                         if (devilmentReady && (techBurst || !LevelChecked(技巧舞步TechnicalStep)))
                         {
                             return 进攻之探戈Devilment;
-                        } 
+                        }
                     }
-                    
+
                     if (canWeave)
                     {
                         bool flourishReady = LevelChecked(百花争艳Flourish)
@@ -575,7 +578,7 @@ namespace XIVSlothComboX.Combos.PvE
                                              && !HasEffect(Buffs.扇舞_终FourFoldFanDance)
                                              && !HasEffect(Buffs.对称投掷_百花争艳FlourishingSymmetry)
                                              && !HasEffect(Buffs.非对称投掷_百花争艳FlourishingFlow);
-                        
+
                         if (IsEnabled(CustomComboPreset.DNC_AoE_Simple_Flourish) && flourishReady)
                             return 百花争艳Flourish;
                     }

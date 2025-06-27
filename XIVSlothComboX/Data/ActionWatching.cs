@@ -509,9 +509,9 @@ namespace XIVSlothComboX.Data
             UseActionLocationHook ??= Service.GameInteropProvider.HookFromSignature<UseActionLocationDelegate>(HookAddress.UseActionLocation, UseActionLocationDetour);
 
 
-            Service.PluginLog.Error($"{nameof(ReceiveActionEffectHook)}         0x{ReceiveActionEffectHook.Address:X}");
-            Service.PluginLog.Error($"{nameof(SendActionHook)}                  0x{SendActionHook.Address:X}");
-            Service.PluginLog.Error($"{nameof(UseActionLocationHook)}           0x{UseActionLocationHook.Address:X}");
+            Service.PluginLog.Debug($"{nameof(ReceiveActionEffectHook)}         0x{ReceiveActionEffectHook.Address:X}");
+            Service.PluginLog.Debug($"{nameof(SendActionHook)}                  0x{SendActionHook.Address:X}");
+            Service.PluginLog.Debug($"{nameof(UseActionLocationHook)}           0x{UseActionLocationHook.Address:X}");
         }
 
 

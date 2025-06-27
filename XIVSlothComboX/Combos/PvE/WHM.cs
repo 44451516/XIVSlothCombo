@@ -293,7 +293,13 @@ namespace XIVSlothComboX.Combos.PvE
                             // DoT Uptime & HP% threshold
                             float refreshtimer = Config.WHM_ST_MainCombo_DoT_Adv ? Config.WHM_ST_MainCombo_DoT_Threshold : 3;
                             if (GetDebuffRemainingTime(dotDebuffID) <= refreshtimer && GetTargetHPPercent() > Config.WHM_STDPS_MainCombo_DoT)
-                                return OriginalHook(Aero);
+                            {
+                                if (!All.Dot排除.Contains(CurrentTarget.DataId))
+                                {
+                                    return OriginalHook(Aero);
+                                }
+                            }
+                            
                         }
 
                         // Glare IV
