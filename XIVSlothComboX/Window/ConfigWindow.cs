@@ -12,7 +12,7 @@ using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using XIVSlothComboX.Attributes;
 using XIVSlothComboX.Combos;
 using XIVSlothComboX.Combos.PvE;
@@ -127,7 +127,7 @@ namespace XIVSlothComboX.Window
                         // if (ThreadLoadImageHandler.TryGetTextureWrap(
                         //         @"https://github.com/Taurenkey/XIVSlothCombo/blob/main/res/plugin/xivslothcombo.png?raw=true", out var logo))
                         // {
-                        //     ImGuiEx.LineCentered("###SlothLogo", () => { ImGui.Image(logo.ImGuiHandle, new(125f.Scale(), 125f.Scale())); });
+                        //     ImGuiEx.LineCentered("###SlothLogo", () => { ImGui.Image(logo.Handle, new(125f.Scale(), 125f.Scale())); });
                         // }
                         //
                         // ImGui.Spacing();

@@ -2,7 +2,7 @@
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Utility;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -784,7 +784,7 @@ namespace XIVSlothComboX.Window.Functions
             }
             else
             {
-                ImGui.Columns(totalChoices, null, false);
+                ImGui.Columns(totalChoices, $"##cols_{config}_{totalChoices}", false);
             }
 
             //If new saved options or amount of choices changed, resize and save
@@ -1278,7 +1278,7 @@ namespace XIVSlothComboX.Window.Functions
                     values[i] = false;
             }
 
-            ImGui.Columns(5, null, false);
+            ImGui.Columns(5, $"##cols_{config}_5", false);
             ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.TankBlue);
 
             if (ImGui.Checkbox($"Paladin###{config}0", ref values[0]))

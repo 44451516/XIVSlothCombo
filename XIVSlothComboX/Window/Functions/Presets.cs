@@ -5,10 +5,10 @@ using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using ImGuiNET;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Textures;
 using Dalamud.Interface.Utility.Raii;
 using XIVSlothComboX.Attributes;
@@ -315,7 +315,8 @@ namespace XIVSlothComboX.Window.Functions
                     foreach (var icon in att.ActionIcons)
                     {
                         var img = Svc.Texture.GetFromGameIcon(new(icon)).GetWrapOrEmpty();
-                        ImGui.Image(img.ImGuiHandle, (img.Size / 2f) * ImGui.GetIO().FontGlobalScale);
+                        // ImGui.Image(img.Handle, (img.Size / 2f) * ImGui.GetIO().FontGlobalScale);
+                        ImGui.Image(img.Handle, (img.Size / 2f) * ImGui.GetIO().FontGlobalScale);
                         ImGui.SameLine();
                     }
                     ImGui.EndTooltip();

@@ -1,5 +1,5 @@
 ﻿using Dalamud.Interface.Colors;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using XIVSlothComboX.Services;
 
 namespace XIVSlothComboX.Window.MessagesNS

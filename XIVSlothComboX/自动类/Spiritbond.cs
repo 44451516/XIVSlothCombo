@@ -4,6 +4,7 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using System;
 using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.NativeWrapper;
 using static ECommons.GenericHelpers;
 
 namespace Artisan.RawInformation
@@ -79,7 +80,7 @@ namespace Artisan.RawInformation
                 if (materializePTR == IntPtr.Zero)
                     return;
 
-                var materalizeWindow = (AtkUnitBase*)materializePTR;
+                var materalizeWindow = (AtkUnitBase*)materializePTR.Address;
                 if (materalizeWindow == null)
                     return;
 
@@ -170,7 +171,7 @@ namespace Artisan.RawInformation
                         if (materializePTR == IntPtr.Zero)
                             return;
 
-                        var materalizeWindow = (AtkUnitBase*)materializePTR;
+                        var materalizeWindow = (AtkUnitBase*)materializePTR.Address;
                         if (materalizeWindow == null)
                             return;
 

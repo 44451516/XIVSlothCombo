@@ -1,7 +1,7 @@
 ﻿using Dalamud.Interface;
 using Dalamud.Interface.Internal;
 // using ECommons.ImGuiMethods;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using ImGuiScene;
 using System.Numerics;
 using Dalamud.Interface.Textures.TextureWraps;
@@ -69,13 +69,13 @@ namespace XIVSlothComboX.Window
                     ImGui.SetCursorPosY(ImGui.GetCursorPosY() + (padding.Y));
                 }
 
-                ImGui.Image(texture.ImGuiHandle, imageSize);
+                ImGui.Image(texture.Handle, imageSize);
 
             }
             else
             {
 
-                ImGui.Image(texture.ImGuiHandle, imageSize);
+                ImGui.Image(texture.Handle, imageSize);
 
                 ImGui.SameLine();
                 if (size != Vector2.Zero)

@@ -8,7 +8,7 @@ using Dalamud.Utility;
 using ECommons.ImGuiMethods;
 using ECommons.LanguageHelpers;
 using ECommons.Logging;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using Lumina.Excel;
 using Newtonsoft.Json;
 using XIVSlothComboX.Combos.PvE;
@@ -121,7 +121,7 @@ namespace XIVSlothComboX.Window.Tabs
                 IDalamudTextureWrap? icon = Icons.GetJobIcon(customTimeline.JobId);
                 if (icon != null)
                 {
-                    ImGui.Image(icon.ImGuiHandle, (icon.Size / 3f) * ImGui.GetIO().FontGlobalScale);
+                    ImGui.Image(icon.Handle, (icon.Size / 3f) * ImGui.GetIO().FontGlobalScale);
                     ImGui.SameLine();
                 }
               

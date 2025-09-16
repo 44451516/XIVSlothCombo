@@ -9,7 +9,7 @@ using Dalamud.Utility;
 using ECommons;
 using ECommons.ImGuiMethods;
 using ECommons.LanguageHelpers;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using Lumina.Excel;
 using Lumina.Excel.Sheets;
 using Newtonsoft.Json;
@@ -189,7 +189,7 @@ namespace XIVSlothComboX.Window.Tabs
                             case 2:
                                 if (textureWrap != null)
                                 {
-                                    ImGui.Image(textureWrap.ImGuiHandle, Vector2.One * 24 * ImGuiHelpers.GlobalScale);
+                                    ImGui.Image(textureWrap.Handle, Vector2.One * 24 * ImGuiHelpers.GlobalScale);
                                     ImGui.SameLine();
                                     ImGui.Text
                                     (
@@ -202,7 +202,7 @@ namespace XIVSlothComboX.Window.Tabs
                             case 3:
                                 if (textureWrap != null)
                                 {
-                                    ImGui.Image(textureWrap.ImGuiHandle, Vector2.One * 24 * ImGuiHelpers.GlobalScale);
+                                    ImGui.Image(textureWrap.Handle, Vector2.One * 24 * ImGuiHelpers.GlobalScale);
                                     ImGui.SameLine();
                                     ImGui.Text
                                     (
@@ -218,7 +218,7 @@ namespace XIVSlothComboX.Window.Tabs
                                     ImGui.Text($"     ");
                                     ImGui.SameLine();
 
-                                    ImGui.Image(textureWrap.ImGuiHandle, Vector2.One * 16 * ImGuiHelpers.GlobalScale);
+                                    ImGui.Image(textureWrap.Handle, Vector2.One * 16 * ImGuiHelpers.GlobalScale);
                                     ImGui.SameLine();
                                     ImGui.Text
                                     (
@@ -243,7 +243,7 @@ namespace XIVSlothComboX.Window.Tabs
                             ImGui.Text($"     ");
                             ImGui.SameLine();
 
-                            ImGui.Image(textureWrap.ImGuiHandle, Vector2.One * 16 * ImGuiHelpers.GlobalScale);
+                            ImGui.Image(textureWrap.Handle, Vector2.One * 16 * ImGuiHelpers.GlobalScale);
                             ImGui.SameLine();
                             ImGui.Text
                             (

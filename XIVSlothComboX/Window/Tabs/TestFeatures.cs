@@ -7,7 +7,7 @@ using Dalamud;
 using Dalamud.Logging;
 using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using XIVSlothComboX.Attributes;
 using XIVSlothComboX.Extensions;
 using XIVSlothComboX.Services;

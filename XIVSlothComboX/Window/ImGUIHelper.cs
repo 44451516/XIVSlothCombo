@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using FFXIVClientStructs.FFXIV.Common.Math;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using XIVSlothComboX.Window.help;
 
 namespace XIVSlothComboX.Window;

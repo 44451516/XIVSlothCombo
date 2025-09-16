@@ -50,7 +50,7 @@ public class IconManager : IDisposable {
 
                 var tex = dalamudTextureWrap;
 
-                if (tex.ImGuiHandle != IntPtr.Zero) {
+                if (tex.Handle != IntPtr.Zero) {
                     this.iconTextures[(iconId, hq)] = tex;
                 } else {
                     tex.Dispose();

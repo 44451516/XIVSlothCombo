@@ -328,7 +328,7 @@
         </member>
         <member name="T:ECommons.Automation.NeoTaskManager.TaskManager">
             <summary>
-            NeoTaskManager provides various benefits over previous task manager: increased speed, no need for immediate tasks, easier task creation and scheduling. Work in progress! Breaking changes may occur.
+            NeoTaskManager provides various benefits over previous task manager: increased speed, no need for immediate tasks, easier task creation and scheduling. 
             </summary>
         </member>
         <member name="F:ECommons.Automation.NeoTaskManager.TaskManager.DefaultConfiguration">
@@ -376,14 +376,15 @@
             Immediately clears current task queue.
             </summary>
         </member>
-        <member name="M:ECommons.Automation.NeoTaskManager.TaskManager.EnqueueDelay(System.Int32,System.Boolean)">
+        <member name="M:ECommons.Automation.NeoTaskManager.TaskManager.EnqueueDelay(System.Int32,System.Boolean,ECommons.Automation.NeoTaskManager.TaskManagerConfiguration)">
             <summary>
             Direct replacement of DelayNext
             </summary>
             <param name="ms">Amount of delay</param>
             <param name="isFrame">If true, delay is measured in seconds and not </param>
+            <param name="configuration"></param>
         </member>
-        <member name="M:ECommons.Automation.NeoTaskManager.TaskManager.InsertDelay(System.Int32,System.Boolean)">
+        <member name="M:ECommons.Automation.NeoTaskManager.TaskManager.InsertDelay(System.Int32,System.Boolean,ECommons.Automation.NeoTaskManager.TaskManagerConfiguration)">
             <summary>
             Direct replacement of DelayNextImmediate
             </summary>
@@ -504,10 +505,34 @@
             Disables stack mode and clears the stack.
             </summary>
         </member>
+        <member name="M:ECommons.Automation.NeoTaskManager.TaskManager.EnqueueStack(System.Action)">
+            <summary>
+            Immediately executes <paramref name="executeAction"/> in between <see cref="M:ECommons.Automation.NeoTaskManager.TaskManager.BeginStack"/> and <see cref="M:ECommons.Automation.NeoTaskManager.TaskManager.EnqueueStack"/>. Handles exceptions. If an exception is thrown, will reset discard instead. 
+            </summary>
+            <param name="executeAction"></param>
+        </member>
+        <member name="M:ECommons.Automation.NeoTaskManager.TaskManager.InsertStack(System.Action)">
+            <summary>
+            Immediately executes <paramref name="executeAction"/> in between <see cref="M:ECommons.Automation.NeoTaskManager.TaskManager.BeginStack"/> and <see cref="M:ECommons.Automation.NeoTaskManager.TaskManager.InsertStack"/>. Handles exceptions. If an exception is thrown, will reset discard instead. 
+            </summary>
+            <param name="executeAction"></param>
+        </member>
         <member name="T:ECommons.Automation.NeoTaskManager.TaskManagerConfiguration">
             <summary>
             Configuration class that defines TaskManager's behavior. In case task's configuration is not set or any it's property is null, default task manager configuration will be used. Default configuration is always present and can't have null properties.
             </summary>
+        </member>
+        <member name="M:ECommons.Automation.NeoTaskManager.TaskManagerConfiguration.#ctor(System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean})">
+            <summary>
+            
+            </summary>
+            <param name="timeLimitMS">Default: 30000</param>
+            <param name="abortOnTimeout">Default: true</param>
+            <param name="abortOnError">Default: true</param>
+            <param name="timeoutSilently">Default: false</param>
+            <param name="showDebug">Default: false</param>
+            <param name="showError">Default: true</param>
+            <param name="executeDefaultConfigurationEvents">Default: true</param>
         </member>
         <member name="P:ECommons.Automation.NeoTaskManager.TaskManagerConfiguration.TimeLimitMS">
             <summary>
@@ -553,7 +578,7 @@
             <param name="continue">Whether task should continue to be executed</param>
             <param name="abort">Whether to change abort behavior. Keep <see langword="null"/> to apply configuration settings, change to <see langword="true"/> to abort entire operation, change to <see langword="false"/> to only discard errored task. Has no effect if <paramref name="continue"/> was set to <see langword="true"/>.</param>
         </member>
-        <member name="E:ECommons.Automation.NeoTaskManager.TaskManagerConfiguration.OnTaskException">
+        <member name="F:ECommons.Automation.NeoTaskManager.TaskManagerConfiguration.OnTaskException">
             <summary>
             Event that is fired when execution of a task results in an exception.
             </summary>
@@ -565,7 +590,7 @@
             <param name="task"></param>
             <param name="remainingTimeMS">Changing this option will grand a task additional time to execute.</param>
         </member>
-        <member name="E:ECommons.Automation.NeoTaskManager.TaskManagerConfiguration.OnTaskTimeout">
+        <member name="F:ECommons.Automation.NeoTaskManager.TaskManagerConfiguration.OnTaskTimeout">
             <summary>
             Event that is fired when task times out.
             </summary>
@@ -577,16 +602,21 @@
             <param name="task"></param>
             <param name="isCompleted">Change execution result. Changing it to false will result in task being executed again, changing it to null will cancel current task queue.</param>
         </member>
-        <member name="E:ECommons.Automation.NeoTaskManager.TaskManagerConfiguration.OnTaskCompletion">
+        <member name="F:ECommons.Automation.NeoTaskManager.TaskManagerConfiguration.OnTaskCompletion">
             <summary>
             Event that is fired when task is completed. Fired when task returns either true (a signal to proceed to execute next task) or null (a signal to cancel current task queue).
+            </summary>
+        </member>
+        <member name="F:ECommons.Automation.NeoTaskManager.TaskManagerConfiguration.CompanionAction">
+            <summary>
+            Action that will execute every framework update executing main function.
             </summary>
         </member>
         <member name="M:ECommons.Automation.NeoTaskManager.TaskManagerConfiguration.With(ECommons.Automation.NeoTaskManager.TaskManagerConfiguration,System.Boolean)">
             <summary>
             Produces copy of other configuration and fills it's null properties from current configuration.
             </summary>
-            <param name="other"></param>
+            <param name="dominantConfiguration">Dominant configuration</param>
             <param name="copyEvents">Whether to copy events. If true, events from other current configuration will be used, if false - from other.</param>
             <returns></returns>
         </member>
@@ -859,11 +889,11 @@
             <param name="command"></param>
             <param name="helpMessage"></param>
             <param name="showInHelp"></param>
-            <param name="showInHelpPanel">Whether show the major command help on the <seealso cref="T:ImGuiNET.ImGui"/> window</param>
+            <param name="showInHelpPanel">Whether show the major command help on the <seealso cref="!:ImGuiNET.ImGui"/> window</param>
         </member>
         <member name="M:ECommons.Commands.CmdManager.DrawHelp(System.Single)">
             <summary>
-            Draw the help panel into the <seealso cref="T:ImGuiNET.ImGui"/> window.
+            Draw the help panel into the <seealso cref="T:Dalamud.Bindings.ImGui.ImGui"/> window.
             </summary>
             <param name="indent">The indent of value. 0 means no index, -1 means next line.</param>
         </member>
@@ -932,7 +962,7 @@
             Saves default configuration file, if applicable. 
             </summary>
         </member>
-        <member name="M:ECommons.Configuration.EzConfig.SaveConfiguration(ECommons.Configuration.IEzConfig,System.String,System.Boolean,System.Boolean,ECommons.Configuration.ISerializationFactory,System.Boolean)">
+        <member name="M:ECommons.Configuration.EzConfig.SaveConfiguration(System.Object,System.String,System.Boolean,System.Boolean,ECommons.Configuration.ISerializationFactory,System.Boolean)">
             <summary>
             Saves arbitrary configuration file.
             </summary>
@@ -953,50 +983,44 @@
             <param name="serializationFactory">If null, then default factory will be used.</param>
             <returns></returns>
         </member>
-        <member name="M:ECommons.ExcelServices.ExcelItemHelper.Get(System.Int32)">
-            <summary>
-            Gets <see cref="T:Lumina.Excel.Sheets.Item"/> by id or null if not found.
-            </summary>
-            <param name="rowId"></param>
-            <returns></returns>
+        <member name="E:ECommons.DalamudServices.Legacy.GameNetwork.NetworkMessage">
+            <inheritdoc/>
         </member>
-        <member name="M:ECommons.ExcelServices.ExcelItemHelper.Get(System.UInt32)">
-            <summary>
-            Gets <see cref="T:Lumina.Excel.Sheets.Item"/> by id or null if not found.
-            </summary>
-            <param name="rowId"></param>
-            <returns></returns>
+        <member name="M:ECommons.DalamudServices.Legacy.GameNetwork.Dispose">
+            <inheritdoc/>
         </member>
-        <member name="M:ECommons.ExcelServices.ExcelItemHelper.GetName(System.UInt32,System.Boolean)">
+        <member name="T:ECommons.DalamudServices.Legacy.GameNetworkAddressResolver">
             <summary>
-            Gets item name. If name or item is missing, prints item's ID. Item names are stripped off non-text payloads. Results are cached.
+            The address resolver for the <see cref="T:ECommons.DalamudServices.Legacy.GameNetwork"/> class.
             </summary>
-            <param name="id"></param>
-            <param name="includeID">Force include ID into text</param>
-            <returns></returns>
         </member>
-        <member name="M:ECommons.ExcelServices.ExcelItemHelper.GetName(System.Nullable{Lumina.Excel.Sheets.Item},System.Boolean)">
+        <member name="P:ECommons.DalamudServices.Legacy.GameNetworkAddressResolver.ProcessZonePacketUp">
             <summary>
-            Gets item name. If name is missing, prints item's ID. Item names are stripped off non-text payloads. Results are cached.
+            Gets the address of the ProcessZonePacketUp method.
             </summary>
-            <param name="item"></param>
-            <param name="includeID"></param>
-            <returns></returns>
         </member>
-        <member name="M:ECommons.ExcelServices.ExcelTerritoryHelper.IsSanctuary(System.UInt32)">
-            <summary>
-            Checks if territory belongs to main cities, inns, residential areas or houses. 
-            </summary>
-            <param name="territoryType"></param>
-            <returns></returns>
+        <member name="M:ECommons.DalamudServices.Legacy.GameNetworkAddressResolver.Setup64Bit(Dalamud.Game.ISigScanner)">
+            <inheritdoc/>
         </member>
-        <member name="M:ECommons.ExcelServices.ExcelTerritoryHelper.GetName(System.UInt32,System.Boolean)">
+        <member name="T:ECommons.DalamudServices.Legacy.IGameNetwork.OnNetworkMessageDelegate">
             <summary>
-            Gets fancy name for a territory.
+            The delegate type of a network message event.
             </summary>
-            <param name="TerritoryType">Zone ID</param>
-            <param name="includeID">Whether to include an ID into name</param>
-            <returns>Content finder condition if exists; otherwise - zone name if exists; otherwise - zone ID as a string</returns>
+            <param name="dataPtr">The pointer to the raw data.</param>
+            <param name="opCode">The operation ID code.</param>
+            <param name="sourceActorId">The source actor ID.</param>
+            <param name="targetActorId">The taret actor ID.</param>
+            <param name="direction">The direction of the packed.</param>
+        </member>
+        <member name="E:ECommons.DalamudServices.Legacy.IGameNetwork.NetworkMessage">
+            <summary>
+            Event that is called when a network message is sent/received.
+            </summary>
+        </member>
+        <member name="F:ECommons.ECommonsMain.ReducedLogging">
+            <summary>
+            Set this to true to significantly reduce amount of logging ECommons will do. You can change it any time. 
+            </summary>
         </member>
         <member name="F:ECommons.ExcelServices.Job.ADV">
             <summary>
@@ -1213,6 +1237,51 @@
             Pictomancer 
             </summary>
         </member>
+        <member name="M:ECommons.ExcelServices.ExcelItemHelper.Get(System.Int32)">
+            <summary>
+            Gets <see cref="T:Lumina.Excel.Sheets.Item"/> by id or null if not found.
+            </summary>
+            <param name="rowId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ECommons.ExcelServices.ExcelItemHelper.Get(System.UInt32)">
+            <summary>
+            Gets <see cref="T:Lumina.Excel.Sheets.Item"/> by id or null if not found.
+            </summary>
+            <param name="rowId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ECommons.ExcelServices.ExcelItemHelper.GetName(System.UInt32,System.Boolean)">
+            <summary>
+            Gets item name. If name or item is missing, prints item's ID. Item names are stripped off non-text payloads. Results are cached.
+            </summary>
+            <param name="id"></param>
+            <param name="includeID">Force include ID into text</param>
+            <returns></returns>
+        </member>
+        <member name="M:ECommons.ExcelServices.ExcelItemHelper.GetName(System.Nullable{Lumina.Excel.Sheets.Item},System.Boolean)">
+            <summary>
+            Gets item name. If name is missing, prints item's ID. Item names are stripped off non-text payloads. Results are cached.
+            </summary>
+            <param name="item"></param>
+            <param name="includeID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ECommons.ExcelServices.ExcelTerritoryHelper.IsSanctuary(System.UInt32)">
+            <summary>
+            Checks if territory belongs to main cities, inns, residential areas or houses. 
+            </summary>
+            <param name="territoryType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ECommons.ExcelServices.ExcelTerritoryHelper.GetName(System.UInt32,System.Boolean)">
+            <summary>
+            Gets fancy name for a territory.
+            </summary>
+            <param name="TerritoryType">Zone ID</param>
+            <param name="includeID">Whether to include an ID into name</param>
+            <returns>Content finder condition if exists; otherwise - zone name if exists; otherwise - zone ID as a string</returns>
+        </member>
         <member name="T:ECommons.EzContextMenu.ContextMenuPrefixRemover">
             <summary>
             A helper class to remove context menu prefix that is required by Dalamud. <br></br>
@@ -1230,6 +1299,19 @@
             </summary>
             <param name="m"></param>
             <returns></returns>
+        </member>
+        <member name="T:ECommons.EzDTR.EzDtr">
+            <summary>
+            Provides wrapped access to an IDtrBarEntry. Creates an update event to update the text and click event. Disposed automatically upon calling <see cref="M:ECommons.ECommonsMain.Dispose"/>.
+            </summary>
+        </member>
+        <member name="M:ECommons.EzDTR.EzDtr.#ctor(System.Func{Dalamud.Game.Text.SeStringHandling.SeString},System.Action,System.String)">
+            <summary>
+            Creates a new <see cref="T:ECommons.EzDTR.EzDtr"/>
+            </summary>
+            <param name="text">Function that returns an <see cref="T:Dalamud.Game.Text.SeStringHandling.SeString"/> for the entry's text.</param>
+            <param name="onClick">Action performed whenever the entry is clicked</param>
+            <param name="title">Name of the Dtr entry. Defaults to the plugin name.</param>
         </member>
         <member name="T:ECommons.EzEventManager.EzFrameworkUpdate">
             <summary>
@@ -1518,6 +1600,12 @@
             <param name="Mode">Creation mode, if any is needed.</param>
             <param name="DefaultValue">Default value when creating data that doesn't exists.</param>
             <returns>Whether data could be obtained</returns>
+        </member>
+        <member name="M:ECommons.GameFunctions.FakeParty.Get">
+            <summary>
+            Must be used ONLY on Framework update thread.
+            </summary>
+            <returns></returns>
         </member>
         <member name="F:ECommons.GameFunctions.NameplateKind.PlayerCharacterSelf">
             <summary>
@@ -1819,6 +1907,17 @@
                 <see cref="F:ECommons.GameHelpers.ContentDifficulty.Normal" />.
             </param>
             <returns>The determined <see cref="P:ECommons.GameHelpers.Content.ContentDifficulty" />.</returns>
+        </member>
+        <member name="M:ECommons.GameHelpers.Map.FindClosestAetheryte(System.UInt32,System.Numerics.Vector3)">
+            <summary>
+            Finds the closest aetheryte to the given world position
+            </summary>
+            <returns>aetheryteId</returns>
+        </member>
+        <member name="T:ECommons.GameHelpers.Player">
+            <summary>
+            In general, these properties and methods should be made in a way that does not throws <see cref="T:System.NullReferenceException"/>, where feasible.
+            </summary>
         </member>
         <member name="F:ECommons.Gamepad.GamePad.ControllerButtons">
             <summary>
@@ -2132,7 +2231,7 @@
         </member>
         <member name="F:ECommons.GenericHelpers.UseAsyncKeyCheck">
             <summary>
-            Sets whether <see cref="M:PInvoke.User32.GetKeyState(System.Int32)"/> or <see cref="M:PInvoke.User32.GetAsyncKeyState(System.Int32)"/> will be used when calling <see cref="!:IsKeyPressed(Keys)"/> or <see cref="M:ECommons.GenericHelpers.IsKeyPressed(ECommons.Interop.LimitedKeys)"/>
+            Sets whether <see cref="!:User32.GetKeyState"/> or <see cref="!:User32.GetAsyncKeyState"/> will be used when calling <see cref="!:IsKeyPressed(Keys)"/> or <see cref="M:ECommons.GenericHelpers.IsKeyPressed(ECommons.Interop.LimitedKeys)"/>
             </summary>
         </member>
         <member name="M:ECommons.GenericHelpers.IsKeyPressed(System.Int32)">
@@ -2182,11 +2281,18 @@
         </member>
         <member name="M:ECommons.GenericHelpers.Paste(System.Boolean)">
             <summary>
-            Reads text from user's clipboard
+            Reads text from user's clipboard using Windows Forms
             </summary>
             <param name="silent">Whether to display popup when error occurs.</param>
             <returns>Contents of the clipboard; null if clipboard couldn't be read.</returns>
             <remarks>Be sure to run on the framework/draw thread if using ImGui to avoid potential crashes.</remarks>
+        </member>
+        <member name="M:ECommons.GenericHelpers.IsKeyPressed(ECommons.WindowsFormsReflector.Keys)">
+            <summary>
+            Checks if a key is pressed via winapi.
+            </summary>
+            <param name="key">Key</param>
+            <returns>Whether the key is currently pressed</returns>
         </member>
         <member name="M:ECommons.GenericHelpers.Cleanup(System.String)">
             <summary>
@@ -2255,6 +2361,14 @@
             </summary>
             <param name="index"></param>
             <returns></returns>
+        </member>
+        <member name="M:ECommons.Hooks.MapEffect.Ex.ProcessMapEffectExCommon(System.Byte*,System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="packetPtr"></param>
+            <param name="offset1">v5</param>
+            <param name="offset2">v8</param>
         </member>
         <member name="T:ECommons.ImGuiMethods.EColor">
             <summary>
@@ -2327,7 +2441,7 @@
             Draws a button that will be on the same line as previous if there is space, otherwise will move to the next line.
             </summary>
             <param name="label">Button label</param>
-            <remarks><see cref="M:ImGuiNET.ImGui.SameLine"/> does not need to be called just before using this.</remarks>
+            <remarks><see cref="M:Dalamud.Bindings.ImGui.ImGui.SameLine"/> does not need to be called just before using this.</remarks>
             <returns></returns>
         </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.ButtonCtrl(System.String,System.Nullable{System.Numerics.Vector2},System.String)">
@@ -2379,9 +2493,14 @@
             <param name="smallButton">Whether a button should be small</param>
             <returns></returns>
         </member>
+        <member name="T:ECommons.ImGuiMethods.ImGuiEx.EzButtonGroup">
+            <summary>
+            Better version of Dalamud's <see cref="T:Dalamud.Interface.Utility.ImGuiHelpers.HorizontalButtonGroup"/>
+            </summary>
+        </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.CheckboxBullet(System.String,System.Boolean@)">
             <summary>
-            <see cref="M:ImGuiNET.ImGui.Checkbox(System.String,System.Boolean@)"/> that has bullet marker instead of normal check mark when enabled.
+            <see cref="M:Dalamud.Bindings.ImGui.ImGui.Checkbox(Dalamud.Bindings.ImGui.ImU8String,System.Boolean@)"/> that has bullet marker instead of normal check mark when enabled.
             </summary>
             <param name="label"></param>
             <param name="value"></param>
@@ -2389,7 +2508,7 @@
         </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.CheckboxInverted(System.String,System.Boolean@)">
             <summary>
-            Inverted <see cref="M:ImGuiNET.ImGui.Checkbox(System.String,System.Boolean@)"/>
+            Inverted <see cref="M:Dalamud.Bindings.ImGui.ImGui.Checkbox(Dalamud.Bindings.ImGui.ImU8String,System.Boolean@)"/>
             </summary>
             <param name="label"></param>
             <param name="value"></param>
@@ -2397,7 +2516,7 @@
         </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.Checkbox(System.String,System.Int32@)">
             <summary>
-            <see cref="M:ImGuiNET.ImGui.Checkbox(System.String,System.Boolean@)"/> that accepts int as a bool. 0 is false, 1 is true.
+            <see cref="M:Dalamud.Bindings.ImGui.ImGui.Checkbox(Dalamud.Bindings.ImGui.ImU8String,System.Boolean@)"/> that accepts int as a bool. 0 is false, 1 is true.
             </summary>
             <param name="label"></param>
             <param name="value"></param>
@@ -2405,7 +2524,7 @@
         </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.Checkbox(System.String,System.Nullable{System.Boolean}@)">
             <summary>
-            Tri-way <see cref="M:ImGuiNET.ImGui.Checkbox(System.String,System.Boolean@)"/>. Null will be displayed as a bullet. Switching order: false -> null -> true.
+            Tri-way <see cref="M:Dalamud.Bindings.ImGui.ImGui.Checkbox(Dalamud.Bindings.ImGui.ImU8String,System.Boolean@)"/>. Null will be displayed as a bullet. Switching order: false -> null -> true.
             </summary>
             <param name="label"></param>
             <param name="value"></param>
@@ -2417,7 +2536,7 @@
             </summary>
             <param name="label">Checkbox label</param>
             <param name="v">Boolean to toggle</param>
-            <remarks><see cref="M:ImGuiNET.ImGui.SameLine"/> does not need to be called just before using this.</remarks>
+            <remarks><see cref="M:Dalamud.Bindings.ImGui.ImGui.SameLine"/> does not need to be called just before using this.</remarks>
             <returns></returns>
         </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.CollectionCheckbox``1(System.String,System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.ICollection{``0},System.Boolean,System.Boolean)">
@@ -2468,11 +2587,12 @@
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.RealtimeDragDrop`1.DrawButtonDummy(System.String,System.Action{System.String})">
             <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.RealtimeDragDrop`1.DrawButtonDummy(`0,System.Collections.Generic.IList{`0},System.Int32)"/>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.RealtimeDragDrop`1.SetRowColor(System.String)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.RealtimeDragDrop`1.SetRowColor(System.String,System.Boolean)">
             <summary>
             Call this after calling TableNextRow to color the row that is being moved. Not mandatory.
             </summary>
             <param name="uniqueId"></param>
+            <param name="setColor"></param>
             <returns>Whether row was colored</returns>
         </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.RealtimeDragDrop`1.End(System.Int32)">
@@ -2481,7 +2601,7 @@
             </summary>
             <param name="numRows">How many lines is in your biggest row.</param>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},ImGuiNET.ImGuiComboFlags)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},Dalamud.Bindings.ImGui.ImGuiComboFlags)">
             <summary>
             Creates a searchable combo box for a given Excel sheet with an optional custom filter.
             </summary>
@@ -2492,7 +2612,7 @@
             <param name="flags">Any ImGuiComboFlags</param>
             <returns>Bool when item is selected.</returns>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String,System.Boolean},ImGuiNET.ImGuiComboFlags)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String,System.Boolean},Dalamud.Bindings.ImGui.ImGuiComboFlags)">
             <summary>
             Creates a searchable combo box for a given Excel sheet with an optional custom filter.
             </summary>
@@ -2504,7 +2624,7 @@
             <param name="flags">Any ImGuiComboFlags</param>
             <returns>Bool when item is selected.</returns>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.Boolean},ImGuiNET.ImGuiComboFlags)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.Boolean},Dalamud.Bindings.ImGui.ImGuiComboFlags)">
             <summary>
             Creates a searchable combo box for a given Excel sheet with an optional custom filter.
             </summary>
@@ -2516,7 +2636,7 @@
             <param name="flags">Any ImGuiComboFlags</param>
             <returns>Bool when item is selected.</returns>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String,System.Boolean},System.Func{``0,System.Boolean},ImGuiNET.ImGuiComboFlags)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String,System.Boolean},System.Func{``0,System.Boolean},Dalamud.Bindings.ImGui.ImGuiComboFlags)">
             <summary>
             Creates a searchable combo box for a given Excel sheet with an optional custom filter.
             </summary>
@@ -2529,7 +2649,7 @@
             <param name="flags">Any ImGuiComboFlags</param>
             <returns>Bool when item is selected.</returns>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String},ImGuiNET.ImGuiComboFlags)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String},Dalamud.Bindings.ImGui.ImGuiComboFlags)">
             <summary>
             Creates a searchable combo box for a given Excel sheet with an optional custom filter.
             </summary>
@@ -2541,7 +2661,7 @@
             <param name="flags">Any ImGuiComboFlags</param>
             <returns>Bool when item is selected.</returns>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String},System.Func{``0,System.String,System.Boolean},ImGuiNET.ImGuiComboFlags)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String},System.Func{``0,System.String,System.Boolean},Dalamud.Bindings.ImGui.ImGuiComboFlags)">
             <summary>
             Creates a searchable combo box for a given Excel sheet with an optional custom filter.
             </summary>
@@ -2554,7 +2674,7 @@
             <param name="flags">Any ImGuiComboFlags</param>
             <returns>Bool when item is selected.</returns>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String},System.Func{``0,System.Boolean},ImGuiNET.ImGuiComboFlags)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String},System.Func{``0,System.Boolean},Dalamud.Bindings.ImGui.ImGuiComboFlags)">
             <summary>
             Creates a searchable combo box for a given Excel sheet with an optional custom filter.
             </summary>
@@ -2567,7 +2687,7 @@
             <param name="flags">Any ImGuiComboFlags</param>
             <returns>Bool when item is selected.</returns>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String},System.Func{``0,System.String,System.Boolean},System.Func{``0,System.Boolean},ImGuiNET.ImGuiComboFlags)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.ExcelSheetCombo``1(System.String,``0@,System.Func{Lumina.Excel.ExcelSheet{``0},System.String},System.Func{``0,System.String},System.Func{``0,System.String,System.Boolean},System.Func{``0,System.Boolean},Dalamud.Bindings.ImGui.ImGuiComboFlags)">
             <summary>
             Creates a searchable combo box for a given Excel sheet with an optional custom filter.
             </summary>
@@ -2581,7 +2701,7 @@
             <param name="flags">Any ImGuiComboFlags</param>
             <returns>Bool when item is selected.</returns>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.SearchableCombo``1(System.String,``0@,System.String,System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.String},ImGuiNET.ImGuiComboFlags)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.SearchableCombo``1(System.String,``0@,System.String,System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.String},Dalamud.Bindings.ImGui.ImGuiComboFlags)">
             <summary>
             Creates a searchable combo box for a given Excel sheet with an optional custom filter.
             </summary>
@@ -2594,7 +2714,7 @@
             <param name="flags">Any ImGuiComboFlags</param>
             <returns>Bool when item is selected.</returns>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.SearchableCombo``1(System.String,``0@,System.String,System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.String},System.Func{``0,System.String,System.Boolean},ImGuiNET.ImGuiComboFlags)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.SearchableCombo``1(System.String,``0@,System.String,System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.String},System.Func{``0,System.String,System.Boolean},Dalamud.Bindings.ImGui.ImGuiComboFlags)">
             <summary>
             Creates a searchable combo box for a given Excel sheet with an optional custom filter.
             </summary>
@@ -2608,7 +2728,7 @@
             <param name="flags">Any ImGuiComboFlags</param>
             <returns>Bool when item is selected.</returns>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.SearchableCombo``1(System.String,``0@,System.String,System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.String},System.Func{``0,System.String,System.Boolean},System.Func{``0,System.Boolean},ImGuiNET.ImGuiComboFlags)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.SearchableCombo``1(System.String,``0@,System.String,System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.String},System.Func{``0,System.String,System.Boolean},System.Func{``0,System.Boolean},Dalamud.Bindings.ImGui.ImGuiComboFlags)">
             <summary>
             Creates a searchable combo box for a given Excel sheet with an optional custom filter.
             </summary>
@@ -2659,9 +2779,9 @@
             <param name="maxPages">Maximum amount of pages that are allowed to be displayed. If this amount is reached, new perPage amount will be actions.Length / maxPages.</param>
             <returns>Array of actions in the selected by user page for you to draw.</returns>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.TreeNodeCollapsingHeader(System.String,System.Boolean,System.Action,ImGuiNET.ImGuiTreeNodeFlags)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.TreeNodeCollapsingHeader(System.String,System.Boolean,System.Action,Dalamud.Bindings.ImGui.ImGuiTreeNodeFlags)">
             <summary>
-            Another interpretation of <see cref="M:ImGuiNET.ImGui.CollapsingHeader(System.String)"/> but with narrow design and border.
+            Another interpretation of <see cref="!:ImGui.CollapsingHeader(string)"/> but with narrow design and border.
             </summary>
             <param name="name"></param>
             <param name="usePadding"></param>
@@ -2678,7 +2798,7 @@
         </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.SelectableNode(System.Nullable{System.Numerics.Vector4},System.String,System.Boolean)">
             <summary>Selectable item made from TreeNode with bullet mark in front</summary>
-            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.SelectableNode(System.Nullable{System.Numerics.Vector4},System.String,System.Boolean@,ImGuiNET.ImGuiTreeNodeFlags,System.Boolean)"/>
+            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.SelectableNode(System.Nullable{System.Numerics.Vector4},System.String,System.Boolean@,Dalamud.Bindings.ImGui.ImGuiTreeNodeFlags,System.Boolean)"/>
         </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.SelectableNode(System.String,System.Boolean)">
             <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.SelectableNode(System.Nullable{System.Numerics.Vector4},System.String,System.Boolean)"/>
@@ -2686,7 +2806,7 @@
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.SelectableNode(System.String,System.Boolean@,System.Boolean)">
             <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.SelectableNode(System.Nullable{System.Numerics.Vector4},System.String,System.Boolean)"/>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.SelectableNode(System.Nullable{System.Numerics.Vector4},System.String,System.Boolean@,ImGuiNET.ImGuiTreeNodeFlags,System.Boolean)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.SelectableNode(System.Nullable{System.Numerics.Vector4},System.String,System.Boolean@,Dalamud.Bindings.ImGui.ImGuiTreeNodeFlags,System.Boolean)">
             <summary>
             Selectable item made from TreeNode
             </summary>
@@ -2697,12 +2817,12 @@
             <param name="enabled">Whether node is enabled</param>
             <returns><see langword="true"/> when clicked</returns>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.TreeNode(System.String,ImGuiNET.ImGuiTreeNodeFlags)">
-            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.TreeNode(System.Nullable{System.Numerics.Vector4},System.String,ImGuiNET.ImGuiTreeNodeFlags)"/>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.TreeNode(System.String,Dalamud.Bindings.ImGui.ImGuiTreeNodeFlags)">
+            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.TreeNode(System.Nullable{System.Numerics.Vector4},System.String,Dalamud.Bindings.ImGui.ImGuiTreeNodeFlags)"/>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.TreeNode(System.Nullable{System.Numerics.Vector4},System.String,ImGuiNET.ImGuiTreeNodeFlags)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.TreeNode(System.Nullable{System.Numerics.Vector4},System.String,Dalamud.Bindings.ImGui.ImGuiTreeNodeFlags)">
             <summary>
-            Just like <see cref="M:ImGuiNET.ImGui.TreeNode(System.String)"/> but with color option and that spans full width by default.
+            Just like <see cref="M:Dalamud.Bindings.ImGui.ImGui.TreeNode(Dalamud.Bindings.ImGui.ImU8String)"/> but with color option and that spans full width by default.
             </summary>
             <param name="color"></param>
             <param name="name"></param>
@@ -2719,6 +2839,11 @@
             Whether to clear filter when user opens job selection menu.
             </summary>
         </member>
+        <member name="F:ECommons.ImGuiMethods.ImGuiEx.JobSelectorOption.BulkSelectors">
+            <summary>
+            Whether to add bulk job selectors
+            </summary>
+        </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.JobSelector(System.String,System.Collections.Generic.ICollection{ECommons.ExcelServices.Job},ECommons.ImGuiMethods.ImGuiEx.JobSelectorOption[],System.Int32,System.String,System.Func{ECommons.ExcelServices.Job,System.Boolean})">
             <summary>
             ImGui combo that opens up into a multiple job selector with icons and search field.
@@ -2731,10 +2856,10 @@
             <param name="jobDisplayFilter">Optional extra filter for jobs to be displayed.</param>
             <returns><see langword="true"/> every time <paramref name="selectedJobs"/> is modified.</returns>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.HelpMarker(System.String,System.Nullable{System.Numerics.Vector4},System.String,System.Boolean)">
-            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.InfoMarker(System.String,System.Nullable{System.Numerics.Vector4},System.String,System.Boolean)"/>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.HelpMarker(System.String,System.Nullable{System.Numerics.Vector4},System.String,System.Boolean,System.Boolean)">
+            <inheritdoc cref="!:InfoMarker(string, Vector4?, string, bool)"/>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.InfoMarker(System.String,System.Nullable{System.Numerics.Vector4},System.String,System.Boolean)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.InfoMarker(System.String,System.Nullable{System.Numerics.Vector4},System.String,System.Boolean,System.Boolean)">
             <summary>
             <see cref="M:Dalamud.Interface.Components.ImGuiComponents.HelpMarker(System.String)"/> but with more options
             </summary>
@@ -2748,7 +2873,7 @@
             Activates item when double-clicked. Place after any ImGui Slider component to enable edit on double-click.
             </summary>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.HoveredAndClicked(System.String,ImGuiNET.ImGuiMouseButton,System.Boolean)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.HoveredAndClicked(System.String,Dalamud.Bindings.ImGui.ImGuiMouseButton,System.Boolean)">
             <summary>
             Checks whether item is hovered and clicked. Sets cursor to hand to indicate that it can be clicked.
             </summary>
@@ -2763,16 +2888,16 @@
             </summary>
             <param name="col">Color in format 0xRRGGBB</param>
             <param name="alpha">Optional transparency value between 0 and 1</param>
-            <returns>Color in <see cref="T:System.Numerics.Vector4"/> format ready to be used with <see cref="T:ImGuiNET.ImGui"/> functions</returns>
+            <returns>Color in <see cref="T:System.Numerics.Vector4"/> format ready to be used with <see cref="T:Dalamud.Bindings.ImGui.ImGui"/> functions</returns>
         </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.Vector4FromRGBA(System.UInt32)">
             <summary>
             Converts RGBA color to <see cref="T:System.Numerics.Vector4"/> for ImGui
             </summary>
             <param name="col">Color in format 0xRRGGBBAA</param>
-            <returns>Color in <see cref="T:System.Numerics.Vector4"/> format ready to be used with <see cref="T:ImGuiNET.ImGui"/> functions</returns>
+            <returns>Color in <see cref="T:System.Numerics.Vector4"/> format ready to be used with <see cref="T:Dalamud.Bindings.ImGui.ImGui"/> functions</returns>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.EzTableColumns(System.String,System.Action[],System.Nullable{System.Int32},ImGuiNET.ImGuiTableFlags)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.EzTableColumns(System.String,System.Action[],System.Nullable{System.Int32},Dalamud.Bindings.ImGui.ImGuiTableFlags)">
             <summary>
             Draws equally sized columns without ability to resize
             </summary>
@@ -2801,9 +2926,9 @@
             Move the cursor vertically y units relative to the current position
             </summary>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.InputInt(System.Single,System.String,System.Nullable{System.Int32}@,System.Int32,System.Int32,ImGuiNET.ImGuiInputTextFlags)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.InputInt(System.Single,System.String,System.Nullable{System.Int32}@,System.Int32,System.Int32,Dalamud.Bindings.ImGui.ImGuiInputTextFlags)">
             <summary>
-            An <see cref="M:ImGuiNET.ImGui.InputInt(System.String,System.Int32@)"/> for nullable int. Consists of checkbox and input component that is enabled/disabled based on checkbox state.
+            An <see cref="M:Dalamud.Bindings.ImGui.ImGui.InputInt(Dalamud.Bindings.ImGui.ImU8String,System.Int32@,System.Int32,System.Int32,Dalamud.Bindings.ImGui.ImU8String,Dalamud.Bindings.ImGui.ImGuiInputTextFlags)"/> for nullable int. Consists of checkbox and input component that is enabled/disabled based on checkbox state.
             </summary>
             <param name="width"></param>
             <param name="label"></param>
@@ -2813,9 +2938,21 @@
             <param name="flags"></param>
             <returns></returns>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.SliderInt(System.String,System.Int32@,System.Int32,System.Int32,System.String,ImGuiNET.ImGuiSliderFlags)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.InputFloat(System.Single,System.String,System.Nullable{System.Single}@,System.Int32,System.Int32,Dalamud.Bindings.ImGui.ImGuiInputTextFlags)">
             <summary>
-            <see cref="M:ImGuiNET.ImGui.SliderInt(System.String,System.Int32@,System.Int32,System.Int32)"/> but with double-click to edit support.
+            An <see cref="M:Dalamud.Bindings.ImGui.ImGui.InputFloat(Dalamud.Bindings.ImGui.ImU8String,System.Single@,System.Single,System.Single,Dalamud.Bindings.ImGui.ImU8String,Dalamud.Bindings.ImGui.ImGuiInputTextFlags)"/> for nullable int. Consists of checkbox and input component that is enabled/disabled based on checkbox state.
+            </summary>
+            <param name="width"></param>
+            <param name="label"></param>
+            <param name="valueNullable"></param>
+            <param name="step"></param>
+            <param name="step_fast"></param>
+            <param name="flags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.SliderInt(System.String,System.Int32@,System.Int32,System.Int32,System.String,Dalamud.Bindings.ImGui.ImGuiSliderFlags)">
+            <summary>
+            <see cref="M:Dalamud.Bindings.ImGui.ImGui.SliderInt(Dalamud.Bindings.ImGui.ImU8String,System.Int32@,System.Int32,System.Int32,Dalamud.Bindings.ImGui.ImU8String,Dalamud.Bindings.ImGui.ImGuiSliderFlags)"/> but with double-click to edit support.
             </summary>
             <param name="label"></param>
             <param name="v"></param>
@@ -2826,14 +2963,14 @@
             <returns></returns>
         </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.SliderInt(System.String,System.Int32@,System.Int32,System.Int32,System.String)">
-            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.SliderInt(System.String,System.Int32@,System.Int32,System.Int32,System.String,ImGuiNET.ImGuiSliderFlags)"/>
+            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.SliderInt(System.String,System.Int32@,System.Int32,System.Int32,System.String,Dalamud.Bindings.ImGui.ImGuiSliderFlags)"/>
         </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.SliderInt(System.String,System.Int32@,System.Int32,System.Int32)">
-            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.SliderInt(System.String,System.Int32@,System.Int32,System.Int32,System.String,ImGuiNET.ImGuiSliderFlags)"/>
+            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.SliderInt(System.String,System.Int32@,System.Int32,System.Int32,System.String,Dalamud.Bindings.ImGui.ImGuiSliderFlags)"/>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.SliderFloat(System.String,System.Single@,System.Single,System.Single,System.String,ImGuiNET.ImGuiSliderFlags)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.SliderFloat(System.String,System.Single@,System.Single,System.Single,System.String,Dalamud.Bindings.ImGui.ImGuiSliderFlags)">
             <summary>
-            <see cref="M:ImGuiNET.ImGui.SliderFloat(System.String,System.Single@,System.Single,System.Single)"/> but with double-click to edit support.
+            <see cref="M:Dalamud.Bindings.ImGui.ImGui.SliderFloat(Dalamud.Bindings.ImGui.ImU8String,System.Single@,System.Single,System.Single,Dalamud.Bindings.ImGui.ImU8String,Dalamud.Bindings.ImGui.ImGuiSliderFlags)"/> but with double-click to edit support.
             </summary>
             <param name="label"></param>
             <param name="v"></param>
@@ -2844,10 +2981,10 @@
             <returns></returns>
         </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.SliderFloat(System.String,System.Single@,System.Single,System.Single,System.String)">
-            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.SliderFloat(System.String,System.Single@,System.Single,System.Single,System.String,ImGuiNET.ImGuiSliderFlags)"/>
+            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.SliderFloat(System.String,System.Single@,System.Single,System.Single,System.String,Dalamud.Bindings.ImGui.ImGuiSliderFlags)"/>
         </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.SliderFloat(System.String,System.Single@,System.Single,System.Single)">
-            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.SliderFloat(System.String,System.Single@,System.Single,System.Single,System.String,ImGuiNET.ImGuiSliderFlags)"/>
+            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.SliderFloat(System.String,System.Single@,System.Single,System.Single,System.String,Dalamud.Bindings.ImGui.ImGuiSliderFlags)"/>
         </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.SliderIntAsFloat(System.String,System.Int32@,System.Int32,System.Int32,System.Single)">
             <summary>
@@ -2880,7 +3017,7 @@
             <param name="names">Optional Name overrides</param>
             <returns></returns>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.RadioButtonBool(System.String,System.String,System.Boolean@,System.Boolean,System.Action,System.Action)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.RadioButtonBool(System.String,System.String,System.Boolean@,System.Boolean,System.Action,System.Action,System.Boolean)">
             <summary>
             Draws two radio buttons for a boolean value.
             </summary>
@@ -2890,6 +3027,7 @@
             <param name="sameLine">Whether to draw radio buttons on the same line</param>
             <param name="prefix">Will be invoked before each radio button draw</param>
             <param name="suffix">Will be invoked after each radio button draw</param>
+            <param name="inverted">Whether to switch positions of <see langword="true"/> and <see langword="false"/> options</param>
         </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.TextV(System.Nullable{System.Numerics.Vector4},System.String)">
             <summary>
@@ -2904,10 +3042,10 @@
             </summary>
             <param name="s">Text</param>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.TextCopy(System.Numerics.Vector4,System.String)">
-            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.TextCopy(System.String)"/>
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.TextCopy(System.Numerics.Vector4,System.String,System.String)">
+            <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.TextCopy(System.String,System.String)"/>
         </member>
-        <member name="M:ECommons.ImGuiMethods.ImGuiEx.TextCopy(System.String)">
+        <member name="M:ECommons.ImGuiMethods.ImGuiEx.TextCopy(System.String,System.String)">
             <summary>
             Displays text that will also be copied to clipboard if clicked.
             </summary>
@@ -2919,6 +3057,11 @@
         </member>
         <member name="M:ECommons.ImGuiMethods.ImGuiEx.TextWrappedCopy(System.Numerics.Vector4,System.String)">
             <inheritdoc cref="M:ECommons.ImGuiMethods.ImGuiEx.TextWrappedCopy(System.String)"/>
+        </member>
+        <member name="F:ECommons.ImGuiMethods.ThreadLoadImageHandler.ErrorAction">
+            <summary>
+            Override error action if you wish. Will be executed on non-game main thread.
+            </summary>
         </member>
         <member name="M:ECommons.ImGuiMethods.ThreadLoadImageHandler.ClearAll">
             <summary>
@@ -3298,6 +3441,16 @@
             <param name="p"></param>
             <returns></returns>
         </member>
+        <member name="M:ECommons.MathHelpers.MathHelper.Add(System.Numerics.Vector4,System.Single)">
+            <summary>
+            Add a number to each element of a vector
+            </summary>
+        </member>
+        <member name="M:ECommons.MathHelpers.MathHelper.AddNoW(System.Numerics.Vector4,System.Single)">
+            <summary>
+            Add a number to each element of a vector, excluding W
+            </summary>
+        </member>
         <member name="M:ECommons.MathHelpers.MathHelper.GetRelativeAngle(System.Numerics.Vector3,System.Numerics.Vector3)">
             <summary>
             Degrees
@@ -3324,6 +3477,32 @@
         <member name="T:ECommons.MathHelpers.Number">
             <summary>
             Ultimate number union. Offers same performance as using numbers directly.
+            </summary>
+        </member>
+        <member name="T:ECommons.Networking.HttpClientProxyHelper">
+            <summary>
+            An easy, effortless way to introduce proxy support to your HTTP client to let an user bypass georestrictions or censorship.<br />
+            Step 1. Store <see cref="T:ECommons.Networking.ProxySettings"/> instance in your configuration file.<br />
+            Step 2. Call <see cref="M:ECommons.Networking.ProxySettings.ImGuiDraw"/> or <see cref="M:ECommons.Networking.ProxySettings.ImGuiDrawNoCollapsingHeader"/> to draw proxy configuration wherever you want.<br />
+            Step 3. When using with <see cref="T:System.Net.Http.HttpClient"/>, call <see cref="M:ECommons.Networking.HttpClientProxyHelper.ApplyProxySettings(System.Net.Http.HttpClient,ECommons.Networking.ProxySettings)"/> on it immediately after construction with <see cref="T:ECommons.Networking.ProxySettings"/> instance stored in your configuration. 
+            </summary>
+        </member>
+        <member name="M:ECommons.Networking.HttpClientProxyHelper.ApplyProxySettings(System.Net.Http.HttpClient,ECommons.Networking.ProxySettings)">
+            <summary>
+            Call this method on <see cref="T:System.Net.Http.HttpClient"/> with <see cref="T:ECommons.Networking.ProxySettings"/> instance to apply proxy settings to it. Call before making any requests with your client.
+            </summary>
+            <param name="client"></param>
+            <param name="settings"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ECommons.Networking.ProxySettings.ImGuiDraw">
+            <summary>
+            Draw a compact collapsing header containing proxy settings.
+            </summary>
+        </member>
+        <member name="M:ECommons.Networking.ProxySettings.ImGuiDrawNoCollapsingHeader">
+            <summary>
+            Draw proxy settings.
             </summary>
         </member>
         <member name="M:ECommons.Reflection.DalamudReflector.RegisterOnInstalledPluginsChangedEvents(System.Action[])">
@@ -3589,6 +3768,24 @@
             <param name="task">An action to run.</param>
             <param name="onCompletion">If specified, will be executed after completion of main action. If specified, no errors will be printed in log, instead if any occurs it will be passed into an action as an argument.</param>
         </member>
+        <member name="M:ECommons.SimpleGui.EzConfigGui.Init(System.Action,Dalamud.Configuration.IPluginConfiguration,System.String,ECommons.SimpleGui.EzConfigGui.WindowType)">
+            <summary>
+            Initialize the EzConfig WindowSystem
+            </summary>
+            <param name="draw">Draw method. If initialized this way, a new instance of <see cref="T:ECommons.SimpleGui.ConfigWindow"/> will be created. Any window parameters will need to be set in separate method instead of the constructor.</param>
+            <param name="config">Config to auto save on close</param>
+            <param name="nameOverride">Override for the titlebar name. Default value is {InternalName v0.0.0.0}</param>
+            <param name="windowType">Determines which UiBuilder event to subscribe to</param>
+        </member>
+        <member name="M:ECommons.SimpleGui.EzConfigGui.Init``1(``0,Dalamud.Configuration.IPluginConfiguration,System.String,ECommons.SimpleGui.EzConfigGui.WindowType)">
+            <summary>
+            Initialize the EzConfig WindowSystem
+            </summary>
+            <param name="window">Window instance. If window is not of type <see cref="T:ECommons.SimpleGui.ConfigWindow"/> then config autosaving will not function.</param>
+            <param name="config">Config to auto save on close</param>
+            <param name="nameOverride">Override for the titlebar name. Default value is {InternalName v0.0.0.0}</param>
+            <param name="windowType">Determines which UiBuilder event to subscribe to</param>
+        </member>
         <member name="M:ECommons.SimpleGui.EzConfigGui.GetWindow``1">
             <summary>
             Returns a window from the EzGui WindowSystem.
@@ -3604,14 +3801,14 @@
             Allows creation of single-use popup windows. Disposes itself upon being closed.
             </summary>
         </member>
-        <member name="T:ECommons.Singletons.PriorityAttribute">
-            <summary>
-            Sets service creation priority. Default is 0; the less is priority, the later will service be loaded, and earlier - disposed.
-            </summary>
-        </member>
         <member name="T:ECommons.Singletons.SingletonServiceManager">
             <summary>
             Simple singleton service manager. Create a static class and fill it up with fields/properties of your singleton services, then call <see cref="M:ECommons.Singletons.SingletonServiceManager.Initialize(System.Type)"/> with your static class type whenever you want. Any uninitialized instances will be initialized upon <see cref="M:ECommons.Singletons.SingletonServiceManager.Initialize(System.Type)"/> call, and anything that implements <see cref="T:System.IDisposable"/> will be disposed together with <see cref="M:ECommons.ECommonsMain.Dispose"/> call.
+            </summary>
+        </member>
+        <member name="T:ECommons.Singletons.SingletonServiceManager.PriorityAttribute">
+            <summary>
+            Lower number = loaded earlier
             </summary>
         </member>
         <member name="P:ECommons.SplatoonAPI.Element.refX">
@@ -3945,6 +4142,51 @@
         <member name="P:ECommons.UIHelpers.AddonMasterImplementations.AddonMaster.TripleTriadResult.WonValue">
             <summary>
             0 = won, 1 = lost
+            </summary>
+        </member>
+        <member name="T:ECommons.UIHelpers.AddonMasterImplementations.AddonMaster.WKSHud">
+            <summary>
+            Space Exploration main window (always visible on the area)
+            </summary>
+        </member>
+        <member name="M:ECommons.UIHelpers.AddonMasterImplementations.AddonMaster.WKSHud.ExtractNumber">
+            <remarks>
+            Pattern:<br/>
+            <code>\\d+</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match a Unicode digit atomically at least once.<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="T:ECommons.UIHelpers.AddonMasterImplementations.AddonMaster.WKSMission">
+            <summary>
+            Space Exploration Mission Screen <br></br>
+            Details all the missions that you can pick up/have done
+            </summary>
+        </member>
+        <member name="P:ECommons.UIHelpers.AddonMasterImplementations.AddonMaster.WKSMission.NumEntries">
+            <summary>
+            Keeps the current number of missions that are displayed. <br></br>
+            This includes the tabs seperating the missions by type [A, B, C, D]
+            </summary>
+        </member>
+        <member name="T:ECommons.UIHelpers.AddonMasterImplementations.AddonMaster.WKSMissionInfomation">
+            <summary>
+            Mission information screen
+            Can be viewed post you grabbing a moon mission
+            </summary>
+        </member>
+        <member name="T:ECommons.UIHelpers.AddonMasterImplementations.AddonMaster.WKSRecipeNotebook">
+            <summary>
+            Moon Recipe Notebook
+            Works similary to the normal recipe, except it's specialized to moon items you're doing the quest for
+            </summary>
+        </member>
+        <member name="T:ECommons.UIHelpers.AddonMasterImplementations.AddonMaster.WKSToolCustomize">
+            <summary>
+            Moon Recipe Notebook
+            Works similary to the normal recipe, except it's specialized to moon items you're doing the quest for
             </summary>
         </member>
         <member name="P:ECommons.UIHelpers.AddonMasterImplementations.AddonMasterBase`1.AddonDescription">

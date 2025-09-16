@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Dalamud.Game.ClientState.Objects;
-using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons;
 using ECommons.DalamudServices;
+using ECommons.GameFunctions;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using Lumina.Excel.Sheets;
 using XIVSlothComboX.Data;
 using XIVSlothComboX.Services;
+using BattleNpcSubKind = Dalamud.Game.ClientState.Objects.Enums.BattleNpcSubKind;
 using ObjectKind = Dalamud.Game.ClientState.Objects.Enums.ObjectKind;
 
 namespace XIVSlothComboX.CustomComboNS.Functions
@@ -162,7 +163,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
 
         public static float PlayerHealthPercentageHp() => (float)LocalPlayer?.CurrentHp / LocalPlayer.MaxHp * 100;
 
-        public static bool HasBattleTarget() => (CurrentTarget as IBattleNpc)?.BattleNpcKind is BattleNpcSubKind.Enemy or (BattleNpcSubKind)1;
+        public static bool HasBattleTarget() => HasTarget() && CurrentTarget.IsHostile();
 
         public static bool HasFriendlyTarget(IGameObject? OurTarget = null)
         {

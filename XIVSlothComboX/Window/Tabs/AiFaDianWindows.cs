@@ -1,6 +1,6 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Utility;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 
 namespace XIVSlothComboX.Window.Tabs
 {
