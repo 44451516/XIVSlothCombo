@@ -24,20 +24,20 @@ namespace XIVSlothComboX.Data
 {
     public static class ActionWatching
     {
-        internal static Dictionary<uint, Action> ActionSheet = Svc.Data.GetExcelSheet<Action>().Where(i => i.RowId is not 7).ToDictionary(i => i.RowId, i => i);
+        internal static Dictionary<uint, Action> ActionSheet = Svc.Data.GetExcelSheet<Action>()
+            .Where(i => i.RowId is not 7).ToDictionary(i => i.RowId, i => i);
 
-        internal static Dictionary<uint, Status> StatusSheet = Svc.Data.GetExcelSheet<Status>().ToDictionary(i => i.RowId, i => i);
+        internal static Dictionary<uint, Status> StatusSheet =
+            Svc.Data.GetExcelSheet<Status>().ToDictionary(i => i.RowId, i => i);
 
-        internal static Dictionary<uint, Trait> TraitSheet = Svc.Data.GetExcelSheet<Trait>()!.Where(i => i.ClassJobCategory.IsValid) //All player traits are assigned to a category. Chocobo and other garbage lacks this, thus excluded.
+        internal static Dictionary<uint, Trait> TraitSheet = Svc.Data.GetExcelSheet<Trait>()!
+            .Where(i => i.ClassJobCategory
+                .IsValid) //All player traits are assigned to a category. Chocobo and other garbage lacks this, thus excluded.
             .ToDictionary(i => i.RowId, i => i);
-
 
 
         internal static Dictionary<uint, Item> ItemsSheet =
             Svc.Data.GetExcelSheet<Item>()!.ToDictionary(i => i.RowId, i => i);
-
-
-
 
 
         internal static readonly Dictionary<uint, long> ChargeTimestamps = [];
@@ -59,27 +59,30 @@ namespace XIVSlothComboX.Data
         internal static readonly List<uint> CustomList = new();
 
 
-        private delegate byte UseActionLocationDelegate
+        private delegate bool UseActionLocationDelegate
         (
             IntPtr actionManager,
-            uint   actionType,
-            uint   actionID,
-            ulong  targetedActorID,
+            uint actionType,
+            uint actionID,
+            ulong targetedActorID,
             IntPtr vectorLocation,
-            uint   param);
+            uint param,
+            byte a7
+        );
 
         private static readonly Hook<UseActionLocationDelegate>? UseActionLocationHook;
 
-        private static byte UseActionLocationDetour
+        private static bool UseActionLocationDetour
         (
             IntPtr actionManager,
-            uint   actionType,
-            uint   actionId,
-            ulong  targetedActorID,
+            uint actionType,
+            uint actionId,
+            ulong targetedActorID,
             IntPtr vectorLocation,
-            uint   param)
+            uint param,
+            byte a7
+        )
         {
-
             if (CustomComboFunctions.CustomTimelineIsEnable())
             {
                 if (actionType == (byte)FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action)
@@ -113,7 +116,6 @@ namespace XIVSlothComboX.Data
                                 }
                             }
                         }
-
                     }
                 }
             }
@@ -173,19 +175,22 @@ namespace XIVSlothComboX.Data
             }
 
 
-            var ret = UseActionLocationHook.Original(actionManager, actionType, actionId, targetedActorID, vectorLocation, param);
+            var ret = UseActionLocationHook.Original(actionManager, actionType, actionId, targetedActorID,
+                vectorLocation, param, a7);
 
             return ret;
         }
 
-        private unsafe delegate void ReceiveActionEffectDelegate(uint casterEntityId, Character* casterPtr, System.Numerics.Vector3* targetPos, ActionEffectHandler.Header* header, ActionEffectHandler.TargetEffects* effects, GameObjectId* targetEntityIds);
+        private unsafe delegate void ReceiveActionEffectDelegate(uint casterEntityId, Character* casterPtr,
+            System.Numerics.Vector3* targetPos, ActionEffectHandler.Header* header,
+            ActionEffectHandler.TargetEffects* effects, GameObjectId* targetEntityIds);
 
         private static readonly Hook<ReceiveActionEffectDelegate>? ReceiveActionEffectHook;
 
 
-
-
-        private unsafe static void ReceiveActionEffectDetour(uint casterEntityId, Character* casterPtr, System.Numerics.Vector3* targetPos, ActionEffectHandler.Header* header, ActionEffectHandler.TargetEffects* effects, GameObjectId* targetEntityIds)
+        private unsafe static void ReceiveActionEffectDetour(uint casterEntityId, Character* casterPtr,
+            System.Numerics.Vector3* targetPos, ActionEffectHandler.Header* header,
+            ActionEffectHandler.TargetEffects* effects, GameObjectId* targetEntityIds)
         {
             if (!CustomComboFunctions.InCombat())
             {
@@ -208,9 +213,9 @@ namespace XIVSlothComboX.Data
                 return;
             }
 
-            if (header->ActionId != 7 && header->ActionId != 8 && casterEntityId == Service.ClientState.LocalPlayer.GameObjectId)
+            if (header->ActionId != 7 && header->ActionId != 8 &&
+                casterEntityId == Service.ClientState.LocalPlayer.GameObjectId)
             {
-                
                 ActionSheet.TryGetValue(header->ActionId, out var sheet);
                 {
                     switch (sheet.ActionCategory.Value.RowId)
@@ -240,29 +245,29 @@ namespace XIVSlothComboX.Data
 
         private delegate void SendActionDelegate
         (
-            ulong  targetObjectId,
-            byte   actionType,
-            uint   actionId,
+            ulong targetObjectId,
+            byte actionType,
+            uint actionId,
             ushort sequence,
-            long   a5,
-            long   a6,
-            long   a7,
-            long   a8,
-            long   a9);
+            long a5,
+            long a6,
+            long a7,
+            long a8,
+            long a9);
 
         private static readonly Hook<SendActionDelegate>? SendActionHook;
 
         private static unsafe void SendActionDetour
         (
-            ulong  targetObjectId,
-            byte   actionType,
-            uint   actionId,
+            ulong targetObjectId,
+            byte actionType,
+            uint actionId,
             ushort sequence,
-            long   a5,
-            long   a6,
-            long   a7,
-            long   a8,
-            long   a9)
+            long a5,
+            long a6,
+            long a7,
+            long a8,
+            long a9)
         {
             // Service.ChatGui.PrintError($"1 {actionType} - {actionId}");
             if (actionType == (byte)FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action)
@@ -318,13 +323,13 @@ namespace XIVSlothComboX.Data
                 {
                     ActionTimestamps[actionId] = Environment.TickCount64;
                 }
+
                 CheckForChangedTarget(actionId, ref targetObjectId, actionType);
                 SendActionHook!.Original(targetObjectId, actionType, actionId, sequence, a5, a6, a7, a8, a9);
                 TimeLastActionUsed = DateTime.Now;
                 ActionType = actionType;
 
                 UpdateHelpers(actionId);
-
             }
             catch (Exception ex)
             {
@@ -370,7 +375,9 @@ namespace XIVSlothComboX.Data
             // }
 
 
-            if (actionId is AST.Balance or AST.Bole or AST.Ewer or AST.Arrow or AST.Spire or AST.Spear && Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember is not null && !OutOfRange(actionId, Service.ClientState.LocalPlayer!, Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember))
+            if (actionId is AST.Balance or AST.Bole or AST.Ewer or AST.Arrow or AST.Spire or AST.Spear &&
+                Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember is not null && !OutOfRange(actionId,
+                    Service.ClientState.LocalPlayer!, Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember))
             {
                 int targetOptions = AST.Config.AST_QuickTarget_Override;
 
@@ -383,13 +390,15 @@ namespace XIVSlothComboX.Data
                         if (CustomComboFunctions.HasFriendlyTarget())
                             targetObjectId = Service.ClientState.LocalPlayer.TargetObject.GameObjectId;
                         else
-                            targetObjectId = Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember.GameObjectId;
+                            targetObjectId = Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember
+                                .GameObjectId;
                         break;
                     case 2:
                         if (CustomComboFunctions.GetHealTarget(true, true) is not null)
                             targetObjectId = CustomComboFunctions.GetHealTarget(true, true).GameObjectId;
                         else
-                            targetObjectId = Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember.GameObjectId;
+                            targetObjectId = Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember
+                                .GameObjectId;
                         break;
                 }
             }
@@ -461,7 +470,8 @@ namespace XIVSlothComboX.Data
             var lastAction = CombatActions.Last();
             var secondLastAction = CombatActions[^2];
 
-            return (GetAttackType(lastAction) == GetAttackType(secondLastAction) && GetAttackType(lastAction) == ActionAttackType.Ability);
+            return (GetAttackType(lastAction) == GetAttackType(secondLastAction) &&
+                    GetAttackType(lastAction) == ActionAttackType.Ability);
         }
 
         public static bool WasLast2ActionsAbilities()
@@ -471,12 +481,14 @@ namespace XIVSlothComboX.Data
             var lastAction = CombatActions.Last();
             var secondLastAction = CombatActions[^2];
 
-            return (GetAttackType(lastAction) == GetAttackType(secondLastAction) && GetAttackType(lastAction) == ActionAttackType.Ability);
+            return (GetAttackType(lastAction) == GetAttackType(secondLastAction) &&
+                    GetAttackType(lastAction) == ActionAttackType.Ability);
         }
 
 
         public static int NumberOfGcdsUsed =>
-            CombatActions.Count(x => GetAttackType(x) == ActionAttackType.Weaponskill || GetAttackType(x) == ActionAttackType.Spell);
+            CombatActions.Count(x =>
+                GetAttackType(x) == ActionAttackType.Weaponskill || GetAttackType(x) == ActionAttackType.Spell);
 
         public static uint LastAction { get; set; } = 0;
         public static uint ActionType { get; set; } = 0;
@@ -494,26 +506,30 @@ namespace XIVSlothComboX.Data
         }
 
 
-
         static unsafe ActionWatching()
         {
             // ReceiveActionEffectHook ??= Service.GameInteropProvider.HookFromSignature<ReceiveActionEffectDelegate>(HookAddress.ReceiveActionEffect,ReceiveActionEffectDetour);
-            ReceiveActionEffectHook ??= Service.GameInteropProvider.HookFromAddress<ReceiveActionEffectDelegate>(HookAddress.ReceiveActionEffect, ReceiveActionEffectDetour);
+            ReceiveActionEffectHook ??=
+                Service.GameInteropProvider.HookFromAddress<ReceiveActionEffectDelegate>(
+                    HookAddress.ReceiveActionEffect, ReceiveActionEffectDetour);
 
-            SendActionHook ??= Service.GameInteropProvider.HookFromSignature<SendActionDelegate>(HookAddress.SendAction, SendActionDetour);
+            SendActionHook ??=
+                Service.GameInteropProvider.HookFromSignature<SendActionDelegate>(HookAddress.SendAction,
+                    SendActionDetour);
 
 
             //E8 ?? ?? ?? ?? 3C 01 0F 85 ?? ?? ?? ?? EB 46
             //E8 ?? ?? ?? ?? 41 3A C5 0F 85 ?? ?? ?? ?? ?? ??
 
-            UseActionLocationHook ??= Service.GameInteropProvider.HookFromSignature<UseActionLocationDelegate>(HookAddress.UseActionLocation, UseActionLocationDetour);
+            UseActionLocationHook ??=
+                Service.GameInteropProvider.HookFromAddress<UseActionLocationDelegate>(HookAddress.UseActionLocation,
+                    UseActionLocationDetour);
 
 
             Service.PluginLog.Debug($"{nameof(ReceiveActionEffectHook)}         0x{ReceiveActionEffectHook.Address:X}");
             Service.PluginLog.Debug($"{nameof(SendActionHook)}                  0x{SendActionHook.Address:X}");
             Service.PluginLog.Debug($"{nameof(UseActionLocationHook)}           0x{UseActionLocationHook.Address:X}");
         }
-
 
 
         private static void ResetActions(ConditionFlag flag, bool value)
@@ -543,7 +559,6 @@ namespace XIVSlothComboX.Data
 
         public static void Dispose()
         {
-
             Disable();
             ReceiveActionEffectHook?.Dispose();
             SendActionHook?.Dispose();
@@ -566,21 +581,30 @@ namespace XIVSlothComboX.Data
             CustomList.Clear();
         }
 
-        public static int GetLevel(uint id) => ActionSheet.TryGetValue(id, out var action) && action.ClassJobCategory.IsValid ? action.ClassJobLevel : 255;
+        public static int GetLevel(uint id) =>
+            ActionSheet.TryGetValue(id, out var action) && action.ClassJobCategory.IsValid ? action.ClassJobLevel : 255;
 
-        public static float GetActionCastTime(uint id) => ActionSheet.TryGetValue(id, out var action) ? action.Cast100ms / (float)10 : 0;
+        public static float GetActionCastTime(uint id) =>
+            ActionSheet.TryGetValue(id, out var action) ? action.Cast100ms / (float)10 : 0;
 
         public static int GetActionRange(uint id) =>
-            ActionSheet.TryGetValue(id, out var action) ? action.Range : -2; // 0 & -1 are valid numbers. -2 is our failure code for InActionRange
+            ActionSheet.TryGetValue(id, out var action)
+                ? action.Range
+                : -2; // 0 & -1 are valid numbers. -2 is our failure code for InActionRange
 
-        public static int GetActionEffectRange(uint id) => ActionSheet.TryGetValue(id, out var action) ? action.EffectRange : -1;
-        public static int GetTraitLevel(uint        id) => TraitSheet.TryGetValue(id, out var trait) ? trait.Level : 255;
-        public static string GetActionName(uint     id) => ActionSheet.TryGetValue(id, out var action) ? action.Name.ToString() : "UNKNOWN ABILITY";
+        public static int GetActionEffectRange(uint id) =>
+            ActionSheet.TryGetValue(id, out var action) ? action.EffectRange : -1;
 
-        public static string GetItemName(uint   id) => ItemsSheet.TryGetValue(id, out var item) ? item.Name.ToString() : "UNKNOWN ITEM";
-        public static string GetStatusName(uint id) => StatusSheet.TryGetValue(id, out var status) ? status.Name.ToString() : "Unknown Status";
+        public static int GetTraitLevel(uint id) => TraitSheet.TryGetValue(id, out var trait) ? trait.Level : 255;
 
+        public static string GetActionName(uint id) =>
+            ActionSheet.TryGetValue(id, out var action) ? action.Name.ToString() : "UNKNOWN ABILITY";
 
+        public static string GetItemName(uint id) =>
+            ItemsSheet.TryGetValue(id, out var item) ? item.Name.ToString() : "UNKNOWN ITEM";
+
+        public static string GetStatusName(uint id) =>
+            StatusSheet.TryGetValue(id, out var status) ? status.Name.ToString() : "Unknown Status";
 
 
         public static string GetBLUIndex(uint id)
@@ -600,7 +624,9 @@ namespace XIVSlothComboX.Data
             return statusCache.TryAdd
             (
                 status,
-                StatusSheet.Where(x => x.Value.Name.ToString().Equals(status, StringComparison.CurrentCultureIgnoreCase)).Select(x => x.Key).ToList()
+                StatusSheet
+                    .Where(x => x.Value.Name.ToString().Equals(status, StringComparison.CurrentCultureIgnoreCase))
+                    .Select(x => x.Key).ToList()
             )
                 ? statusCache[status]
                 : null;
@@ -634,39 +660,41 @@ namespace XIVSlothComboX.Data
         internal static IntPtr FpUseAction => (IntPtr)ActionManager.Addresses.UseAction.Value;
         internal static IntPtr FpUseActionLocation => (IntPtr)ActionManager.Addresses.UseActionLocation.Value;
         internal static IntPtr CheckActionResources => (IntPtr)ActionManager.Addresses.CheckActionResources.Value;
-        public static ushort CurrentSeq => actionMgrPtr != IntPtr.Zero ? (ushort)Marshal.ReadInt16(actionMgrPtr + 0x110) : (ushort)0;
-        public static ushort LastRecievedSeq => actionMgrPtr != IntPtr.Zero ? (ushort)Marshal.ReadInt16(actionMgrPtr + 0x112) : (ushort)0;
+
+        public static ushort CurrentSeq =>
+            actionMgrPtr != IntPtr.Zero ? (ushort)Marshal.ReadInt16(actionMgrPtr + 0x110) : (ushort)0;
+
+        public static ushort LastRecievedSeq =>
+            actionMgrPtr != IntPtr.Zero ? (ushort)Marshal.ReadInt16(actionMgrPtr + 0x112) : (ushort)0;
+
         public static bool IsCasting => actionMgrPtr != IntPtr.Zero && Marshal.ReadByte(actionMgrPtr + 0x28) != 0;
-        public static uint CastingActionId => actionMgrPtr != IntPtr.Zero ? (uint)Marshal.ReadInt32(actionMgrPtr + 0x24) : 0u;
-        public static uint CastTargetObjectId => actionMgrPtr != IntPtr.Zero ? (uint)Marshal.ReadInt32(actionMgrPtr + 0x38) : 0u;
+
+        public static uint CastingActionId =>
+            actionMgrPtr != IntPtr.Zero ? (uint)Marshal.ReadInt32(actionMgrPtr + 0x24) : 0u;
+
+        public static uint CastTargetObjectId =>
+            actionMgrPtr != IntPtr.Zero ? (uint)Marshal.ReadInt32(actionMgrPtr + 0x38) : 0u;
+
         static ActionManagerHelper() => actionMgrPtr = (IntPtr)ActionManager.Instance();
     }
 
     [StructLayout(LayoutKind.Explicit)]
     public struct ActionEffectHeader
     {
-        [FieldOffset(0x0)]
-        public long TargetObjectId;
+        [FieldOffset(0x0)] public long TargetObjectId;
 
-        [FieldOffset(0x8)]
-        public uint ActionId;
+        [FieldOffset(0x8)] public uint ActionId;
 
-        [FieldOffset(0x14)]
-        public uint UnkObjectId;
+        [FieldOffset(0x14)] public uint UnkObjectId;
 
-        [FieldOffset(0x18)]
-        public ushort Sequence;
+        [FieldOffset(0x18)] public ushort Sequence;
 
-        [FieldOffset(0x1A)]
-        public ushort Unk_1A;
+        [FieldOffset(0x1A)] public ushort Unk_1A;
 
-        [FieldOffset(0X1C)]
-        public ushort AnimationId;
+        [FieldOffset(0X1C)] public ushort AnimationId;
 
-        [FieldOffset(0X1F)]
-        public byte Type;
+        [FieldOffset(0X1F)] public byte Type;
 
-        [FieldOffset(0x21)]
-        public byte TargetCount;
+        [FieldOffset(0x21)] public byte TargetCount;
     }
 }

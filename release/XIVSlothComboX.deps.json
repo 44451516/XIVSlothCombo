@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v9.0": {
-      "XIVSlothComboX/3.3.1.8": {
+      "XIVSlothComboX/3.3.1.9": {
         "dependencies": {
           "DalamudPackager": "11.0.0",
           "ECommons": "2.2.0.2",
@@ -29,7 +29,7 @@
     }
   },
   "libraries": {
-    "XIVSlothComboX/3.3.1.8": {
+    "XIVSlothComboX/3.3.1.9": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
