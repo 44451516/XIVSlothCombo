@@ -1,0 +1,24 @@
+{
+  "Author": "XIVSlothComboX",
+  "Name": "XIVSlothComboX",
+  "InternalName": "XIVSlothComboX",
+  "AssemblyVersion": "3.3.1.8",
+  "Description": "Condenses combos and mutually exclusive abilities onto a single button - and then some.",
+  "ApplicableVersion": "any",
+  "RepoUrl": "https://github.com/44451516/XIVSlothCombo",
+  "Tags": [
+    "combo"
+  ],
+  "DalamudApiLevel": 13,
+  "LoadRequiredState": 0,
+  "LoadSync": false,
+  "CanUnloadAsync": false,
+  "LoadPriority": 0,
+  "ImageUrls": [
+    "https://i.imgur.com/iEcxM81.png"
+  ],
+  "IconUrl": "https://i.imgur.com/iEcxM81.png",
+  "Punchline": "Condenses combos and mutually exclusive abilities onto a single button - and then some.",
+  "Changelog": "API11",
+  "AcceptsFeedback": true
+}

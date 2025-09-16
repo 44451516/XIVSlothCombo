@@ -83,9 +83,11 @@
 		</Reference>
 		<Reference Include="Dalamud.Bindings.ImGui">
 		  <HintPath>$(DalamudLibPath)Dalamud.Bindings.ImGui.dll</HintPath>
+		  <Private>False</Private>
 		</Reference>	
 		<Reference Include="Dalamud.Bindings.ImPlot">
 		  <HintPath>$(DalamudLibPath)Dalamud.Bindings.ImPlot.dll</HintPath>
+		  <Private>False</Private>
 		</Reference>
 		
 
