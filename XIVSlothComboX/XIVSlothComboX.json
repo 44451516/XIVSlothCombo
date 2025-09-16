@@ -2,7 +2,7 @@
     "Author": "XIVSlothComboX",
     "Name": "XIVSlothComboX",
     "InternalName": "XIVSlothComboX",
-    "DalamudApiLevel": 12,
+    "DalamudApiLevel": 13,
     "Punchline": "Condenses combos and mutually exclusive abilities onto a single button - and then some.",
     "Description": "Condenses combos and mutually exclusive abilities onto a single button - and then some.",
     "RepoUrl": "https://github.com/44451516/XIVSlothCombo",
