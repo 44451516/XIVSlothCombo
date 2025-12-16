@@ -7,6 +7,7 @@ using Dalamud.Game.ClientState.Statuses;
 using XIVSlothComboX.Combos.JobHelpers;
 using XIVSlothComboX.Combos.PvE.Content;
 using XIVSlothComboX.Core;
+using Status = Dalamud.Game.ClientState.Statuses.IStatus;
 using XIVSlothComboX.CustomComboNS;
 using XIVSlothComboX.CustomComboNS.Functions;
 using XIVSlothComboX.Data;

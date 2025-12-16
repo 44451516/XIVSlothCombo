@@ -33,7 +33,6 @@ using XIVSlothComboX.Window.Tabs;
 using XIVSlothComboX.自动类;
 using AST = XIVSlothComboX.Combos.JobHelpers.AST;
 using ObjectKind = Dalamud.Game.ClientState.Objects.Enums.ObjectKind;
-using Status = Dalamud.Game.ClientState.Statuses.Status;
 namespace XIVSlothComboX
 {
     /// <summary> Main plugin implementation. </summary>
@@ -232,13 +231,13 @@ namespace XIVSlothComboX
 
         private  unsafe void OnFrameworkUpdate(IFramework framework)
         {
-            if (Service.ClientState.LocalPlayer is not null)
+            if (Service.ObjectTable.LocalPlayer is not null)
             {
-                // JobID = Service.ClientState.LocalPlayer.ClassJob.Value.RowId;
+                // JobID = Service.ObjectTable.LocalPlayer.ClassJob.Value.RowId;
                 JobID = 19;
-                // JobID = Service.ClientState.LocalPlayer.ClassJob.RowId;
-                // Svc.Log.Debug($"1{Service.ClientState.LocalPlayer.ClassJob.Value.}");
-                // Svc.Log.Debug($"2 {Service.ClientState.LocalPlayer.ClassJob.Value.JobIndex}");
+                // JobID = Service.ObjectTable.LocalPlayer.ClassJob.RowId;
+                // Svc.Log.Debug($"1{Service.ObjectTable.LocalPlayer.ClassJob.Value.}");
+                // Svc.Log.Debug($"2 {Service.ObjectTable.LocalPlayer.ClassJob.Value.JobIndex}");
                 BlueMageService.PopulateBLUSpells();
                 _TargetHelper.Draw();
 
@@ -398,7 +397,7 @@ namespace XIVSlothComboX
         {
             string[]? argumentsParts = arguments.Split();
             var setOutChat = Service.Configuration.SetOutChat;
-            IPlayerCharacter? localPlayer = Service.ClientState.LocalPlayer;
+            IPlayerCharacter? localPlayer = Service.ObjectTable.LocalPlayer;
 
             // Service.ChatGui.Print(argumentsParts[0].ToLower());
 
@@ -718,9 +717,11 @@ namespace XIVSlothComboX
                         if (localPlayer.StatusList.Length > 0)
                         {
                             file.WriteLine($"START STATUS EFFECTS");
-                            foreach (Status? status in localPlayer.StatusList)
+                          
+                            
+                            foreach (var status in localPlayer.StatusList)
                             {
-                                file.WriteLine($"ID: {status.StatusId}, COUNT: {status.Param}, SOURCE: {status.SourceId}");
+                                file.WriteLine($"ID: {status.StatusId}, COUNT: {status.Param}, SOURCE: {status.StatusId}");
                             }
 
                             file.WriteLine($"END STATUS EFFECTS");
@@ -849,7 +850,7 @@ namespace XIVSlothComboX
                                             {
                                                 if (targetObjectId != 0)
                                                 {
-                                                    IGameObject? targetObject = Service.ClientState.LocalPlayer.TargetObject;
+                                                    IGameObject? targetObject = Service.ObjectTable.LocalPlayer.TargetObject;
 
                                                     if (targetObject != null && targetObject is IBattleChara battleChara)
                                                     {

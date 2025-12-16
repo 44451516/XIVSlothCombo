@@ -214,7 +214,7 @@ namespace XIVSlothComboX.Data
             }
 
             if (header->ActionId != 7 && header->ActionId != 8 &&
-                casterEntityId == Service.ClientState.LocalPlayer.GameObjectId)
+                casterEntityId == Service.ObjectTable.LocalPlayer.GameObjectId)
             {
                 ActionSheet.TryGetValue(header->ActionId, out var sheet);
                 {
@@ -377,7 +377,7 @@ namespace XIVSlothComboX.Data
 
             if (actionId is AST.Balance or AST.Bole or AST.Ewer or AST.Arrow or AST.Spire or AST.Spear &&
                 Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember is not null && !OutOfRange(actionId,
-                    Service.ClientState.LocalPlayer!, Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember))
+                    Service.ObjectTable.LocalPlayer!, Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember))
             {
                 int targetOptions = AST.Config.AST_QuickTarget_Override;
 
@@ -388,7 +388,7 @@ namespace XIVSlothComboX.Data
                         break;
                     case 1:
                         if (CustomComboFunctions.HasFriendlyTarget())
-                            targetObjectId = Service.ClientState.LocalPlayer.TargetObject.GameObjectId;
+                            targetObjectId = Service.ObjectTable.LocalPlayer.TargetObject.GameObjectId;
                         else
                             targetObjectId = Combos.JobHelpers.AST.AST_QuickTargetCards.SelectedRandomMember
                                 .GameObjectId;

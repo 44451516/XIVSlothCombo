@@ -999,7 +999,7 @@
             Gets the address of the ProcessZonePacketUp method.
             </summary>
         </member>
-        <member name="M:ECommons.DalamudServices.Legacy.GameNetworkAddressResolver.Setup64Bit(Dalamud.Game.ISigScanner)">
+        <member name="M:ECommons.DalamudServices.Legacy.GameNetworkAddressResolver.Setup64Bit(Dalamud.Plugin.Services.ISigScanner)">
             <inheritdoc/>
         </member>
         <member name="T:ECommons.DalamudServices.Legacy.IGameNetwork.OnNetworkMessageDelegate">

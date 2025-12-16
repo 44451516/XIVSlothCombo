@@ -8,6 +8,7 @@ using XIVSlothComboX.Core;
 using XIVSlothComboX.CustomComboNS;
 using XIVSlothComboX.CustomComboNS.Functions;
 using XIVSlothComboX.Data;
+using Status = Dalamud.Game.ClientState.Statuses.IStatus;
 using XIVSlothComboX.Extensions;
 using static XIVSlothComboX.CustomComboNS.Functions.CustomComboFunctions;
 

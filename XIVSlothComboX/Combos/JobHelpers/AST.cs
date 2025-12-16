@@ -21,7 +21,7 @@ namespace XIVSlothComboX.Combos.JobHelpers
 
         private static void CheckCards(IFramework framework)
         {
-            if (Svc.ClientState.LocalPlayer is null || Svc.ClientState.LocalPlayer.ClassJob.RowId != 33)
+            if (Svc.Objects.LocalPlayer is null || Svc.Objects.LocalPlayer.ClassJob.RowId != 33)
                 return;
 
             if (Svc.Condition[ConditionFlag.BetweenAreas] || Svc.Condition[ConditionFlag.Unconscious])

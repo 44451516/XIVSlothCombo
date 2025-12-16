@@ -5,6 +5,7 @@ using Dalamud.Game.ClientState.Statuses;
 using XIVSlothComboX.Combos.PvE.Content;
 using XIVSlothComboX.Core;
 using XIVSlothComboX.CustomComboNS;
+using Status = Dalamud.Game.ClientState.Statuses.IStatus;
 
 namespace XIVSlothComboX.Combos.PvE
 {

@@ -1,8 +1,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using Dalamud.Game;
-using Dalamud.Game.ClientState.Objects;
 using Dalamud.Interface.Windowing;
 using Dalamud.IoC;
 using Dalamud.Plugin;

@@ -218,7 +218,7 @@
         <member name="P:XIVSlothComboX.Core.PluginAddressResolver.IsActionIdReplaceable">
             <summary> Gets the address of fpIsIconReplacable. </summary>
         </member>
-        <member name="M:XIVSlothComboX.Core.PluginAddressResolver.Setup(Dalamud.Game.ISigScanner)">
+        <member name="M:XIVSlothComboX.Core.PluginAddressResolver.Setup(Dalamud.Plugin.Services.ISigScanner)">
             <inheritdoc/>
         </member>
         <member name="T:XIVSlothComboX.Core.PluginConfiguration">

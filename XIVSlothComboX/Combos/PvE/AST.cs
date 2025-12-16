@@ -11,6 +11,7 @@ using XIVSlothComboX.CustomComboNS;
 using XIVSlothComboX.CustomComboNS.Functions;
 using XIVSlothComboX.Data;
 using XIVSlothComboX.Extensions;
+using Status = Dalamud.Game.ClientState.Statuses.IStatus;
 
 namespace XIVSlothComboX.Combos.PvE
 {

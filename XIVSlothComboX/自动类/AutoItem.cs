@@ -15,7 +15,7 @@ public class AutoItem
         {
             if (ActionManager.Instance()->GetActionStatus(ActionType.Item, itemId + 1000000) == 0)
             {
-                ActionManager.Instance()->UseAction(ActionType.Item, itemId + 1000000, Service.ClientState.LocalPlayer.GameObjectId, a4);
+                ActionManager.Instance()->UseAction(ActionType.Item, itemId + 1000000, Service.ObjectTable.LocalPlayer.GameObjectId, a4);
                 return;
             }
         }
@@ -24,14 +24,14 @@ public class AutoItem
         {
             if (ActionManager.Instance()->GetActionStatus(ActionType.Item, itemId) == 0)
             {
-                ActionManager.Instance()->UseAction(ActionType.Item, itemId, Service.ClientState.LocalPlayer.GameObjectId, a4);
+                ActionManager.Instance()->UseAction(ActionType.Item, itemId, Service.ObjectTable.LocalPlayer.GameObjectId, a4);
             }
         }
     }
 
     public static void 自动吃食物(uint requiredItem, bool requiredItemHQ)
     {
-        var LocalPlayer = Service.ClientState.LocalPlayer;
+        var LocalPlayer = Service.ObjectTable.LocalPlayer;
         if (LocalPlayer == null)
         {
             return;
@@ -50,7 +50,7 @@ public class AutoItem
 
     public static unsafe void 自动精炼药()
     {
-        var LocalPlayer = Service.ClientState.LocalPlayer;
+        var LocalPlayer = Service.ObjectTable.LocalPlayer;
         if (LocalPlayer == null)
         {
             return;

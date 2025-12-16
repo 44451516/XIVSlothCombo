@@ -3,7 +3,7 @@
   "Name": "XIVSlothComboX",
   "InternalName": "XIVSlothComboX",
   "AssemblyVersion": "3.3.1.9",
-  "Description": "Condenses combos and mutually exclusive abilities onto a single button - and then some.",
+  "Description": "XIVCombo for lazy players",
   "ApplicableVersion": "any",
   "RepoUrl": "https://github.com/44451516/XIVSlothCombo",
   "Tags": [

@@ -127,7 +127,7 @@ namespace XIVSlothComboX.Window.Tabs
                         customTimeline.Index = ++newIndex;
                     }
 
-                    customTimeline.JobId = Service.ClientState.LocalPlayer.ClassJob.RowId;
+                    customTimeline.JobId = Service.ObjectTable.LocalPlayer.ClassJob.RowId;
                     customTimeline.Name = saveAs;
                     customTimeline.Enable = false;
                     customTimeline.ActionList = new List<CustomAction>();

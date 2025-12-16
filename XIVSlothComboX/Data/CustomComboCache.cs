@@ -7,6 +7,7 @@ using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Plugin.Services;
 using DalamudStatus = Dalamud.Game.ClientState.Statuses; // conflicts with structs if not defined
+using Status = Dalamud.Game.ClientState.Statuses.IStatus;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using XIVSlothComboX.Services;
 
@@ -19,7 +20,7 @@ namespace XIVSlothComboX.Data
         private const uint InvalidObjectID = 0xE000_0000;
 
         // Invalidate these
-        private readonly ConcurrentDictionary<(uint StatusID, ulong? TargetID, ulong? SourceID), DalamudStatus.Status?> statusCache = new();
+        private readonly ConcurrentDictionary<(uint StatusID, ulong? TargetID, ulong? SourceID), Status?> statusCache = new();
         private readonly ConcurrentDictionary<uint, CooldownData?> cooldownCache = new();
 
         // Do not invalidate these
@@ -49,10 +50,10 @@ namespace XIVSlothComboX.Data
         /// <param name="obj"> Object to look for effects on. </param>
         /// <param name="sourceID"> Source object ID. </param>
         /// <returns> Status object or null. </returns>
-        internal DalamudStatus.Status? GetStatus(uint statusID, IGameObject? obj, ulong? sourceID)
+        internal Status? GetStatus(uint statusID, IGameObject? obj, ulong? sourceID)
         {
             var key = (statusID, obj?.GameObjectId, sourceID);
-            if (statusCache.TryGetValue(key, out DalamudStatus.Status? found))
+            if (statusCache.TryGetValue(key, out Status? found))
                 return found;
 
             if (obj is null)
@@ -61,7 +62,7 @@ namespace XIVSlothComboX.Data
             if (obj is not IBattleChara chara)
                 return statusCache[key] = null;
 
-            foreach (DalamudStatus.Status? status in chara.StatusList)
+            foreach (Status? status in chara.StatusList)
             {
                 if (status.StatusId == statusID && (!sourceID.HasValue || status.SourceId == 0 || status.SourceId == InvalidObjectID || status.SourceId == sourceID))
                     return statusCache[key] = status;

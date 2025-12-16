@@ -73,17 +73,17 @@ namespace XIVSlothComboX.Core
             
             try
             {
-                if (Service.ClientState.LocalPlayer == null)
+                if (Service.ObjectTable.LocalPlayer == null)
                     return OriginalHook(actionID);
 
                 if (ClassLocked() || 
-                    (DisabledJobsPVE.Any(x => x == Service.ClientState.LocalPlayer.ClassJob.RowId) && !Service.ClientState.IsPvP) || 
-                    (DisabledJobsPVP.Any(x => x == Service.ClientState.LocalPlayer.ClassJob.RowId) && Service.ClientState.IsPvP)) 
+                    (DisabledJobsPVE.Any(x => x == Service.ObjectTable.LocalPlayer.ClassJob.RowId) && !Service.ClientState.IsPvP) || 
+                    (DisabledJobsPVP.Any(x => x == Service.ObjectTable.LocalPlayer.ClassJob.RowId) && Service.ClientState.IsPvP)) 
                     return OriginalHook(actionID);
 
                 uint lastComboMove =  ActionManager.Instance()->Combo.Action;
                 float comboTime = ActionManager.Instance()->Combo.Action != 0 ? ActionManager.Instance()->Combo.Timer : 0;
-                byte level = Service.ClientState.LocalPlayer?.Level ?? 0;
+                byte level = Service.ObjectTable.LocalPlayer?.Level ?? 0;
 
                 foreach (CustomCombo? combo in customCombos)
                 {
@@ -105,22 +105,22 @@ namespace XIVSlothComboX.Core
         // Class locking
         public unsafe static bool ClassLocked()
         {
-            if (Service.ClientState.LocalPlayer is null) 
+            if (Service.ObjectTable.LocalPlayer is null) 
                 return false;
 
-            if (Service.ClientState.LocalPlayer.Level <= 35) 
+            if (Service.ObjectTable.LocalPlayer.Level <= 35) 
                 return false;
 
-            if (Service.ClientState.LocalPlayer.ClassJob.RowId is
+            if (Service.ObjectTable.LocalPlayer.ClassJob.RowId is
                 (>= 8 and <= 25) or 27 or 28 or >= 30)
                 return false;
 
             if (!UIState.Instance()->IsUnlockLinkUnlockedOrQuestCompleted(66049))
                 return false;
 
-            if ((Service.ClientState.LocalPlayer.ClassJob.RowId is 1 or 2 or 3 or 4 or 5 or 6 or 7 or 26 or 29) &&
+            if ((Service.ObjectTable.LocalPlayer.ClassJob.RowId is 1 or 2 or 3 or 4 or 5 or 6 or 7 or 26 or 29) &&
                 Service.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty] &&
-                Service.ClientState.LocalPlayer.Level > 35) 
+                Service.ObjectTable.LocalPlayer.Level > 35) 
                 return true;
 
             return false;

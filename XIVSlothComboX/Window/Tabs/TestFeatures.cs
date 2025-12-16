@@ -54,7 +54,7 @@ namespace XIVSlothComboX.Window.Tabs
 
         public static void function()
         {
-            if (Service.ClientState.LocalPlayer == null)
+            if (Service.ObjectTable.LocalPlayer == null)
             {
                 tokenSource?.Cancel();
                 return;
@@ -101,13 +101,13 @@ namespace XIVSlothComboX.Window.Tabs
                             // PluginLog.Error("我执行了1");
                             if (Service.ClientState.IsLoggedIn)
                             {
-                                if (Service.ClientState.LocalPlayer != null)
+                                if (Service.ObjectTable.LocalPlayer != null)
                                 {
                                     unsafe
                                     {
                                         // PluginLog.Error("我执行了");
                                         FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* Struct =
-                                            (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)Service.ClientState.LocalPlayer.Address;
+                                            (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)Service.ObjectTable.LocalPlayer.Address;
 
                                         
                                         SafeMemory.WriteBytes((IntPtr)Struct->Name.GetPinnableReference(), SeStringUtils.NameText(fakeName));

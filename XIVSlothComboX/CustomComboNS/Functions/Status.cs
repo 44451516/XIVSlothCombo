@@ -4,7 +4,7 @@ using FFXIVClientStructs.FFXIV.Client.Game.Character;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using XIVSlothComboX.Data;
 using XIVSlothComboX.Services;
-using Status = Dalamud.Game.ClientState.Statuses.Status;
+using Status = Dalamud.Game.ClientState.Statuses.IStatus;
 
 namespace XIVSlothComboX.CustomComboNS.Functions
 {

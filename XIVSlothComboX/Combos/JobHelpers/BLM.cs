@@ -7,6 +7,7 @@ using ECommons.DalamudServices;
 using XIVSlothComboX.Combos.JobHelpers.Enums;
 using XIVSlothComboX.Combos.PvE;
 using XIVSlothComboX.Data;
+using Status = Dalamud.Game.ClientState.Statuses.IStatus;
 using static XIVSlothComboX.CustomComboNS.Functions.CustomComboFunctions;
 using static XIVSlothComboX.Combos.PvE.BLM;
 

@@ -20,7 +20,7 @@ using XIVSlothComboX.CustomComboNS.Functions;
 using XIVSlothComboX.Data;
 using XIVSlothComboX.Extensions;
 using XIVSlothComboX.Services;
-using Status = Dalamud.Game.ClientState.Statuses.Status;
+using Status = Dalamud.Game.ClientState.Statuses.IStatus;
 using Action = Lumina.Excel.Sheets.Action;
 using static XIVSlothComboX.CustomComboNS.Functions.CustomComboFunctions;
 
@@ -42,7 +42,7 @@ namespace XIVSlothComboX.Window.Tabs
         internal unsafe static new void Draw()
         {
             // DebugCombo? comboClass = new();
-            IPlayerCharacter? LocalPlayer = Svc.ClientState.LocalPlayer;
+            IPlayerCharacter? LocalPlayer = Svc.Objects.LocalPlayer;
             uint[] statusBlacklist = { 360, 361, 362, 363, 364, 365, 366, 367, 368 }; // Duration will not be displayed for these status effects
 
             // Custom Styling

@@ -5,6 +5,7 @@ using XIVSlothComboX.Core;
 using XIVSlothComboX.CustomComboNS;
 using XIVSlothComboX.Data;
 using XIVSlothComboX.Extensions;
+using Status = Dalamud.Game.ClientState.Statuses.IStatus;
 using static XIVSlothComboX.Combos.JobHelpers.NIN;
 
 namespace XIVSlothComboX.Combos.PvE
@@ -544,7 +545,7 @@ namespace XIVSlothComboX.Combos.PvE
                             return OriginalHook(Bhavacakra);
                         }
 
-                        if (IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_Kassatsu) && IsOffCooldown(Kassatsu) && Kassatsu.LevelChecked() && ((IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_Ninjitsus_Doton) && (dotonBuff != null || GetTargetHPPercent() < dotonThreshold)) || IsNotEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_Ninjitsus_Doton)))
+                        if (IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_Kassatsu) && IsOffCooldown(Kassatsu) && Kassatsu.LevelChecked() && ((IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_Ninjitsus_Doton) && (dotonBuff is not null || GetTargetHPPercent() < dotonThreshold)) || IsNotEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_Ninjitsus_Doton)))
                             return OriginalHook(Kassatsu);
 
                         if (IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_Meisui) && HasEffect(Buffs.ShadowWalker) && gauge.Ninki <= 50 && IsOffCooldown(Meisui) && Meisui.LevelChecked())
@@ -579,7 +580,7 @@ namespace XIVSlothComboX.Combos.PvE
                         if (IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_Ninjitsus_Doton) && (dotonBuff?.RemainingTime <= dotonTimer || dotonBuff is null) && GetTargetHPPercent() >= dotonThreshold && chargeCheck && !(WasLastAction(Doton) || WasLastAction(TCJDoton) || dotonBuff is not null) && mudraState.CastDoton(ref actionID))
                             return actionID;
 
-                        if (IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_Ninjitsus_Katon) && chargeCheck && ((IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_Ninjitsus_Doton) && (dotonBuff != null || GetTargetHPPercent() < dotonThreshold)) || IsNotEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_Ninjitsus_Doton)) && mudraState.CastKaton(ref actionID))
+                        if (IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_Ninjitsus_Katon) && chargeCheck && ((IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_Ninjitsus_Doton) && (dotonBuff is not null || GetTargetHPPercent() < dotonThreshold)) || IsNotEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_Ninjitsus_Doton)) && mudraState.CastKaton(ref actionID))
                             return actionID;
                     }
 

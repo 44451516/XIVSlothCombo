@@ -1,28 +1,143 @@
 {
   "runtimeTarget": {
-    "name": ".NETCoreApp,Version=v9.0",
+    "name": ".NETCoreApp,Version=v10.0",
     "signature": ""
   },
   "compilationOptions": {},
   "targets": {
-    ".NETCoreApp,Version=v9.0": {
+    ".NETCoreApp,Version=v10.0": {
       "XIVSlothComboX/3.3.1.9": {
         "dependencies": {
-          "DalamudPackager": "11.0.0",
-          "ECommons": "2.2.0.2",
-          "ILRepack": "2.0.18"
+          "ECommons": "3.0.1.15"
         },
         "runtime": {
           "XIVSlothComboX.dll": {}
         }
       },
-      "DalamudPackager/11.0.0": {},
-      "ILRepack/2.0.18": {},
-      "ECommons/2.2.0.2": {
+      "ECommons/3.0.1.15": {
         "runtime": {
           "ECommons.dll": {
             "assemblyVersion": "3.0.1.15",
             "fileVersion": "3.0.1.15"
+          }
+        },
+        "resources": {
+          "cs/StreamJsonRpc.resources.dll": {
+            "locale": "cs"
+          },
+          "de/StreamJsonRpc.resources.dll": {
+            "locale": "de"
+          },
+          "es/StreamJsonRpc.resources.dll": {
+            "locale": "es"
+          },
+          "fr/StreamJsonRpc.resources.dll": {
+            "locale": "fr"
+          },
+          "it/StreamJsonRpc.resources.dll": {
+            "locale": "it"
+          },
+          "ja/StreamJsonRpc.resources.dll": {
+            "locale": "ja"
+          },
+          "ko/StreamJsonRpc.resources.dll": {
+            "locale": "ko"
+          },
+          "pl/StreamJsonRpc.resources.dll": {
+            "locale": "pl"
+          },
+          "pt-BR/StreamJsonRpc.resources.dll": {
+            "locale": "pt-BR"
+          },
+          "ru/StreamJsonRpc.resources.dll": {
+            "locale": "ru"
+          },
+          "tr/StreamJsonRpc.resources.dll": {
+            "locale": "tr"
+          },
+          "zh-Hans/StreamJsonRpc.resources.dll": {
+            "locale": "zh-Hans"
+          },
+          "zh-Hant/StreamJsonRpc.resources.dll": {
+            "locale": "zh-Hant"
+          },
+          "cs/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "cs"
+          },
+          "de/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "de"
+          },
+          "es/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "es"
+          },
+          "fr/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "fr"
+          },
+          "it/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "it"
+          },
+          "ja/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "ja"
+          },
+          "ko/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "ko"
+          },
+          "pl/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "pl"
+          },
+          "pt-BR/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "pt-BR"
+          },
+          "ru/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "ru"
+          },
+          "tr/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "tr"
+          },
+          "zh-Hans/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "zh-Hans"
+          },
+          "zh-Hant/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "zh-Hant"
+          },
+          "cs/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "cs"
+          },
+          "de/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "de"
+          },
+          "es/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "es"
+          },
+          "fr/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "fr"
+          },
+          "it/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "it"
+          },
+          "ja/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "ja"
+          },
+          "ko/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "ko"
+          },
+          "pl/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "pl"
+          },
+          "pt-BR/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "pt-BR"
+          },
+          "ru/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "ru"
+          },
+          "tr/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "tr"
+          },
+          "zh-Hans/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "zh-Hans"
+          },
+          "zh-Hant/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "zh-Hant"
           }
         }
       }
@@ -34,21 +149,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "DalamudPackager/11.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-bjT7XUlhIJSmsE/O76b7weUX+evvGQctbQB8aKXt94o+oPWxHpCepxAGMs7Thow3AzCyqWs7cOpp9/2wcgRRQA==",
-      "path": "dalamudpackager/11.0.0",
-      "hashPath": "dalamudpackager.11.0.0.nupkg.sha512"
-    },
-    "ILRepack/2.0.18": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-sR5Aj3JLDbA8JwESfWYfigSz5k1oNSHPN434W1LX8sboWJYEOSQP/KkvZGmJKPgajzSUKkl2jDar3LPZiMFU4Q==",
-      "path": "ilrepack/2.0.18",
-      "hashPath": "ilrepack.2.0.18.nupkg.sha512"
-    },
-    "ECommons/2.2.0.2": {
+    "ECommons/3.0.1.15": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

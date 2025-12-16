@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using Dalamud.Game.ClientState.Objects;
 using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Plugin.Services;
 using ECommons;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
@@ -304,7 +304,7 @@ namespace XIVSlothComboX.CustomComboNS.Functions
                     o = Service.TargetManager.Target.TargetObject;
                     break;
                 case TargetType.Self:
-                    o = Service.ClientState.LocalPlayer;
+                    o = Service.ObjectTable.LocalPlayer;
                     break;
                 case TargetType.LastTarget:
                     return PartyTargetingService.GetGameObjectFromPronounID(1006);
@@ -576,6 +576,6 @@ namespace XIVSlothComboX.CustomComboNS.Functions
 
         // internal unsafe static bool OutOfRange(uint actionID, IGameObject target) => ActionWatching.OutOfRange(actionID, (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)Service.ClientState.LocalPlayer.Address, (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)target.Address);
 
-        internal unsafe static bool OutOfRange(uint actionID, IGameObject target) => ActionWatching.OutOfRange(actionID, Service.ClientState.LocalPlayer!, target);
+        internal unsafe static bool OutOfRange(uint actionID, IGameObject target) => ActionWatching.OutOfRange(actionID, Service.ObjectTable.LocalPlayer!, target);
     }
 }

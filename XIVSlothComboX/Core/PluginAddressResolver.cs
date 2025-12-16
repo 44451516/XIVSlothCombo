@@ -1,5 +1,5 @@
 using System;
-using Dalamud.Game;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using XIVSlothComboX.Services;
 

@@ -3551,13 +3551,13 @@ namespace XIVSlothComboX.Window.Functions
 
             #region PvP VALUES
 
-            IPlayerCharacter? pc = Service.ClientState.LocalPlayer;
+            IPlayerCharacter? pc = Service.ObjectTable.LocalPlayer;
 
             if (preset == CustomComboPreset.PvP_EmergencyHeals)
             {
                 if (pc != null)
                 {
-                    uint maxHP = Service.ClientState.LocalPlayer?.MaxHp <= 15000 ? 0 : Service.ClientState.LocalPlayer.MaxHp - 15000;
+                    uint maxHP = Service.ObjectTable.LocalPlayer?.MaxHp <= 15000 ? 0 : Service.ObjectTable.LocalPlayer.MaxHp - 15000;
 
                     if (maxHP > 0)
                     {
