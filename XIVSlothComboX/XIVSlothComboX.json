@@ -2,13 +2,13 @@
     "Author": "XIVSlothComboX",
     "Name": "XIVSlothComboX",
     "InternalName": "XIVSlothComboX",
-    "DalamudApiLevel": 13,
+    "DalamudApiLevel": 14,
     "Punchline": "Condenses combos and mutually exclusive abilities onto a single button - and then some.",
     "Description": "Condenses combos and mutually exclusive abilities onto a single button - and then some.",
     "RepoUrl": "https://github.com/44451516/XIVSlothCombo",
     "IconUrl": "https://i.imgur.com/iEcxM81.png",
     "ImageUrls": [ "https://i.imgur.com/iEcxM81.png" ],
-    "Changelog": "API11",
+    "Changelog": "API14",
     "Tags": [
         "combo"
     ]

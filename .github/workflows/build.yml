@@ -19,6 +19,8 @@ env:
 jobs:
   build:
     runs-on: windows-latest
+    outputs:
+      timestamp: ${{ steps.timestamp.outputs.timestamp }}
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -39,7 +41,11 @@ jobs:
     - name: Set Timestamp
       id: timestamp
       run: |
-        echo "::set-output name=timestamp::$(date +'%Y-%m-%d-%H-%M-%S')"
+        $timestamp = Get-Date -Format "yyyy-MM-dd-HH-mm-ss"
+        echo "timestamp=$timestamp" >> $env:GITHUB_OUTPUT
+    - name: Create latest.zip
+      run: |
+        Compress-Archive -Path "${{ env.RELEASE_DIR }}\*" -DestinationPath "${{ env.RELEASE_DIR }}\latest.zip" -Force
     - uses: actions/upload-artifact@v4
       with:
         name: "XIVSlothComboX-7.1-${{ steps.timestamp.outputs.timestamp }}"
@@ -57,7 +63,7 @@ jobs:
         token: ${{ secrets.XIVCOMBO_TOKEN }}
     - uses: actions/download-artifact@v4
       with:
-        name: "XIVSlothComboX-${{ steps.timestamp.outputs.timestamp }}"
+        name: "XIVSlothComboX-7.1-${{ needs.build.outputs.timestamp }}"
         path: plugins/${{ env.INTERNAL_NAME }}
     - uses: EndBug/add-and-commit@v7
       with:

@@ -6,19 +6,19 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v10.0": {
-      "XIVSlothComboX/3.3.1.9": {
+      "XIVSlothComboX/3.3.2.0": {
         "dependencies": {
-          "ECommons": "3.0.1.15"
+          "ECommons": "3.0.1.16"
         },
         "runtime": {
           "XIVSlothComboX.dll": {}
         }
       },
-      "ECommons/3.0.1.15": {
+      "ECommons/3.0.1.16": {
         "runtime": {
           "ECommons.dll": {
-            "assemblyVersion": "3.0.1.15",
-            "fileVersion": "3.0.1.15"
+            "assemblyVersion": "3.0.1.16",
+            "fileVersion": "3.0.1.16"
           }
         },
         "resources": {
@@ -144,12 +144,12 @@
     }
   },
   "libraries": {
-    "XIVSlothComboX/3.3.1.9": {
+    "XIVSlothComboX/3.3.2.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "ECommons/3.0.1.15": {
+    "ECommons/3.0.1.16": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
