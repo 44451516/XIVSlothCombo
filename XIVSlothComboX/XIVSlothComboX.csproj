@@ -13,7 +13,6 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-<!--		<DalamudLibPath>F:\下载\latestAPI11\</DalamudLibPath>-->
 		<DalamudLibPath>$(appdata)\XIVLauncherCN\addon\Hooks\dev\</DalamudLibPath>
 <!--		<DalamudLibPath>E:\Games\FFVIX\Dalamud6.0\XIVLauncher\addon\Hooks\10.0.0.16\</DalamudLibPath>-->
 		<AssemblyName>XIVSlothComboX</AssemblyName>
@@ -77,7 +76,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />
+<!--		<ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />-->
 	</ItemGroup>
 	
 	<ItemGroup>
@@ -128,10 +127,10 @@
 			<Private>false</Private>
 		</Reference>		
 		
-<!--		<Reference Include="ECommons">-->
-<!--			<HintPath>F:\下载\ECommons-20241116\ECommons-master\ECommons\bin\Release\ECommons.dll</HintPath>-->
-<!--			<Private>false</Private>-->
-<!--		</Reference>-->
+		<Reference Include="ECommons">
+			<HintPath>C:\UGit\ffxiv\ECommons\ECommons\bin\Debug\ECommons.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
 
 	</ItemGroup>
 	

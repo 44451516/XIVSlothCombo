@@ -9,7 +9,7 @@ using Lumina.Excel.Sheets;
 
 namespace XIVSlothComboX.自动类
 {
-    #pragma warning disable CS8604,CS8618,CS0649
+#pragma warning disable CS8604,CS8618,CS0649
     internal unsafe class ConsumableChecker
     {
         internal static (uint Id, string Name)[] Food;
@@ -21,12 +21,20 @@ namespace XIVSlothComboX.自动类
 
         internal static void Init()
         {
-            itemContextMenuAgent = Framework.Instance()->UIModule->GetAgentModule()->GetAgentByInternalId(AgentId.InventoryContext);
-            Usables = Svc.Data.GetExcelSheet<Item>().Where(i => i.ItemAction.RowId > 0).ToDictionary(i => i.RowId, i => i.Name.ToString().ToLower()).Concat(Svc.Data.GetExcelSheet<EventItem>().Where(i => i.Action.RowId > 0).ToDictionary(i => i.RowId, i => i.Name.ToString().ToLower())).ToDictionary(kv => kv.Key, kv => kv.Value);
+            itemContextMenuAgent =
+                Framework.Instance()->UIModule->GetAgentModule()->GetAgentByInternalId(AgentId.InventoryContext);
+            Usables = Svc.Data.GetExcelSheet<Item>().Where(i => i.ItemAction.RowId > 0)
+                .ToDictionary(i => i.RowId, i => i.Name.ToString().ToLower())
+                .Concat(Svc.Data.GetExcelSheet<EventItem>().Where(i => i.Action.RowId > 0)
+                    .ToDictionary(i => i.RowId, i => i.Name.ToString().ToLower()))
+                .ToDictionary(kv => kv.Key, kv => kv.Value);
             Food = Svc.Data.GetExcelSheet<Item>().Where(IsFood).Select(x => (x.RowId, x.Name.ToString())).ToArray();
-            Pots = Svc.Data.GetExcelSheet<Item>().Where(IsCraftersPot).Select(x => (x.RowId, x.Name.ToString())).ToArray();
-            Manuals = Svc.Data.GetExcelSheet<Item>().Where(IsManual).Select(x => (x.RowId, x.Name.ToString())).ToArray();
-            SquadronManuals = Svc.Data.GetExcelSheet<Item>().Where(IsSquadronManual).Select(x => (x.RowId, x.Name.ToString())).ToArray();
+            Pots = Svc.Data.GetExcelSheet<Item>().Where(IsCraftersPot).Select(x => (x.RowId, x.Name.ToString()))
+                .ToArray();
+            Manuals = Svc.Data.GetExcelSheet<Item>().Where(IsManual).Select(x => (x.RowId, x.Name.ToString()))
+                .ToArray();
+            SquadronManuals = Svc.Data.GetExcelSheet<Item>().Where(IsSquadronManual)
+                .Select(x => (x.RowId, x.Name.ToString())).ToArray();
         }
 
         internal static (uint Id, string Name)[] GetFood(bool inventoryOnly = false, bool hq = false)
@@ -56,7 +64,8 @@ namespace XIVSlothComboX.自动类
         internal static (uint Id, string Name)[] GetSquadronManuals(bool inventoryOnly = false, bool hq = false)
         {
             if (inventoryOnly)
-                return SquadronManuals.Where(x => InventoryManager.Instance()->GetInventoryItemCount(x.Id, hq) > 0).ToArray();
+                return SquadronManuals.Where(x => InventoryManager.Instance()->GetInventoryItemCount(x.Id, hq) > 0)
+                    .ToArray();
 
             return SquadronManuals;
         }
@@ -64,15 +73,16 @@ namespace XIVSlothComboX.自动类
         internal static ItemFood? GetItemConsumableProperties(Item item, bool hq)
         {
             var action = item.ItemAction.Value;
-            
-            var actionParams = hq ? action.DataHQ : action.Data; // [0] = status, [1] = extra == ItemFood row, [2] = duration
+
+            var actionParams =
+                hq ? action.DataHQ : action.Data; // [0] = status, [1] = extra == ItemFood row, [2] = duration
             if (actionParams[0] is not 48 and not 49)
                 return null; // not 'well fed' or 'medicated'
 
             return Svc.Data.GetExcelSheet<ItemFood>()?.GetRow(actionParams[1]);
         }
 
-        
+
         internal static bool IsFood(Item item)
         {
             if (item.ItemUICategory.RowId == 46)
@@ -80,9 +90,10 @@ namespace XIVSlothComboX.自动类
                 var consumable = GetItemConsumableProperties(item, false);
                 return consumable != null; // cp/craftsmanship/control
             }
-            return false;
 
+            return false;
         }
+
         internal static bool IsCraftersFood(Item item)
         {
             if (item.ItemUICategory.RowId == 45 || item.ItemUICategory.RowId == 46)
@@ -90,8 +101,8 @@ namespace XIVSlothComboX.自动类
                 var consumable = GetItemConsumableProperties(item, false);
                 return consumable != null; // cp/craftsmanship/control
             }
-            return false;
 
+            return false;
         }
 
         internal static bool IsCraftersPot(Item item)
@@ -100,8 +111,11 @@ namespace XIVSlothComboX.自动类
                 return false; // not a 'medicine'
 
             var consumable = GetItemConsumableProperties(item, false);
-            
-            return consumable != null && consumable.Value.Params.Any(p => p.BaseParam.RowId is 11 or 70 or 71 or 69 or 68); // cp/craftsmanship/control/increased spiritbond/reduced durability loss
+
+            return consumable != null &&
+                   consumable.Value.Params.Any(p =>
+                       p.BaseParam.RowId is 11 or 70 or 71 or 69
+                           or 68); // cp/craftsmanship/control/increased spiritbond/reduced durability loss
         }
 
         internal static bool IsManual(Item item)
@@ -110,7 +124,7 @@ namespace XIVSlothComboX.自动类
                 return false; // not 'other'
 
             var action = item.ItemAction.Value;
-            return  action.Type == 816 && action.Data[0] is 300 or 301 or 1751 or 5329;
+            return action.RowOffset == 816 && action.Data[0] is 300 or 301 or 1751 or 5329;
         }
 
         internal static bool IsSquadronManual(Item item)
@@ -119,9 +133,8 @@ namespace XIVSlothComboX.自动类
                 return false; // not 'other'
 
             var action = item.ItemAction.Value;
-            return  action.Type == 816 && action.Data[0] is 2291 or 2292 or 2293 or 2294;
+            return action.RowOffset == 816 && action.Data[0] is 2291 or 2292 or 2293 or 2294;
         }
-
 
 
         internal static bool UseItem(uint id, bool hq = false)
@@ -137,6 +150,7 @@ namespace XIVSlothComboX.自动类
                     return UseItem2(id);
                 }
             }
+
             return false;
         }
 
