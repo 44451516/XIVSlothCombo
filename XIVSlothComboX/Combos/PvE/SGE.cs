@@ -399,7 +399,7 @@ namespace XIVSlothComboX.Combos.PvE
 
                                 if (dotDebuff <= refreshtimer && GetTargetHPPercent() > Config.SGE_ST_DPS_EDosisHPPer)
                                 {
-                                    if (!All.Dot排除.Contains(CurrentTarget.DataId))
+                                    if (!All.Dot排除.Contains(CurrentTarget.BaseId))
                                     {
                                         return Eukrasia;
                                     }

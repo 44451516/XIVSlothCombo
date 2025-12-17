@@ -68,7 +68,8 @@
 
 	<ItemGroup>
 <!--		<PackageReference Include="DalamudPackager" Version="14.0.0" />-->
-		<PackageReference Include="DalamudPackager" Version="13.0.0" />
+		<PackageReference Include="DalamudPackager" Version="14.0.0" />
+        <PackageReference Include="ECommons" Version="3.1.0.1" />
 		<PackageReference Include="ILRepack" Version="2.0.44">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -76,6 +77,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+        
 <!--		<ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />-->
 	</ItemGroup>
 	
@@ -126,13 +128,20 @@
 			<HintPath>$(DalamudLibPath)InteropGenerator.Runtime.dll</HintPath>
 			<Private>false</Private>
 		</Reference>		
-		
-		<Reference Include="ECommons">
-			<HintPath>C:\UGit\ffxiv\ECommons\ECommons\bin\Debug\ECommons.dll</HintPath>
-			<Private>false</Private>
-		</Reference>
+        
 
 	</ItemGroup>
 	
+	<Target Name="CreateLatestZip" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+		<PropertyGroup>
+			<ReleaseDir>$(MSBuildProjectDirectory)\..\release</ReleaseDir>
+			<PluginDir>$(ReleaseDir)\XIVSlothComboX</PluginDir>
+			<ZipFile>$(PluginDir)\latest.zip</ZipFile>
+		</PropertyGroup>
+		<MakeDir Directories="$(PluginDir)" Condition="!Exists('$(PluginDir)')" />
+		<Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;$releaseDir = '$(ReleaseDir)'; $zipFile = '$(ZipFile)'; $tempDir = Join-Path $env:TEMP &quot;XIVSlothComboX_pack_$(Get-Date -Format 'yyyyMMddHHmmss')&quot;; try { New-Item -ItemType Directory -Path $tempDir -Force | Out-Null; Get-ChildItem -Path $releaseDir -Exclude 'XIVSlothComboX' | ForEach-Object { $destPath = Join-Path $tempDir $_.Name; if ($_.PSIsContainer) { Copy-Item -Path $_.FullName -Destination $destPath -Recurse -Force } else { Copy-Item -Path $_.FullName -Destination $destPath -Force } }; if (Test-Path $zipFile) { Remove-Item $zipFile -Force }; Compress-Archive -Path &quot;$tempDir\*&quot; -DestinationPath $zipFile -Force } finally { if (Test-Path $tempDir) { Remove-Item -Path $tempDir -Recurse -Force } }&quot;" 
+			  Condition="Exists('$(ReleaseDir)\XIVSlothComboX.dll')" 
+			  IgnoreExitCode="true" />
+	</Target>
 
 </Project>

@@ -294,7 +294,7 @@ namespace XIVSlothComboX.Combos.PvE
                             float refreshtimer = Config.WHM_ST_MainCombo_DoT_Adv ? Config.WHM_ST_MainCombo_DoT_Threshold : 3;
                             if (GetDebuffRemainingTime(dotDebuffID) <= refreshtimer && GetTargetHPPercent() > Config.WHM_STDPS_MainCombo_DoT)
                             {
-                                if (!All.Dot排除.Contains(CurrentTarget.DataId))
+                                if (!All.Dot排除.Contains(CurrentTarget.BaseId))
                                 {
                                     return OriginalHook(Aero);
                                 }

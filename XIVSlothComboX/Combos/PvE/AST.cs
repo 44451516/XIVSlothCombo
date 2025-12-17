@@ -355,7 +355,7 @@ namespace XIVSlothComboX.Combos.PvE
                             {
                                 if (GetTargetHPPercent() > Config.AST_DPS_CombustOption)
                                 {
-                                    if (!All.Dot排除.Contains(CurrentTarget.DataId))
+                                    if (!All.Dot排除.Contains(CurrentTarget.BaseId))
                                     {
                                         return OriginalHook(Combust);
                                     }

@@ -436,7 +436,7 @@ namespace XIVSlothComboX.Combos.PvE
                             float refreshtimer = Config.SCH_ST_DPS_Bio_Adv ? Config.SCH_ST_DPS_Bio_Threshold : 3;
                             if (GetDebuffRemainingTime(dotDebuffID) <= refreshtimer && GetTargetHPPercent() > Config.SCH_ST_DPS_BioOption)
                             {
-                                if (!All.Dot排除.Contains(CurrentTarget.DataId))
+                                if (!All.Dot排除.Contains(CurrentTarget.BaseId))
                                 {
                                     return OriginalHook(Bio); //Use appropriate DoT Action
                                 }

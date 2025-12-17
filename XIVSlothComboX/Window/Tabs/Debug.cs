@@ -196,7 +196,7 @@ namespace XIVSlothComboX.Window.Tabs
                 ImGui.Separator();
                 CustomStyleText("ObjectId:", LocalPlayer.TargetObject?.GameObjectId);
                 CustomStyleText("ObjectKind:", LocalPlayer.TargetObject?.ObjectKind);
-                CustomStyleText("DataId:", LocalPlayer.TargetObject?.DataId);
+                CustomStyleText("DataId:", LocalPlayer.TargetObject?.BaseId);
                 CustomStyleText("Is BattleChara:", LocalPlayer.TargetObject is IBattleChara);
                 CustomStyleText("Is PlayerCharacter:", LocalPlayer.TargetObject is IPlayerCharacter);
                 CustomStyleText("Distance:", $"{Math.Round(CustomComboFunctions.GetTargetDistance(), 2)}y");

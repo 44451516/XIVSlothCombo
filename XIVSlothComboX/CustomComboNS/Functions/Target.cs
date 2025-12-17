@@ -253,12 +253,12 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             if (!HasBattleTarget()) return false;
             if (TargetHasEffectAny(3808)) 
                 return false; // Directional Disregard Effect (Patch 7.01)
-            if (!NPCPositionals.ContainsKey(CurrentTarget.DataId))
+            if (!NPCPositionals.ContainsKey(CurrentTarget.BaseId))
             {
-                if (Svc.Data.GetExcelSheet<BNpcBase>().TryGetFirst(x => x.RowId == CurrentTarget.DataId, out var bnpc))
-                    NPCPositionals[CurrentTarget.DataId] = bnpc.IsOmnidirectional;
+                if (Svc.Data.GetExcelSheet<BNpcBase>().TryGetFirst(x => x.RowId == CurrentTarget.BaseId, out var bnpc))
+                    NPCPositionals[CurrentTarget.BaseId] = bnpc.IsOmnidirectional;
             }
-            return !NPCPositionals[CurrentTarget.DataId];
+            return !NPCPositionals[CurrentTarget.BaseId];
         }
 
         /// <summary> Attempts to target the given party member </summary>
