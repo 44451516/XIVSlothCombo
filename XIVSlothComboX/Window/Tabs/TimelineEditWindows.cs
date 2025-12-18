@@ -180,7 +180,7 @@ namespace XIVSlothComboX.Window.Tabs
                         }
 
 
-                        IDalamudTextureWrap? textureWrap = Service.IconManager.GetActionIcon(action.Value);
+                        IDalamudTextureWrap? textureWrap = Service.IconManager.GetActionIcon(action!.Value);
 
 
                         switch (action.Value.ActionCategory.Value.RowId)
@@ -301,7 +301,6 @@ namespace XIVSlothComboX.Window.Tabs
                     CustomActionType = CustomType.序列;
                     addIndex = -1;
                     editIndex = -1;
-                    _AddCustomAction = null;
                     _AddCustomAction = new CustomAction();
                     ImGui.OpenPopup(前插窗口);
                 }
@@ -341,7 +340,6 @@ namespace XIVSlothComboX.Window.Tabs
                     CustomActionType = CustomType.序列;
                     addIndex = -1;
                     editIndex = -1;
-                    _AddCustomAction = null;
                     _AddCustomAction = new CustomAction();
                     ImGui.OpenPopup(后插窗口);
                 }

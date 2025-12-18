@@ -84,10 +84,10 @@ namespace XIVSlothComboX.自动类
             }
             else
             {
-                var actionParams = action.Data; // Collection<RowRef>
-                if (actionParams[0].RowId is not 48 and not 49)
+                var actionParams = action.Data; // Collection<ushort>
+                if (actionParams[0] is not 48 and not 49)
                     return null; // not 'well fed' or 'medicated'
-                return Svc.Data.GetExcelSheet<ItemFood>()?.GetRow(actionParams[1].RowId);
+                return Svc.Data.GetExcelSheet<ItemFood>()?.GetRow(actionParams[1]);
             }
         }
 
@@ -133,7 +133,7 @@ namespace XIVSlothComboX.自动类
                 return false; // not 'other'
 
             var action = item.ItemAction.Value;
-            return action.RowOffset == 816 && action.Data[0].RowId is 300 or 301 or 1751 or 5329;
+            return action.RowOffset == 816 && action.Data[0] is 300 or 301 or 1751 or 5329;
         }
 
         internal static bool IsSquadronManual(Item item)
@@ -142,7 +142,7 @@ namespace XIVSlothComboX.自动类
                 return false; // not 'other'
 
             var action = item.ItemAction.Value;
-            return action.RowOffset == 816 && action.Data[0].RowId is 2291 or 2292 or 2293 or 2294;
+            return action.RowOffset == 816 && action.Data[0] is 2291 or 2292 or 2293 or 2294;
         }
 
 
