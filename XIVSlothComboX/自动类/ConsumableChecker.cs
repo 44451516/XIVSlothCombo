@@ -133,7 +133,7 @@ namespace XIVSlothComboX.自动类
                 return false; // not 'other'
 
             var action = item.ItemAction.Value;
-            return action.RowOffset == 816 && action.Data[0] is 300 or 301 or 1751 or 5329;
+            return action.RowId == 816 && action.Data[0] is 300 or 301 or 1751 or 5329;
         }
 
         internal static bool IsSquadronManual(Item item)
@@ -142,7 +142,7 @@ namespace XIVSlothComboX.自动类
                 return false; // not 'other'
 
             var action = item.ItemAction.Value;
-            return action.RowOffset == 816 && action.Data[0] is 2291 or 2292 or 2293 or 2294;
+            return action.RowId == 816 && action.Data[0] is 2291 or 2292 or 2293 or 2294;
         }
 
 
