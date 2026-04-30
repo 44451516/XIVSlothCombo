@@ -15,7 +15,7 @@
 	<PropertyGroup>
 		<DalamudLibPath>$(appdata)\XIVLauncherCN\addon\Hooks\dev\</DalamudLibPath>
 <!--		<DalamudLibPath>E:\Games\FFVIX\Dalamud6.0\XIVLauncher\addon\Hooks\10.0.0.16\</DalamudLibPath>-->
-<!--        <DalamudLibPath>C:\Users\woodn\AppData\Roaming\XIVLauncherCN\addon\Hooks\dev\</DalamudLibPath>-->
+<!--        <DalamudLibPath>C:\Users\worldwonderer\AppData\Roaming\XIVLauncherCN\addon\Hooks\dev\</DalamudLibPath>-->
 		<AssemblyName>XIVSlothComboX</AssemblyName>
 		<RootNamespace>XIVSlothComboX</RootNamespace>
 		<PackageId>XIVSlothComboX</PackageId>
