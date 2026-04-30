@@ -1,6 +1,17 @@
-using FFXIVClientStructs.FFXIV.Client.Game;
+
+using System;
+using FFXIVClientStructs.FFXIV.Client.Game.Event;
+using XIVSlothComboX.Services;
 
 namespace XIVSlothComboX.Core;
+
+internal sealed class DutySchedule
+{
+    public int NowPoint { get; set; }
+    public int CountPoint { get; set; }
+    public string NowPointName { get; set; } = string.Empty;
+    public object? Objective { get; set; }
+}
 
 internal class HookAddress
 {
@@ -30,4 +41,36 @@ internal class HookAddress
     public static nint UseActionLocation = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Addresses.UseActionLocation.Value;
     
     public const string GetAdjustedActionId = "E8 ?? ?? ?? ?? 89 03 8B 03";
+    
+    public unsafe DutySchedule? GetSchedule()
+    {
+        DutySchedule result = new();
+        var contentDirector = EventFramework.Instance()->GetContentDirector();
+        if (contentDirector == null)
+            return null;
+        try
+        {
+            var enableIndex = 0;
+            contentDirector->DirectorTodos.ForEach(d =>
+            {
+                if (d.Complete)
+                    return;
+                if (d.Type == TodoType.FractionBar && d.CurrentCount != d.NeededCount)
+                {
+                    result.NowPoint = enableIndex + 1;
+                    result.Objective = d;
+                    result.NowPointName = d.Text.ToString();
+                }
+                enableIndex++;
+            });
+            result.CountPoint = enableIndex;
+        }
+        catch (Exception e)
+        {
+            Service.PluginLog.Error(e, "Failed to get duty schedule.");
+            return null;
+        }
+        return result;
+    }
+
 }

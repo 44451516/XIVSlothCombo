@@ -4,7 +4,7 @@
 	<PropertyGroup>
 		<Authors>Team Sloth</Authors>
 		<Company>-</Company>
-		<Version>3.3.2.3</Version>
+		<Version>3.3.2.4</Version>
 		<!-- This is the version that will be used when pushing to the repo.-->
 		<Description>XIVCombo for lazy players</Description>
 		<Copyright>Copyleft attick 2021 thanks attick UwU</Copyright>
@@ -15,6 +15,7 @@
 	<PropertyGroup>
 		<DalamudLibPath>$(appdata)\XIVLauncherCN\addon\Hooks\dev\</DalamudLibPath>
 <!--		<DalamudLibPath>E:\Games\FFVIX\Dalamud6.0\XIVLauncher\addon\Hooks\10.0.0.16\</DalamudLibPath>-->
+<!--        <DalamudLibPath>C:\Users\woodn\AppData\Roaming\XIVLauncherCN\addon\Hooks\dev\</DalamudLibPath>-->
 		<AssemblyName>XIVSlothComboX</AssemblyName>
 		<RootNamespace>XIVSlothComboX</RootNamespace>
 		<PackageId>XIVSlothComboX</PackageId>
@@ -68,8 +69,8 @@
 
 	<ItemGroup>
 <!--		<PackageReference Include="DalamudPackager" Version="14.0.0" />-->
-		<PackageReference Include="DalamudPackager" Version="14.0.0" />
-        <PackageReference Include="ECommons" Version="3.1.0.1" />
+		<PackageReference Include="DalamudPackager" Version="15.0.0" />
+        <PackageReference Include="ECommons" Version="3.2.0.6" />
 		<PackageReference Include="ILRepack" Version="2.0.44">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
