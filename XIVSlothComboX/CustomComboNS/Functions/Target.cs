@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -176,11 +176,11 @@ namespace XIVSlothComboX.CustomComboNS.Functions
             }
 
             //Humans and Trusts
-            if (OurTarget.ObjectKind is ObjectKind.Player)
+            if (OurTarget.ObjectKind is ObjectKind.Pc)
                 return true;
 
             //AI
-            if (OurTarget is IBattleNpc) return (OurTarget as IBattleNpc).BattleNpcKind is not BattleNpcSubKind.Enemy and not (BattleNpcSubKind)1;
+            if (OurTarget is IBattleNpc) return (OurTarget as IBattleNpc).BattleNpcKind is not BattleNpcSubKind.Combatant and not (BattleNpcSubKind)1;
 
             return false;
         }

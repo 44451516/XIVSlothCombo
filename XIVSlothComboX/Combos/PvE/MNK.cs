@@ -473,7 +473,7 @@ namespace XIVSlothComboX.Combos.PvE
         {
             Status? pbStacks = FindEffectAny(Buffs.PerfectBalance);
             bool lunarNadi = Gauge.Nadi == Nadi.Lunar;
-            bool nadiNone = Gauge.Nadi == Nadi.None;
+            bool nadiNone = Gauge.Nadi == (Nadi)0;
 
             if (actionID is ArmOfTheDestroyer or ShadowOfTheDestroyer)
             {
@@ -590,7 +590,7 @@ namespace XIVSlothComboX.Combos.PvE
         {
             Status? pbStacks = FindEffectAny(Buffs.PerfectBalance);
             bool lunarNadi = Gauge.Nadi == Nadi.Lunar;
-            bool nadiNone = Gauge.Nadi == Nadi.None;
+            bool nadiNone = Gauge.Nadi == (Nadi)0;
 
             if (actionID is ArmOfTheDestroyer or ShadowOfTheDestroyer)
             {

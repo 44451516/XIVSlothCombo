@@ -575,7 +575,7 @@ namespace XIVSlothComboX.Data
             Service.ClientState.TerritoryChanged -= TerritoryChangedEvent;
         }
 
-        private static void TerritoryChangedEvent(ushort obj)
+        private static void TerritoryChangedEvent(uint obj)
         {
             TimelineList.Clear();
             CustomList.Clear();

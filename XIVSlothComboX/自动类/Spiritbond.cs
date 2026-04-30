@@ -1,4 +1,4 @@
-﻿using ECommons.DalamudServices;
+using ECommons.DalamudServices;
 using ECommons.UIHelpers.AddonMasterImplementations;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -180,12 +180,12 @@ namespace Artisan.RawInformation
                         var values = stackalloc AtkValue[2];
                         values[0] = new()
                         {
-                            Type = FFXIVClientStructs.FFXIV.Component.GUI.ValueType.Int,
+                            Type = FFXIVClientStructs.FFXIV.Component.GUI.AtkValueType.Int,
                             Int = 2,
                         };
                         values[1] = new()
                         {
-                            Type = FFXIVClientStructs.FFXIV.Component.GUI.ValueType.UInt,
+                            Type = FFXIVClientStructs.FFXIV.Component.GUI.AtkValueType.UInt,
                             UInt = 0,
                         };
 

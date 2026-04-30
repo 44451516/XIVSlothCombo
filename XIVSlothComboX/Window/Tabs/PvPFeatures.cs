@@ -55,7 +55,8 @@ namespace XIVSlothComboX.Window.Tabs
                         string header = string.IsNullOrEmpty(abbreviation) ? jobName : $"{jobName} - {abbreviation}";
                         var id = groupedPresets[jobName].First().Info.JobID;
                         IDalamudTextureWrap? icon = Icons.GetJobIcon(id);
-                        using (var disabled = ImRaii.Disabled(DisabledJobsPVP.Any(x => x == id)))
+                        var disabled = DisabledJobsPVP.Any(x => x == id);
+                        using (ImRaii.Disabled(disabled))
                         {
                             if (ImGui.Selectable($"###{header}", OpenJob == jobName, ImGuiSelectableFlags.None, icon == null ? new Vector2(0) : new Vector2(0, (icon.Size.Y / 2f).Scale())))
                             {

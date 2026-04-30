@@ -156,8 +156,8 @@ namespace XIVSlothComboX
             _TargetHelper = new();
             
             _WindowSystem = new();
-            _WindowSystem.AddWindow(_ConfigWindow);
-            _WindowSystem.AddWindow(_TargetHelper);
+            _WindowSystem.AddWindow((IWindow)_ConfigWindow);
+            _WindowSystem.AddWindow((IWindow)_TargetHelper);
 
             // Service.Interface.UiBuilder.OpenMainUi += OnOpenConfigUi;
             Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
@@ -194,12 +194,12 @@ namespace XIVSlothComboX
             
         }
 
-        private void OnTerritoryChanged(ushort obj)
+        private void OnTerritoryChanged(uint obj)
         {
             CustomComboFunctions.InitCustomTimeline();
         }
 
-        private void OnDutyRecommenced(object? sender, ushort e)
+        private void OnDutyRecommenced(Dalamud.Game.DutyState.IDutyStateEventArgs args)
         {
             CustomComboFunctions.InitCustomTimeline();
         }

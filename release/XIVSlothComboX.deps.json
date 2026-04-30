@@ -6,36 +6,36 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v10.0": {
-      "XIVSlothComboX/3.3.2.4": {
+      "XIVSlothComboX/3.3.2.5": {
         "dependencies": {
-          "ECommons": "3.1.0.1"
+          "ECommons": "3.2.0.6"
         },
         "runtime": {
           "XIVSlothComboX.dll": {}
         }
       },
-      "ECommons/3.1.0.1": {
+      "ECommons/3.2.0.6": {
         "runtime": {
           "lib/net10.0-windows7.0/ECommons.dll": {
-            "assemblyVersion": "3.1.0.1",
-            "fileVersion": "3.1.0.1"
+            "assemblyVersion": "3.2.0.6",
+            "fileVersion": "3.2.0.6"
           }
         }
       }
     }
   },
   "libraries": {
-    "XIVSlothComboX/3.3.2.4": {
+    "XIVSlothComboX/3.3.2.5": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "ECommons/3.1.0.1": {
+    "ECommons/3.2.0.6": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Z91kOvDEyLk3nDxLrA+Jl6+6vH8TUoaWjp3RkXrv5dVuDrWBCQp3qnYg/qOB241ZAwLGQIuHPn8KWwi3LltOyg==",
-      "path": "ecommons/3.1.0.1",
-      "hashPath": "ecommons.3.1.0.1.nupkg.sha512"
+      "sha512": "sha512-ZONTpNsOLTlX0OPhBU/mHK9EWqmxgc2ZPwZtmV0rucsNyARXjeNsaGC9bcumGPBVpICTQBqeg4V1iew3OdmGYQ==",
+      "path": "ecommons/3.2.0.6",
+      "hashPath": "ecommons.3.2.0.6.nupkg.sha512"
     }
   }
 }
