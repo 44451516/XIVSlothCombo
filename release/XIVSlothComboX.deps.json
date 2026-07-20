@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v10.0": {
-      "XIVSlothComboX/3.3.2.5": {
+      "XIVSlothComboX/3.3.2.6": {
         "dependencies": {
           "ECommons": "3.2.0.6"
         },
@@ -25,7 +25,7 @@
     }
   },
   "libraries": {
-    "XIVSlothComboX/3.3.2.5": {
+    "XIVSlothComboX/3.3.2.6": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

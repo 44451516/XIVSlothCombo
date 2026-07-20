@@ -4175,6 +4175,10 @@ namespace XIVSlothComboX.Combos
         WHM_ST_MainCombo_DoT = 19013,
 
         [ParentCombo(WHM_ST_MainCombo)]
+        [CustomComboInfo("绝妖星多目标 DoT", "绝妖星 P3 的 Exdeath 和 Chaos 之间自动维持天辉。", WHM.JobID, 12)]
+        WHM_ST_MainCombo_MultiTargetDoT = 19027,
+
+        [ParentCombo(WHM_ST_MainCombo)]
         [ConflictingCombos(WHM_ST_MainCombo_GlareIV)]
         [CustomComboInfo("闪飒", "闪飒加入循环 移动或者剩余时间不够的时候", WHM.JobID, 12)]
         WHM_ST_MainCombo_Glare4 = 19018,

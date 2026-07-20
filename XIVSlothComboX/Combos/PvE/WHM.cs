@@ -6,6 +6,7 @@ using XIVSlothComboX.Combos.PvE.Content;
 using XIVSlothComboX.CustomComboNS;
 using XIVSlothComboX.CustomComboNS.Functions;
 using XIVSlothComboX.Data;
+using XIVSlothComboX.Services;
 
 namespace XIVSlothComboX.Combos.PvE
 {
@@ -13,6 +14,10 @@ namespace XIVSlothComboX.Combos.PvE
     {
         public const byte ClassID = 6;
         public const byte JobID = 24;
+
+        private const uint DancingMadP3Territory = 1363;
+        private const uint DancingMadP3Exdeath = 6052;
+        private const uint DancingMadP3Chaos = 7691;
 
         public const uint
             // Heals
@@ -67,7 +72,9 @@ namespace XIVSlothComboX.Combos.PvE
                 DivineBenison = 1218,
                 Aquaveil = 2708,
                 SacredSight = 3879,
-                DivineGrace = 3881;
+                DivineGrace = 3881,
+                FatedHero = 4194,
+                EpicHero = 4192;
         }
 
         public static class Debuffs
@@ -210,6 +217,42 @@ namespace XIVSlothComboX.Combos.PvE
             internal static int Glare3Count => ActionWatching.CombatActions.Count(x => x == OriginalHook(Glare3));
             internal static int DiaCount => ActionWatching.CombatActions.Count(x => x == OriginalHook(Dia));
 
+            private static bool TrySwitchToP3MultiTarget(ushort dotDebuffID, float refreshTimer)
+            {
+                if (Service.ClientState.TerritoryType != DancingMadP3Territory
+                    || HasEffect(Buffs.FatedHero)
+                    || HasEffect(Buffs.EpicHero)
+                    || CurrentTarget is not IBattleNpc currentTarget)
+                    return false;
+
+                uint otherTargetNameId = currentTarget.NameId switch
+                {
+                    DancingMadP3Exdeath => DancingMadP3Chaos,
+                    DancingMadP3Chaos => DancingMadP3Exdeath,
+                    _ => 0
+                };
+
+                if (otherTargetNameId == 0 || GetDebuffRemainingTime(dotDebuffID) <= refreshTimer)
+                    return false;
+
+                var otherTarget = Service.ObjectTable.OfType<IBattleNpc>().FirstOrDefault(x =>
+                    x.NameId == otherTargetNameId
+                    && x.IsTargetable
+                    && !x.IsDead
+                    && IsInRange(x)
+                    && !All.Dot排除.Contains(x.BaseId));
+
+                if (otherTarget is null || GetTargetHPPercent(otherTarget) <= Config.WHM_STDPS_MainCombo_DoT)
+                    return false;
+
+                var dot = FindEffect(dotDebuffID, otherTarget, LocalPlayer?.GameObjectId);
+                if ((dot?.RemainingTime ?? 0) > refreshTimer)
+                    return false;
+
+                SetTarget(otherTarget);
+                return true;
+            }
+
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
                 bool ActionFound;
@@ -285,20 +328,40 @@ namespace XIVSlothComboX.Combos.PvE
                     if (InCombat())
                     {
                         // DoTs
-                        if (IsEnabled(CustomComboPreset.WHM_ST_MainCombo_DoT) && LevelChecked(Aero) && HasBattleTarget() && AeroList.TryGetValue(OriginalHook(Aero), out ushort dotDebuffID))
+                        bool singleTargetDotEnabled = IsEnabled(CustomComboPreset.WHM_ST_MainCombo_DoT);
+                        bool multiTargetDotEnabled = IsEnabled(CustomComboPreset.WHM_ST_MainCombo_MultiTargetDoT);
+                        bool multiTargetDotBlocked = HasEffect(Buffs.FatedHero) || HasEffect(Buffs.EpicHero);
+                        bool multiTargetDotAllowed = multiTargetDotEnabled
+                            && !multiTargetDotBlocked
+                            && Service.ClientState.TerritoryType == DancingMadP3Territory
+                            && CurrentTarget is IBattleNpc { NameId: DancingMadP3Exdeath or DancingMadP3Chaos };
+
+                        if ((singleTargetDotEnabled || multiTargetDotAllowed)
+                            && LevelChecked(Aero)
+                            && HasBattleTarget()
+                            && AeroList.TryGetValue(OriginalHook(Aero), out ushort dotDebuffID))
                         {
-                            if (IsEnabled(CustomComboPreset.WHM_DPS_Variant_SpiritDart) && IsEnabled(Variant.VariantSpiritDart) && GetDebuffRemainingTime(Variant.Debuffs.SustainedDamage) <= 3 && CanSpellWeave(actionID))
+                            if (singleTargetDotEnabled
+                                && IsEnabled(CustomComboPreset.WHM_DPS_Variant_SpiritDart)
+                                && IsEnabled(Variant.VariantSpiritDart)
+                                && GetDebuffRemainingTime(Variant.Debuffs.SustainedDamage) <= 3
+                                && CanSpellWeave(actionID))
                                 return Variant.VariantSpiritDart;
 
                             // DoT Uptime & HP% threshold
                             float refreshtimer = Config.WHM_ST_MainCombo_DoT_Adv ? Config.WHM_ST_MainCombo_DoT_Threshold : 3;
-                            if (GetDebuffRemainingTime(dotDebuffID) <= refreshtimer && GetTargetHPPercent() > Config.WHM_STDPS_MainCombo_DoT)
+                            if ((singleTargetDotEnabled || multiTargetDotAllowed)
+                                && GetDebuffRemainingTime(dotDebuffID) <= refreshtimer
+                                && GetTargetHPPercent() > Config.WHM_STDPS_MainCombo_DoT)
                             {
                                 if (!All.Dot排除.Contains(CurrentTarget.BaseId))
                                 {
                                     return OriginalHook(Aero);
                                 }
                             }
+
+                            if (multiTargetDotAllowed && TrySwitchToP3MultiTarget(dotDebuffID, refreshtimer))
+                                return OriginalHook(Aero);
                             
                         }
 

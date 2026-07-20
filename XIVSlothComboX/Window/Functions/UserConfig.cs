@@ -3435,7 +3435,7 @@ namespace XIVSlothComboX.Window.Functions
             if (preset == CustomComboPreset.WHM_ST_MainCombo_Lucid)
                 UserConfig.DrawSliderInt(4000, 9500, WHM.Config.WHM_STDPS_Lucid, "设置 MP 值以使此功能正常工作的阈值为或低于该值", 150, SliderIncrements.Hundreds);
 
-            if (preset is CustomComboPreset.WHM_ST_MainCombo_DoT)
+            if (preset is CustomComboPreset.WHM_ST_MainCombo_DoT or CustomComboPreset.WHM_ST_MainCombo_MultiTargetDoT)
             {
                 // UserConfig.DrawSliderInt(0, 10000, WHM.Config.WHM_STDPS_MainCombo_DoT, "目标血量大于多少使用[单位万]");
                 UserConfig.DrawDragInt(0, 10000, WHM.Config.WHM_STDPS_MainCombo_DoT, "目标血量大于多少使用[单位万]");
