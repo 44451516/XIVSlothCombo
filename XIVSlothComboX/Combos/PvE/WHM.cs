@@ -18,6 +18,7 @@ namespace XIVSlothComboX.Combos.PvE
         private const uint DancingMadP3Territory = 1363;
         private const uint DancingMadP3Exdeath = 6052;
         private const uint DancingMadP3Chaos = 7691;
+        private const float P3TargetDebuffBlockTime = 5f;
 
         public const uint
             // Heals
@@ -82,7 +83,9 @@ namespace XIVSlothComboX.Combos.PvE
             public const ushort
                 Aero = 143,
                 Aero2 = 144,
-                Dia = 1871;
+                Dia = 1871,
+                HeadwindChaos = 1602,
+                TailwindExdeath = 1603;
         }
 
         //Debuff Pairs of Actions and Debuff
@@ -217,6 +220,12 @@ namespace XIVSlothComboX.Combos.PvE
             internal static int Glare3Count => ActionWatching.CombatActions.Count(x => x == OriginalHook(Glare3));
             internal static int DiaCount => ActionWatching.CombatActions.Count(x => x == OriginalHook(Dia));
 
+            private static bool HasExpiringP3TargetDebuff(ushort debuffId)
+            {
+                return FindEffectAny(debuffId) is not null
+                    && GetBuffRemainingTime(debuffId, false) < P3TargetDebuffBlockTime;
+            }
+
             private static bool TrySwitchToP3MultiTarget(ushort dotDebuffID, float refreshTimer)
             {
                 if (Service.ClientState.TerritoryType != DancingMadP3Territory
@@ -330,7 +339,10 @@ namespace XIVSlothComboX.Combos.PvE
                         // DoTs
                         bool singleTargetDotEnabled = IsEnabled(CustomComboPreset.WHM_ST_MainCombo_DoT);
                         bool multiTargetDotEnabled = IsEnabled(CustomComboPreset.WHM_ST_MainCombo_MultiTargetDoT);
-                        bool multiTargetDotBlocked = HasEffect(Buffs.FatedHero) || HasEffect(Buffs.EpicHero);
+                        bool multiTargetDotBlocked = HasEffect(Buffs.FatedHero)
+                            || HasEffect(Buffs.EpicHero)
+                            || HasExpiringP3TargetDebuff(Debuffs.HeadwindChaos)
+                            || HasExpiringP3TargetDebuff(Debuffs.TailwindExdeath);
                         bool multiTargetDotAllowed = multiTargetDotEnabled
                             && !multiTargetDotBlocked
                             && Service.ClientState.TerritoryType == DancingMadP3Territory
