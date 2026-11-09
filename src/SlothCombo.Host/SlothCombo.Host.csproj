@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>SlothCombo.Host</AssemblyName>
+    <RootNamespace>SlothCombo.Host</RootNamespace>
+
+    <!--
+      The installation carries the runtime with it, so that the program does
+      not need anything installed on the machine it runs on. The very same
+      runtime is used by the part that is injected into the game, which keeps
+      the installation down to a single folder.
+
+      The runtime is installed the way the runtime of the system is
+      installed: the library that starts it lives under host/fxr/<version>
+      and the runtime itself lives under shared/Microsoft.NETCore.App. The
+      program finds the runtime from the place of that library, so both the
+      program and the game use the very same files.
+    -->
+    <PublishSingleFile>false</PublishSingleFile>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+      The program only needs the shape of the messages it sends to the
+      runtime inside the game. The runtime itself is loaded into the game, so
+      the program does not carry it.
+    -->
+    <ProjectReference Include="..\SlothCombo.Abstractions\SlothCombo.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The tests check the parts that the program uses to reach the game. -->
+    <InternalsVisibleTo Include="SlothCombo.Tests" />
+  </ItemGroup>
+
+</Project>

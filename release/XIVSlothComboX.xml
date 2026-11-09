@@ -248,11 +248,17 @@
         <member name="M:XIVSlothComboX.Core.PluginConfiguration.SetCustomFloatValue(System.String,System.Single)">
             <summary> Sets a custom float value. </summary>
         </member>
+        <member name="M:XIVSlothComboX.Core.PluginConfiguration.PeekCustomFloatValue(System.String,System.Single)">
+            <summary> Reads a custom float value without writing the default back into the dictionary. </summary>
+        </member>
         <member name="M:XIVSlothComboX.Core.PluginConfiguration.GetCustomIntValue(System.String,System.Int32)">
             <summary> Gets a custom integer value. </summary>
         </member>
         <member name="M:XIVSlothComboX.Core.PluginConfiguration.SetCustomIntValue(System.String,System.Int32)">
             <summary> Sets a custom integer value. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.Core.PluginConfiguration.PeekCustomIntValue(System.String,System.Int32)">
+            <summary> Reads a custom integer value without writing the default back into the dictionary. </summary>
         </member>
         <member name="M:XIVSlothComboX.Core.PluginConfiguration.GetCustomIntArrayValue(System.String)">
             <summary> Gets a custom integer array value. </summary>
@@ -260,17 +266,26 @@
         <member name="M:XIVSlothComboX.Core.PluginConfiguration.SetCustomIntArrayValue(System.String,System.Int32[])">
             <summary> Sets a custom integer array value. </summary>
         </member>
+        <member name="M:XIVSlothComboX.Core.PluginConfiguration.PeekCustomIntArrayValue(System.String)">
+            <summary> Reads a custom integer array value without writing the default back into the dictionary. </summary>
+        </member>
         <member name="M:XIVSlothComboX.Core.PluginConfiguration.GetCustomBoolValue(System.String)">
             <summary> Gets a custom boolean value. </summary>
         </member>
         <member name="M:XIVSlothComboX.Core.PluginConfiguration.SetCustomBoolValue(System.String,System.Boolean)">
             <summary> Sets a custom boolean value. </summary>
         </member>
+        <member name="M:XIVSlothComboX.Core.PluginConfiguration.PeekCustomBoolValue(System.String)">
+            <summary> Reads a custom boolean value without writing the default back into the dictionary. </summary>
+        </member>
         <member name="M:XIVSlothComboX.Core.PluginConfiguration.GetCustomBoolArrayValue(System.String)">
             <summary> Gets a custom boolean array value. </summary>
         </member>
         <member name="M:XIVSlothComboX.Core.PluginConfiguration.SetCustomBoolArrayValue(System.String,System.Boolean[])">
             <summary> Sets a custom boolean array value. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.Core.PluginConfiguration.PeekCustomBoolArrayValue(System.String)">
+            <summary> Reads a custom boolean array value without writing the default back into the dictionary. </summary>
         </member>
         <member name="P:XIVSlothComboX.Core.PluginConfiguration.ActiveBLUSpells">
             <summary> Gets active Blue Mage (BLU) spells. </summary>
@@ -894,15 +909,692 @@
         <member name="P:XIVSlothComboX.Services.Service.TargetManager">
             <summary> Gets the Dalamud target manager. </summary>
         </member>
-        <member name="T:XIVSlothComboX.Window.ConfigWindow">
-            <summary> Plugin configuration window. </summary>
+        <member name="T:XIVSlothComboX.WebUI.Contracts.ApiResult">
+            <summary> Unified response envelope for every <c>/api/*</c> endpoint. </summary>
         </member>
-        <member name="M:XIVSlothComboX.Window.ConfigWindow.#ctor">
-            <summary> Initializes a new instance of the <see cref="T:XIVSlothComboX.Window.ConfigWindow"/> class. </summary>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ApiResult.Ok">
+            <summary> Whether the request succeeded. </summary>
         </member>
-        <member name="M:XIVSlothComboX.Window.Functions.Presets.EnableParentPresets(XIVSlothComboX.Combos.CustomComboPreset)">
-            <summary> Iterates up a preset's parent tree, enabling each of them. </summary>
-            <param name="preset"> Combo preset to enabled. </param>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ApiResult.Data">
+            <summary> Endpoint specific payload, present when <see cref="P:XIVSlothComboX.WebUI.Contracts.ApiResult.Ok"/> is true. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ApiResult.Error">
+            <summary> Error details, present when <see cref="P:XIVSlothComboX.WebUI.Contracts.ApiResult.Ok"/> is false. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.Contracts.ApiResult.Success(System.Object)">
+            <summary> Builds a successful envelope. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.Contracts.ApiResult.Failure(System.String,System.String)">
+            <summary> Builds a failed envelope. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.Contracts.ApiError">
+            <summary> Error payload carried by a failed <see cref="T:XIVSlothComboX.WebUI.Contracts.ApiResult"/>. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ApiError.Code">
+            <summary> Machine readable error code. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ApiError.Message">
+            <summary> Human readable error message. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.Contracts.ConfigDto">
+            <summary> Snapshot of the plugin's top level configuration. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ConfigDto.EnabledOutputLog">
+            <summary> Prints every used action to the chat box. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ConfigDto.SetOutChat">
+            <summary> Prints state changes of features to the chat box. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ConfigDto.HideConflictedCombos">
+            <summary> Hides features conflicting with an enabled one. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ConfigDto.HideChildren">
+            <summary> Hides the options of disabled features. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ConfigDto.MeleeOffset">
+            <summary> Offset applied to the melee range check. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ConfigDto.TargetHighlightColor">
+            <summary> Colour used for the target highlight. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ConfigDto.AutoRefine">
+            <summary> Automatically refines materia. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ConfigDto.OnlyRefineAlexander">
+            <summary> Restricts automatic refining to Alexander. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ConfigDto.AutoFood">
+            <summary> Automatically eats the configured food. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ConfigDto.AutoFoodId">
+            <summary> Item id of the food eaten automatically. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ConfigDto.RequiredFoodHq">
+            <summary> Whether the automatically eaten food must be the high quality one. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ConfigDto.AutoRefinePotion">
+            <summary> Automatically uses the refining potion. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ConfigDto.HideMessageOfTheDay">
+            <summary> Hides the login message. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ConfigDto.SpecialEvent">
+            <summary> Whether the special event naming is active. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ConfigDto.MovementLeeway">
+            <summary> Delay applied to movement. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ConfigDto.PerformanceMode">
+            <summary> Enables the performance mode. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ConfigDto.RecommendedSettingsViewed">
+            <summary> Whether the recommended settings page was already shown. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ConfigDto.ActiveBluSpells">
+            <summary> Blue mage spells the player has learnt. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ConfigDto.Foods">
+            <summary> Foods that can be selected for automatic consumption. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.Contracts.ColorDto">
+            <summary> RGBA colour used by the target highlight. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ColorDto.R">
+            <summary> Red channel. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ColorDto.G">
+            <summary> Green channel. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ColorDto.B">
+            <summary> Blue channel. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.ColorDto.A">
+            <summary> Alpha channel. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.Contracts.FoodDto">
+            <summary> A food item that can be consumed automatically. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.FoodDto.Id">
+            <summary> Item id. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.FoodDto.Name">
+            <summary> Item name. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.FoodDto.InInventory">
+            <summary> Whether the player currently carries the regular quality item. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.FoodDto.InInventoryHq">
+            <summary> Whether the player currently carries the high quality item. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.Contracts.MetaDto">
+            <summary> Payload of <c>/api/meta</c>; describes the plugin and the whole preset tree. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.MetaDto.Version">
+            <summary> Plugin version. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.MetaDto.Port">
+            <summary> Port the local web server listens on. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.MetaDto.Jobs">
+            <summary> Jobs that own at least one preset. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.MetaDto.Presets">
+            <summary> Every preset known to the plugin. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.MetaDto.Debug">
+            <summary> Whether the plugin was built with the debug endpoints enabled. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.Contracts.JobInfo">
+            <summary> A job grouping presets in the frontend. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.JobInfo.JobId">
+            <summary> Job id. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.JobInfo.Name">
+            <summary> Job display name. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.JobInfo.Shorthand">
+            <summary> Job abbreviation. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.JobInfo.Version">
+            <summary> Game version the job's features were last updated for. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.JobInfo.Disabled">
+            <summary> Whether the job is currently disabled by the plugin. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.JobInfo.IconId">
+            <summary> Game icon id of the job. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.JobInfo.Notice">
+            <summary> Notice shown above the feature list of the job, if any. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.Contracts.OptionSchema">
+            <summary>
+            Describes a single configurable option belonging to a preset.
+            The frontend renders one control per entry; the shape of <see cref="P:XIVSlothComboX.WebUI.Contracts.OptionSchema.Value"/>
+            depends on <see cref="P:XIVSlothComboX.WebUI.Contracts.OptionSchema.ValueType"/>.
+            </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionSchema.Kind">
+            <summary> Control kind: slider, drag, radio, switch, multi, single, priority. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionSchema.Key">
+            <summary> Configuration key backing this option. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionSchema.Label">
+            <summary> Display label. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionSchema.Tooltip">
+            <summary> Optional hover description. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionSchema.ValueType">
+            <summary> Storage kind: int, float, bool, boolArray or intArray. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionSchema.Min">
+            <summary> Lower bound for numeric options. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionSchema.Max">
+            <summary> Upper bound for numeric options. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionSchema.Step">
+            <summary> Step size for numeric options. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionSchema.Digits">
+            <summary> Number of decimals for numeric options. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionSchema.Speed">
+            <summary> Drag speed for drag options. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionSchema.Value">
+            <summary> Current value; its shape depends on <see cref="P:XIVSlothComboX.WebUI.Contracts.OptionSchema.ValueType"/>. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionSchema.Options">
+            <summary> Selectable choices for multi and single options. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionSchema.Layout">
+            <summary> Layout hint for multi and single options. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionSchema.Group">
+            <summary> Radio group identifier; radios sharing a group are mutually exclusive. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionSchema.OptionValue">
+            <summary> The numeric value a radio option selects. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionSchema.Conditional">
+            <summary> True when the option is only shown while its parent switch is enabled. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionSchema.MaxItems">
+            <summary> Maximum number of entries for priority options. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionSchema.Order">
+            <summary> Original UI ordering hint. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.Contracts.OptionChoice">
+            <summary> A single selectable choice of a multi or single option. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionChoice.Value">
+            <summary> Stored value. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionChoice.Label">
+            <summary> Display label. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionChoice.Tooltip">
+            <summary> Optional hover description. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.OptionChoice.IconId">
+            <summary> Optional game icon id rendered next to the label. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.Contracts.PresetNode">
+            <summary> Lightweight description of a combo preset used to build the frontend tree. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetNode.Id">
+            <summary> Enum member name of the preset; used as the identifier everywhere. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetNode.FancyName">
+            <summary> Display name. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetNode.Description">
+            <summary> Feature description. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetNode.JobId">
+            <summary> Job the feature belongs to. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetNode.JobName">
+            <summary> Job display name. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetNode.JobShorthand">
+            <summary> Job abbreviation. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetNode.Order">
+            <summary> Display order within the job. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetNode.ParentId">
+            <summary> Identifier of the parent preset, when the feature is a child. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetNode.ChildIds">
+            <summary> Identifiers of the child presets. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetNode.ConflictIds">
+            <summary> Identifiers of presets conflicting with this one. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetNode.IsVariant">
+            <summary> Whether the feature is a variant of another combo. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetNode.IsBozja">
+            <summary> Whether the feature belongs to the Bozja category. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetNode.IsEureka">
+            <summary> Whether the feature belongs to the Eureka category. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetNode.IsPvP">
+            <summary> Whether the feature is restricted to PvP. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetNode.Enabled">
+            <summary> Whether the feature is currently enabled. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetNode.Hidden">
+            <summary> Whether the feature is hidden because it conflicts with an enabled feature. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.Contracts.PresetDetail">
+            <summary> Extra information rendered on a preset card. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetDetail.Id">
+            <summary> Identifier of the preset. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetDetail.ParentChain">
+            <summary> Identifiers of the parent chain, outermost first. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetDetail.Conflicts">
+            <summary> Identifiers of the presets this feature conflicts with. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetDetail.ConflictNames">
+            <summary> Display names of the conflicting features. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetDetail.Replaces">
+            <summary> Names of the skills the feature replaces. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetDetail.ReplaceIcons">
+            <summary> Icon ids of the skills the feature replaces. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetDetail.BluNotice">
+            <summary> Blue mage hint shown above the feature list of the Blue Mage job. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetDetail.BluStatus">
+            <summary> Blue mage status of the feature: none, missing or ready. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetDetail.BluMissing">
+            <summary> Missing blue mage spells, formatted for display. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetDetail.VariantParents">
+            <summary> Names of the parent combos this variant belongs to. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetDetail.BozjaParents">
+            <summary> Names of the parent combos this Bozja feature belongs to. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.PresetDetail.EurekaParents">
+            <summary> Names of the parent combos this Eureka feature belongs to. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.Contracts.TimelineDto">
+            <summary> A user defined combat timeline. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.TimelineDto.Index">
+            <summary> Index inside the configuration list. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.TimelineDto.Enable">
+            <summary> Whether the timeline is active. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.TimelineDto.JobId">
+            <summary> Job the timeline belongs to. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.TimelineDto.Name">
+            <summary> Timeline name. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.TimelineDto.ActionList">
+            <summary> Actions of the timeline. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.Contracts.TimelineActionDto">
+            <summary> A single action inside a <see cref="T:XIVSlothComboX.WebUI.Contracts.TimelineDto"/>. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.TimelineActionDto.ActionId">
+            <summary> Action id. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.TimelineActionDto.ActionName">
+            <summary> Action name, filled in by the server for display. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.TimelineActionDto.ActionIcon">
+            <summary> Icon id of the action. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.TimelineActionDto.UseTimeStart">
+            <summary> Start of the usage window. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.TimelineActionDto.UseTimeEnd">
+            <summary> End of the usage window. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.TimelineActionDto.TargetType">
+            <summary> Target selector; 1 is self, 2 to 8 are party members. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.TimelineActionDto.CustomActionType">
+            <summary> Custom action category. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.TimelineActionDto.CustomActionTypeSub">
+            <summary> Custom action sub category. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.TimelineActionDto.X">
+            <summary> Positional offset of the action. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.TimelineActionDto.Y">
+            <summary> Positional offset of the action. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.TimelineActionDto.Z">
+            <summary> Positional offset of the action. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.Contracts.CustomTypeDto">
+            <summary> Available values of the custom action category. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.CustomTypeDto.Value">
+            <summary> Numeric value. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.Contracts.CustomTypeDto.Label">
+            <summary> Display label. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.Handlers.ConfigHandler">
+            <summary> Serves the top level plugin configuration. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.Handlers.DebugHandler">
+            <summary> Serves the diagnostics page. Only available in debug builds. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.Handlers.IconHandler">
+            <summary> Serves game icons as PNG images. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.Handlers.PresetHandler">
+            <summary> Serves the preset tree, the option schema and the enable/disable action. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.Handlers.PresetHandler.BuildOptions(XIVSlothComboX.Combos.CustomComboPreset)">
+            <summary> Builds the option schema of a preset by replaying its legacy option declarations. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.Handlers.PresetHandler.Toggle(XIVSlothComboX.Combos.CustomComboPreset,System.Boolean)">
+            <summary> Enables or disables a preset, keeping parents and conflicts consistent. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.Handlers.PresetHandler.ToggleResult">
+            <summary> Result of an enable or disable request. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.Handlers.TimelineHandler">
+            <summary>
+            Serves the custom timeline list and the working copy the timeline editor edits.
+            </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.Handlers.ValueHandler">
+            <summary>
+            Serves the generic key/value configuration store. The frontend never needs to know
+            which dictionary a value lives in, it only knows the type of the value.
+            </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.IconService">
+            <summary>
+            Turns game icons into PNG images that the web frontend can display.
+            Reads the raw texture data through Lumina, because Dalamud's texture wrappers
+            do not expose their pixels.
+            </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.IconService.GetJobIconId(System.UInt32)">
+            <summary> Game icon id used for the icon of the given job. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.IconService.GetPng(System.UInt32,System.Boolean)">
+            <summary>
+            Returns the PNG bytes of an icon, or <c>null</c> when the icon cannot be read.
+            Must be called on the main thread.
+            </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.IconService.ClearCache">
+            <summary> Drops every cached icon. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.MainThreadDispatcher">
+            <summary>
+            Marshals work from the web server threads onto the Dalamud main thread, because
+            reading or writing the plugin configuration and the game data is only safe there.
+            </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.MainThreadDispatcher.#ctor(Dalamud.Plugin.Services.IFramework)">
+            <summary> Creates a dispatcher bound to the given framework. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.MainThreadDispatcher.Start">
+            <summary> Subscribes to the framework update loop. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.MainThreadDispatcher.Stop">
+            <summary> Unsubscribes from the framework update loop. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.MainThreadDispatcher.RunAsync``1(System.Func{``0})">
+            <summary> Queues work and waits for its result. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.MainThreadDispatcher.RunAsync(System.Action)">
+            <summary> Queues work and waits for it to finish. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.PngEncoder">
+            <summary>
+            Minimal PNG writer for RGBA pixel data. Uses uncompressed deflate blocks so no
+            compression library is needed; the payload is served from localhost anyway.
+            </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.PngEncoder.EncodeRgba(System.Byte[],System.Int32,System.Int32)">
+            <summary> Encodes RGBA pixels as a PNG image. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.PngEncoder.ZlibStore(System.Byte[])">
+            <summary> Wraps the data in a zlib stream built from stored deflate blocks. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.PresetService">
+            <summary>
+            Server side representation of the combo presets. Mirrors the grouping and the
+            parent/child relations the legacy ImGui window used to build.
+            </summary>
+        </member>
+        <member name="F:XIVSlothComboX.WebUI.PresetService.JobVersions">
+            <summary> Game version each job's features were last updated for. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.PresetService.GroupedPresets">
+            <summary> Top level presets grouped by job name. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.PresetService.PresetChildren">
+            <summary> Child presets of every preset. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.PresetService.TryResolve(System.String,XIVSlothComboX.Combos.CustomComboPreset@)">
+            <summary> Resolves a preset identifier sent by the frontend. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.PresetService.BuildPresetNodes">
+            <summary> Builds the whole preset tree sent to the frontend. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.PresetService.BuildJobs">
+            <summary> Builds the job list shown in the sidebar. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.PresetService.BuildDetail(XIVSlothComboX.Combos.CustomComboPreset)">
+            <summary> Builds the additional information rendered on a preset card. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.PresetService.Describe(XIVSlothComboX.Combos.CustomComboPreset)">
+            <summary> Human readable name of a preset, including its parent chain. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.PresetService.GetBluNotice(System.String)">
+            <summary> The Blue Mage notice shown above the Blue Mage feature list. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.PresetService.EnableParents(XIVSlothComboX.Combos.CustomComboPreset)">
+            <summary>
+            Enables every parent of a preset, mirroring the behaviour of the legacy UI where
+            enabling a child feature also enables the features it is nested under.
+            </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.PresetService.IsHidden(XIVSlothComboX.Combos.CustomComboPreset)">
+            <summary>
+            Whether a feature has to be hidden because it conflicts with an enabled one.
+            Mirrors the "hide conflicting combos" behaviour of the legacy UI.
+            </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.SchemaBuilder">
+            <summary>
+            Collects the configurable options of a preset into a serialisable description
+            that the Vue frontend renders instead of the legacy ImGui controls.
+            </summary>
+        </member>
+        <member name="F:XIVSlothComboX.WebUI.SchemaBuilder.RoleLabels">
+            <summary> Roles offered by the role based selectors. </summary>
+        </member>
+        <member name="F:XIVSlothComboX.WebUI.SchemaBuilder.JobLabels">
+            <summary> Jobs offered by the job based selectors. </summary>
+        </member>
+        <member name="F:XIVSlothComboX.WebUI.SchemaBuilder.PvPStatusLabels">
+            <summary> PvP statuses offered by the PvP status selector. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.SchemaBuilder.Options">
+            <summary> Options collected so far. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.SchemaBuilder.AddSliderInt(System.Int32,System.Int32,System.String,System.String,System.UInt32)">
+            <summary> Adds an integer slider backed by <c>CustomIntValues</c>. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.SchemaBuilder.AddSliderFloat(System.Single,System.Single,System.String,System.String,System.Single)">
+            <summary> Adds a float slider backed by <c>CustomFloatValues</c>. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.SchemaBuilder.AddDragFloat(System.Single,System.Single,System.Single,System.String,System.String,System.Single)">
+            <summary> Adds a float drag input backed by <c>CustomFloatValues</c>. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.SchemaBuilder.AddDragInt(System.Int32,System.Int32,System.String,System.String)">
+            <summary> Adds an integer drag input backed by <c>CustomIntValues</c>. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.SchemaBuilder.AddRoundedSliderFloat(System.Single,System.Single,System.String,System.String,System.Int32)">
+            <summary> Adds a float slider with a fixed number of decimals. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.SchemaBuilder.AddRadioButton(System.String,System.String,System.String,System.Int32,System.String)">
+            <summary>
+            Adds one entry of a radio group. All entries sharing a key form one mutually
+            exclusive group; the first entry defines the group default.
+            </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.SchemaBuilder.AddAdditionalBoolChoice(System.String,System.String,System.String,System.Boolean)">
+            <summary> Adds a boolean switch backed by <c>CustomBoolValues</c>. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.SchemaBuilder.AddHorizontalMultiChoice(System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Adds one entry of a horizontal multi choice. The helper is invoked once per
+            choice, so entries are accumulated into a single option.
+            </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.SchemaBuilder.AddGridMultiChoice(System.String,System.Byte,System.String[0:,0:])">
+            <summary> Adds a grid of independent checkboxes. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.SchemaBuilder.AddPvPStatusMultiChoice(System.String)">
+            <summary> Adds the PvP status selector. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.SchemaBuilder.AddRoleGridMultiChoice(System.String)">
+            <summary> Adds the role based multi selector. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.SchemaBuilder.AddRoleGridSingleChoice(System.String)">
+            <summary> Adds the role based single selector. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.SchemaBuilder.AddJobGridMultiChoice(System.String)">
+            <summary> Adds the job based multi selector. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.SchemaBuilder.AddJobGridSingleChoice(System.String)">
+            <summary> Adds the job based single selector. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.SchemaBuilder.AddPriorityInput(System.String,System.Int32,System.Int32,System.String)">
+            <summary>
+            Adds a priority ordering input backed by <c>CustomIntArrayValues</c>.
+            The helper is invoked once per entry of a shared priority list, so the entries
+            are accumulated into a single option; only the entries owned by the current
+            feature carry a label, the remaining slots stay anonymous.
+            </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.SchemaBuilder.NormalizePriority(System.Int32[],System.Int32)">
+            <summary>
+            Mirrors the legacy normalisation of a priority list: a list of the wrong length or
+            one that still holds zeroes starts out as <c>1..maxValues</c>. The normalised list is
+            only reported, it is never written back.
+            </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.SchemaCollector">
+            <summary> Holds the schema builder that is currently collecting options. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.SchemaCollector.Current">
+            <summary> The active builder, or <c>null</c> when the legacy ImGui path is used. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.SchemaCollector.Active">
+            <summary> Whether options are currently being collected. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.SchemaCollector.Begin">
+            <summary> Starts collecting options. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.SchemaCollector.End(XIVSlothComboX.WebUI.SchemaBuilder)">
+            <summary> Stops collecting options. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.WebUIAuth">
+            <summary>
+            Guards the local web server. The server only listens on the loopback interface,
+            but every request still has to prove that it knows the session token and originates
+            from the settings page itself.
+            </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.WebUIAuth.#ctor(System.Int32)">
+            <summary> Creates a session token bound to the given port. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.WebUIAuth.Port">
+            <summary> Port the server listens on. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.WebUIAuth.Token">
+            <summary> The session token that has to be present on every request. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.WebUIAuth.Url">
+            <summary> The URL that opens the settings page in the browser. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.WebUIAuth.Validate(System.String,System.String,System.String)">
+            <summary> Whether the request carries the session token and a matching origin. </summary>
+        </member>
+        <member name="T:XIVSlothComboX.WebUI.WebUIServer">
+            <summary>
+            Serves the Vue settings page and the JSON API from a local HTTP server that only
+            listens on the loopback interface.
+            </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.WebUIServer.#ctor(Dalamud.Plugin.Services.IFramework)">
+            <summary> Creates the server and binds it to a free loopback port. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.WebUIServer.Port">
+            <summary> Port the server listens on. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.WebUIServer.Url">
+            <summary> URL that opens the settings page in the default browser. </summary>
+        </member>
+        <member name="P:XIVSlothComboX.WebUI.WebUIServer.Token">
+            <summary> Session token that every request has to carry. </summary>
+        </member>
+        <member name="F:XIVSlothComboX.WebUI.WebUIServer.InfoFileName">
+            <summary> Name of the file that describes the running server to other tools. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.WebUIServer.Start">
+            <summary> Starts listening for requests. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.WebUIServer.Dispose">
+            <summary> Stops the server and releases the port. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.WebUIServer.WriteInfoFile">
+            <summary>
+            Writes the port and the token of the running server into the plugin's
+            configuration folder, so that the frontend development server can find it.
+            </summary>
+        </member>
+        <member name="M:XIVSlothComboX.WebUI.WebUIServer.DeleteInfoFile">
+            <summary> Removes the info file again. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.Window.Functions.UserConfig.Indent">
+            <summary>
+            Indent helper that is inert while the web frontend schema is being collected.
+            The legacy ImGui path keeps using the real ImGui call.
+            </summary>
+        </member>
+        <member name="M:XIVSlothComboX.Window.Functions.UserConfig.Unindent">
+            <summary>
+            Unindent helper that is inert while the web frontend schema is being collected.
+            </summary>
+        </member>
+        <member name="M:XIVSlothComboX.Window.Functions.UserConfig.Spacing">
+            <summary>
+            Spacing helper that is inert while the web frontend schema is being collected.
+            </summary>
         </member>
         <member name="M:XIVSlothComboX.Window.Functions.UserConfig.DrawSliderInt(System.Int32,System.Int32,System.String,System.String,System.Single,System.UInt32,System.Boolean,System.String)">
             <summary> Draws a slider that lets the user set a given value for their feature. </summary>
@@ -990,9 +1682,21 @@
         <member name="T:XIVSlothComboX.XIVSlothComboX">
             <summary> Main plugin implementation. </summary>
         </member>
+        <member name="F:XIVSlothComboX.XIVSlothComboX.MotdText">
+            <summary> Message shown in the chat box after logging in. </summary>
+        </member>
         <member name="M:XIVSlothComboX.XIVSlothComboX.#ctor(Dalamud.Plugin.IDalamudPluginInterface)">
             <summary> Initializes a new instance of the <see cref="T:XIVSlothComboX.XIVSlothComboX"/> class. </summary>
             <param name="pluginInterface"> Dalamud plugin interface. </param>
+        </member>
+        <member name="M:XIVSlothComboX.XIVSlothComboX.StartWebUi">
+            <summary> Starts the local web server, ignoring failures. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.XIVSlothComboX.OnOpenConfigUi">
+            <summary> Starts the local web server on first use and opens the settings page. </summary>
+        </member>
+        <member name="M:XIVSlothComboX.XIVSlothComboX.OpenWebUi">
+            <summary> Opens the Vue settings page in the default browser. </summary>
         </member>
         <member name="P:XIVSlothComboX.XIVSlothComboX.Name">
             <inheritdoc/>

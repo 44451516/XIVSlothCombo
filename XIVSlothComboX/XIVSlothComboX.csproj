@@ -68,7 +68,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-<!--		<PackageReference Include="DalamudPackager" Version="14.0.0" />-->
 		<PackageReference Include="DalamudPackager" Version="15.0.0" />
         <PackageReference Include="ECommons" Version="3.2.0.6" />
 		<PackageReference Include="ILRepack" Version="2.0.44">
@@ -76,6 +75,18 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
+
+	<!-- The built Vue frontend is embedded into the assembly so the plugin stays self contained. -->
+	<ItemGroup>
+		<EmbeddedResource Include="WebUI\wwwroot\**">
+			<LogicalName>WebUI.wwwroot.%(Filename)%(Extension)</LogicalName>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<Target Name="WarnAboutMissingWebUi" BeforeTargets="Build" Condition="'$(Configuration)' != 'Release'">
+		<Warning Condition="!Exists('$(MSBuildProjectDirectory)\WebUI\wwwroot\index.html')"
+		         Text="The Vue frontend has not been built yet. Run 'npm ci &amp;&amp; npm run build' inside XIVSlothComboX.UI (or 'npm run build -- --watch' while developing)." />
+	</Target>
 
 	<ItemGroup>
         

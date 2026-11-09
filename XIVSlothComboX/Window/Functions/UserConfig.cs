@@ -16,11 +16,37 @@ using XIVSlothComboX.CustomComboNS.Functions;
 using XIVSlothComboX.Services;
 using XIVSlothComboX.Data;
 using XIVSlothComboX.Extensions;
+using XIVSlothComboX.WebUI;
 
 namespace XIVSlothComboX.Window.Functions
 {
     public static class UserConfig
     {
+        /// <summary>
+        /// Indent helper that is inert while the web frontend schema is being collected.
+        /// The legacy ImGui path keeps using the real ImGui call.
+        /// </summary>
+        internal static void Indent()
+        {
+            if (!SchemaCollector.Active) ImGui.Indent();
+        }
+
+        /// <summary>
+        /// Unindent helper that is inert while the web frontend schema is being collected.
+        /// </summary>
+        internal static void Unindent()
+        {
+            if (!SchemaCollector.Active) ImGui.Unindent();
+        }
+
+        /// <summary>
+        /// Spacing helper that is inert while the web frontend schema is being collected.
+        /// </summary>
+        internal static void Spacing()
+        {
+            if (!SchemaCollector.Active) ImGui.Spacing();
+        }
+
         /// <summary> Draws a slider that lets the user set a given value for their feature. </summary>
         /// <param name="minValue"> The absolute minimum value you'll let the user pick. </param>
         /// <param name="maxValue"> The absolute maximum value you'll let the user pick. </param>
@@ -41,7 +67,12 @@ namespace XIVSlothComboX.Window.Functions
             bool   hasAdditionalChoice      = false,
             string additonalChoiceCondition = "")
         {
-            ImGui.Indent();
+            if (SchemaCollector.Current is { } schemaBuilder)
+            {
+                schemaBuilder.AddSliderInt(minValue, maxValue, config, sliderDescription, sliderIncrement);
+                return;
+            }
+            UserConfig.Indent();
             int output = PluginConfiguration.GetCustomIntValue(config, minValue);
             if (output < minValue)
             {
@@ -131,8 +162,8 @@ namespace XIVSlothComboX.Window.Functions
             };
 
             box.Draw();
-            ImGui.Spacing();
-            ImGui.Unindent();
+            UserConfig.Spacing();
+            UserConfig.Unindent();
         }
 
         /// <summary> Draws a slider that lets the user set a given value for their feature. </summary>
@@ -154,6 +185,11 @@ namespace XIVSlothComboX.Window.Functions
             bool   hasAdditionalChoice      = false,
             string additonalChoiceCondition = "")
         {
+            if (SchemaCollector.Current is { } schemaBuilder)
+            {
+                schemaBuilder.AddSliderFloat(minValue, maxValue, config, sliderDescription, defaultMinValue);
+                return;
+            }
             float output = PluginConfiguration.GetCustomFloatValue(config, defaultMinValue);
             if (output < minValue)
             {
@@ -237,7 +273,7 @@ namespace XIVSlothComboX.Window.Functions
             };
 
             box.Draw();
-            ImGui.Spacing();
+            UserConfig.Spacing();
         }
 
 
@@ -261,6 +297,11 @@ namespace XIVSlothComboX.Window.Functions
             bool   hasAdditionalChoice      = false,
             string additonalChoiceCondition = "")
         {
+            if (SchemaCollector.Current is { } schemaBuilder)
+            {
+                schemaBuilder.AddDragFloat(speed, minValue, maxValue, config, sliderDescription, defaultMinValue);
+                return;
+            }
             float output = PluginConfiguration.GetCustomFloatValue(config, defaultMinValue);
 
             if (output < minValue)
@@ -345,7 +386,7 @@ namespace XIVSlothComboX.Window.Functions
             };
 
             box.Draw();
-            ImGui.Spacing();
+            UserConfig.Spacing();
         }
 
 
@@ -359,6 +400,11 @@ namespace XIVSlothComboX.Window.Functions
             bool   hasAdditionalChoice      = false,
             string additonalChoiceCondition = "")
         {
+            if (SchemaCollector.Current is { } schemaBuilder)
+            {
+                schemaBuilder.AddDragInt(minValue, maxValue, config, sliderDescription);
+                return;
+            }
             int output = PluginConfiguration.GetCustomIntValue(config, 0);
 
             if (output < minValue)
@@ -443,7 +489,7 @@ namespace XIVSlothComboX.Window.Functions
             };
 
             box.Draw();
-            ImGui.Spacing();
+            UserConfig.Spacing();
         }
 
         /// <summary> Draws a slider that lets the user set a given value for their feature. </summary>
@@ -466,6 +512,11 @@ namespace XIVSlothComboX.Window.Functions
             string additonalChoiceCondition = "",
             int    digits                   = 1)
         {
+            if (SchemaCollector.Current is { } schemaBuilder)
+            {
+                schemaBuilder.AddRoundedSliderFloat(minValue, maxValue, config, sliderDescription, digits);
+                return;
+            }
             float output = PluginConfiguration.GetCustomFloatValue(config, minValue);
             if (output < minValue)
             {
@@ -549,7 +600,7 @@ namespace XIVSlothComboX.Window.Functions
             };
 
             box.Draw();
-            ImGui.Spacing();
+            UserConfig.Spacing();
         }
 
         /// <summary> Draws a checkbox intended to be linked to other checkboxes sharing the same config value. </summary>
@@ -568,7 +619,12 @@ namespace XIVSlothComboX.Window.Functions
             float   itemWidth        = 150,
             Vector4 descriptionColor = new Vector4())
         {
-            ImGui.Indent();
+            if (SchemaCollector.Current is { } schemaBuilder)
+            {
+                schemaBuilder.AddRadioButton(config, checkBoxName, checkboxDescription, outputValue);
+                return;
+            }
+            UserConfig.Indent();
             if (descriptionColor == new Vector4())
                 descriptionColor = ImGuiColors.DalamudYellow;
             int output = PluginConfiguration.GetCustomIntValue(config, outputValue);
@@ -591,15 +647,16 @@ namespace XIVSlothComboX.Window.Functions
                 ImGui.PopStyleColor();
             }
 
-            ImGui.Unindent();
-            ImGui.Spacing();
+            UserConfig.Unindent();
+            UserConfig.Spacing();
         }
 
 
         public static void DrawCustom(CustomTimeline customTimeline, List<CustomTimeline> customTimelineList)
         {
+            if (SchemaCollector.Active) return;
             ImGui.PushID(customTimeline.Name);
-            ImGui.Indent();
+            UserConfig.Indent();
             ImGui.SameLine();
 
 
@@ -651,8 +708,8 @@ namespace XIVSlothComboX.Window.Functions
             }
 
 
-            ImGui.Unindent();
-            ImGui.Spacing();
+            UserConfig.Unindent();
+            UserConfig.Spacing();
             ImGui.PopID();
         }
 
@@ -673,7 +730,12 @@ namespace XIVSlothComboX.Window.Functions
             float   itemWidth        = 150,
             Vector4 descriptionColor = new Vector4())
         {
-            ImGui.Indent();
+            if (SchemaCollector.Current is { } schemaBuilder)
+            {
+                schemaBuilder.AddRadioButton(config, checkBoxName, checkboxDescription, outputValue, "horizontal");
+                return;
+            }
+            UserConfig.Indent();
             if (descriptionColor == new Vector4()) descriptionColor = ImGuiColors.DalamudYellow;
             int output = PluginConfiguration.GetCustomIntValue(config);
             ImGui.PushItemWidth(itemWidth);
@@ -698,7 +760,7 @@ namespace XIVSlothComboX.Window.Functions
 
             ImGui.PopStyleColor();
 
-            ImGui.Unindent();
+            UserConfig.Unindent();
         }
 
         /// <summary>A true or false configuration. Similar to presets except can be used as part of a condition on another config.</summary>
@@ -715,10 +777,15 @@ namespace XIVSlothComboX.Window.Functions
             float  itemWidth           = 150,
             bool   isConditionalChoice = false)
         {
+            if (SchemaCollector.Current is { } schemaBuilder)
+            {
+                schemaBuilder.AddAdditionalBoolChoice(config, checkBoxName, checkboxDescription, isConditionalChoice);
+                return;
+            }
             bool output = PluginConfiguration.GetCustomBoolValue(config);
             ImGui.PushItemWidth(itemWidth);
             if (!isConditionalChoice)
-                ImGui.Indent();
+                UserConfig.Indent();
             else
             {
                 ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.HealerGreen);
@@ -730,7 +797,7 @@ namespace XIVSlothComboX.Window.Functions
                 ImGui.SameLine();
                 ImGui.Dummy(new Vector2(3));
                 ImGui.SameLine();
-                if (isConditionalChoice) ImGui.Indent(); //Align checkbox after the + symbol
+                if (isConditionalChoice) UserConfig.Indent(); //Align checkbox after the + symbol
             }
 
             if (ImGui.Checkbox($"{checkBoxName}###{config}", ref output))
@@ -747,8 +814,8 @@ namespace XIVSlothComboX.Window.Functions
             }
 
             //if (!isConditionalChoice)
-            ImGui.Unindent();
-            ImGui.Spacing();
+            UserConfig.Unindent();
+            UserConfig.Spacing();
         }
 
         /// <summary> Draws multi choice checkboxes in a horizontal configuration. </summary>
@@ -769,7 +836,12 @@ namespace XIVSlothComboX.Window.Functions
             float   itemWidth        = 150,
             Vector4 descriptionColor = new Vector4())
         {
-            ImGui.Indent();
+            if (SchemaCollector.Current is { } schemaBuilder)
+            {
+                schemaBuilder.AddHorizontalMultiChoice(config, checkBoxName, checkboxDescription, totalChoices, choice);
+                return;
+            }
+            UserConfig.Indent();
             if (descriptionColor == new Vector4())
                 descriptionColor = ImGuiColors.DalamudWhite;
             ImGui.PushItemWidth(itemWidth);
@@ -813,7 +885,7 @@ namespace XIVSlothComboX.Window.Functions
                 ImGui.Columns(1);
 
             ImGui.PopStyleColor();
-            ImGui.Unindent();
+            UserConfig.Unindent();
         }
 
         public static void DrawGridMultiChoice
@@ -824,10 +896,15 @@ namespace XIVSlothComboX.Window.Functions
             float     itemWidth        = 150,
             Vector4   descriptionColor = new Vector4())
         {
+            if (SchemaCollector.Current is { } schemaBuilder)
+            {
+                schemaBuilder.AddGridMultiChoice(config, columns, nameAndDesc);
+                return;
+            }
             int totalChoices = nameAndDesc.GetLength(0);
             if (totalChoices > 0)
             {
-                ImGui.Indent();
+                UserConfig.Indent();
                 if (descriptionColor == new Vector4()) descriptionColor = ImGuiColors.DalamudWhite;
                 //ImGui.PushItemWidth(itemWidth);
                 //ImGui.SameLine();
@@ -873,13 +950,18 @@ namespace XIVSlothComboX.Window.Functions
                 }
 
                 ImGui.EndTable();
-                ImGui.Unindent();
+                UserConfig.Unindent();
             }
         }
 
 
         public static void DrawPvPStatusMultiChoice(string config)
         {
+            if (SchemaCollector.Current is { } schemaBuilder)
+            {
+                schemaBuilder.AddPvPStatusMultiChoice(config);
+                return;
+            }
             bool[]? values = PluginConfiguration.GetCustomBoolArrayValue(config);
 
             ImGui.Columns(7, $"{config}", false);
@@ -944,11 +1026,16 @@ namespace XIVSlothComboX.Window.Functions
 
             ImGui.Columns(1);
             ImGui.PopStyleColor();
-            ImGui.Spacing();
+            UserConfig.Spacing();
         }
 
         public static void DrawRoleGridMultiChoice(string config)
         {
+            if (SchemaCollector.Current is { } schemaBuilder)
+            {
+                schemaBuilder.AddRoleGridMultiChoice(config);
+                return;
+            }
             bool[]? values = PluginConfiguration.GetCustomBoolArrayValue(config);
 
             ImGui.Columns(5, $"{config}", false);
@@ -1005,11 +1092,16 @@ namespace XIVSlothComboX.Window.Functions
 
             ImGui.Columns(1);
             ImGui.PopStyleColor();
-            ImGui.Spacing();
+            UserConfig.Spacing();
         }
 
         public static void DrawRoleGridSingleChoice(string config)
         {
+            if (SchemaCollector.Current is { } schemaBuilder)
+            {
+                schemaBuilder.AddRoleGridSingleChoice(config);
+                return;
+            }
             int value = PluginConfiguration.GetCustomIntValue(config);
             bool[] values = new bool[20];
 
@@ -1074,11 +1166,16 @@ namespace XIVSlothComboX.Window.Functions
 
             ImGui.Columns(1);
             ImGui.PopStyleColor();
-            ImGui.Spacing();
+            UserConfig.Spacing();
         }
 
         public static void DrawJobGridMultiChoice(string config)
         {
+            if (SchemaCollector.Current is { } schemaBuilder)
+            {
+                schemaBuilder.AddJobGridMultiChoice(config);
+                return;
+            }
             bool[]? values = PluginConfiguration.GetCustomBoolArrayValue(config);
 
             ImGui.Columns(5, $"{config}", false);
@@ -1263,11 +1360,16 @@ namespace XIVSlothComboX.Window.Functions
             ImGui.PopStyleColor();
             ImGui.NextColumn();
             ImGui.Columns(1);
-            ImGui.Spacing();
+            UserConfig.Spacing();
         }
 
         public static void DrawJobGridSingleChoice(string config)
         {
+            if (SchemaCollector.Current is { } schemaBuilder)
+            {
+                schemaBuilder.AddJobGridSingleChoice(config);
+                return;
+            }
             int value = PluginConfiguration.GetCustomIntValue(config);
             bool[] values = new bool[20];
 
@@ -1457,11 +1559,16 @@ namespace XIVSlothComboX.Window.Functions
             ImGui.PopStyleColor();
             ImGui.NextColumn();
             ImGui.Columns(1);
-            ImGui.Spacing();
+            UserConfig.Spacing();
         }
 
         internal static void DrawPriorityInput(UserIntArray config, int maxValues, int currentItem, string customLabel = "")
         {
+            if (SchemaCollector.Current is { } schemaBuilder)
+            {
+                schemaBuilder.AddPriorityInput(config.Name, maxValues, currentItem, customLabel);
+                return;
+            }
             if (config.Count != maxValues || config.Any(x => x == 0))
             {
                 config.Clear(maxValues);
@@ -1514,7 +1621,7 @@ namespace XIVSlothComboX.Window.Functions
                 }
             };
 
-            ImGui.Indent();
+            UserConfig.Indent();
             box.Draw();
             if (ImGui.IsItemHovered())
             {
@@ -1523,8 +1630,8 @@ namespace XIVSlothComboX.Window.Functions
                 ImGui.EndTooltip();
             }
 
-            ImGui.Unindent();
-            ImGui.Spacing();
+            UserConfig.Unindent();
+            UserConfig.Spacing();
         }
 
 
@@ -1589,13 +1696,13 @@ namespace XIVSlothComboX.Window.Functions
                 UserConfig.DrawAdditionalBoolChoice(nameof(AST.Config.AST_ST_DPS_CombustUptime_Adv), "高级选项", "", isConditionalChoice: true);
                 if (PluginConfiguration.GetCustomBoolValue(nameof(AST.Config.AST_ST_DPS_CombustUptime_Adv)))
                 {
-                    ImGui.Indent();
+                    UserConfig.Indent();
                     UserConfig.DrawRoundedSliderFloat
                     (
                         0, 4, nameof(AST.Config.AST_ST_DPS_CombustUptime_Threshold),
                         "DOT刷新检测秒数（低于此时间就尝试刷新）. 如果想要忽略这个检测，设置为0.", digits: 1
                     );
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
             }
 
@@ -1623,14 +1730,14 @@ namespace XIVSlothComboX.Window.Functions
                 UserConfig.DrawAdditionalBoolChoice(AST.Config.AST_ST_SimpleHeals_Adv, "高级选项", "", isConditionalChoice: true);
                 if (AST.Config.AST_ST_SimpleHeals_Adv)
                 {
-                    ImGui.Indent();
-                    ImGui.Spacing();
+                    UserConfig.Indent();
+                    UserConfig.Spacing();
                     UserConfig.DrawAdditionalBoolChoice
                     (
                         AST.Config.AST_ST_SimpleHeals_UIMouseOver, "队伍UI鼠标悬停检测",
                         "检测团队成员生命值和Buff，通过将鼠标悬停于小队列表.\n" + "这个功能是用来和Redirect/Reaction/etc结合使用的.（译者注：这三个好像是鼠标悬停施法插件。）"
                     );
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
             }
 
@@ -1704,7 +1811,7 @@ namespace XIVSlothComboX.Window.Functions
                     "Overrides selection with UI mouseover target if you have one", 2
                 );
 
-                ImGui.Spacing();
+                UserConfig.Spacing();
                 UserConfig.DrawAdditionalBoolChoice(AST.Config.AST_QuickTarget_SkipDamageDown, $"跳过有{ActionWatching.GetStatusName(62)} debuff", "");
                 UserConfig.DrawAdditionalBoolChoice
                 (
@@ -2455,12 +2562,12 @@ namespace XIVSlothComboX.Window.Functions
                 UserConfig.DrawAdditionalBoolChoice(RDM.Config.RDM_ST_oGCD_OnAction_Adv, "高级操作选项", "更改此选项将替换的操作。", isConditionalChoice: true);
                 if (RDM.Config.RDM_ST_oGCD_OnAction_Adv)
                 {
-                    ImGui.Indent(); ImGui.Spacing();
+                    UserConfig.Indent(); UserConfig.Spacing();
                     UserConfig.DrawHorizontalMultiChoice(RDM.Config.RDM_ST_oGCD_OnAction, $"{RDM.Jolt.ActionName()}", "", 4, 0, descriptionColor: ImGuiColors.DalamudYellow);
                     UserConfig.DrawHorizontalMultiChoice(RDM.Config.RDM_ST_oGCD_OnAction, $"{RDM.Fleche.ActionName()}", "", 4, 1, descriptionColor: ImGuiColors.DalamudYellow);
                     UserConfig.DrawHorizontalMultiChoice(RDM.Config.RDM_ST_oGCD_OnAction, $"{RDM.Riposte.ActionName()}", "", 4, 2, descriptionColor: ImGuiColors.DalamudYellow);
                     UserConfig.DrawHorizontalMultiChoice(RDM.Config.RDM_ST_oGCD_OnAction, $"{RDM.Reprise.ActionName()}", "", 4, 3, descriptionColor: ImGuiColors.DalamudYellow);
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
 
                 UserConfig.DrawAdditionalBoolChoice(RDM.Config.RDM_ST_oGCD_Fleche, $"{RDM.Fleche.ActionName()}", "");
@@ -2468,17 +2575,17 @@ namespace XIVSlothComboX.Window.Functions
                 UserConfig.DrawAdditionalBoolChoice(RDM.Config.RDM_ST_oGCD_Engagement, $"{RDM.Engagement.ActionName()}", "", isConditionalChoice: true);
                 if (RDM.Config.RDM_ST_oGCD_Engagement)
                 {
-                    ImGui.Indent(); ImGui.Spacing();
+                    UserConfig.Indent(); UserConfig.Spacing();
                     UserConfig.DrawAdditionalBoolChoice(RDM.Config.RDM_ST_oGCD_Engagement_Pooling, "保留一层用于手动使用。", "");
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
                 UserConfig.DrawAdditionalBoolChoice(RDM.Config.RDM_ST_oGCD_CorpACorps, $"{RDM.Corpsacorps.ActionName()}", "", isConditionalChoice: true);
                 if (RDM.Config.RDM_ST_oGCD_CorpACorps)
                 {
-                    ImGui.Indent(); ImGui.Spacing();
+                    UserConfig.Indent(); UserConfig.Spacing();
                     UserConfig.DrawAdditionalBoolChoice(RDM.Config.RDM_ST_oGCD_CorpACorps_Melee, "仅在近战范围内使用。", "");
                     UserConfig.DrawAdditionalBoolChoice(RDM.Config.RDM_ST_oGCD_CorpACorps_Pooling, "保留一层用于手动使用。", "");
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
                 UserConfig.DrawAdditionalBoolChoice(RDM.Config.RDM_ST_oGCD_ViceOfThorns, $"{RDM.ViceOfThorns.ActionName()}", "");
                 UserConfig.DrawAdditionalBoolChoice(RDM.Config.RDM_ST_oGCD_Prefulgence, $"{RDM.Prefulgence.ActionName()}", "");
@@ -2494,8 +2601,8 @@ namespace XIVSlothComboX.Window.Functions
                 );
                 if (RDM.Config.RDM_ST_MeleeCombo_Adv)
                 {
-                    ImGui.Indent();
-                    ImGui.Spacing();
+                    UserConfig.Indent();
+                    UserConfig.Spacing();
                     UserConfig.DrawHorizontalMultiChoice
                     (
                         RDM.Config.RDM_ST_MeleeCombo_OnAction, $"{RDM.Jolt.ActionName()}", "", 2, 0,
@@ -2506,7 +2613,7 @@ namespace XIVSlothComboX.Window.Functions
                         RDM.Config.RDM_ST_MeleeCombo_OnAction, $"{RDM.Riposte.ActionName()}", "", 2, 1,
                         descriptionColor: ImGuiColors.DalamudYellow
                     );
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
             }
 
@@ -2515,8 +2622,8 @@ namespace XIVSlothComboX.Window.Functions
                 UserConfig.DrawAdditionalBoolChoice(RDM.Config.RDM_ST_MeleeFinisher_Adv, "高级操作选项", "更改此选项将替换的操作。", isConditionalChoice: true);
                 if (RDM.Config.RDM_ST_MeleeFinisher_Adv)
                 {
-                    ImGui.Indent();
-                    ImGui.Spacing();
+                    UserConfig.Indent();
+                    UserConfig.Spacing();
                     UserConfig.DrawHorizontalMultiChoice
                     (
                         RDM.Config.RDM_ST_MeleeFinisher_OnAction, $"{RDM.Jolt.ActionName()}", "", 3, 0,
@@ -2532,7 +2639,7 @@ namespace XIVSlothComboX.Window.Functions
                         RDM.Config.RDM_ST_MeleeFinisher_OnAction, $"{RDM.Veraero.ActionName()} & {RDM.Verthunder.ActionName()}", "", 3, 2,
                         descriptionColor: ImGuiColors.DalamudYellow
                     );
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
             }
 
@@ -2551,21 +2658,21 @@ namespace XIVSlothComboX.Window.Functions
                 UserConfig.DrawAdditionalBoolChoice(RDM.Config.RDM_AoE_oGCD_Engagement, $"{RDM.Engagement.ActionName()}", "", isConditionalChoice: true);
                 if (RDM.Config.RDM_AoE_oGCD_Engagement)
                 {
-                    ImGui.Indent();
-                    ImGui.Spacing();
+                    UserConfig.Indent();
+                    UserConfig.Spacing();
                     UserConfig.DrawAdditionalBoolChoice(RDM.Config.RDM_AoE_oGCD_Engagement_Pooling, "为手动使用储存一个充能。", "");
 
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
 
                 UserConfig.DrawAdditionalBoolChoice(RDM.Config.RDM_AoE_oGCD_CorpACorps, $"{RDM.Corpsacorps.ActionName()}", "", isConditionalChoice: true);
                 if (RDM.Config.RDM_AoE_oGCD_CorpACorps)
                 {
-                    ImGui.Indent();
-                    ImGui.Spacing();
+                    UserConfig.Indent();
+                    UserConfig.Spacing();
                     UserConfig.DrawAdditionalBoolChoice(RDM.Config.RDM_AoE_oGCD_CorpACorps_Melee, "仅在近战范围内使用。", "");
                     UserConfig.DrawAdditionalBoolChoice(RDM.Config.RDM_AoE_oGCD_CorpACorps_Pooling, "为手动使用储存一个充能。", "");
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
             }
 
@@ -2576,11 +2683,11 @@ namespace XIVSlothComboX.Window.Functions
 
                 if (RDM.Config.RDM_AoE_MeleeCombo_Adv)
                 {
-                    ImGui.Indent();
-                    ImGui.Spacing();
+                    UserConfig.Indent();
+                    UserConfig.Spacing();
                     UserConfig.DrawHorizontalMultiChoice(RDM.Config.RDM_AoE_MeleeCombo_OnAction, $"{RDM.Scatter.ActionName()} / {RDM.Impact.ActionName()}", "", 2, 0,descriptionColor: ImGuiColors.DalamudYellow);
                     UserConfig.DrawHorizontalMultiChoice(RDM.Config.RDM_AoE_MeleeCombo_OnAction, $"{RDM.Moulinet.ActionName()}", "", 2, 1, descriptionColor: ImGuiColors.DalamudYellow);
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
             }
 
@@ -2589,8 +2696,8 @@ namespace XIVSlothComboX.Window.Functions
                 UserConfig.DrawAdditionalBoolChoice(RDM.Config.RDM_AoE_MeleeFinisher_Adv, "高级操作选项", "更改此选项将替换的操作。", isConditionalChoice: true);
                 if (RDM.Config.RDM_AoE_MeleeFinisher_Adv)
                 {
-                    ImGui.Indent();
-                    ImGui.Spacing();
+                    UserConfig.Indent();
+                    UserConfig.Spacing();
                     UserConfig.DrawHorizontalMultiChoice
                     (
                         RDM.Config.RDM_AoE_MeleeFinisher_OnAction, $"{RDM.Scatter.ActionName()} / {RDM.Impact.ActionName()}", "", 3, 0,
@@ -2606,7 +2713,7 @@ namespace XIVSlothComboX.Window.Functions
                         RDM.Config.RDM_AoE_MeleeFinisher_OnAction, $"{RDM.Veraero2.ActionName()} / {RDM.Verthunder2.ActionName()}", "", 3, 2,
                         descriptionColor: ImGuiColors.DalamudYellow
                     );
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
             }
 
@@ -2654,13 +2761,13 @@ namespace XIVSlothComboX.Window.Functions
                 UserConfig.DrawAdditionalBoolChoice(SGE.Config.SGE_ST_DPS_EDosis_Adv, "高级设置", "", isConditionalChoice: true);
                 if (SGE.Config.SGE_ST_DPS_EDosis_Adv)
                 {
-                    ImGui.Indent();
+                    UserConfig.Indent();
                     UserConfig.DrawRoundedSliderFloat
                     (
                         0, 4, SGE.Config.SGE_ST_DPS_EDosisThreshold,
                         "重新使用 DoT 前的剩余秒数。设置为 “0”可禁用此检查。", digits: 1
                     );
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
             }
 
@@ -2716,14 +2823,14 @@ namespace XIVSlothComboX.Window.Functions
                 UserConfig.DrawAdditionalBoolChoice(SGE.Config.SGE_ST_Heal_Adv, "Advanced Options", "", isConditionalChoice: true);
                 if (SGE.Config.SGE_ST_Heal_Adv)
                 {
-                    ImGui.Indent();
+                    UserConfig.Indent();
                     UserConfig.DrawAdditionalBoolChoice
                     (
                         SGE.Config.SGE_ST_Heal_UIMouseOver,
                         "Party UI Mouseover Checking",
                         "Check party member's HP & Debuffs by using mouseover on the party list.\n" + "To be used in conjunction with Redirect/Reaction/etc"
                     );
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
             }
 
@@ -3050,8 +3157,8 @@ namespace XIVSlothComboX.Window.Functions
 
                 if (SCH.Config.SCH_ST_DPS_Adv)
                 {
-                    ImGui.Indent();
-                    ImGui.Spacing();
+                    UserConfig.Indent();
+                    UserConfig.Spacing();
                     UserConfig.DrawHorizontalMultiChoice
                     (
                         SCH.Config.SCH_ST_DPS_Adv_Actions, "On Ruin/Broils", "Apply options to Ruin and all Broils.",
@@ -3063,7 +3170,7 @@ namespace XIVSlothComboX.Window.Functions
                         "Apply options to Bio and Biolysis.", 3, 1
                     );
                     UserConfig.DrawHorizontalMultiChoice(SCH.Config.SCH_ST_DPS_Adv_Actions, "On Ruin II", "Apply options to Ruin II.", 3, 2);
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
             }
 
@@ -3077,9 +3184,9 @@ namespace XIVSlothComboX.Window.Functions
                 UserConfig.DrawAdditionalBoolChoice(SCH.Config.SCH_ST_DPS_Bio_Adv, "高级选项", "", isConditionalChoice: true);
                 if (PluginConfiguration.GetCustomBoolValue(SCH.Config.SCH_ST_DPS_Bio_Adv))
                 {
-                    ImGui.Indent();
+                    UserConfig.Indent();
                     UserConfig.DrawRoundedSliderFloat(0, 4, SCH.Config.SCH_ST_DPS_Bio_Threshold, "续 DoT 前的剩余秒数，设置为零可禁用", digits: 1);
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
             }
 
@@ -3091,9 +3198,9 @@ namespace XIVSlothComboX.Window.Functions
                 UserConfig.DrawAdditionalBoolChoice(SCH.Config.SCH_ST_DPS_EnergyDrain_Adv, "高级选项", "", isConditionalChoice: true);
                 if (SCH.Config.SCH_ST_DPS_EnergyDrain_Adv)
                 {
-                    ImGui.Indent();
+                    UserConfig.Indent();
                     UserConfig.DrawRoundedSliderFloat(0, 60, SCH.Config.SCH_ST_DPS_EnergyDrain, "以太超流剩余冷却时间", digits: 1);
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
             }
 
@@ -3113,13 +3220,13 @@ namespace XIVSlothComboX.Window.Functions
                 UserConfig.DrawAdditionalBoolChoice(SCH.Config.SCH_ST_Heal_Adv, "高级选项", "", isConditionalChoice: true);
                 if (SCH.Config.SCH_ST_Heal_Adv)
                 {
-                    ImGui.Indent();
+                    UserConfig.Indent();
                     UserConfig.DrawAdditionalBoolChoice
                     (
                         SCH.Config.SCH_ST_Heal_UIMouseOver, "Party UI Mouseover Checking",
                         "Check party member's HP & Debuffs by using mouseover on the party list.\n" + "To be used in conjunction with Redirect/Reaction/etc"
                     );
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
             }
 
@@ -3164,13 +3271,13 @@ namespace XIVSlothComboX.Window.Functions
                 UserConfig.DrawAdditionalBoolChoice(SCH.Config.SCH_DeploymentTactics_Adv, "高级选项", "", isConditionalChoice: true);
                 if (SCH.Config.SCH_DeploymentTactics_Adv)
                 {
-                    ImGui.Indent();
+                    UserConfig.Indent();
                     UserConfig.DrawAdditionalBoolChoice
                     (
                         SCH.Config.SCH_DeploymentTactics_UIMouseOver, "Party UI Mouseover Checking",
                         "Check party member's HP & Debuffs by using mouseover on the party list.\n" + "To be used in conjunction with Redirect/Reaction/etc"
                     );
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
             }
 
@@ -3186,21 +3293,21 @@ namespace XIVSlothComboX.Window.Functions
                 UserConfig.DrawAdditionalBoolChoice(SCH.Config.SCH_Aetherflow_Recite_Excog, "On Excogitation", "", isConditionalChoice: true);
                 if (SCH.Config.SCH_Aetherflow_Recite_Excog)
                 {
-                    ImGui.Indent();
-                    ImGui.Spacing();
+                    UserConfig.Indent();
+                    UserConfig.Spacing();
                     UserConfig.DrawRadioButton(SCH.Config.SCH_Aetherflow_Recite_ExcogMode, "仅当以太溢出时", "", 0);
                     UserConfig.DrawRadioButton(SCH.Config.SCH_Aetherflow_Recite_ExcogMode, "总是应用", "", 1);
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
 
                 UserConfig.DrawAdditionalBoolChoice(SCH.Config.SCH_Aetherflow_Recite_Indom, "On Indominability", "", isConditionalChoice: true);
                 if (SCH.Config.SCH_Aetherflow_Recite_Indom)
                 {
-                    ImGui.Indent();
-                    ImGui.Spacing();
+                    UserConfig.Indent();
+                    UserConfig.Spacing();
                     UserConfig.DrawRadioButton(SCH.Config.SCH_Aetherflow_Recite_IndomMode, "仅当以太溢出时", "", 0);
                     UserConfig.DrawRadioButton(SCH.Config.SCH_Aetherflow_Recite_IndomMode, "总是应用", "", 1);
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
             }
 
@@ -3423,12 +3530,12 @@ namespace XIVSlothComboX.Window.Functions
 
                 if (WHM.Config.WHM_ST_MainCombo_Adv)
                 {
-                    ImGui.Indent();
-                    ImGui.Spacing();
+                    UserConfig.Indent();
+                    UserConfig.Spacing();
                     UserConfig.DrawHorizontalMultiChoice(WHM.Config.WHM_ST_MainCombo_Adv_Actions, "On 石头/闪光", "将选项应用于所有 石头和闪光", 3, 0);
                     UserConfig.DrawHorizontalMultiChoice(WHM.Config.WHM_ST_MainCombo_Adv_Actions, "On 烈风/天辉", "Apply options to Aeros and Dia.", 3, 1);
                     UserConfig.DrawHorizontalMultiChoice(WHM.Config.WHM_ST_MainCombo_Adv_Actions, "On 坚石", "Apply options to 坚石", 3, 2);
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
             }
 
@@ -3443,9 +3550,9 @@ namespace XIVSlothComboX.Window.Functions
                 UserConfig.DrawAdditionalBoolChoice(WHM.Config.WHM_ST_MainCombo_DoT_Adv, "高级选项", "", isConditionalChoice: true);
                 if (PluginConfiguration.GetCustomBoolValue(WHM.Config.WHM_ST_MainCombo_DoT_Adv))
                 {
-                    ImGui.Indent();
+                    UserConfig.Indent();
                     UserConfig.DrawRoundedSliderFloat(0, 4, WHM.Config.WHM_ST_MainCombo_DoT_Threshold, "续 DoT 前的剩余秒数，设置为零可禁用", digits: 1);
-                    ImGui.Unindent();
+                    UserConfig.Unindent();
                 }
             }
 

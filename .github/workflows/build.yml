@@ -1,20 +1,17 @@
 name: Build
 
-# Put your personal access token in a repository secret named PAT for cross-repository access
+# The program is standalone now, so the build does not publish a plugin into
+# Dalamud any more. It assembles the installation and, when the commit message
+# carries the marker below, publishes it as a release of this repository.
 
-on: 
+on:
   workflow_dispatch:
   push:
     branches:
     - API11
-
-env:
-#  PUBLIC_NAME: XIVSlothComboX
-  SOLUTION_NAME: XIVSlothCombo
-  INTERNAL_NAME: XIVSlothComboX
-  RELEASE_DIR: release\XIVSlothComboX
-  PERSONAL_PLUGIN_REPO: 44451516/MyDalamudPlugins
-  PR_PLUGIN_REPO: 44451516/MyDalamudPlugins
+    - CN
+    - main
+    - 备战8.0
 
 jobs:
   build:
@@ -26,48 +23,51 @@ jobs:
       uses: actions/checkout@v4
       with:
         submodules: recursive
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v2
-    - name: Download Dalamud
-      run: |
-        Invoke-WebRequest -Uri https://goatcorp.github.io/dalamud-distrib/stg/latest.zip -OutFile latest.zip
-        Expand-Archive -Force latest.zip "$env:AppData\XIVLauncher\addon\Hooks\dev\"   
-    - name: Build
-      run: |
-        dotnet restore -r win ${{ env.SOLUTION_NAME }}.sln
-        dotnet build --configuration Release
-      env: 
-        DOTNET_CLI_TELEMETRY_OPTOUT: true
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+        cache: npm
+        cache-dependency-path: XIVSlothComboX.UI/package-lock.json
+    - name: Build the standalone program
+      run: .\build\publish.ps1
+    - name: Run the tests
+      run: dotnet run --project tests\SlothCombo.Tests\SlothCombo.Tests.csproj -c Release
     - name: Set Timestamp
       id: timestamp
       run: |
         $timestamp = Get-Date -Format "yyyy-MM-dd-HH-mm-ss"
         echo "timestamp=$timestamp" >> $env:GITHUB_OUTPUT
-    - name: Create latest.zip
-      run: |
-        Compress-Archive -Path "${{ env.RELEASE_DIR }}\*" -DestinationPath "${{ env.RELEASE_DIR }}\latest.zip" -Force
+    - name: Pack the installation
+      run: Compress-Archive -Path "dist\*" -DestinationPath "SlothCombo.zip" -Force
     - uses: actions/upload-artifact@v4
       with:
-        name: "XIVSlothComboX-7.1-${{ steps.timestamp.outputs.timestamp }}"
-        path: ${{ env.RELEASE_DIR }}
+        name: "SlothCombo-${{ steps.timestamp.outputs.timestamp }}"
+        path: |
+          dist
+          SlothCombo.zip
         if-no-files-found: error
 
   deploy:
     needs: build
     if: "contains(toJSON(github.event.commits.*.message), '[PUSH]')"
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
+    permissions:
+      contents: write
     steps:
-    - uses: actions/checkout@v4
-      with:
-        repository: ${{ env.PERSONAL_PLUGIN_REPO }}
-        token: ${{ secrets.XIVCOMBO_TOKEN }}
     - uses: actions/download-artifact@v4
       with:
-        name: "XIVSlothComboX-7.1-${{ needs.build.outputs.timestamp }}"
-        path: plugins/${{ env.INTERNAL_NAME }}
-    - uses: EndBug/add-and-commit@v7
+        name: "SlothCombo-${{ needs.build.outputs.timestamp }}"
+        path: .
+    - name: Publish the installation
+      uses: softprops/action-gh-release@v2
       with:
-        add: --all
-        author_name: GitHub Action
-        author_email: github-actions[bot]@users.noreply.github.com
-        message: Update ${{ env.INTERNAL_NAME }}
+        files: SlothCombo.zip
+        tag_name: ${{ needs.build.outputs.timestamp }}
+        name: SlothCombo ${{ needs.build.outputs.timestamp }}

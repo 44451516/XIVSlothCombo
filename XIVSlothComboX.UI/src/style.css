@@ -1,0 +1,86 @@
+:root {
+  --sloth-bg: #14161f;
+  --sloth-bg-soft: #1b1e2a;
+  --sloth-panel: #222634;
+  --sloth-border: #303647;
+  --sloth-border-soft: #272b39;
+  --sloth-text: #dfe3ee;
+  --sloth-text-dim: #9aa2b8;
+  --sloth-accent: #7d8cd6;
+  --sloth-accent-soft: rgba(125, 140, 214, 0.16);
+  --sloth-danger: #d2606b;
+  --sloth-warning: #d6a45d;
+  --sloth-ok: #6cc38a;
+  --sloth-radius: 8px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--sloth-bg);
+  color: var(--sloth-text);
+  font-family: 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow: hidden;
+}
+
+a {
+  color: var(--sloth-accent);
+}
+
+.sloth-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--sloth-border) transparent;
+}
+
+.sloth-scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.sloth-scroll::-webkit-scrollbar-thumb {
+  background: var(--sloth-border);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 8px;
+}
+
+.sloth-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sloth-muted {
+  color: var(--sloth-text-dim);
+}
+
+.sloth-nowrap {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sloth-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  vertical-align: middle;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+.sloth-icon-lg {
+  width: 32px;
+  height: 32px;
+}

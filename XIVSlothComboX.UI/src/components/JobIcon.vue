@@ -1,0 +1,36 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { iconUrl } from '@/api/client'
+
+const props = withDefaults(
+  defineProps<{
+    iconId: number
+    size?: number
+    hd?: boolean
+  }>(),
+  { size: 24, hd: false },
+)
+
+const source = computed(() => (props.iconId > 0 ? iconUrl(props.iconId, props.hd) : ''))
+</script>
+
+<template>
+  <img
+    v-if="source"
+    class="sloth-icon"
+    :src="source"
+    :style="{ width: `${size}px`, height: `${size}px` }"
+    alt=""
+    loading="lazy"
+  />
+  <span v-else class="sloth-icon sloth-icon-fallback" :style="{ width: `${size}px`, height: `${size}px` }" />
+</template>
+
+<style scoped>
+.sloth-icon-fallback {
+  display: inline-block;
+  border-radius: 4px;
+  background: var(--sloth-bg-soft);
+  vertical-align: middle;
+}
+</style>

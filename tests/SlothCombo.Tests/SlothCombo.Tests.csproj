@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>SlothCombo.Tests</AssemblyName>
+    <RootNamespace>SlothCombo.Tests</RootNamespace>
+    <IsPackable>false</IsPackable>
+
+    <!--
+      The tests read the runtime the same way the game does, so they run
+      against the installation that the publish script writes. The folder of
+      the installation is given by the environment variable
+      SLOTHCOMBO_DIST, and is looked up in the repository when it is not.
+    -->
+    <SelfContained>false</SelfContained>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\SlothCombo.Runtime\SlothCombo.Runtime.csproj" />
+    <ProjectReference Include="..\..\src\SlothCombo.Host\SlothCombo.Host.csproj" />
+  </ItemGroup>
+
+</Project>

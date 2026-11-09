@@ -79,6 +79,10 @@ namespace XIVSlothComboX.Core
         /// <summary> Sets a custom float value. </summary>
         public static void SetCustomFloatValue(string config, float value) => CustomFloatValues[config] = value;
 
+        /// <summary> Reads a custom float value without writing the default back into the dictionary. </summary>
+        public static float PeekCustomFloatValue(string config, float defaultMinValue = 0f) =>
+            CustomFloatValues.TryGetValue(config, out var configValue) ? configValue : defaultMinValue;
+
         #endregion
 
         #region Custom Int Values
@@ -101,6 +105,10 @@ namespace XIVSlothComboX.Core
         /// <summary> Sets a custom integer value. </summary>
         public static void SetCustomIntValue(string config, int value) => CustomIntValues[config] = value;
 
+        /// <summary> Reads a custom integer value without writing the default back into the dictionary. </summary>
+        public static int PeekCustomIntValue(string config, int defaultMinVal = 0) =>
+            CustomIntValues.TryGetValue(config, out var configValue) ? configValue : defaultMinVal;
+
         #endregion
 
         #region Custom Int Array Values
@@ -121,6 +129,10 @@ namespace XIVSlothComboX.Core
 
         /// <summary> Sets a custom integer array value. </summary>
         public static void SetCustomIntArrayValue(string config, int[] value) => CustomIntArrayValues[config] = value;
+
+        /// <summary> Reads a custom integer array value without writing the default back into the dictionary. </summary>
+        public static int[] PeekCustomIntArrayValue(string config) =>
+            CustomIntArrayValues.TryGetValue(config, out var configValue) ? configValue : Array.Empty<int>();
 
         #endregion
 
@@ -144,6 +156,10 @@ namespace XIVSlothComboX.Core
         /// <summary> Sets a custom boolean value. </summary>
         public static void SetCustomBoolValue(string config, bool value) => CustomBoolValues[config] = value;
 
+        /// <summary> Reads a custom boolean value without writing the default back into the dictionary. </summary>
+        public static bool PeekCustomBoolValue(string config) =>
+            CustomBoolValues.TryGetValue(config, out var configValue) && configValue;
+
         #endregion
 
         #region Custom Bool Array Values
@@ -165,6 +181,10 @@ namespace XIVSlothComboX.Core
 
         /// <summary> Sets a custom boolean array value. </summary>
         public static void SetCustomBoolArrayValue(string config, bool[] value) => CustomBoolArrayValues[config] = value;
+
+        /// <summary> Reads a custom boolean array value without writing the default back into the dictionary. </summary>
+        public static bool[] PeekCustomBoolArrayValue(string config) =>
+            CustomBoolArrayValues.TryGetValue(config, out var configValue) ? configValue : Array.Empty<bool>();
 
         #endregion
 

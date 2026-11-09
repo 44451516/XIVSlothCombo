@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>SlothCombo.Runtime</RootNamespace>
+    <AssemblyName>SlothCombo.Runtime</AssemblyName>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NoWarn>CS1591;CS8618;CS8600;CS8603;CS8625;CS8602</NoWarn>
+
+    <!--
+      The runtime is loaded into the game by the boot library, which hands it
+      to the host of the runtime as a plain assembly. The host reads the
+      configuration of the runtime from the file that sits next to the
+      assembly, so the file has to be produced even though this project is a
+      library.
+    -->
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SlothCombo.Abstractions\SlothCombo.Abstractions.csproj" />
+  </ItemGroup>
+
+  <!--
+    The struct library and the Excel reader are consumed as plain NuGet
+    packages or project references. Neither of them references Dalamud, so the
+    runtime stays independent of the plugin host.
+
+    The struct library is built from source and its generated code emits a
+    large number of XML documentation warnings. The warnings are put to
+    silence in the file that reaches the submodules, so the checkout of the
+    submodule itself stays pristine.
+
+    The reference is a plain one on purpose. A reference that carries
+    properties of its own makes the build graph build the library twice, and
+    two compilers then write the same file at the same time.
+
+    The assemblies of the struct library are copied next to the runtime,
+    because the runtime is loaded into the game on its own and cannot reach
+    the build output of another project there.
+  -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\lib\FFXIVClientStructs\FFXIVClientStructs\FFXIVClientStructs.csproj" />
+    <ProjectReference Include="..\..\lib\FFXIVClientStructs\InteropGenerator.Runtime\InteropGenerator.Runtime.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Lumina" Version="7.6.0" />
+    <PackageReference Include="Lumina.Excel" Version="7.5.0" />
+    <PackageReference Include="Reloaded.Hooks" Version="4.3.1" />
+    <PackageReference Include="Serilog" Version="4.4.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+
+</Project>

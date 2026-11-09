@@ -14,3 +14,21 @@ CN_tools/statusCN.txt
 XIVSlothCombo.sln.DotSettings.user
 XIVSlothCombo.sln.DotSettings
 .qoder/
+
+# The standalone program under src/ and tests/.
+src/**/bin/
+src/**/obj/
+tests/**/bin/
+tests/**/obj/
+build/**/bin/
+build/**/obj/
+
+# The installation that build/publish.ps1 writes.
+dist/
+
+# The packages of the frontend.
+XIVSlothComboX.UI/node_modules/
+
+# The output of the frontend inside the plugin tree.
+XIVSlothComboX/WebUI/wwwroot/
+XIVSlothComboX/WebUI/sloth-webui.json

@@ -28,8 +28,8 @@ using XIVSlothComboX.CustomComboNS.Functions;
 using XIVSlothComboX.Data;
 using XIVSlothComboX.Extensions;
 using XIVSlothComboX.Services;
+using XIVSlothComboX.WebUI;
 using XIVSlothComboX.Window;
-using XIVSlothComboX.Window.Tabs;
 using XIVSlothComboX.自动类;
 using AST = XIVSlothComboX.Combos.JobHelpers.AST;
 using ObjectKind = Dalamud.Game.ClientState.Objects.Enums.ObjectKind;
@@ -40,9 +40,12 @@ namespace XIVSlothComboX
     {
         private const string Command = "/scombox";
 
+        /// <summary> Message shown in the chat box after logging in. </summary>
+        internal const string MotdText = "[XIVSlothComboX]请不要去卫月频道交流此插件,包括提BUG";
 
-        private readonly ConfigWindow _ConfigWindow;
+
         private readonly TargetHelper _TargetHelper;
+        private WebUIServer? _WebUIServer;
         internal static XIVSlothComboX P = null!;
         internal WindowSystem _WindowSystem;
         private static uint? jobID;
@@ -108,7 +111,6 @@ namespace XIVSlothComboX
                 if (jobID != value && value != null)
                 {
                     Service.PluginLog.Debug($"Switched to job {value}");
-                    PvEFeatures.HasToOpenJob = true;
                 }
                 jobID = value;
             }
@@ -152,14 +154,11 @@ namespace XIVSlothComboX
             ActionWatching.Enable();
             AST.Init();
 
-            _ConfigWindow = new();
             _TargetHelper = new();
-            
+
             _WindowSystem = new();
-            _WindowSystem.AddWindow((IWindow)_ConfigWindow);
             _WindowSystem.AddWindow((IWindow)_TargetHelper);
 
-            // Service.Interface.UiBuilder.OpenMainUi += OnOpenConfigUi;
             Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
             Service.Interface.UiBuilder.Draw += _WindowSystem.Draw;
 
@@ -191,7 +190,28 @@ namespace XIVSlothComboX
             KillRedundantIDs();
             HandleConflictedCombos();
             Service.IconManager = new IconManager();
-            
+
+            // The server is started right away so that its port and token are known
+            // to the frontend development server. It is started again lazily if the
+            // first attempt failed.
+            StartWebUi();
+        }
+
+        /// <summary> Starts the local web server, ignoring failures. </summary>
+        private void StartWebUi()
+        {
+            try
+            {
+                if (_WebUIServer != null) return;
+
+                _WebUIServer = new WebUIServer(Service.Framework);
+                _WebUIServer.Start();
+            }
+            catch (Exception ex)
+            {
+                Service.PluginLog.Debug($"Failed to start the web UI server: {ex.Message}");
+                _WebUIServer = null;
+            }
         }
 
         private void OnTerritoryChanged(uint obj)
@@ -327,14 +347,29 @@ namespace XIVSlothComboX
 
         private void DrawUI()
         {
-            _ConfigWindow.Draw();
         }
 
-
-
+        /// <summary> Starts the local web server on first use and opens the settings page. </summary>
         private void OnOpenConfigUi()
         {
-            _ConfigWindow.IsOpen = !_ConfigWindow.IsOpen;
+            OpenWebUi();
+        }
+
+        /// <summary> Opens the Vue settings page in the default browser. </summary>
+        internal void OpenWebUi()
+        {
+            try
+            {
+                StartWebUi();
+                if (_WebUIServer == null) throw new InvalidOperationException("本地服务未能启动。");
+
+                Util.OpenLink(_WebUIServer.Url);
+            }
+            catch (Exception ex)
+            {
+                Service.PluginLog.Error(ex, "Failed to open the web settings page");
+                Service.ChatGui.PrintError("[XIVSlothComboX] 无法启动设置页面，请查看插件日志。");
+            }
         }
 
         private void PrintLoginMessage()
@@ -346,7 +381,7 @@ namespace XIVSlothComboX
 
         private void PrintMotD()
         {
-            Service.ChatGui.PrintError(AboutUs.Ban);
+            Service.ChatGui.PrintError(MotdText);
             // Service.ChatGui.PrintError($"[XIVSlothComboX] 和 [XIVSlothCombo]冲突，请关闭或者删掉一个");
         }
 
@@ -360,7 +395,8 @@ namespace XIVSlothComboX
             // isAuto = false;
 
             autoTokenSource.Cancel();
-            _ConfigWindow?.Dispose();
+            _WebUIServer?.Dispose();
+            _WebUIServer = null;
             _WindowSystem.RemoveAllWindows();
 
             Service.CommandManager.RemoveHandler(Command);
@@ -632,17 +668,17 @@ namespace XIVSlothComboX
                             file.WriteLine($"测试咯1{customComboInfoAttribute.Key} - {customComboInfoAttribute.Value.FancyName}");
                         }
                         
-                        foreach (var keyValuePair in ConfigWindow.groupedPresets)
+                        foreach (var keyValuePair in PresetService.GroupedPresets)
                         {
                             
                             file.WriteLine($"职业：{keyValuePair.Key} ");
                             foreach (var valueTuple in keyValuePair.Value)
                             {
                                 file.WriteLine($"{valueTuple.Preset}- {valueTuple.Info.FancyName}");
-                                foreach (var tuple in ConfigWindow.presetChildren[valueTuple.Preset])
+                                foreach (var tuple in PresetService.PresetChildren[valueTuple.Preset])
                                 {
                                     file.WriteLine($"   {tuple.Preset}- {tuple.Info.FancyName}");
-                                    ConfigWindow.presetChildren.TryGetValue(tuple.Preset, out var 小小);
+                                    PresetService.PresetChildren.TryGetValue(tuple.Preset, out var 小小);
                                     foreach (var valueTuple1 in 小小)
                                     {
                                         file.WriteLine($"        {valueTuple1.Preset}- {valueTuple1.Info.FancyName}");
@@ -984,17 +1020,17 @@ namespace XIVSlothComboX
                 }
 
 
+                case "open":
+                case "ui":
+                case "config":
+                {
+                    OpenWebUi();
+                    break;
+                }
+
                 default:
                 {
-                    _ConfigWindow.IsOpen = !_ConfigWindow.IsOpen;
-                    PvEFeatures.HasToOpenJob = true;
-                    if (argumentsParts[0].Length > 0)
-                    {
-                        var jobname = ConfigWindow.groupedPresets.Where(x => x.Value.Any(y => y.Info.JobShorthand.Equals(argumentsParts[0].ToLower(), StringComparison.CurrentCultureIgnoreCase))).FirstOrDefault().Key;
-                        var header = $"{jobname} - {argumentsParts[0].ToUpper()}";
-                        Service.PluginLog.Debug($"{jobname}");
-                        PvEFeatures.HeaderToOpen = header;
-                    }
+                    OpenWebUi();
                     break;
                 }
             }

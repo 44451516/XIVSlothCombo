@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>SlothCombo.Abstractions</RootNamespace>
+    <AssemblyName>SlothCombo.Abstractions</AssemblyName>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NoWarn>CS1591</NoWarn>
+  </PropertyGroup>
+
+  <!--
+    This project is the seam between the game logic and whatever hosts it.
+
+    It has no dependency on Dalamud: the game logic only ever talks to the
+    interfaces declared here, so the same source files can be hosted by the
+    standalone runtime (which implements them on top of FFXIVClientStructs)
+    and by the legacy Dalamud plugin (which implements them on top of the
+    Dalamud services).
+
+    The Excel reader is referenced for its row interface only. It does not
+    reference Dalamud either.
+  -->
+  <ItemGroup>
+    <PackageReference Include="Lumina" Version="7.6.0" />
+    <PackageReference Include="Lumina.Excel" Version="7.5.0" />
+  </ItemGroup>
+
+</Project>
