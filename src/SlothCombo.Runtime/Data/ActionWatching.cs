@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using SlothCombo.Abstractions;
 
+using SlothCombo.Runtime.Hooking;
 using SlothCombo.Runtime.Services;
 
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -82,6 +83,27 @@ namespace SlothCombo.Data
             byte a7
         )
         {
+            try
+            {
+                TrackUseActionLocation(actionType, actionId, ref targetedActorID, vectorLocation);
+            }
+            catch (Exception ex)
+            {
+                DetourGuard.Report(nameof(UseActionLocationDetour), ex);
+            }
+
+            return UseActionLocationHook!.Original(actionManager, actionType, actionId, targetedActorID,
+                vectorLocation, param, a7);
+        }
+
+        private static void TrackUseActionLocation(uint actionType, uint actionId, ref ulong targetedActorID,
+            IntPtr vectorLocation)
+        {
+            if (vectorLocation == IntPtr.Zero)
+            {
+                return;
+            }
+
             if (CustomComboFunctions.CustomTimelineIsEnable())
             {
                 if (actionType == (byte)FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action)
@@ -172,12 +194,6 @@ namespace SlothCombo.Data
                 // Service.ChatGui.PrintError(
                 //     $"UseActionLocationDetour{GetActionName(actionId)}-{actionId}-{actionType}-{targetedActorID} {param}");
             }
-
-
-            var ret = UseActionLocationHook.Original(actionManager, actionType, actionId, targetedActorID,
-                vectorLocation, param, a7);
-
-            return ret;
         }
 
         [UnmanagedFunctionPointer(CallingConvention.Winapi)]
@@ -192,6 +208,22 @@ namespace SlothCombo.Data
             System.Numerics.Vector3* targetPos, ActionEffectHandler.Header* header,
             ActionEffectHandler.TargetEffects* effects, GameObjectId* targetEntityIds)
         {
+            // The game is served first and unconditionally, so nothing that
+            // happens below can keep it from processing its own effect.
+            ReceiveActionEffectHook!.Original(casterEntityId, casterPtr, targetPos, header, effects, targetEntityIds);
+
+            try
+            {
+                TrackReceivedActionEffect(casterEntityId, header);
+            }
+            catch (Exception ex)
+            {
+                DetourGuard.Report(nameof(ReceiveActionEffectDetour), ex);
+            }
+        }
+
+        private static unsafe void TrackReceivedActionEffect(uint casterEntityId, ActionEffectHandler.Header* header)
+        {
             if (!CustomComboFunctions.InCombat())
             {
                 CombatActions.Clear();
@@ -203,18 +235,18 @@ namespace SlothCombo.Data
             //     MCHOpenerLogic.isInit = false;
             // }
 
-            ReceiveActionEffectHook!.Original(casterEntityId, casterPtr, targetPos, header, effects, targetEntityIds);
-
             if (ActionType is 13 or 2)
                 return;
 
-            if (ActionSheet.ContainsKey(header->ActionId) == false)
+            if (header is null || ActionSheet.ContainsKey(header->ActionId) == false)
             {
                 return;
             }
 
+            var localPlayer = Service.ObjectTable?.LocalPlayer;
+
             if (header->ActionId != 7 && header->ActionId != 8 &&
-                casterEntityId == Service.ObjectTable.LocalPlayer.GameObjectId)
+                localPlayer is not null && casterEntityId == localPlayer.GameObjectId)
             {
                 ActionSheet.TryGetValue(header->ActionId, out var sheet);
                 {
@@ -270,6 +302,33 @@ namespace SlothCombo.Data
             long a8,
             long a9)
         {
+            try
+            {
+                TrackSentAction(ref targetObjectId, actionType, actionId);
+            }
+            catch (Exception ex)
+            {
+                DetourGuard.Report(nameof(SendActionDetour), ex);
+            }
+
+            // The action goes out exactly once, whatever the bookkeeping did.
+            SendActionHook!.Original(targetObjectId, actionType, actionId, sequence, a5, a6, a7, a8, a9);
+
+            try
+            {
+                TimeLastActionUsed = DateTime.Now;
+                ActionType = actionType;
+
+                UpdateHelpers(actionId);
+            }
+            catch (Exception ex)
+            {
+                DetourGuard.Report(nameof(SendActionDetour), ex);
+            }
+        }
+
+        private static void TrackSentAction(ref ulong targetObjectId, byte actionType, uint actionId)
+        {
             // Service.ChatGui.PrintError($"1 {actionType} - {actionId}");
             if (actionType == (byte)FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action)
             {
@@ -312,31 +371,17 @@ namespace SlothCombo.Data
                 TimelineList.Add(customAction);
             }
 
-
-            try
+            if (actionType == 1 && CustomComboFunctions.GetMaxCharges(actionId) > 0)
             {
-                if (actionType == 1 && CustomComboFunctions.GetMaxCharges(actionId) > 0)
-                {
-                    ChargeTimestamps[actionId] = Environment.TickCount64;
-                }
-
-                if (actionType == 1)
-                {
-                    ActionTimestamps[actionId] = Environment.TickCount64;
-                }
-
-                CheckForChangedTarget(actionId, ref targetObjectId, actionType);
-                SendActionHook!.Original(targetObjectId, actionType, actionId, sequence, a5, a6, a7, a8, a9);
-                TimeLastActionUsed = DateTime.Now;
-                ActionType = actionType;
-
-                UpdateHelpers(actionId);
+                ChargeTimestamps[actionId] = Environment.TickCount64;
             }
-            catch (Exception ex)
+
+            if (actionType == 1)
             {
-                Svc.Log.Error(ex, "SendActionDetour");
-                SendActionHook!.Original(targetObjectId, actionType, actionId, sequence, a5, a6, a7, a8, a9);
+                ActionTimestamps[actionId] = Environment.TickCount64;
             }
+
+            CheckForChangedTarget(actionId, ref targetObjectId, actionType);
         }
 
         private static void UpdateHelpers(uint actionId)

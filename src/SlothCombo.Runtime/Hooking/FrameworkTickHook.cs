@@ -69,8 +69,7 @@ internal sealed unsafe class FrameworkTickHook : IDisposable
         }
         catch (Exception ex)
         {
-            // The runtime may already be on its way out, and the log with it.
-            Service.PluginLog?.Error(ex, "The update loop of the runtime failed.");
+            DetourGuard.Report(nameof(TickDetour), ex);
         }
 
         return _hook.Original(framework);

@@ -32,7 +32,7 @@ internal static unsafe class GameObjectLookup
             return null;
         }
 
-        var manager = ClientObjectManager.Instance();
+        var manager = CharacterManager.Instance();
         if (manager is null)
         {
             return null;
@@ -40,7 +40,7 @@ internal static unsafe class GameObjectLookup
 
         foreach (var entry in manager->BattleCharas)
         {
-            var chara = entry.BattleChara;
+            BattleChara* chara = entry;
             if (chara is null)
             {
                 continue;
@@ -353,20 +353,17 @@ internal sealed unsafe class ObjectTableService : IObjectTable
     {
         get
         {
-            var manager = ClientObjectManager.Instance();
+            var manager = CharacterManager.Instance();
             if (manager is null)
             {
                 return null;
             }
 
-            // The local player is the first entry of the battle character array.
-            var battleCharas = manager->BattleCharas;
-            if (battleCharas.Length == 0)
-            {
-                return null;
-            }
-
-            var player = battleCharas[0].BattleChara;
+            // The first battle character of the character manager is the one
+            // the player controls. The client object manager only holds the
+            // objects the client creates on its own, which never include the
+            // player.
+            BattleChara* player = manager->BattleCharas[0];
             return player is null ? null : new GameObjectAdapter(player);
         }
     }
@@ -376,7 +373,7 @@ internal sealed unsafe class ObjectTableService : IObjectTable
     {
         get
         {
-            var manager = ClientObjectManager.Instance();
+            var manager = CharacterManager.Instance();
             if (manager is null)
             {
                 return [];
@@ -385,7 +382,7 @@ internal sealed unsafe class ObjectTableService : IObjectTable
             var result = new List<IGameObject>();
             foreach (var entry in manager->BattleCharas)
             {
-                var pointer = entry.BattleChara;
+                BattleChara* pointer = entry;
                 if (pointer is not null)
                 {
                     result.Add(new GameObjectAdapter(pointer));

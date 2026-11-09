@@ -88,6 +88,9 @@
 临时文件要等回收后才释放）。只有 `SlothCombo.Loader.dll`、`hostfxr` 或 `shared` 运行时
 本身变化时才需要重启游戏；第一次升级到带加载器的版本也需要先关一次游戏。
 
+钩子里抛出的异常不会带崩游戏：`%TEMP%\XIVSlothCombo\detour-errors.log` 里有按秒节流的
+记录，同样的错误也进运行日志。
+
 ### 命令行参数
 
 ```

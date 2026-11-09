@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using SlothCombo.Abstractions;
+using SlothCombo.Runtime.Hooking;
 
 namespace SlothCombo.Runtime.Services;
 
@@ -76,7 +77,7 @@ internal sealed class FrameworkService : IFramework
                 }
                 catch (Exception ex)
                 {
-                    Service.PluginLog?.Error(ex, "An update handler of the runtime failed.");
+                    DetourGuard.Report("An update handler of the runtime", ex);
                 }
             }
         }
@@ -101,7 +102,7 @@ internal sealed class FrameworkService : IFramework
             }
             catch (Exception ex)
             {
-                Service.PluginLog?.Error(ex, "A tick action of the runtime failed.");
+                DetourGuard.Report("A tick action of the runtime", ex);
             }
         }
     }

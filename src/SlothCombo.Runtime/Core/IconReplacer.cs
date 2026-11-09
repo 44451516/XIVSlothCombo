@@ -10,6 +10,7 @@ using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using SlothCombo.Abstractions;
 using SlothCombo.Combos.PvE;
 using SlothCombo.CustomComboNS;
+using SlothCombo.Runtime.Hooking;
 using SlothCombo.Runtime.Services;
 
 namespace SlothCombo.Core
@@ -99,7 +100,7 @@ namespace SlothCombo.Core
 
             catch (Exception ex)
             {
-                Service.PluginLog.Error(ex, "Preset error");
+                DetourGuard.Report(nameof(GetIconDetour), ex);
                 return OriginalHook(actionID);
             }
         }

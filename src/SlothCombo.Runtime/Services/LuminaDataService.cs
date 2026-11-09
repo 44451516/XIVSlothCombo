@@ -28,7 +28,18 @@ internal sealed class LuminaDataService : IDataManager, IDisposable
     {
         ArgumentException.ThrowIfNullOrEmpty(gameInstallPath);
 
-        _gameData = new GameData(ResolveDataPath(gameInstallPath), new LuminaOptions());
+        _language = ReadLanguage();
+
+        // The language has to be part of the options, not only of the sheet
+        // lookups: a row that links to another sheet resolves that link with
+        // the default language of the module, and a default of none makes the
+        // link throw instead of returning the row.
+        var options = new LuminaOptions
+        {
+            DefaultExcelLanguage = ToLuminaLanguage(_language),
+        };
+
+        _gameData = new GameData(ResolveDataPath(gameInstallPath), options);
         _module = new ExcelModule(_gameData);
 
         // The status structs of the game only carry an id, so the names are
