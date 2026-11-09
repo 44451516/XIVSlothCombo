@@ -20,6 +20,10 @@
     <PublishSingleFile>false</PublishSingleFile>
     <InvariantGlobalization>true</InvariantGlobalization>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+
+    <!-- The game runs elevated, so the program asks for administrator to be
+         allowed to load the runtime into it. -->
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>

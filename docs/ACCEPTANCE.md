@@ -15,22 +15,26 @@
 | --- | --- | --- | --- |
 | A1 | 运行时工程可编译 | `dotnet build src\SlothCombo.Runtime -c Release` | 0 错误 0 警告（全量重建） |
 | A2 | 主程序工程可编译 | `dotnet build src\SlothCombo.Host -c Release` | 0 错误 0 警告 |
-| A3 | 引导库（NativeAOT）可编译 | `dotnet build src\SlothCombo.Boot -c Release` | 0 错误 0 警告 |
-| A4 | 测试工程可编译并通过 | `dotnet run --project tests\SlothCombo.Tests -c Release` | 9/9 通过，0 跳过 |
-| A5 | 安装包可装配 | `.\build\publish.ps1` | 产出 `dist/`，含 hostfxr、`shared/Microsoft.NETCore.App`、引导库、托管运行时、wwwroot |
-| A6 | 注入引导链可用 | `rundll32 dist\SlothCombo.Boot.dll,SlothComboBootRundll32` | hostfxr → 托管程序集 → 运行时代码全部执行到（非游戏进程因无 sqpack 按预期报「拒绝启动」） |
+| A3 | 引导库（原生 C，clang 编译）可编译 | `dotnet build src\SlothCombo.Boot -c Release` | 0 错误 0 警告 |
+| A4 | 测试工程可编译并通过 | `dotnet run --project tests\SlothCombo.Tests -c Release` | 15/15 通过，0 跳过 |
+| A5 | 安装包可装配 | `.\build\publish.ps1` | 产出 `dist/`，含 hostfxr、`shared/Microsoft.NETCore.App`、引导库、Loader、托管运行时、wwwroot |
+| A6 | 注入引导链可用 | `rundll32 dist\SlothCombo.Boot.dll,SlothComboBootRundll32` | hostfxr → Loader → 可卸载上下文里的托管运行时全部执行到（非游戏进程因无 sqpack 按预期报「拒绝启动」） |
 | A7 | PE 导出表解析正确 | `PeExportTest` | 通过 |
 | A8 | 命名管道 IPC 往返 | `IpcTest`（真实管道） | 通过 |
 | A9 | 旧 Dalamud 插件工程仍可编译 | `dotnet build XIVSlothComboX -c Release` | 0 错误（24 条既有文档警告） |
 | A10 | FCS 子模块未被污染 | `git -C lib\FFXIVClientStructs status` | 干净 |
+| A11 | 热重载加载器 | `LoaderTest`（测试工程内） | 同一构建不重复启动；新构建会先停旧的；卸载后旧 DLL 可删除（文件锁释放） |
+| A12 | 游戏占用时仍可构建 | 占用 dist 中任意文件后运行 `.\build\publish.ps1` | 未变化的占用文件被跳过；变化了的占用文件会列名并中止（不留半残安装） |
 
 ### A4 的测试覆盖
 
 | 测试 | 查什么 |
 | --- | --- |
 | `PeExportTest` | 手写 PE 导出表解析：DOS/NT 头、节表、导出目录、名称/序号/函数表 |
-| `BootChainTest` | 按游戏的方式加载引导库（`rundll32` + dist 布局），验证 hostfxr 能把托管运行时拉起来 |
+| `BootChainTest` | 按游戏的方式加载引导库（`rundll32` + dist 布局），验证 hostfxr → Loader → 可卸载上下文这条链能拉起托管运行时 |
 | `IpcTest` | 真实 Windows 命名管道：4 字节小端长度 + UTF-8 JSON 帧的请求/响应往返 |
+| `LoaderTest` | 用替身运行时验证：同构建短路、换构建先停旧再装新、卸载后旧 DLL 可删除 |
+| `StagingTest` | 复制件按内容命名：同构建复用同一目录、新构建换新目录并清旧、boot 库从发布目录之外加载 |
 
 ---
 
@@ -38,6 +42,10 @@
 
 > 前置：解压 `dist/SlothCombo.zip` 到一个路径不含特殊字符的目录；启动游戏到主菜单；
 > 运行 `SlothCombo.Host.exe`。
+>
+> **热重载更新的第一次部署需要先关一次游戏**：旧的 `dist\SlothCombo.Boot.dll` 正被当前
+> 游戏会话锁住，属于加载机制本身的一次性迁移。之后改代码只需要关掉 Host 窗口、重新构建、
+> 再运行 Host，游戏不必再关（见 B11）。
 
 | # | 验收项 | 怎么验 | 预期 |
 | --- | --- | --- | --- |
@@ -51,6 +59,8 @@
 | B8 | 主线程调度正确 | 连续快速切换多个功能开关 | 无跨线程异常，日志无 `InvalidOperationException` |
 | B9 | 进程生命周期 | 关闭游戏 | `SlothCombo.Host.exe` 随之退出，端口释放 |
 | B10 | 图标接口 | 设置页看图标位 | **已知降级**：当前返回 404，前端显示占位图（见下） |
+| B11 | 热重载（不关游戏） | 关掉 Host 窗口（游戏保持运行）→ 重新 `.\build\publish.ps1` → 再运行 `SlothCombo.Host.exe` | 打印 `The runtime is running.`；`%TEMP%\XIVSlothCombo\loader.log` 出现 `A new build was found` 与 `unloaded`；日志目录出现新会话头；设置页正常 |
+| B12 | 构建不关游戏 | 游戏运行中执行 `.\build\publish.ps1` | 未变化的被占用文件被跳过；改动了的被占用文件会列名并要求关一次游戏 |
 
 ### B10 说明（图标降级）
 
@@ -73,8 +83,9 @@
 ```powershell
 dotnet build src\SlothCombo.Runtime -c Release   # 0 错误 0 警告
 dotnet build src\SlothCombo.Host -c Release       # 0 错误 0 警告
+dotnet build src\SlothCombo.Loader -c Release     # 0 错误 0 警告
 dotnet build src\SlothCombo.Boot -c Release       # 0 错误 0 警告
-dotnet run --project tests\SlothCombo.Tests -c Release   # 9/9
+dotnet run --project tests\SlothCombo.Tests -c Release   # 15/15
 .\build\publish.ps1                               # 产出 dist/
 ```
 

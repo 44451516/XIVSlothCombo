@@ -216,12 +216,33 @@ namespace SlothCombo.Attributes
                     _ => "en-us",
                 };
                 
-                TextInfo textInfo = new CultureInfo(cultureID, false).TextInfo;
+                TextInfo textInfo = ResolveTextInfo(cultureID);
                 jobname = textInfo.ToTitleCase(jobname);
                 return jobname;
 
             } //Misc or unknown
             else return key == 99 ? "Global" : "Unknown";
+        }
+
+        /// <summary>
+        /// Gets the casing rules of the given culture.
+        /// </summary>
+        /// <remarks>
+        /// The runtime of the game is started with the invariant mode of
+        /// globalization, where a named culture does not exist. The text rules
+        /// of the invariant culture still capitalize the name of a job, which
+        /// is all this needs.
+        /// </remarks>
+        private static TextInfo ResolveTextInfo(string cultureID)
+        {
+            try
+            {
+                return new CultureInfo(cultureID, false).TextInfo;
+            }
+            catch (CultureNotFoundException)
+            {
+                return CultureInfo.InvariantCulture.TextInfo;
+            }
         }
         
 

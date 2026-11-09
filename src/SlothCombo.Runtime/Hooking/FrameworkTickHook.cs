@@ -69,7 +69,8 @@ internal sealed unsafe class FrameworkTickHook : IDisposable
         }
         catch (Exception ex)
         {
-            Service.PluginLog.Error(ex, "The update loop of the runtime failed.");
+            // The runtime may already be on its way out, and the log with it.
+            Service.PluginLog?.Error(ex, "The update loop of the runtime failed.");
         }
 
         return _hook.Original(framework);

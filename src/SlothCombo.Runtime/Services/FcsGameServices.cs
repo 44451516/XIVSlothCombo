@@ -411,7 +411,7 @@ internal sealed unsafe class ObjectTableService : IObjectTable
 /// The struct library models every condition as its own boolean field rather
 /// than as a bit mask, so the lookup is a direct field read.
 /// </remarks>
-internal sealed unsafe class ConditionService : IConditionService
+internal sealed unsafe class ConditionService : IConditionService, IDisposable
 {
     /// <summary>The conditions the runtime keeps an eye on.</summary>
     private static readonly ConditionFlag[] TrackedFlags =
@@ -434,6 +434,8 @@ internal sealed unsafe class ConditionService : IConditionService
     ];
 
     private readonly Dictionary<ConditionFlag, bool> _lastValues = [];
+    private readonly IFramework _framework;
+    private readonly FrameworkUpdateDelegate _onUpdate;
 
     /// <summary>Creates the condition service over the given update loop.</summary>
     /// <param name="framework">The update loop of the game.</param>
@@ -441,10 +443,16 @@ internal sealed unsafe class ConditionService : IConditionService
     {
         ArgumentNullException.ThrowIfNull(framework);
 
+        _framework = framework;
+        _onUpdate = _ => Update();
+
         // The game does not raise an event when a condition changes, so the
         // change is detected by comparing the state on every update.
-        framework.Update += _ => Update();
+        _framework.Update += _onUpdate;
     }
+
+    /// <summary>Stops listening to the update loop.</summary>
+    public void Dispose() => _framework.Update -= _onUpdate;
 
     /// <inheritdoc/>
     public event Action<ConditionFlag, bool>? ConditionChange;

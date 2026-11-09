@@ -32,6 +32,11 @@ internal sealed unsafe class SignatureScanner : ISignatureScanner
     /// </remarks>
     public static ISignatureScanner? Current { get; private set; }
 
+    /// <summary>
+    /// Lets go of the scanner of the runtime that is being stopped.
+    /// </summary>
+    internal static void Reset() => Current = null;
+
     private readonly IntPtr _moduleBase;
     private readonly IntPtr _textBase;
     private readonly int _textSize;

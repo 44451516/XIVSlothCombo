@@ -15,8 +15,11 @@ internal static class StatusSheetLookup
     private static Func<uint, string>? _resolver;
 
     /// <summary>Registers the resolver that maps a status id to its name.</summary>
-    /// <param name="resolver">The resolver to use.</param>
-    public static void Register(Func<uint, string> resolver) => _resolver = resolver;
+    /// <param name="resolver">The resolver to use, or <c>null</c> to let it go.</param>
+    public static void Register(Func<uint, string>? resolver) => _resolver = resolver;
+
+    /// <summary>Releases the resolver, which holds the data service it came from.</summary>
+    public static void Unregister() => _resolver = null;
 
     /// <summary>Gets the name of the status with the given id.</summary>
     /// <param name="statusId">The id of the status.</param>

@@ -16,9 +16,28 @@ internal sealed class FrameworkService : IFramework
 {
     private readonly Queue<FrameworkUpdateDelegate> _tickActions = [];
     private readonly object _lock = new();
+    private volatile bool _suspended;
 
     /// <inheritdoc/>
     public event FrameworkUpdateDelegate? Update;
+
+    /// <summary>
+    /// Stops raising the update event.
+    /// </summary>
+    /// <remarks>
+    /// The runtime is about to remove the hooks and let go of every service,
+    /// so the frame that is running right now must not reach any of them.
+    /// </remarks>
+    public void Suspend()
+    {
+        _suspended = true;
+        Update = null;
+
+        lock (_lock)
+        {
+            _tickActions.Clear();
+        }
+    }
 
     /// <inheritdoc/>
     public void RunOnTick(FrameworkUpdateDelegate action)
@@ -41,6 +60,11 @@ internal sealed class FrameworkService : IFramework
     /// </remarks>
     public void RaiseUpdate()
     {
+        if (_suspended)
+        {
+            return;
+        }
+
         var handlers = Update;
         if (handlers is not null)
         {
@@ -52,7 +76,7 @@ internal sealed class FrameworkService : IFramework
                 }
                 catch (Exception ex)
                 {
-                    Service.PluginLog.Error(ex, "An update handler of the runtime failed.");
+                    Service.PluginLog?.Error(ex, "An update handler of the runtime failed.");
                 }
             }
         }
@@ -77,7 +101,7 @@ internal sealed class FrameworkService : IFramework
             }
             catch (Exception ex)
             {
-                Service.PluginLog.Error(ex, "A tick action of the runtime failed.");
+                Service.PluginLog?.Error(ex, "A tick action of the runtime failed.");
             }
         }
     }

@@ -41,14 +41,22 @@ internal sealed class BootSettings
     /// <summary>Gets or sets the runtime configuration of the managed part.</summary>
     public string RuntimeConfigPath { get; set; } = string.Empty;
 
+    /// <summary>Gets or sets the loader that keeps the runtime replaceable.</summary>
+    /// <remarks>
+    /// The loader is the only assembly that is handed to the default context
+    /// of the runtime, where it stays for the rest of the session. It has to
+    /// be loaded from the same path every time, otherwise a second loader
+    /// would lose track of the runtime the first one kept.
+    /// </remarks>
+    public string LoaderPath { get; set; } = string.Empty;
+
     /// <summary>Gets or sets the assembly that holds the managed runtime.</summary>
-    public string AssemblyPath { get; set; } = string.Empty;
-
-    /// <summary>Gets or sets the type that holds the entry point.</summary>
-    public string TypeName { get; set; } = string.Empty;
-
-    /// <summary>Gets or sets the name of the entry point.</summary>
-    public string MethodName { get; set; } = string.Empty;
+    /// <remarks>
+    /// This is the copy in the temporary folder, not the file of the
+    /// installation. The copy is loaded into a context that can be unloaded,
+    /// so the installation stays writable while the game runs.
+    /// </remarks>
+    public string RuntimePath { get; set; } = string.Empty;
 
     /// <summary>Gets or sets the folder the runtime keeps its data in.</summary>
     public string DataFolder { get; set; } = string.Empty;

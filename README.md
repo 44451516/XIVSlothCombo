@@ -17,7 +17,7 @@
 │                                                                    │
 │  SlothCombo.Host.exe                                              │
 │    ├─ 找到 ffxiv_dx11.exe 进程                                    │
-│    ├─ LoadLibrary 注入 SlothCombo.Boot.dll（NativeAOT）             │
+│    ├─ LoadLibrary 注入 SlothCombo.Boot.dll（原生 C）                │
 │    ├─ HttpListener 托管设置页（仅 127.0.0.1）                      │
 │    └─ 管道客户端 SlothCombo.Ipc.{用户名}                           │
 │                            │ 4 字节小端长度 + UTF-8 JSON 帧         │
@@ -26,12 +26,13 @@
 └──────────────────────────── 游戏进程之内 ────────────────────────────┘
                              │ 注入 + hostfxr
 ┌──────────────────────────── 游戏进程之内 ────────────────────────────┐
-│  SlothCombo.Boot.dll（NativeAOT 引导库）                            │
-│    └─ hostfxr → SlothCombo.Runtime.dll（托管运行时）                │
-│         ├─ Hook ActionManager.GetAdjustedActionId 改写技能选择       │
-│         ├─ FCS 读游戏数据、Lumina 读 Sheet                          │
-│         ├─ 管道服务端：把请求派发到游戏主线程再执行                  │
-│         └─ API 语义：presets / value / config / timeline / icon     │
+│  SlothCombo.Boot.dll（原生 C 引导库）                               │
+│    └─ hostfxr → SlothCombo.Loader.dll                               │
+│         └─ 把 SlothCombo.Runtime.dll 装进可卸载的 AssemblyLoadContext│
+│              ├─ Hook ActionManager.GetAdjustedActionId 改写技能选择  │
+│              ├─ FCS 读游戏数据、Lumina 读 Sheet                     │
+│              ├─ 管道服务端：把请求派发到游戏主线程再执行             │
+│              └─ API 语义：presets / value / config / timeline / icon│
 └────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -43,13 +44,17 @@
   接口由 Host 通过命名管道转给游戏内运行时，运行时再派发到游戏主线程执行。
 - **一套 .NET 运行时**。Host 与游戏内运行时共用安装包里的 `shared/Microsoft.NETCore.App`，
   不要求玩家机器上装 .NET。
+- **改代码不用关游戏**。CoreCLR 一旦进进程就卸不掉，所以常驻的 `SlothCombo.Loader.dll`
+  只占住默认上下文的一小块，把运行时装进可回收的 `AssemblyLoadContext`。关掉 Host 窗口、
+  重新构建、再运行 Host，就会先停旧运行时、卸旧上下文，再载入新构建。
 
 ### 目录
 
 | 路径 | 说明 |
 | --- | --- |
 | `src/SlothCombo.Abstractions/` | 跨进程契约：IPC 请求/响应/帧协议、抽象接口 |
-| `src/SlothCombo.Boot/` | 注入进游戏的 NativeAOT 引导库，负责拉起托管运行时 |
+| `src/SlothCombo.Boot/` | 注入进游戏的原生 C 引导库（clang 编译），负责拉起托管运行时 |
+| `src/SlothCombo.Loader/` | 常驻加载器：把运行时装进可卸载上下文，实现热重载 |
 | `src/SlothCombo.Runtime/` | 游戏内托管运行时：连招逻辑、Hook、游戏数据、WebUI API |
 | `src/SlothCombo.Host/` | 独立主程序：注入器、HTTP 服务、管道客户端 |
 | `src/Directory.Build.props` | 独立程序的共享编译设置 |
@@ -72,6 +77,16 @@
 4. 浏览器会自动打开设置页，在页面里调整连招配置。
 
 程序会一直跟着游戏进程存活，关掉游戏后一起退出。
+
+### 热重载（改代码不关游戏）
+
+1. 关掉 Host 窗口（游戏保持运行）。
+2. 重新运行 `.\build\publish.ps1`。
+3. 再运行 `SlothCombo.Host.exe`：加载器发现新构建，先停旧运行时、卸载旧上下文，再载入新的。
+
+`%TEMP%\XIVSlothCombo\loader.log` 会记录每次替换，以及旧上下文是否真的被回收（旧构建的
+临时文件要等回收后才释放）。只有 `SlothCombo.Loader.dll`、`hostfxr` 或 `shared` 运行时
+本身变化时才需要重启游戏；第一次升级到带加载器的版本也需要先关一次游戏。
 
 ### 命令行参数
 
@@ -100,7 +115,8 @@ SlothCombo.Host [选项]
 ```
 dist/
 ├── SlothCombo.Host.exe          独立主程序
-├── SlothCombo.Boot.dll          注入进游戏的 NativeAOT 引导库
+├── SlothCombo.Boot.dll          注入进游戏的原生 C 引导库
+├── SlothCombo.Loader.dll        游戏内的常驻加载器（热重载）
 ├── hostfxr.dll                  供主程序启动时寻找运行时
 ├── host/fxr/<版本>/hostfxr.dll  供引导库寻找运行时
 ├── shared/Microsoft.NETCore.App/<版本>/   .NET 运行时本体
@@ -135,10 +151,18 @@ npm run build:only     # 产物输出到 ../XIVSlothComboX/WebUI/wwwroot
 .\build\publish.ps1
 ```
 
-脚本会依次：发布 Host → 发布游戏内托管运行时 → 构建 NativeAOT 引导库 → 构建前端 →
-从本机 `dotnet` 安装目录取 `hostfxr` 与 `shared/Microsoft.NETCore.App` → 汇总成 `dist/`。
+脚本会依次：发布 Host → 发布游戏内托管运行时 → 发布加载器 → 用 clang 构建原生 C 引导库 →
+构建前端 → 从本机 `dotnet` 安装目录取 `hostfxr` 与 `shared/Microsoft.NETCore.App` → 汇总成 `dist/`。
+
+游戏运行中也可以构建：被占用的未变化文件会跳过，变化了的被占用文件会列名并要求先关掉
+Host 与游戏，不会留下半残的安装目录。
 
 参数：`-Configuration`（默认 Release）、`-Runtime`（默认 win-x64）、`-Output`（默认 dist）。
+
+> **构建依赖**：.NET 10 SDK、Node.js（前端），以及 PATH 上的 `clang`（引导库）。
+> 引导库 `src/SlothCombo.Boot/boot.c` 是原生 C，用 clang（如 llvm-mingw，默认目标
+> `x86_64-w64-windows-gnu`）编译成 DLL，**不再需要 MSVC / Windows SDK / NativeAOT**。
+> 可用 `-p:ClangCompiler=<路径>` 指定其它 clang。
 
 ### 单独构建某个工程
 
@@ -147,6 +171,7 @@ dotnet build XIVSlothCombo.sln -c Release          # 整仓（插件 + 独立程
 
 dotnet build src\SlothCombo.Runtime\SlothCombo.Runtime.csproj -c Release
 dotnet build src\SlothCombo.Host\SlothCombo.Host.csproj -c Release
+dotnet build src\SlothCombo.Loader\SlothCombo.Loader.csproj -c Release
 dotnet build src\SlothCombo.Boot\SlothCombo.Boot.csproj -c Release
 dotnet build tests\SlothCombo.Tests\SlothCombo.Tests.csproj -c Release
 ```

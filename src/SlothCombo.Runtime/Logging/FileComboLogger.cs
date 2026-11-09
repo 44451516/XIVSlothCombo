@@ -13,7 +13,7 @@ namespace SlothCombo.Runtime.Logging;
 /// for the hook sites: a crash inside a detour is the most likely failure
 /// mode of the standalone runtime.
 /// </remarks>
-internal sealed class FileComboLogger : IComboLogger
+internal sealed class FileComboLogger : IComboLogger, IDisposable
 {
     private readonly ILogger _logger;
 
@@ -52,4 +52,11 @@ internal sealed class FileComboLogger : IComboLogger
 
     /// <inheritdoc/>
     public void Error(Exception exception, string message) => _logger.Error(exception, message);
+
+    /// <summary>Closes the file of the log.</summary>
+    /// <remarks>
+    /// The file is opened exclusively, so a runtime that takes the place of
+    /// this one can only open it after it is closed.
+    /// </remarks>
+    public void Dispose() => (_logger as IDisposable)?.Dispose();
 }

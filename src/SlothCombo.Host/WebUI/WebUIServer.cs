@@ -17,8 +17,9 @@ namespace SlothCombo.Host.WebUI;
 /// <remarks>
 /// <para>
 /// The page of the settings and the server that shows it live outside of the
-/// game. The server only listens on the loopback interface and every request
-/// has to carry the token of the session.
+/// game. The server only listens on the loopback interface; the files of the
+/// page are the same for every session, but every request that touches the
+/// game has to carry the token of the session.
 /// </para>
 /// <para>
 /// The work that needs the game is handed to the runtime inside the game over
@@ -164,23 +165,24 @@ internal sealed class WebUIServer : IDisposable
         try
         {
             var path = context.Request.Url?.AbsolutePath ?? "/";
-            var token = context.Request.Headers["X-Sloth-Token"];
-            if (string.IsNullOrEmpty(token))
-            {
-                token = context.Request.QueryString["t"];
-            }
 
-            var origin = context.Request.Headers["Origin"];
-            var referer = context.Request.Headers["Referer"];
-
-            if (!_auth.Validate(token, origin, referer))
+            if (NeedsToken(path))
             {
-                await WriteJsonAsync(context, 401, "{\"ok\":false,\"error\":{\"code\":\"UNAUTHORIZED\",\"message\":\"会话已失效，请重新打开设置页\"}}").ConfigureAwait(false);
-                return;
-            }
+                var token = context.Request.Headers["X-Sloth-Token"];
+                if (string.IsNullOrEmpty(token))
+                {
+                    token = context.Request.QueryString["t"];
+                }
 
-            if (path.StartsWith("/api/", StringComparison.Ordinal))
-            {
+                var origin = context.Request.Headers["Origin"];
+                var referer = context.Request.Headers["Referer"];
+
+                if (!_auth.Validate(token, origin, referer))
+                {
+                    await WriteJsonAsync(context, 401, "{\"ok\":false,\"error\":{\"code\":\"UNAUTHORIZED\",\"message\":\"会话已失效，请重新打开设置页\"}}").ConfigureAwait(false);
+                    return;
+                }
+
                 await HandleApiAsync(context, path).ConfigureAwait(false);
                 return;
             }
@@ -199,6 +201,16 @@ internal sealed class WebUIServer : IDisposable
             }
         }
     }
+
+    /// <summary>
+    /// Whether a request has to prove that it belongs to the session.
+    /// </summary>
+    /// <remarks>
+    /// The page and its files are the same for every session, so the browser
+    /// can load them like any other page. Only the work of the interface
+    /// touches the game, so only the interface has to carry the token.
+    /// </remarks>
+    internal static bool NeedsToken(string path) => path.StartsWith("/api/", StringComparison.Ordinal);
 
     /// <summary>
     /// Hands the request to the runtime inside the game and passes the answer on.

@@ -69,4 +69,33 @@ internal static class Service
 
     /// <summary>Gets or sets the icon replacer of the runtime.</summary>
     public static IconReplacer IconReplacer { get; set; } = null!;
+
+    /// <summary>
+    /// Lets go of every service.
+    /// </summary>
+    /// <remarks>
+    /// The runtime is being stopped, and the old assembly is about to be
+    /// unloaded, so nothing may keep pointing at the services of it.
+    /// </remarks>
+    public static void Reset()
+    {
+        ObjectTable = null!;
+        Condition = null!;
+        ChatGui = null!;
+        ClientState = null!;
+        PluginLog = null!;
+        TargetManager = null!;
+        GameInteropProvider = null!;
+        Framework = null!;
+        SigScanner = null!;
+        JobGauges = null!;
+        DataManager = null!;
+        BuddyList = null!;
+        PartyList = null!;
+        Interface = null!;
+        Configuration = null!;
+        Address = null!;
+        ComboCache = null!;
+        IconReplacer = null!;
+    }
 }

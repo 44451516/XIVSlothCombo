@@ -19,21 +19,26 @@ internal static class GameProcessLocator
     public static Process? Find()
     {
         var processes = Process.GetProcessesByName(ProcessName);
-        try
+
+        // The client is started once, but a leftover process of a client
+        // that is on its way out would be picked up as well, so the one
+        // with the window is the one that is used.
+        var chosen = processes.FirstOrDefault(process => !process.HasExited && GetMainWindowHandle(process) != IntPtr.Zero)
+                     ?? processes.FirstOrDefault(process => !process.HasExited);
+
+        // The chosen process is handed to the caller, which reads its id and
+        // main module and waits on it, so it has to stay alive. Disposing it
+        // here would leave the caller with an object whose id and modules can
+        // no longer be read, and the injection would target no process at all.
+        foreach (var process in processes)
         {
-            // The client is started once, but a leftover process of a client
-            // that is on its way out would be picked up as well, so the one
-            // with the window is the one that is used.
-            return processes.FirstOrDefault(process => !process.HasExited && GetMainWindowHandle(process) != IntPtr.Zero)
-                   ?? processes.FirstOrDefault(process => !process.HasExited);
-        }
-        finally
-        {
-            foreach (var process in processes)
+            if (!ReferenceEquals(process, chosen))
             {
                 process.Dispose();
             }
         }
+
+        return chosen;
     }
 
     /// <summary>

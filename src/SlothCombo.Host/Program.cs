@@ -33,6 +33,9 @@ internal static class Program
     {
         Console.OutputEncoding = Encoding.UTF8;
 
+        var exitCode = 0;
+        Exception? failure = null;
+
         try
         {
             var options = HostOptions.Parse(args);
@@ -42,12 +45,66 @@ internal static class Program
                 return 0;
             }
 
-            return Run(options);
+            exitCode = Run(options);
         }
         catch (Exception ex)
         {
+            failure = ex;
             Console.Error.WriteLine($"The program stopped: {ex.Message}");
-            return 1;
+            exitCode = 1;
+        }
+
+        if (exitCode != 0)
+        {
+            if (failure is not null)
+            {
+                WriteErrorFile(failure);
+            }
+
+            PauseBeforeClose();
+        }
+
+        return exitCode;
+    }
+
+    /// <summary>
+    /// Keeps the details of a failure in the folder of the data, so that they
+    /// can be read even after the window of the program has closed.
+    /// </summary>
+    private static void WriteErrorFile(Exception ex)
+    {
+        try
+        {
+            var folder = GetDefaultDataFolder();
+            Directory.CreateDirectory(folder);
+            File.WriteAllText(Path.Combine(folder, "host-error.txt"), ex.ToString());
+        }
+        catch (Exception)
+        {
+            // The file is a convenience; the message on the console is what
+            // the user sees first.
+        }
+    }
+
+    /// <summary>
+    /// Holds the window open after a failure, so that a program started by a
+    /// double click does not close before its message can be read.
+    /// </summary>
+    private static void PauseBeforeClose()
+    {
+        if (Console.IsInputRedirected)
+        {
+            return;
+        }
+
+        Console.Error.WriteLine("Press any key to close...");
+        try
+        {
+            Console.ReadKey(true);
+        }
+        catch (InvalidOperationException)
+        {
+            // There is no console to read a key from.
         }
     }
 
@@ -57,11 +114,11 @@ internal static class Program
     private static int Run(HostOptions options)
     {
         var baseFolder = AppContext.BaseDirectory;
-        var bootLibrary = Path.Combine(baseFolder, "SlothCombo.Boot.dll");
+        var bootSource = Path.Combine(baseFolder, "SlothCombo.Boot.dll");
 
-        if (!File.Exists(bootLibrary))
+        if (!File.Exists(bootSource))
         {
-            Console.Error.WriteLine($"The boot library is missing: {bootLibrary}");
+            Console.Error.WriteLine($"The boot library is missing: {bootSource}");
             return 1;
         }
 
@@ -72,13 +129,10 @@ internal static class Program
             return 1;
         }
 
-        var runtimeFolder = Path.Combine(baseFolder, "game");
-        var runtimeConfig = Path.Combine(runtimeFolder, "SlothCombo.Runtime.runtimeconfig.json");
-        var assembly = Path.Combine(runtimeFolder, "SlothCombo.Runtime.dll");
-
-        if (!File.Exists(runtimeConfig) || !File.Exists(assembly))
+        var loaderLibrary = Path.Combine(baseFolder, "SlothCombo.Loader.dll");
+        if (!File.Exists(loaderLibrary))
         {
-            Console.Error.WriteLine($"The managed part of the runtime is missing under '{runtimeFolder}'.");
+            Console.Error.WriteLine($"The loader of the runtime is missing: {loaderLibrary}");
             return 1;
         }
 
@@ -98,13 +152,27 @@ internal static class Program
         var statusPath = Path.Combine(dataFolder, "boot-status.json");
         TryDelete(statusPath);
 
+        // The parts the game loads are taken from a copy. A file that the
+        // game has loaded cannot be replaced, and the installation has to
+        // stay writable for the next build.
+        var runtimeFolder = RuntimeStaging.StageRuntime(baseFolder);
+        var stagedBoot = RuntimeStaging.StageBoot(baseFolder);
+
+        var runtimeConfig = Path.Combine(runtimeFolder, "SlothCombo.Runtime.runtimeconfig.json");
+        var runtimeAssembly = Path.Combine(runtimeFolder, "SlothCombo.Runtime.dll");
+
+        if (!File.Exists(runtimeConfig) || !File.Exists(runtimeAssembly))
+        {
+            Console.Error.WriteLine($"The managed part of the runtime is missing under '{runtimeFolder}'.");
+            return 1;
+        }
+
         var settings = new BootSettings
         {
             HostFxrPath = hostFxr,
             RuntimeConfigPath = runtimeConfig,
-            AssemblyPath = assembly,
-            TypeName = "SlothCombo.Runtime.Bootstrap.SlothComboRuntime, SlothCombo.Runtime",
-            MethodName = "Boot",
+            LoaderPath = loaderLibrary,
+            RuntimePath = runtimeAssembly,
             DataFolder = dataFolder,
             GameInstallPath = options.GameInstallPath ?? FindGameDirectory(process),
             StatusPath = statusPath,
@@ -113,7 +181,7 @@ internal static class Program
         BootSettings.Write(settings);
 
         Console.WriteLine($"Injecting the runtime into the game (process {process.Id})...");
-        DllInjector.Inject(process.Id, bootLibrary, "SlothComboBoot");
+        DllInjector.Inject(process.Id, stagedBoot, "SlothComboBoot");
 
         var status = WaitForStatus(statusPath);
         switch (status)

@@ -23,7 +23,7 @@ namespace SlothCombo.Runtime.Ipc;
 /// is handed to the dispatcher before it is answered.
 /// </para>
 /// </remarks>
-internal sealed class IpcServer : IDisposable
+internal sealed class IpcServer
 {
     private readonly GameThreadDispatcher _dispatcher;
     private readonly CancellationTokenSource _cancellation = new();
@@ -45,9 +45,35 @@ internal sealed class IpcServer : IDisposable
     }
 
     /// <summary>Stops listening and closes the pipe.</summary>
-    public void Dispose()
+    /// <param name="timeout">How long the loop is given to end.</param>
+    /// <returns>A task that finishes when the pipe is closed or the time is up.</returns>
+    /// <remarks>
+    /// The pipe has to be gone before another runtime opens it, so the caller
+    /// waits for the loop instead of only asking it to stop.
+    /// </remarks>
+    public async Task StopAsync(TimeSpan timeout)
     {
         _cancellation.Cancel();
+
+        var loop = _acceptLoop;
+        _acceptLoop = null;
+
+        if (loop is not null)
+        {
+            try
+            {
+                await loop.WaitAsync(timeout).ConfigureAwait(false);
+            }
+            catch (TimeoutException)
+            {
+                Service.PluginLog?.Warning("The pipe of the interface did not close in time.");
+            }
+            catch (Exception ex)
+            {
+                Service.PluginLog?.Debug($"The pipe of the interface ended with an error: {ex.Message}");
+            }
+        }
+
         _cancellation.Dispose();
     }
 
@@ -58,19 +84,41 @@ internal sealed class IpcServer : IDisposable
     {
         while (!token.IsCancellationRequested)
         {
-            NamedPipeServerStream pipe;
-            try
+            // A replaced runtime may still be closing the pipe of the old
+            // build, so the name is not given up on the first refusal.
+            NamedPipeServerStream? pipe = null;
+            for (var attempt = 0; attempt < 10 && pipe is null; attempt++)
             {
-                pipe = new NamedPipeServerStream(
-                    IpcChannel.PipeName,
-                    PipeDirection.InOut,
-                    1,
-                    PipeTransmissionMode.Byte,
-                    PipeOptions.Asynchronous);
+                try
+                {
+                    pipe = new NamedPipeServerStream(
+                        IpcChannel.PipeName,
+                        PipeDirection.InOut,
+                        1,
+                        PipeTransmissionMode.Byte,
+                        PipeOptions.Asynchronous);
+                }
+                catch (Exception ex)
+                {
+                    if (attempt == 9)
+                    {
+                        Service.PluginLog?.Warning($"The pipe of the interface could not be opened: {ex.Message}");
+                        return;
+                    }
+
+                    try
+                    {
+                        await Task.Delay(100, token).ConfigureAwait(false);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        return;
+                    }
+                }
             }
-            catch (Exception ex)
+
+            if (pipe is null)
             {
-                Service.PluginLog?.Warning($"The pipe of the interface could not be opened: {ex.Message}");
                 return;
             }
 

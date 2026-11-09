@@ -31,10 +31,13 @@ internal static class PresetService
         { 35, "7.0" }, { 36, "6.X" },
     };
 
-    private static readonly Dictionary<string, List<(CustomComboPreset Preset, CustomComboInfoAttribute Info)>> groupedPresets = BuildGroupedPresets();
-    private static readonly Dictionary<CustomComboPreset, (CustomComboPreset Preset, CustomComboInfoAttribute Info)[]> presetChildren = BuildPresetChildren();
+    // The fields are built in declaration order, so a field that is built from
+    // another one has to come after it. allPresets has to be first, because the
+    // grouped presets and the infos are built from it.
     private static readonly List<CustomComboPreset> allPresets = BuildAllPresets();
     private static readonly Dictionary<CustomComboPreset, CustomComboInfoAttribute> presetInfos = BuildPresetInfos();
+    private static readonly Dictionary<string, List<(CustomComboPreset Preset, CustomComboInfoAttribute Info)>> groupedPresets = BuildGroupedPresets();
+    private static readonly Dictionary<CustomComboPreset, (CustomComboPreset Preset, CustomComboInfoAttribute Info)[]> presetChildren = BuildPresetChildren();
 
     /// <summary> Top level presets grouped by job name. </summary>
     internal static Dictionary<string, List<(CustomComboPreset Preset, CustomComboInfoAttribute Info)>> GroupedPresets => groupedPresets;

@@ -1,33 +1,45 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <AssemblyName>SlothCombo.Boot</AssemblyName>
-    <RootNamespace>SlothCombo.Boot</RootNamespace>
-
-    <!--
-      The boot library is the piece that is injected into the game. It is
-      built ahead of time so that it does not need a runtime of its own: it
-      only needs to find the runtime of the host program and hand it over.
-    -->
-    <PublishAot>true</PublishAot>
-    <NativeLib>Shared</NativeLib>
-    <SelfContained>true</SelfContained>
-    <UseAppHost>false</UseAppHost>
-    <StripSymbols>true</StripSymbols>
-    <InvariantGlobalization>true</InvariantGlobalization>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <IsTrimmable>false</IsTrimmable>
-  </PropertyGroup>
-
   <!--
-    The library is loaded into the game by the injector, which cannot pass any
-    arguments. The export of the library is exactly the hook that is needed for
-    that, so the advice of the analyzer about the entry points of a library
-    does not apply here.
+    The boot library is loaded into the game, which has no runtime of its
+    own. It is a native DLL built ahead of time with clang (llvm-mingw), so
+    it needs neither MSVC nor the Windows SDK. The C# pipeline of the SDK is
+    turned off; the only output is the native library that boot.c produces.
   -->
   <PropertyGroup>
-    <NoWarn>$(NoWarn);CA2255</NoWarn>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>SlothCombo.Boot</AssemblyName>
+    <RootNamespace>SlothCombo.Boot</RootNamespace>
+    <SelfContained>false</SelfContained>
+
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <GenerateRuntimeConfigurationFiles>false</GenerateRuntimeConfigurationFiles>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+
+    <!-- The compiler that builds the native library. It is on the PATH when
+         llvm-mingw is installed; it can be overridden with -p:ClangCompiler=. -->
+    <ClangCompiler Condition="'$(ClangCompiler)' == ''">clang</ClangCompiler>
+    <BootSource>$(MSBuildProjectDirectory)\boot.c</BootSource>
+    <BootOutput>$(OutputPath)$(AssemblyName).dll</BootOutput>
   </PropertyGroup>
+
+  <!-- The C# compiler has nothing to do: the output is native. -->
+  <Target Name="CoreCompile" />
+
+  <Target Name="BuildNativeBoot" AfterTargets="Build">
+    <MakeDir Directories="$(OutputPath)" />
+    <Exec Command="&quot;$(ClangCompiler)&quot; -shared -O2 -Wall -Wextra -o &quot;$(BootOutput)&quot; &quot;$(BootSource)&quot; -lkernel32" />
+  </Target>
+
+  <Target Name="PublishNativeBoot" AfterTargets="Publish">
+    <MakeDir Directories="$(PublishDir)" />
+    <Copy SourceFiles="$(BootOutput)" DestinationFolder="$(PublishDir)" />
+  </Target>
 
 </Project>

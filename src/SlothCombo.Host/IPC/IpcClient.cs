@@ -18,6 +18,16 @@ internal sealed class IpcClient
     /// <summary>How long the program waits for the runtime to answer.</summary>
     private static readonly TimeSpan Timeout = TimeSpan.FromSeconds(60);
 
+    /// <summary>The name of the pipe that is talked to.</summary>
+    private readonly string _pipeName;
+
+    /// <summary>Creates a client that talks over the given pipe, or the pipe of the runtime.</summary>
+    /// <param name="pipeName">The name of the pipe, or <c>null</c> for the pipe of the runtime.</param>
+    public IpcClient(string? pipeName = null)
+    {
+        _pipeName = pipeName ?? IpcChannel.PipeName;
+    }
+
     /// <summary>
     /// Asks the runtime to do the work and waits for the answer.
     /// </summary>
@@ -28,7 +38,7 @@ internal sealed class IpcClient
     {
         using var pipe = new NamedPipeClientStream(
             ".",
-            IpcChannel.PipeName,
+            _pipeName,
             PipeDirection.InOut,
             PipeOptions.Asynchronous);
 

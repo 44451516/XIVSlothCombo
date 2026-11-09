@@ -20,10 +20,16 @@ internal static class Program
         runner.Add("The exports of a program file are found", PeExportTest.FindsSystemExport);
         runner.Add("The export of the boot library is found", PeExportTest.FindsBootExport);
         runner.Add("An export that is not there is reported", PeExportTest.RejectsUnknownExport);
+        runner.Add("The injector resolves the loader of the system", InjectorTest.ResolvesSystemLoader);
+        runner.Add("The injector reads the modules of a process", InjectorTest.FindsModuleInProcess);
+        runner.Add("The page is served and the game is guarded", WebUIContentTest.ServesFilesAndGuardsTheGame);
         runner.Add("A message of the interface survives a round trip", IpcTest.RoundTrip);
         runner.Add("A picture survives a round trip", IpcTest.CarriesPicture);
         runner.Add("The pipe of the interface carries the name of the user", IpcTest.PipeCarriesUser);
         runner.Add("The program talks to the runtime over the pipe", IpcTest.ConnectsOverPipe);
+        runner.Add("The loader replaces the runtime of a new build", LoaderTest.LoadsAndReplaces);
+        runner.Add("The loader reports a runtime that is not there", LoaderTest.ReportsMissingRuntime);
+        runner.Add("The build is staged out of the installation", StagingTest.StagesTheBuild);
 
         return runner.Run();
     }

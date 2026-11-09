@@ -35,6 +35,11 @@ jobs:
         node-version: 22
         cache: npm
         cache-dependency-path: XIVSlothComboX.UI/package-lock.json
+    - name: Setup clang
+      run: |
+        $llvm = Join-Path $env:ProgramFiles 'LLVM\bin'
+        if (Test-Path $llvm) { echo $llvm >> $env:GITHUB_PATH }
+        clang --version
     - name: Build the standalone program
       run: .\build\publish.ps1
     - name: Run the tests

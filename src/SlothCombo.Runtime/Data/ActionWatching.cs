@@ -568,12 +568,19 @@ namespace SlothCombo.Data
 
         public static void Disable()
         {
-            ReceiveActionEffectHook.Disable();
+            ReceiveActionEffectHook?.Disable();
             SendActionHook?.Disable();
             UseActionLocationHook?.Disable();
 
-            Service.Condition.ConditionChange -= ResetActions;
-            Service.ClientState.TerritoryChanged -= TerritoryChangedEvent;
+            if (Service.Condition is not null)
+            {
+                Service.Condition.ConditionChange -= ResetActions;
+            }
+
+            if (Service.ClientState is not null)
+            {
+                Service.ClientState.TerritoryChanged -= TerritoryChangedEvent;
+            }
         }
 
         private static void TerritoryChangedEvent(uint obj)

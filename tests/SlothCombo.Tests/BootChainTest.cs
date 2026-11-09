@@ -47,8 +47,10 @@ internal static class BootChainTest
         var runtimeFolder = Path.Combine(distribution, "game");
         var runtimeConfig = Path.Combine(runtimeFolder, "SlothCombo.Runtime.runtimeconfig.json");
         var assembly = Path.Combine(runtimeFolder, "SlothCombo.Runtime.dll");
+        var loaderAssembly = Path.Combine(distribution, "SlothCombo.Loader.dll");
         Assert.True(File.Exists(runtimeConfig), "The configuration of the runtime is missing from the installation.");
         Assert.True(File.Exists(assembly), "The managed part of the runtime is missing from the installation.");
+        Assert.True(File.Exists(loaderAssembly), "The loader of the runtime is missing from the installation.");
 
         var dataFolder = Path.Combine(Path.GetTempPath(), "slothcombo-tests", "boot");
         Directory.CreateDirectory(dataFolder);
@@ -60,9 +62,8 @@ internal static class BootChainTest
         {
             HostFxrPath = hostFxr!,
             RuntimeConfigPath = runtimeConfig,
-            AssemblyPath = assembly,
-            TypeName = "SlothCombo.Runtime.Bootstrap.SlothComboRuntime, SlothCombo.Runtime",
-            MethodName = "Boot",
+            LoaderPath = loaderAssembly,
+            RuntimePath = assembly,
             DataFolder = dataFolder,
             GameInstallPath = string.Empty,
             StatusPath = statusPath,
@@ -164,14 +165,11 @@ internal sealed class BootSettings
     /// <summary>Gets or sets the runtime configuration of the managed part.</summary>
     public string RuntimeConfigPath { get; set; } = string.Empty;
 
+    /// <summary>Gets or sets the loader that keeps the runtime replaceable.</summary>
+    public string LoaderPath { get; set; } = string.Empty;
+
     /// <summary>Gets or sets the assembly that holds the managed runtime.</summary>
-    public string AssemblyPath { get; set; } = string.Empty;
-
-    /// <summary>Gets or sets the type that holds the entry point.</summary>
-    public string TypeName { get; set; } = string.Empty;
-
-    /// <summary>Gets or sets the name of the entry point.</summary>
-    public string MethodName { get; set; } = string.Empty;
+    public string RuntimePath { get; set; } = string.Empty;
 
     /// <summary>Gets or sets the folder the runtime keeps its data in.</summary>
     public string DataFolder { get; set; } = string.Empty;

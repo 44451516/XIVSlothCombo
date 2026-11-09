@@ -82,8 +82,12 @@ internal static class IpcTest
     /// </summary>
     public static void ConnectsOverPipe()
     {
+        // A pipe of its own, so that a runtime that is running in the game does
+        // not hold the pipe this test would otherwise use.
+        var pipeName = $"{IpcChannel.PipeName}.test.{Guid.NewGuid():N}";
+
         using var server = new NamedPipeServerStream(
-            IpcChannel.PipeName,
+            pipeName,
             PipeDirection.InOut,
             1,
             PipeTransmissionMode.Byte,
@@ -91,7 +95,7 @@ internal static class IpcTest
 
         var accept = server.WaitForConnectionAsync();
 
-        var client = new SlothCombo.Host.Ipc.IpcClient();
+        var client = new SlothCombo.Host.Ipc.IpcClient(pipeName);
         var send = client.SendAsync(
             new IpcRequest { Method = "GET", Path = "/api/health", Port = 1234 },
             CancellationToken.None);

@@ -10,6 +10,7 @@
         <output>/
             SlothCombo.Host.exe          the program that injects the runtime
             SlothCombo.Boot.dll          the library that is loaded into the game
+            SlothCombo.Loader.dll        the loader that keeps the runtime replaceable
             hostfxr.dll                  the library that starts the runtime
             host/fxr/<version>/hostfxr.dll
             shared/Microsoft.NETCore.App/<version>/   the runtime itself
@@ -50,11 +51,58 @@ function Invoke-Step([string] $message, [scriptblock] $action) {
     }
 }
 
+# The game keeps the files it has loaded open, so an installation that is in
+# use cannot be written from scratch. The new build is then laid over the old
+# one, and a file that did not change is left alone: it is already what the
+# new build wants it to be.
+$script:lockedFiles = @()
+$script:skippedFiles = @()
+
+function Test-SameFile([string] $source, [string] $target) {
+    if (-not [System.IO.File]::Exists($target)) {
+        return $false
+    }
+
+    if ([System.IO.FileInfo]::new($source).Length -ne [System.IO.FileInfo]::new($target).Length) {
+        return $false
+    }
+
+    $sourceHash = (Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash
+    $targetHash = (Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash
+    return $sourceHash -eq $targetHash
+}
+
+function Copy-FileSafe([string] $source, [string] $target) {
+    $folder = [System.IO.Path]::GetDirectoryName($target)
+    [System.IO.Directory]::CreateDirectory($folder) | Out-Null
+
+    try {
+        [System.IO.File]::Copy($source, $target, $true)
+        return
+    }
+    catch [System.IO.IOException] {
+        if (Test-SameFile $source $target) {
+            $script:skippedFiles += $target
+            return
+        }
+
+        $script:lockedFiles += $target
+    }
+    catch [System.UnauthorizedAccessException] {
+        if (Test-SameFile $source $target) {
+            $script:skippedFiles += $target
+            return
+        }
+
+        $script:lockedFiles += $target
+    }
+}
+
 function Copy-Tree([string] $source, [string] $target) {
     [System.IO.Directory]::CreateDirectory($target) | Out-Null
 
     foreach ($file in [System.IO.Directory]::GetFiles($source)) {
-        [System.IO.File]::Copy($file, (Join-Path $target ([System.IO.Path]::GetFileName($file))), $true)
+        Copy-FileSafe $file (Join-Path $target ([System.IO.Path]::GetFileName($file)))
     }
 
     foreach ($folder in [System.IO.Directory]::GetDirectories($source)) {
@@ -68,25 +116,77 @@ function Remove-File([string] $path) {
     }
 }
 
+# A file that a program has loaded cannot be opened for writing without
+# sharing. Looking before the installation is touched keeps a failure from
+# leaving it half deleted.
+function Test-InstallationInUse([string] $folder) {
+    foreach ($file in [System.IO.Directory]::GetFiles($folder, '*', [System.IO.SearchOption]::AllDirectories)) {
+        try {
+            $stream = [System.IO.File]::Open(
+                $file,
+                [System.IO.FileMode]::Open,
+                [System.IO.FileAccess]::Write,
+                [System.IO.FileShare]::None)
+            $stream.Dispose()
+        }
+        catch [System.IO.IOException] {
+            return $true
+        }
+        catch [System.UnauthorizedAccessException] {
+            return $true
+        }
+    }
+
+    return $false
+}
+
 Write-Host "Building the installation in '$output'." -ForegroundColor Green
 
-# The installation is written from scratch every time. A file that is no
-# longer part of it would otherwise stay behind and be carried along.
-if ([System.IO.Directory]::Exists($output)) {
-    $left = [System.IO.Directory]::GetFileSystemEntries($output) |
-        Where-Object { [System.IO.Path]::GetFileName($_) -ne '.staging' }
+# A leftover of a failed build is thrown away before anything else, so it is
+# neither mistaken for a file of the installation nor reported as in use.
+if ([System.IO.Directory]::Exists($staging)) {
+    try {
+        [System.IO.Directory]::Delete($staging, $true)
+    }
+    catch [System.IO.IOException] {
+        # The publish steps overwrite it; there is nothing else to do.
+    }
+}
 
-    $mine = $left | Where-Object {
+# The installation is written from scratch whenever that is possible. A file
+# that is no longer part of it would otherwise stay behind and be carried
+# along. When the game holds a part of the installation, the new build is
+# laid over the old one instead; a file that is in use and did not change is
+# skipped, and one that changed is reported.
+if ([System.IO.Directory]::Exists($output)) {
+    $left = @([System.IO.Directory]::GetFileSystemEntries($output) |
+        Where-Object { [System.IO.Path]::GetFileName($_) -ne '.staging' })
+
+    $mine = @($left | Where-Object {
         $name = [System.IO.Path]::GetFileName($_)
         $name -eq 'SlothCombo.Host.exe' -or $name -eq 'SlothCombo.Boot.dll'
-    }
+    })
 
     if ($left.Count -gt 0 -and $mine.Count -eq 0) {
         throw "The folder '$output' holds something that is not an installation of this program, so it was left alone."
     }
 
-    [System.IO.Directory]::Delete($output, $true)
+    if (Test-InstallationInUse $output) {
+        Write-Host '==> The installation is in use. The new build is laid over it; files that did not change are left alone.' -ForegroundColor Yellow
+    }
+    else {
+        try {
+            [System.IO.Directory]::Delete($output, $true)
+        }
+        catch [System.IO.IOException] {
+            Write-Host '==> The installation cannot be removed. The new build is laid over it; files that did not change are left alone.' -ForegroundColor Yellow
+        }
+        catch [System.UnauthorizedAccessException] {
+            Write-Host '==> The installation cannot be removed. The new build is laid over it; files that did not change are left alone.' -ForegroundColor Yellow
+        }
+    }
 }
+
 [System.IO.Directory]::CreateDirectory($staging) | Out-Null
 
 # The program that injects the runtime into the game.
@@ -101,6 +201,15 @@ Invoke-Step 'Publishing the managed part of the runtime.' {
     dotnet publish (Join-Path $root 'src\SlothCombo.Runtime\SlothCombo.Runtime.csproj') `
         -c $Configuration -r $Runtime --self-contained false --nologo -v minimal `
         -o (Join-Path $staging 'game')
+}
+
+# The loader is the one managed assembly the game keeps for the rest of the
+# session. It holds the runtime in a context that can be unloaded, which is
+# what lets a new build take the place of the old one without a restart.
+Invoke-Step 'Publishing the loader of the runtime.' {
+    dotnet publish (Join-Path $root 'src\SlothCombo.Loader\SlothCombo.Loader.csproj') `
+        -c $Configuration -r $Runtime --self-contained false --nologo -v minimal `
+        -o (Join-Path $staging 'loader')
 }
 
 # The library that is loaded into the game. It is built ahead of time, so
@@ -169,6 +278,9 @@ Copy-Tree (Join-Path $staging 'program') $output
 # The library that is loaded into the game.
 Copy-Tree (Join-Path $staging 'boot') $output
 
+# The loader of the runtime, which stays in the game until it ends.
+Copy-Tree (Join-Path $staging 'loader') $output
+
 # The managed part of the runtime.
 $game = Join-Path $output 'game'
 Copy-Tree (Join-Path $staging 'game') $game
@@ -184,14 +296,11 @@ else {
 # The library that starts the runtime. It is placed twice, because the
 # program looks for it next to itself and the library works out the place of
 # the runtime from its own place.
-[System.IO.File]::Copy(
-    (Join-Path $fxrFolder 'hostfxr.dll'),
-    (Join-Path $output 'hostfxr.dll'),
-    $true)
+Copy-FileSafe (Join-Path $fxrFolder 'hostfxr.dll') (Join-Path $output 'hostfxr.dll')
 
 $fxr = Join-Path $output "host\fxr\$($version.Name)"
 [System.IO.Directory]::CreateDirectory($fxr) | Out-Null
-[System.IO.File]::Copy((Join-Path $fxrFolder 'hostfxr.dll'), (Join-Path $fxr 'hostfxr.dll'), $true)
+Copy-FileSafe (Join-Path $fxrFolder 'hostfxr.dll') (Join-Path $fxr 'hostfxr.dll')
 
 # The runtime itself.
 $shared = Join-Path $output "shared\Microsoft.NETCore.App\$($version.Name)"
@@ -202,6 +311,15 @@ Copy-Tree (Join-Path $frameworkFolder $version.Name) $shared
 Get-ChildItem $output -Recurse -File -Include '*.pdb', '*.xml' | ForEach-Object { Remove-File $_.FullName }
 
 [System.IO.Directory]::Delete($staging, $true)
+
+if ($script:skippedFiles.Count -gt 0) {
+    Write-Host "==> $($script:skippedFiles.Count) files did not change and are held by a running program." -ForegroundColor Yellow
+}
+
+if ($script:lockedFiles.Count -gt 0) {
+    $list = ($script:lockedFiles | ForEach-Object { "  $_" }) -join [Environment]::NewLine
+    throw "These files changed but are held by a running program. Close SlothCombo.Host and the game, then build again:$([Environment]::NewLine)$list"
+}
 
 Write-Host ''
 Write-Host "The installation is ready in '$output'." -ForegroundColor Green

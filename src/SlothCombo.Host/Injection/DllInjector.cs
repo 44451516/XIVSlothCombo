@@ -141,7 +141,7 @@ internal static unsafe partial class DllInjector
                     $"The path of the library could not be written (error {Marshal.GetLastWin32Error()}).");
             }
 
-            var loader = GetProcAddress(GetModuleHandle("kernel32.dll"), "LoadLibraryW");
+            var loader = ResolveSystemLoader();
             if (loader == IntPtr.Zero)
             {
                 throw new InjectionException("The loader of the system could not be found.");
@@ -177,6 +177,15 @@ internal static unsafe partial class DllInjector
         {
             VirtualFreeEx(process, remote, IntPtr.Zero, 0x8000);
         }
+    }
+
+    /// <summary>
+    /// Gets the address of LoadLibraryW, which sits at the same place in every
+    /// process, so the remote thread of the game can call the address found here.
+    /// </summary>
+    internal static IntPtr ResolveSystemLoader()
+    {
+        return GetProcAddress(GetModuleHandle("kernel32.dll"), "LoadLibraryW");
     }
 
     /// <summary>
@@ -220,7 +229,7 @@ internal static unsafe partial class DllInjector
     /// system of sixty four bits. The list of the modules of the game holds
     /// the whole address, so the library is looked up there instead.
     /// </remarks>
-    private static IntPtr FindRemoteModule(IntPtr process, int processId, string moduleName)
+    internal static IntPtr FindRemoteModule(IntPtr process, int processId, string moduleName)
     {
         for (var attempt = 0; attempt < SnapshotAttempts; attempt++)
         {
@@ -326,18 +335,19 @@ internal static unsafe partial class DllInjector
     [LibraryImport("kernel32.dll", SetLastError = true)]
     private static partial IntPtr CreateToolhelp32Snapshot(uint flags, uint processId);
 
-    [LibraryImport("kernel32.dll", SetLastError = true)]
+    [LibraryImport("kernel32.dll", EntryPoint = "Module32FirstW", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool Module32First(IntPtr snapshot, ref ModuleEntry32 entry);
 
-    [LibraryImport("kernel32.dll", SetLastError = true)]
+    [LibraryImport("kernel32.dll", EntryPoint = "Module32NextW", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool Module32Next(IntPtr snapshot, ref ModuleEntry32 entry);
 
-    [LibraryImport("kernel32.dll", StringMarshalling = StringMarshalling.Utf16)]
+    [LibraryImport("kernel32.dll", EntryPoint = "GetModuleHandleW", StringMarshalling = StringMarshalling.Utf16)]
     private static partial IntPtr GetModuleHandle(string moduleName);
 
-    [LibraryImport("kernel32.dll", StringMarshalling = StringMarshalling.Utf16)]
+    // GetProcAddress takes an ANSI name; UTF-8 matches it byte-for-byte for the ASCII names of exports.
+    [LibraryImport("kernel32.dll", StringMarshalling = StringMarshalling.Utf8)]
     private static partial IntPtr GetProcAddress(IntPtr module, string procedureName);
 
     /// <summary>One module of a process.</summary>

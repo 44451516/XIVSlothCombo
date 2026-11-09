@@ -4,6 +4,7 @@ using System.IO;
 using Lumina;
 using Lumina.Excel;
 using SlothCombo.Abstractions;
+using LuminaLanguage = Lumina.Data.Language;
 
 namespace SlothCombo.Runtime.Services;
 
@@ -15,7 +16,7 @@ namespace SlothCombo.Runtime.Services;
 /// The path is discovered from the running process, which keeps the runtime
 /// independent of any launcher specific configuration.
 /// </remarks>
-internal sealed class LuminaDataService : IDataManager
+internal sealed class LuminaDataService : IDataManager, IDisposable
 {
     private readonly ExcelModule _module;
     private readonly GameData _gameData;
@@ -74,7 +75,25 @@ internal sealed class LuminaDataService : IDataManager
     }
 
     /// <inheritdoc/>
-    public ExcelSheet<T> GetExcelSheet<T>() where T : struct, IExcelRow<T> => _module.GetSheet<T>();
+    public ExcelSheet<T> GetExcelSheet<T>() where T : struct, IExcelRow<T>
+        => _module.GetSheet<T>(ToLuminaLanguage(Language));
+
+    /// <summary>
+    /// Maps the language of the client to the language the sheets are read in.
+    /// </summary>
+    private static LuminaLanguage ToLuminaLanguage(ClientLanguage language) => language switch
+    {
+        ClientLanguage.Ja => LuminaLanguage.Japanese,
+        ClientLanguage.En => LuminaLanguage.English,
+        ClientLanguage.De => LuminaLanguage.German,
+        ClientLanguage.Fr => LuminaLanguage.French,
+        // The Chinese client ships the simplified sheets; the traditional
+        // sheets of the Taiwanese client are not distinguished here.
+        ClientLanguage.Zh => LuminaLanguage.ChineseSimplified,
+        ClientLanguage.Ko => LuminaLanguage.Korean,
+        // The client language could not be read; English is the last resort.
+        _ => LuminaLanguage.English,
+    };
 
     /// <summary>
     /// Gets the data of the game, which holds the files of the game itself.
@@ -107,7 +126,7 @@ internal sealed class LuminaDataService : IDataManager
     {
         try
         {
-            var sheet = _module.GetSheet<Lumina.Excel.Sheets.Status>();
+            var sheet = _module.GetSheet<Lumina.Excel.Sheets.Status>(ToLuminaLanguage(Language));
             var row = sheet.TryGetRow(statusId, out var found) ? found : default;
             return row.Name.ToString();
         }
@@ -145,4 +164,11 @@ internal sealed class LuminaDataService : IDataManager
             return ClientLanguage.Unknown;
         }
     }
+
+    /// <summary>Closes the files of the game data.</summary>
+    /// <remarks>
+    /// A runtime that takes the place of this one opens the data again, so
+    /// the files are closed before the context of this one goes away.
+    /// </remarks>
+    public void Dispose() => _gameData.Dispose();
 }

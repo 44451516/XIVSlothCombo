@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
 using SlothCombo.Combos.JobHelpers;
 using SlothCombo.Core;
 using SlothCombo.Data;
@@ -16,7 +15,7 @@ using SlothCombo.Runtime.Services;
 namespace SlothCombo.Runtime.Bootstrap;
 
 /// <summary>
-/// Starts the runtime inside the game process.
+/// Starts and stops the runtime inside the game process.
 /// </summary>
 /// <remarks>
 /// <para>
@@ -29,12 +28,25 @@ namespace SlothCombo.Runtime.Bootstrap;
 /// before any detour is installed, because a detour patches the very bytes a
 /// signature is matched against.
 /// </para>
+/// <para>
+/// The runtime is loaded into a context that can be unloaded, so a newer
+/// build can take its place without restarting the game. That only works if
+/// the stop leaves nothing behind, which is why it undoes every single thing
+/// the start did.
+/// </para>
 /// </remarks>
 public static class SlothComboRuntime
 {
     private static FrameworkTickHook? _tickHook;
     private static GameThreadDispatcher? _dispatcher;
     private static IpcServer? _ipcServer;
+    private static FrameworkService? _framework;
+    private static ConditionService? _condition;
+    private static int _stoppedOnGameThread;
+    private static bool _running;
+
+    /// <summary>Gets a value indicating whether the runtime is running.</summary>
+    public static bool IsRunning => _running;
 
     /// <summary>
     /// Starts the runtime.
@@ -47,6 +59,11 @@ public static class SlothComboRuntime
         ArgumentNullException.ThrowIfNull(options);
 
         error = string.Empty;
+
+        if (_running)
+        {
+            return true;
+        }
 
         try
         {
@@ -66,6 +83,7 @@ public static class SlothComboRuntime
             var scanner = new SignatureScanner();
             var hookFactory = new ReloadedHookFactory();
             var framework = new FrameworkService();
+            _framework = framework;
 
             Service.SigScanner = scanner;
             Svc.SigScanner = scanner;
@@ -75,6 +93,7 @@ public static class SlothComboRuntime
 
             var objectTable = new ObjectTableService();
             var condition = new ConditionService(framework);
+            _condition = condition;
             var targets = new TargetService();
             var party = new PartyService(objectTable);
             var clientState = new ClientStateService(objectTable);
@@ -119,6 +138,7 @@ public static class SlothComboRuntime
 
             // The tick hook goes last: from here on the runtime reacts to the
             // game on its own schedule.
+            Interlocked.Exchange(ref _stoppedOnGameThread, 0);
             _tickHook = new FrameworkTickHook(hookFactory, framework);
 
             // The program outside of the game asks the runtime to do the work
@@ -128,6 +148,8 @@ public static class SlothComboRuntime
 
             _ipcServer = new IpcServer(_dispatcher);
             _ipcServer.Start();
+
+            _running = true;
 
             logger.Information("The runtime is running.");
             return true;
@@ -146,38 +168,188 @@ public static class SlothComboRuntime
                 // to report the failure with.
             }
 
+            // A start that fails halfway leaves hooks and a pipe behind; the
+            // same teardown the loader uses takes them down again.
+            StopManaged();
+
             return false;
         }
     }
 
     /// <summary>
-    /// Reports that the managed part of the runtime is loaded.
+    /// Stops the runtime and removes everything it installed in the game.
     /// </summary>
     /// <remarks>
-    /// The boot library calls this to find out whether the runtime came up.
-    /// It does nothing else, so it is safe to call at any time.
+    /// <para>
+    /// This runs right before a newer build takes the place of this one, so
+    /// it has to leave nothing behind: a hook that still points into this
+    /// assembly, a pipe that still holds the name, or a log file that is
+    /// still open would break the runtime that follows.
+    /// </para>
+    /// <para>
+    /// The steps are independent, so one failing does not stop the rest, and
+    /// the method can be called at any time and more than once.
+    /// </para>
     /// </remarks>
-    /// <returns>Zero, always.</returns>
-    [UnmanagedCallersOnly]
-    public static int Ping() => 0;
+    public static void StopManaged()
+    {
+        var ipc = _ipcServer;
+        _ipcServer = null;
+
+        if (ipc is not null)
+        {
+            // The pipe goes first: a request that is being answered right now
+            // still needs the game thread, and the game thread is about to be
+            // taken by the shutdown.
+            try
+            {
+                ipc.StopAsync(TimeSpan.FromSeconds(5)).GetAwaiter().GetResult();
+            }
+            catch (Exception ex)
+            {
+                Log(ex, "The pipe of the interface could not be closed.");
+            }
+        }
+
+        var dispatcher = _dispatcher;
+
+        if (dispatcher is not null && _tickHook is not null)
+        {
+            try
+            {
+                // The game thread is the only thread that runs the detours,
+                // so the detours are taken down from there.
+                if (!dispatcher.RunAsync(StopOnGameThread).Wait(TimeSpan.FromSeconds(30)))
+                {
+                    Service.PluginLog?.Warning(
+                        "The game thread did not take the shutdown in time; it is done without it.");
+                    StopOnGameThread();
+                }
+            }
+            catch (Exception ex)
+            {
+                Log(ex, "The game thread could not run the shutdown.");
+                StopOnGameThread();
+            }
+        }
+        else
+        {
+            // The start never reached the point where the game thread ran
+            // this assembly, so there is nothing that needs to wait for it.
+            StopOnGameThread();
+        }
+
+        _dispatcher = null;
+        _tickHook = null;
+
+        DisposeServices();
+
+        _running = false;
+    }
 
     /// <summary>
-    /// Starts the runtime from the boot library.
+    /// Undoes everything the start did on the game thread.
+    /// </summary>
+    private static void StopOnGameThread()
+    {
+        if (Interlocked.Exchange(ref _stoppedOnGameThread, 1) != 0)
+        {
+            return;
+        }
+
+        // The update event is stopped before anything that listens to it goes
+        // away, so no listener is called while it is being torn down.
+        Try("The update loop could not be stopped.", () => _framework?.Suspend());
+
+        Try("The condition service could not be stopped.", () => _condition?.Dispose());
+
+        Try("The card helper could not be stopped.", AST.Dispose);
+
+        Try("The action watching could not be stopped.", ActionWatching.Dispose);
+
+        Try("The icon replacer could not be stopped.", () => Service.IconReplacer?.Dispose());
+
+        Try("The combo cache could not be disposed.", () => Service.ComboCache?.Dispose());
+
+        // The detour of the update loop is the one that is running this very
+        // call, so it goes last. Taking it down only restores the original
+        // bytes of the game function; the trampoline stays alive, which is
+        // what the detour returns through on its way out.
+        Try("The update loop hook could not be removed.", () => _tickHook?.Dispose());
+
+        Try("The dispatcher could not be stopped.", () => _dispatcher?.Stop());
+    }
+
+    /// <summary>
+    /// Lets go of the services that hold files or static state.
+    /// </summary>
+    private static void DisposeServices()
+    {
+        _framework = null;
+        _condition = null;
+
+        if (Service.DataManager is IDisposable data)
+        {
+            Try("The static game data could not be closed.", data.Dispose);
+        }
+
+        Try("The names of the statuses could not be released.", StatusSheetLookup.Unregister);
+
+        if (Service.PluginLog is IDisposable log)
+        {
+            Try("The log could not be closed.", log.Dispose);
+        }
+
+        Service.Reset();
+        Svc.Reset();
+        SignatureScanner.Reset();
+    }
+
+    /// <summary>
+    /// Runs a step of the shutdown and reports a failure without stopping the
+    /// remaining steps.
+    /// </summary>
+    private static void Try(string message, Action action)
+    {
+        try
+        {
+            action();
+        }
+        catch (Exception ex)
+        {
+            Log(ex, message);
+        }
+    }
+
+    /// <summary>
+    /// Reports a failure of the shutdown.
+    /// </summary>
+    private static void Log(Exception ex, string message)
+    {
+        try
+        {
+            Service.PluginLog?.Error(ex, message);
+        }
+        catch (Exception)
+        {
+            // The log is already gone; there is nothing left to report with.
+        }
+    }
+
+    /// <summary>
+    /// Starts the runtime from the loader.
     /// </summary>
     /// <remarks>
-    /// The boot library is loaded into the game by the injector, which cannot
-    /// hand over any managed arguments. The two paths are passed as plain
-    /// pointers instead.
+    /// The loader of the program keeps the runtime in a context that can be
+    /// unloaded, and reaches this entry point through reflection. The paths
+    /// arrive as plain strings because the caller has no typed reference to
+    /// this assembly.
     /// </remarks>
-    /// <param name="dataFolderUtf16">The folder the runtime keeps its data in.</param>
-    /// <param name="gameInstallPathUtf16">The installation directory of the game.</param>
+    /// <param name="dataFolder">The folder the runtime keeps its data in.</param>
+    /// <param name="gameInstallPath">The installation directory of the game.</param>
     /// <returns>Zero when the runtime is running.</returns>
-    [UnmanagedCallersOnly]
-    public static int Boot(IntPtr dataFolderUtf16, IntPtr gameInstallPathUtf16)
+    public static int BootManaged(string? dataFolder, string? gameInstallPath)
     {
-        var dataFolder = Marshal.PtrToStringUni(dataFolderUtf16);
-        var gameInstallPath = Marshal.PtrToStringUni(gameInstallPathUtf16);
-
         var options = new RuntimeOptions
         {
             DataFolder = string.IsNullOrEmpty(dataFolder) ? new RuntimeOptions().DataFolder : dataFolder,
@@ -201,25 +373,6 @@ public static class SlothComboRuntime
         }
 
         return 1;
-    }
-
-    /// <summary>
-    /// Stops the runtime and removes the detours.
-    /// </summary>
-    public static void Stop()
-    {
-        _ipcServer?.Dispose();
-        _ipcServer = null;
-
-        _dispatcher?.Stop();
-        _dispatcher = null;
-
-        _tickHook?.Dispose();
-        _tickHook = null;
-
-        ActionWatching.Dispose();
-        Service.IconReplacer?.Dispose();
-        Service.ComboCache?.Dispose();
     }
 
     /// <summary>

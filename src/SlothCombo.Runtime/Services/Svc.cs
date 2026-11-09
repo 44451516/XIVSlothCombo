@@ -42,4 +42,25 @@ internal static class Svc
 
     /// <summary>Gets or sets the job gauges of the player.</summary>
     public static JobGaugeService Gauges { get; set; } = null!;
+
+    /// <summary>
+    /// Lets go of every service.
+    /// </summary>
+    /// <remarks>
+    /// The runtime is being stopped, and the old assembly is about to be
+    /// unloaded, so nothing may keep pointing at the services of it.
+    /// </remarks>
+    public static void Reset()
+    {
+        Log = null!;
+        Data = null!;
+        Condition = null!;
+        GameGui = null!;
+        Objects = null!;
+        ClientState = null!;
+        Framework = null!;
+        Party = null!;
+        SigScanner = null!;
+        Gauges = null!;
+    }
 }
