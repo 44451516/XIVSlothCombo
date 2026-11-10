@@ -22,9 +22,6 @@ internal static class Svc
     /// <summary>Gets or sets the condition flags of the player.</summary>
     public static IConditionService Condition { get; set; } = null!;
 
-    /// <summary>Gets or sets the in-game addons.</summary>
-    public static IAddonService GameGui { get; set; } = null!;
-
     /// <summary>Gets or sets the object table of the game.</summary>
     public static IObjectTable Objects { get; set; } = null!;
 
@@ -55,7 +52,6 @@ internal static class Svc
         Log = null!;
         Data = null!;
         Condition = null!;
-        GameGui = null!;
         Objects = null!;
         ClientState = null!;
         Framework = null!;

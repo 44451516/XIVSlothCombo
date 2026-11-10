@@ -1,13 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import {
-  NCard,
-  NColorPicker,
-  NInputNumber,
-  NSelect,
-  NSwitch,
-  type SelectOption,
-} from 'naive-ui'
+import { NCard, NColorPicker, NInputNumber, NSwitch } from 'naive-ui'
 import { useConfigStore } from '@/stores/config'
 import type { ColorDto, ConfigDto } from '@/api/types'
 import { toastError } from '@/composables/useToast'
@@ -88,42 +81,6 @@ function onColorChange(value: string): void {
   const color = parseColor(value)
   if (!color) return
   void patch({ targetHighlightColor: color })
-}
-
-/** The food is encoded as `id * 2 + hq`, so that both qualities stay selectable. */
-const foodValue = computed(() => {
-  const config = store.config
-  if (!config || config.autoFoodId === 0) return 0
-  return config.autoFoodId * 2 + (config.requiredFoodHq ? 1 : 0)
-})
-
-const foodOptions = computed<SelectOption[]>(() => {
-  const foods = store.config?.foods ?? []
-  const options: SelectOption[] = [{ label: '禁用', value: 0 }]
-
-  const regular = foods
-    .filter((food) => food.inInventory)
-    .map((food) => ({ label: food.name, value: food.id * 2 }))
-  if (regular.length > 0) options.push({ label: '普通品质', options: regular })
-
-  const highQuality = foods
-    .filter((food) => food.inInventoryHq)
-    .map((food) => ({ label: food.name, value: food.id * 2 + 1 }))
-  if (highQuality.length > 0) options.push({ label: '高品质', options: highQuality })
-
-  return options
-})
-
-function onFoodChange(value: number): void {
-  if (value === 0) {
-    void patch({ autoFoodId: 0, requiredFoodHq: false })
-    return
-  }
-
-  void patch({
-    autoFoodId: Math.floor(value / 2),
-    requiredFoodHq: value % 2 === 1,
-  })
 }
 </script>
 
@@ -226,55 +183,6 @@ function onFoodChange(value: number): void {
             :modes="['rgb']"
             :disabled="saving"
             @update:value="onColorChange"
-          />
-        </div>
-      </NCard>
-
-      <NCard title="自动消耗" :bordered="false" class="settings-card">
-        <div class="settings-row">
-          <div class="settings-label">自动精炼</div>
-          <NSwitch
-            :value="store.config.autoRefine"
-            :disabled="saving"
-            @update:value="(value: boolean) => patch({ autoRefine: value })"
-          />
-        </div>
-
-        <div class="settings-row">
-          <div class="settings-label">只精炼亚力山大</div>
-          <NSwitch
-            :value="store.config.onlyRefineAlexander"
-            :disabled="saving"
-            @update:value="(value: boolean) => patch({ onlyRefineAlexander: value })"
-          />
-        </div>
-
-        <div class="settings-row">
-          <div class="settings-label">自动精炼药</div>
-          <NSwitch
-            :value="store.config.autoRefinePotion"
-            :disabled="saving"
-            @update:value="(value: boolean) => patch({ autoRefinePotion: value })"
-          />
-        </div>
-
-        <div class="settings-row">
-          <div class="settings-label">自动食物</div>
-          <NSwitch
-            :value="store.config.autoFood"
-            :disabled="saving"
-            @update:value="(value: boolean) => patch({ autoFood: value })"
-          />
-        </div>
-
-        <div class="settings-row">
-          <div class="settings-label">消耗的食物</div>
-          <NSelect
-            class="settings-select"
-            :value="foodValue"
-            :options="foodOptions"
-            :disabled="saving || !store.config.autoFood"
-            @update:value="(value: number) => onFoodChange(value)"
           />
         </div>
       </NCard>

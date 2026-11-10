@@ -49,14 +49,6 @@ namespace SlothCombo.Core
         public double MeleeOffset { get; set; } = 0;
 
         public Vector4 TargetHighlightColor { get; set; } = new() { W = 1, X = 0.5f, Y = 0.5f, Z = 0.5f };
-
-        public bool 自动精炼 { get; set; } = false;
-        public bool 只精炼亚力山大 { get; set; } = false;
-        
-        public bool 自动食物 { get; set; } = false;
-        public uint 自动食物Id { get; set; } = 4752;
-        public bool RequiredFoodHQ { get; set; } = false;
-        public bool 自动精炼药 { get; set; } = false;
         #endregion
 
         #region Custom Float Values

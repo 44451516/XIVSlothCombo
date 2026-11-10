@@ -129,13 +129,6 @@ export interface ColorDto {
   a: number
 }
 
-export interface FoodDto {
-  id: number
-  name: string
-  inInventory: boolean
-  inInventoryHq: boolean
-}
-
 export interface ConfigDto {
   enabledOutputLog: boolean
   setOutChat: boolean
@@ -143,19 +136,12 @@ export interface ConfigDto {
   hideChildren: boolean
   meleeOffset: number
   targetHighlightColor: ColorDto
-  autoRefine: boolean
-  onlyRefineAlexander: boolean
-  autoFood: boolean
-  autoFoodId: number
-  requiredFoodHq: boolean
-  autoRefinePotion: boolean
   hideMessageOfTheDay: boolean
   specialEvent: boolean
   movementLeeway: number
   performanceMode: boolean
   recommendedSettingsViewed: boolean
   activeBluSpells: number[]
-  foods: FoodDto[]
 }
 
 export interface TimelineActionDto {

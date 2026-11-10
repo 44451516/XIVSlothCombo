@@ -62,10 +62,6 @@ public unsafe struct Framework
 [StructLayout(LayoutKind.Explicit)]
 public unsafe struct UIModuleVirtualTable
 {
-    /// <summary>The function that gives the module of the windows.</summary>
-    [FieldOffset(0x38)]
-    public delegate* unmanaged<UIModule*, RaptureAtkModule*> GetRaptureAtkModule;
-
     /// <summary>The function that gives the module of the pronouns.</summary>
     [FieldOffset(0x50)]
     public delegate* unmanaged<UIModule*, PronounModule*> GetPronounModule;
@@ -93,9 +89,6 @@ public unsafe struct UIModule
     /// <summary>The place of the module of the pronouns.</summary>
     private const int PronounModuleOffset = 0xBADA0;
 
-    /// <summary>The place of the module of the windows.</summary>
-    private const int RaptureAtkModuleOffset = 0xD2690;
-
     /// <summary>The module of the log.</summary>
     [FieldOffset(RaptureLogModuleOffset)]
     public RaptureLogModule RaptureLogModule;
@@ -103,22 +96,6 @@ public unsafe struct UIModule
     /// <summary>The module of the pronouns.</summary>
     [FieldOffset(PronounModuleOffset)]
     public PronounModule PronounModule;
-
-    /// <summary>The module of the windows.</summary>
-    [FieldOffset(RaptureAtkModuleOffset)]
-    public RaptureAtkModule RaptureAtkModule;
-
-    /// <summary>Gets the module of the windows.</summary>
-    /// <returns>The module, or <c>null</c> when the game is not ready.</returns>
-    public RaptureAtkModule* GetRaptureAtkModule()
-    {
-        if (VirtualTable is null)
-        {
-            return (RaptureAtkModule*)((byte*)StructPtr.Of(ref this) + RaptureAtkModuleOffset);
-        }
-
-        return VirtualTable->GetRaptureAtkModule(StructPtr.Of(ref this));
-    }
 
     /// <summary>Gets the module of the pronouns.</summary>
     /// <returns>The module, or <c>null</c> when the game is not ready.</returns>
@@ -245,41 +222,6 @@ public unsafe struct AgentMap
     }
 }
 
-/// <summary>The module of the windows of the interface.</summary>
-[StructLayout(LayoutKind.Explicit, Size = 0x2A980)]
-public unsafe struct RaptureAtkModule
-{
-    /// <summary>The manager of the windows.</summary>
-    [FieldOffset(0x02C0)]
-    public AtkUnitManager* AtkUnitManager;
-
-    /// <summary>The place of the module of the agents.</summary>
-    private const int AgentModuleOffset = 0x12438;
-
-    /// <summary>The module of the agents.</summary>
-    [FieldOffset(AgentModuleOffset)]
-    public AgentModule AgentModule;
-
-    /// <summary>Gets the module of the agents.</summary>
-    /// <returns>The module, or <c>null</c> when the game is not ready.</returns>
-    public AgentModule* GetAgentModule()
-        => (AgentModule*)((byte*)StructPtr.Of(ref this) + AgentModuleOffset);
-
-    /// <summary>Gets the module of the windows.</summary>
-    /// <returns>The module, or <c>null</c> when the game is not ready.</returns>
-    public static RaptureAtkModule* Instance()
-    {
-        var framework = Framework.Instance();
-        if (framework is null)
-        {
-            return null;
-        }
-
-        var uiModule = framework->GetUIModule();
-        return uiModule is null ? null : uiModule->GetRaptureAtkModule();
-    }
-}
-
 /// <summary>The module of the log of the interface.</summary>
 [StructLayout(LayoutKind.Explicit, Size = 0x46D0)]
 public unsafe struct RaptureLogModule
@@ -327,36 +269,6 @@ public unsafe struct PronounModule
     /// <summary>The object the list of the party hovers over.</summary>
     [FieldOffset(0x0290)]
     public Game.GameObject* UiMouseOverTarget;
-}
-
-/// <summary>The manager of the windows of the interface.</summary>
-[StructLayout(LayoutKind.Explicit, Size = 0x9CA0)]
-public unsafe struct AtkUnitManager
-{
-    /// <summary>Gets the window with the given name.</summary>
-    /// <param name="name">The name of the window.</param>
-    /// <param name="index">The number of the window among the ones with that name.</param>
-    /// <returns>The window, or <c>null</c> when there is none.</returns>
-    public AtkUnitBase* GetAddonByName(byte* name, int index = 1)
-    {
-        var function = (delegate* unmanaged<AtkUnitManager*, byte*, int, AtkUnitBase*>)
-            GameFunctions.Get(GameAddresses.AtkUnitManagerGetAddonByName);
-
-        return function(StructPtr.Of(ref this), name, index);
-    }
-
-    /// <summary>Gets the window with the given name.</summary>
-    /// <param name="name">The name of the window.</param>
-    /// <param name="index">The number of the window among the ones with that name.</param>
-    /// <returns>The window, or <c>null</c> when there is none.</returns>
-    public AtkUnitBase* GetAddonByName(string name, int index = 1)
-    {
-        var bytes = System.Text.Encoding.UTF8.GetBytes(name + "\0");
-        fixed (byte* pointer = bytes)
-        {
-            return GetAddonByName(pointer, index);
-        }
-    }
 }
 
 /// <summary>The data of the window that is loaded from a file.</summary>
@@ -492,93 +404,6 @@ public struct AtkEventState
     /// <summary>The flags of the state of the event.</summary>
     [FieldOffset(0x02)]
     public byte StateFlags;
-}
-
-/// <summary>The kinds of value the interface passes around.</summary>
-public enum AtkValueType
-{
-    /// <summary>No value at all.</summary>
-    Undefined = 0,
-
-    /// <summary>Nothing.</summary>
-    Null = 0x1,
-
-    /// <summary>A truth value.</summary>
-    Bool = 0x2,
-
-    /// <summary>A number.</summary>
-    Int = 0x3,
-
-    /// <summary>A wide number.</summary>
-    Int64 = 0x4,
-
-    /// <summary>A number that is not negative.</summary>
-    UInt = 0x5,
-
-    /// <summary>A wide number that is not negative.</summary>
-    UInt64 = 0x6,
-
-    /// <summary>A number with a fraction.</summary>
-    Float = 0x7,
-
-    /// <summary>A text.</summary>
-    String = 0x8,
-
-    /// <summary>A text of wide characters.</summary>
-    WideString = 0x9,
-
-    /// <summary>A text that is not changed.</summary>
-    ConstString = 0xA,
-
-    /// <summary>A list of values.</summary>
-    Vector = 0xB,
-
-    /// <summary>A pointer.</summary>
-    Pointer = 0xC,
-
-    /// <summary>A list of values.</summary>
-    AtkValues = 0xD,
-}
-
-/// <summary>A value the interface passes around.</summary>
-/// <remarks>
-/// The value holds one number of one kind. The kind is told by the field
-/// <see cref="Type"/>, the number itself by the field that matches it.
-/// </remarks>
-[StructLayout(LayoutKind.Explicit, Size = 0x10)]
-public unsafe struct AtkValue
-{
-    /// <summary>The kind of the value.</summary>
-    [FieldOffset(0x00)]
-    public AtkValueType Type;
-
-    /// <summary>The value, when it is a truth value.</summary>
-    [FieldOffset(0x08)]
-    public bool Bool;
-
-    /// <summary>The value, when it is a number.</summary>
-    [FieldOffset(0x08)]
-    public int Int;
-
-    /// <summary>The value, when it is a wide number.</summary>
-    [FieldOffset(0x08)]
-    public long Int64;
-
-    /// <summary>The value, when it is a number that is not negative.</summary>
-    [FieldOffset(0x08)]
-    public uint UInt;
-
-    /// <summary>The value, when it is a wide number that is not negative.</summary>
-    [FieldOffset(0x08)]
-    public ulong UInt64;
-
-    /// <summary>The value, when it is a number with a fraction.</summary>
-    [FieldOffset(0x08)]
-    public float Float;
-
-    /// <summary>The value, when it is a pointer.</summary>
-    [FieldOffset(0x08)]
-    public void* Pointer;
 }
 
 /// <summary>An event of the interface.</summary>
@@ -781,36 +606,4 @@ public unsafe struct AtkUnitBase
 
         VirtualTable->ReceiveEvent(StructPtr.Of(ref this), eventType, eventParam, atkEvent, atkEventData);
     }
-
-    /// <summary>
-    /// Tells the window that something happened, the way a button would.
-    /// </summary>
-    /// <param name="valueCount">The number of the values.</param>
-    /// <param name="values">The values themselves.</param>
-    /// <param name="close">Whether the window closes afterwards.</param>
-    /// <returns><c>true</c> when the window took the values.</returns>
-    public bool FireCallback(uint valueCount, AtkValue* values, bool close = false)
-    {
-        var function = (delegate* unmanaged<AtkUnitBase*, uint, AtkValue*, bool, bool>)
-            GameFunctions.Get(GameAddresses.AtkUnitBaseFireCallback);
-
-        return function(StructPtr.Of(ref this), valueCount, values, close);
-    }
-}
-
-/// <summary>The window that asks the player to confirm a refinement.</summary>
-[StructLayout(LayoutKind.Explicit, Size = 0x260)]
-public unsafe struct AddonMaterializeDialog
-{
-    /// <summary>The window itself.</summary>
-    [FieldOffset(0x00)]
-    public AtkUnitBase AtkUnitBase;
-
-    /// <summary>The button that confirms.</summary>
-    [FieldOffset(0x250)]
-    public AtkComponentButton* YesButton;
-
-    /// <summary>The button that gives up.</summary>
-    [FieldOffset(0x258)]
-    public AtkComponentButton* NoButton;
 }

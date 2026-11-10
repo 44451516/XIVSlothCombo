@@ -6,33 +6,6 @@ using SlothCombo.Abstractions;
 namespace SlothCombo.Runtime.Services;
 
 /// <summary>
-/// The in-game addon (window) access backed by the struct library.
-/// </summary>
-internal sealed unsafe class AddonService : IAddonService
-{
-    /// <inheritdoc/>
-    public IntPtr GetAddonByName(string name, int index = 1)
-    {
-        ArgumentException.ThrowIfNullOrEmpty(name);
-
-        var atkModule = RaptureAtkModule.Instance();
-        if (atkModule is null)
-        {
-            return IntPtr.Zero;
-        }
-
-        var unitManager = atkModule->AtkUnitManager;
-        if (unitManager is null)
-        {
-            return IntPtr.Zero;
-        }
-
-        var addon = unitManager->GetAddonByName(name, index);
-        return addon is null ? IntPtr.Zero : (IntPtr)addon;
-    }
-}
-
-/// <summary>
 /// The chat output backed by the struct library.
 /// </summary>
 /// <remarks>

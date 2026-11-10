@@ -322,10 +322,6 @@ https://<图床>/i/<文件夹>/<编号>.png
 - **`ECommons` 子模块已从解决方案中移除**。它引用的 Dalamud 侧 FCS / Lumina 版本
   与本仓库不再匹配，独立编译会报错。独立程序不依赖 ECommons——原先那约 60 处 `Svc.*`
   已由 `src/SlothCombo.Runtime/Services/Svc.cs` 就地替代。
-- **「自动消耗」类功能（自动精炼、自动吃食物）目前只有实现，没有驱动**。它们的代码
-  （`Generated/Spiritbond.cs`、`Generated/AutoItem.cs`）与设置项都还在，但旧插件里
-  驱动它们的每帧逻辑随插件一起被移除，独立程序尚未补上对应的 tick 处理。
-  设置页上的这些开关暂时不会有实际效果。
 - **结构体与签名只覆盖程序用到的部分**。`src/SlothCombo.Interop/` 是按需抄出来的，
   不是完整的游戏结构库。要接新的游戏状态时，在那一层补结构与签名，
   不要把上游库加回来。

@@ -36,9 +36,6 @@ public static class GameAddresses
     /// <summary>The items the player carries.</summary>
     public const string InventoryManager = "InventoryManager";
 
-    /// <summary>The tasks of the game.</summary>
-    public const string QuestManager = "QuestManager";
-
     /// <summary>The objects the player has its eyes on.</summary>
     public const string TargetSystem = "TargetSystem";
 
@@ -99,9 +96,6 @@ public static class GameAddresses
     /// <summary>The function that gives the number of the items of a kind.</summary>
     public const string GetInventoryItemCount = "GetInventoryItemCount";
 
-    /// <summary>The function that checks whether a task is finished.</summary>
-    public const string IsQuestComplete = "IsQuestComplete";
-
     /// <summary>The function that tells whether the player is in a battle of players.</summary>
     public const string IsInPvPArea = "IsInPvPArea";
 
@@ -117,9 +111,6 @@ public static class GameAddresses
     /// <summary>The function that gives an agent of the interface.</summary>
     public const string AgentModuleGetAgentByInternalId = "AgentModuleGetAgentByInternalId";
 
-    /// <summary>The function that gives the window of the interface by its name.</summary>
-    public const string AtkUnitManagerGetAddonByName = "AtkUnitManagerGetAddonByName";
-
     /// <summary>The function that gives the object the player has its eyes on.</summary>
     public const string TargetSystemGetTargetObject = "TargetSystemGetTargetObject";
 
@@ -131,9 +122,6 @@ public static class GameAddresses
 
     /// <summary>The function that points the player at an object.</summary>
     public const string TargetSystemSetHardTarget = "TargetSystemSetHardTarget";
-
-    /// <summary>The function that tells a window that something happened.</summary>
-    public const string AtkUnitBaseFireCallback = "AtkUnitBaseFireCallback";
 
     /// <summary>
     /// Fills the given table with the addresses of the game.
@@ -154,7 +142,6 @@ public static class GameAddresses
         table.Add(GameAddress.Static(CharacterManager, "8B D0 48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 85 C0 0F 84 ?? ?? ?? ?? 48 8B D0", 5));
         table.Add(GameAddress.Static(ClientObjectManager, "48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? C7 43 60 FF FF FF FF", 3));
         table.Add(GameAddress.Static(InventoryManager, "48 8D 0D ?? ?? ?? ?? 81 C2", 3));
-        table.Add(GameAddress.Static(QuestManager, "48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? C6 84 24", 3));
         table.Add(GameAddress.Static(TargetSystem, "48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 3B C6 0F 95 C0", 3));
         table.Add(GameAddress.Static(GroupManager, "33 D2 48 8D 0D ?? ?? ?? ?? 33 DB", 5));
         table.Add(GameAddress.Static(GameMain, "48 8D 0D ?? ?? ?? ?? 0F 28 F2 48 89 44 24 ??", 3));
@@ -178,17 +165,14 @@ public static class GameAddresses
         table.Add(GameAddress.Member(CheckActionResources, "E8 ?? ?? ?? ?? 85 C0 75 15 4C 8B C6"));
         table.Add(GameAddress.Member(GetInventoryContainer, "E8 ?? ?? ?? ?? 88 58 18"));
         table.Add(GameAddress.Member(GetInventoryItemCount, "E8 ?? ?? ?? ?? 8B 53 F1"));
-        table.Add(GameAddress.Member(IsQuestComplete, "E8 ?? ?? ?? ?? 41 88 84 2E"));
         table.Add(GameAddress.Member(IsInPvPArea, "E8 ?? ?? ?? ?? 88 45 F1"));
         table.Add(GameAddress.Member(IsInPvPInstance, "40 53 48 83 EC 20 48 8B 1D ?? ?? ?? ?? 48 85 DB 74 1E 48 8D 0D"));
         table.Add(GameAddress.Member(IsUnlockLinkUnlockedOrQuestCompleted, "E8 ?? ?? ?? ?? 44 22 F0"));
         table.Add(GameAddress.Member(RaptureLogModulePrintString, "E8 ?? ?? ?? ?? 40 80 C6 41"));
         table.Add(GameAddress.Member(AgentModuleGetAgentByInternalId, "E8 ?? ?? ?? ?? 83 7B 48 00"));
-        table.Add(GameAddress.Member(AtkUnitManagerGetAddonByName, "E8 ?? ?? ?? ?? 48 8B F8 41 B0 01"));
         table.Add(GameAddress.Member(TargetSystemGetTargetObject, "E8 ?? ?? ?? ?? 45 33 F6 48 8B F8 45 0F 57 C0"));
         table.Add(GameAddress.Member(TargetSystemGetSoftTarget, "E8 ?? ?? ?? ?? 48 3B C3 74 ?? B0 01"));
         table.Add(GameAddress.Member(TargetSystemGetHardTarget, "E8 ?? ?? ?? ?? 48 3B C7 75 ?? 32 C0"));
         table.Add(GameAddress.Member(TargetSystemSetHardTarget, "E8 ?? ?? ?? ?? 48 8B 5C 24 ?? 48 83 C4 30 5F C3 8B 83"));
-        table.Add(GameAddress.Member(AtkUnitBaseFireCallback, "E8 ?? ?? ?? ?? 0F B6 E8 8B 44 24 20"));
     }
 }

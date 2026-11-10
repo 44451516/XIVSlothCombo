@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using SlothCombo.Core;
-using SlothCombo.Generated;
 using SlothCombo.Runtime.Services;
 
 using SlothCombo.Runtime.WebUI;
@@ -65,43 +63,13 @@ internal static class ConfigHandler
                 B = configuration.TargetHighlightColor.Z,
                 A = configuration.TargetHighlightColor.W,
             },
-            AutoRefine = configuration.自动精炼,
-            OnlyRefineAlexander = configuration.只精炼亚力山大,
-            AutoFood = configuration.自动食物,
-            AutoFoodId = configuration.自动食物Id,
-            RequiredFoodHq = configuration.RequiredFoodHQ,
-            AutoRefinePotion = configuration.自动精炼药,
             HideMessageOfTheDay = configuration.HideMessageOfTheDay,
             SpecialEvent = configuration.SpecialEvent,
             MovementLeeway = configuration.MovementLeeway,
             PerformanceMode = configuration.PerformanceMode,
             RecommendedSettingsViewed = configuration.RecommendedSettingsViewed,
             ActiveBluSpells = configuration.ActiveBLUSpells.ToList(),
-            Foods = BuildFoods(),
         };
-    }
-
-    private static List<FoodDto> BuildFoods()
-    {
-        var foods = new List<FoodDto>();
-        var all = ConsumableChecker.Food;
-        if (all == null) return foods;
-
-        var normal = ConsumableChecker.GetFood(true).Select(x => x.Id).ToHashSet();
-        var highQuality = ConsumableChecker.GetFood(true, true).Select(x => x.Id).ToHashSet();
-
-        foreach (var (id, name) in all)
-        {
-            foods.Add(new FoodDto
-            {
-                Id = id,
-                Name = name,
-                InInventory = normal.Contains(id),
-                InInventoryHq = highQuality.Contains(id),
-            });
-        }
-
-        return foods;
     }
 
     private static ConfigDto Apply(JObject payload)
@@ -113,12 +81,6 @@ internal static class ConfigHandler
         if (payload.TryGetValue("hideConflictedCombos", out v)) configuration.HideConflictedCombos = v.Value<bool>();
         if (payload.TryGetValue("hideChildren", out v)) configuration.HideChildren = v.Value<bool>();
         if (payload.TryGetValue("meleeOffset", out v)) configuration.MeleeOffset = v.Value<double>();
-        if (payload.TryGetValue("autoRefine", out v)) configuration.自动精炼 = v.Value<bool>();
-        if (payload.TryGetValue("onlyRefineAlexander", out v)) configuration.只精炼亚力山大 = v.Value<bool>();
-        if (payload.TryGetValue("autoFood", out v)) configuration.自动食物 = v.Value<bool>();
-        if (payload.TryGetValue("autoFoodId", out v)) configuration.自动食物Id = v.Value<uint>();
-        if (payload.TryGetValue("requiredFoodHq", out v)) configuration.RequiredFoodHQ = v.Value<bool>();
-        if (payload.TryGetValue("autoRefinePotion", out v)) configuration.自动精炼药 = v.Value<bool>();
         if (payload.TryGetValue("hideMessageOfTheDay", out v)) configuration.HideMessageOfTheDay = v.Value<bool>();
         if (payload.TryGetValue("specialEvent", out v)) configuration.SpecialEvent = v.Value<bool>();
         if (payload.TryGetValue("movementLeeway", out v)) configuration.MovementLeeway = v.Value<float>();

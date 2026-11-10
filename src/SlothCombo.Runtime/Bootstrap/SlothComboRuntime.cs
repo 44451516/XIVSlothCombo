@@ -5,7 +5,6 @@ using SlothCombo.Abstractions;
 using SlothCombo.Combos.JobHelpers;
 using SlothCombo.Core;
 using SlothCombo.Data;
-using SlothCombo.Generated;
 using SlothCombo.Runtime.Configuration;
 using SlothCombo.Runtime.Gauges;
 using SlothCombo.Runtime.Hooking;
@@ -98,7 +97,6 @@ public static class SlothComboRuntime
             var targets = new TargetService();
             var party = new PartyService(objectTable);
             var clientState = new ClientStateService(objectTable);
-            var addons = new AddonService();
             var chat = new ChatService();
             var gauges = new JobGaugeService();
 
@@ -111,7 +109,6 @@ public static class SlothComboRuntime
             Svc.ClientState = clientState;
             Service.PartyList = party;
             Svc.Party = party;
-            Svc.GameGui = addons;
             Service.ChatGui = chat;
             Service.JobGauges = gauges;
             Svc.Gauges = gauges;
@@ -129,7 +126,6 @@ public static class SlothComboRuntime
             Service.Address.Setup(scanner);
 
             PresetStorage.Init();
-            ConsumableChecker.Init();
 
             Service.ComboCache = new CustomComboCache();
             Service.IconReplacer = new IconReplacer();

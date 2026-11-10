@@ -178,33 +178,6 @@ public unsafe struct GameMain
     }
 }
 
-/// <summary>The tasks of the game.</summary>
-[StructLayout(LayoutKind.Explicit, Size = 0x1092)]
-public unsafe struct QuestManager
-{
-    /// <summary>The tasks that are finished, one bit each.</summary>
-    [FieldOffset(0x2E0)]
-    public fixed byte CompletedQuests[751];
-
-    /// <summary>Gets the manager of the tasks.</summary>
-    /// <returns>The manager, or <c>null</c> when the game is not ready.</returns>
-    public static QuestManager* Instance() => (QuestManager*)GameFunctions.Get(GameAddresses.QuestManager);
-
-    /// <summary>Tells whether a task is finished.</summary>
-    /// <param name="questId">The number of the task.</param>
-    /// <returns><c>true</c> when the task is finished.</returns>
-    public static bool IsQuestComplete(ushort questId)
-    {
-        var function = (delegate* unmanaged<ushort, bool>)GameFunctions.Get(GameAddresses.IsQuestComplete);
-        return function(questId);
-    }
-
-    /// <summary>Tells whether a task is finished.</summary>
-    /// <param name="questId">The number of the task.</param>
-    /// <returns><c>true</c> when the task is finished.</returns>
-    public static bool IsQuestComplete(uint questId) => IsQuestComplete((ushort)(questId & 0xFFFF));
-}
-
 /// <summary>The kind of a container of items.</summary>
 public enum InventoryType : uint
 {

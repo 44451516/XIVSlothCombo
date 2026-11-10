@@ -234,7 +234,6 @@ internal sealed class RuntimeGameServices : IGameServices
         ITargetService targets,
         IPartyService party,
         IDataManager data,
-        IAddonService addons,
         IChatService chat,
         IComboLogger log,
         IClientStateService clientState)
@@ -244,7 +243,6 @@ internal sealed class RuntimeGameServices : IGameServices
         Targets = targets;
         Party = party;
         Data = data;
-        Addons = addons;
         Chat = chat;
         Log = log;
         ClientState = clientState;
@@ -264,9 +262,6 @@ internal sealed class RuntimeGameServices : IGameServices
 
     /// <inheritdoc/>
     public IDataManager Data { get; }
-
-    /// <inheritdoc/>
-    public IAddonService Addons { get; }
 
     /// <inheritdoc/>
     public IChatService Chat { get; }

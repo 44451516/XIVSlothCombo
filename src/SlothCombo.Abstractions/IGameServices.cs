@@ -10,7 +10,7 @@ namespace SlothCombo.Abstractions;
 /// <para>
 /// The legacy plugin reached for the Dalamud service locator
 /// (<c>Service.ObjectTable</c>, <c>Service.Condition</c>, ...) and for the
-/// ECommons shortcut (<c>Svc.Data</c>, <c>Svc.GameGui</c>, ...). Both are
+/// ECommons shortcut (<c>Svc.Data</c>, <c>Svc.Condition</c>, ...). Both are
 /// replaced by this single interface so the combo logic can run on the
 /// standalone runtime without Dalamud being present at all.
 /// </para>
@@ -36,9 +36,6 @@ public interface IGameServices
 
     /// <summary>Gets the static game data (Excel sheets).</summary>
     IDataManager Data { get; }
-
-    /// <summary>Gets the in-game addon (window) access.</summary>
-    IAddonService Addons { get; }
 
     /// <summary>Gets the chat output helper.</summary>
     IChatService Chat { get; }
@@ -137,13 +134,6 @@ public interface IPartyMember
 
     /// <summary>Gets the game object of the member, or <c>null</c> when it is not loaded.</summary>
     IGameObject? GameObject { get; }
-}
-
-/// <summary>Access to the in-game addons.</summary>
-public interface IAddonService
-{
-    /// <summary>Gets the address of the addon with the given name, or <c>IntPtr.Zero</c>.</summary>
-    IntPtr GetAddonByName(string name, int index = 1);
 }
 
 /// <summary>Chat output.</summary>
