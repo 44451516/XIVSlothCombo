@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using SlothCombo.Abstractions;
 using SlothCombo.CustomComboNS.Functions;
 using SlothCombo.Data;
 using SlothCombo.Runtime.Services;
@@ -68,6 +69,16 @@ internal static class DebugHandler
         var localPlayer = Service.ObjectTable.LocalPlayer;
         if (localPlayer == null) return new { loggedIn = false };
 
+        var classJobSheet = Service.DataManager.GetExcelSheet<Lumina.Excel.Sheets.ClassJob>();
+        var jobName = classJobSheet.TryGetRow(localPlayer.ClassJob.RowId, out var jobRow)
+            ? jobRow.Name.ToString()
+            : string.Empty;
+
+        var territorySheet = Service.DataManager.GetExcelSheet<Lumina.Excel.Sheets.TerritoryType>();
+        var zoneName = territorySheet.TryGetRow(Service.ClientState.TerritoryType, out var territory)
+            ? territory.PlaceName.Value.Name.ToString()
+            : string.Empty;
+
         var target = localPlayer.TargetObject;
         var isBattleChara = target is IBattleChara;
 
@@ -75,12 +86,12 @@ internal static class DebugHandler
         {
             loggedIn = true,
             statuses = BuildStatuses(localPlayer.StatusList, false),
-            targetStatuses = target is IBattleChara chara ? BuildStatuses(chara.StatusList, true) : new List<object>(),
+            targetStatuses = target is not null ? BuildStatuses(target.StatusList, true) : new List<object>(),
             player = new
             {
-                job = localPlayer.ClassJob.Value.NameEnglish,
+                job = jobName,
                 jobId = localPlayer.ClassJob.RowId,
-                zone = Service.DataManager.GetExcelSheet<Lumina.Excel.Sheets.TerritoryType>()?.FirstOrDefault(x => x.RowId == Service.ClientState.TerritoryType).PlaceName.Value.Name,
+                zone = zoneName,
                 zoneId = Service.ClientState.TerritoryType,
                 inPvP = CustomComboFunctions.InPvP(),
                 inCombat = CustomComboFunctions.InCombat(),
@@ -92,7 +103,7 @@ internal static class DebugHandler
                 objectKind = target?.ObjectKind.ToString(),
                 dataId = target?.BaseId,
                 isBattleChara = isBattleChara,
-                isPlayerCharacter = target is IPlayerCharacter,
+                isPlayerCharacter = target?.ObjectKind == ObjectKind.Pc,
                 distance = Math.Round(CustomComboFunctions.GetTargetDistance(), 2),
                 hitboxRadius = target?.HitboxRadius,
                 inMeleeRange = CustomComboFunctions.InMeleeRange(),
@@ -128,7 +139,10 @@ internal static class DebugHandler
                     .Select(member => new
                     {
                         name = member!.Name,
-                        job = (member as IPlayerCharacter)?.ClassJob.Value.Abbreviation ?? string.Empty,
+                        job = member.ObjectKind == ObjectKind.Pc &&
+                              classJobSheet.TryGetRow(member.ClassJob.RowId, out var memberJob)
+                            ? memberJob.Abbreviation.ToString()
+                            : string.Empty,
                     })
                     .ToList(),
             },
@@ -154,7 +168,9 @@ internal static class DebugHandler
 
             list.Add(new
             {
-                source = status.SourceObject?.Name,
+                source = status.SourceId == 0
+                    ? null
+                    : Service.ObjectTable.Objects.FirstOrDefault(x => x.GameObjectId == status.SourceId)?.Name,
                 name = string.IsNullOrEmpty(name) ? status.StatusId.ToString() : name,
                 id = status.StatusId,
                 duration,
@@ -166,7 +182,7 @@ internal static class DebugHandler
 
     private static object BuildActionList()
     {
-        var jobId = Service.ClientState?.ClassJobRowId ?? 0;
+        var jobId = Service.ObjectTable.LocalPlayer?.ClassJob.RowId ?? 0;
         var classId = CustomComboFunctions.JobIDs.JobToClass(jobId);
 
         var actions = Service.DataManager.GetExcelSheet<Action>()
