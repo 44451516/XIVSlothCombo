@@ -1,6 +1,5 @@
 using System;
-using FFXIVClientStructs.FFXIV.Client.UI;
-using FFXIVClientStructs.FFXIV.Component.GUI;
+using SlothCombo.Interop.UI;
 
 namespace SlothCombo.Generated;
 

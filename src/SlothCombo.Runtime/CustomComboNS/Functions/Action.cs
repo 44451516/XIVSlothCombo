@@ -1,5 +1,5 @@
 using System.Linq;
-using FFXIVClientStructs.FFXIV.Client.Game;
+using SlothCombo.Interop.Game;
 using SlothCombo.Combos.PvE;
 using SlothCombo.Data;
 using SlothCombo.Runtime.Services;
@@ -307,7 +307,7 @@ namespace SlothCombo.CustomComboNS.Functions
 
                 ActionWatching.ActionSheet.TryGetValue(ActionWatching.CombatActions.Last(), out var Last);
                 {
-                    switch (Last.ActionCategory.Value.RowId)
+                    switch (Last.ActionCategory)
                     {
                         case 2: //Spell
                             break;
@@ -333,7 +333,7 @@ namespace SlothCombo.CustomComboNS.Functions
                     out var Last_2
                 );
                 {
-                    switch (Last_2.ActionCategory.Value.RowId)
+                    switch (Last_2.ActionCategory)
                     {
                         case 2: //Spell
                             break;

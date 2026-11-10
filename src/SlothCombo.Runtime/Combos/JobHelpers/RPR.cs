@@ -1,6 +1,6 @@
 using SlothCombo.Runtime.Gauges;
 using SlothCombo.Runtime.Services;
-using FFXIVClientStructs.FFXIV.Client.Game;
+using SlothCombo.Interop.Game;
 using SlothCombo.Combos.JobHelpers.Enums;
 using SlothCombo.Combos.PvE;
 using SlothCombo.CustomComboNS.Functions;

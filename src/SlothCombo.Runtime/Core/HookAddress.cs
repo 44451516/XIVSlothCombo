@@ -1,6 +1,6 @@
 
 using System;
-using FFXIVClientStructs.FFXIV.Client.Game.Event;
+using SlothCombo.Interop;
 
 namespace SlothCombo.Core;
 
@@ -15,9 +15,9 @@ internal class HookAddress
     // public const string ActionIdReplaceable = "E8 ?? ?? ?? ?? 84 C0 74 67 8B D3";
     
     // public const string ReceiveActionEffect = "E8 ?? ?? ?? ?? 48 8B 8D F0 03 00 00";
-    // The address is read on demand: the struct library only knows it once
-    // the resolver has run, which happens after this class is loaded.
-    public static nint ReceiveActionEffect => FFXIVClientStructs.FFXIV.Client.Game.Character.ActionEffectHandler.Addresses.Receive.Value;
+    // The address is read on demand: the pattern is only known once the
+    // resolver has run, which happens after this class is loaded.
+    public static nint ReceiveActionEffect => GameFunctions.Get(GameAddresses.ActionEffectHandlerReceive);
 
     // public const string ReceiveActionEffect = "40 55 56 57 41 54 41 55 41 56 48 8D AC 24";
     
@@ -32,7 +32,7 @@ internal class HookAddress
     
     // public const string UseActionLocation = "E8 ?? ?? ?? ?? 41 3A C5 0F 85 ?? ?? ?? ??";
     // public const string UseActionLocation = "E8 ?? ?? ?? ?? 40 3A C7 0F 85 ?? ?? ?? ??";
-    public static nint UseActionLocation => FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Addresses.UseActionLocation.Value;
+    public static nint UseActionLocation => GameFunctions.Get(GameAddresses.UseActionLocation);
     
     public const string GetAdjustedActionId = "E8 ?? ?? ?? ?? 89 03 8B 03";
 }

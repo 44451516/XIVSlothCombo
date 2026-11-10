@@ -13,16 +13,14 @@
 
     It has no dependency on Dalamud: the game logic only ever talks to the
     interfaces declared here, so the same source files can be hosted by the
-    standalone runtime (which implements them on top of FFXIVClientStructs)
+    standalone runtime (which implements them on top of its own interop layer)
     and by the legacy Dalamud plugin (which implements them on top of the
     Dalamud services).
 
-    The Excel reader is referenced for its row interface only. It does not
-    reference Dalamud either.
+    The static data of the game is declared here as well, as plain rows and
+    as the table that holds them. The rows are the contract between the
+    program and the tables that are carried along with it, so they belong
+    here rather than in the layer that reads them.
   -->
-  <ItemGroup>
-    <PackageReference Include="Lumina" Version="7.6.0" />
-    <PackageReference Include="Lumina.Excel" Version="7.5.0" />
-  </ItemGroup>
 
 </Project>

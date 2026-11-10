@@ -4,10 +4,10 @@
     Shared build settings for the standalone program.
 
     These properties sit next to the projects of the program on purpose. A
-    file in the root of the repository would also reach the libraries in the
-    submodules, and it would change how they are built. The standalone program
-    is built on its own, so it carries its own settings and leaves the rest of
-    the repository alone.
+    file in the root of the repository would also reach every project of the
+    repository, whatever it is, and it would change how they are built. The
+    standalone program is built on its own, so it carries its own settings and
+    leaves the rest of the repository alone.
   -->
 
   <PropertyGroup>
@@ -31,8 +31,8 @@
 
       Every project of the program is built for 64 bit as well. A program that
       reaches into the game has to have the same width as the game, and a
-      build that mixes the two makes the build graph build the libraries in
-      the submodule twice, which ends in two compilers writing the same file.
+      build that mixes the two makes the build graph build a library twice,
+      which ends in two compilers writing the same file.
     -->
     <TargetFramework>net10.0</TargetFramework>
     <PlatformTarget>x64</PlatformTarget>

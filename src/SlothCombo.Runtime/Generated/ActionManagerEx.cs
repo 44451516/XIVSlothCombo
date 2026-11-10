@@ -1,6 +1,6 @@
 using SlothCombo.Runtime.Services;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.UI;
+using SlothCombo.Interop.Game;
+using SlothCombo.Interop.UI;
 
 namespace Artisan.GameInterop;
 

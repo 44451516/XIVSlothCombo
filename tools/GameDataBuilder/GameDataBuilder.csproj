@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    The tool that turns the published game data into the static tables the
+    runtime reads.
+
+    The tool is not part of the installation. It is run by hand whenever the
+    data of the game changes, and it writes the JSON files that are shipped
+    with the runtime.
+
+    The tool lives outside of src on purpose: the Directory.Build.props next
+    to the projects of the program carries settings that only make sense for
+    the program itself.
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>SlothCombo.GameDataBuilder</RootNamespace>
+    <AssemblyName>GameDataBuilder</AssemblyName>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <PublishSingleFile>false</PublishSingleFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+      The rows of the tables are read back by the tool to make sure that every
+      table it writes can be read by the runtime as well. The rows live in the
+      layer that holds the contracts of the program, so that the tool and the
+      runtime always agree on the shape of a row.
+    -->
+    <ProjectReference Include="..\..\src\SlothCombo.Abstractions\SlothCombo.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

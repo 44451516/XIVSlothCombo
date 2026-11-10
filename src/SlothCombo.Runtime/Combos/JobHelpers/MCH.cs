@@ -1,5 +1,5 @@
 using SlothCombo.Runtime.Services;
-using FFXIVClientStructs.FFXIV.Client.Game;
+using SlothCombo.Interop.Game;
 using SlothCombo.Combos.JobHelpers.Enums;
 using SlothCombo.Data;
 using static SlothCombo.CustomComboNS.Functions.CustomComboFunctions;

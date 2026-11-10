@@ -1,5 +1,5 @@
 using SlothCombo.Abstractions;
-using FFXIVClientStructs.FFXIV.Client.Game.Character;
+using SlothCombo.Interop.Game;
 
 namespace SlothCombo.Extensions
 {
@@ -8,7 +8,7 @@ namespace SlothCombo.Extensions
         
         public unsafe static uint RawShieldValue(this IBattleChara chara)
         {
-            FFXIVClientStructs.FFXIV.Client.Game.Character.BattleChara* baseVal = (FFXIVClientStructs.FFXIV.Client.Game.Character.BattleChara*)chara.Address;
+            SlothCombo.Interop.Game.BattleChara* baseVal = (SlothCombo.Interop.Game.BattleChara*)chara.Address;
             var value = baseVal->Character.CharacterData.ShieldValue;
             var rawValue = chara.CurrentHp / 100 * value;
 

@@ -157,13 +157,29 @@ internal static class PresetService
                 Shorthand = first.JobShorthand,
                 Version = JobVersions.TryGetValue(jobId, out var version) ? version : null,
                 Disabled = DisabledJobs.DisabledJobsPVE.Contains(jobId) || DisabledJobs.DisabledJobsPVP.Contains(jobId),
-                IconId = IconService.GetJobIconId(jobId),
+                IconId = JobIconId(jobId),
                 Notice = GetBluNotice(jobName),
             });
         }
 
         return jobs;
     }
+
+    /// <summary>
+    /// Works out the number of the picture that stands for the given job.
+    ///
+    /// The number is the number of the file that holds the picture in the files
+    /// of the game, so the interface can ask the host that serves the game data
+    /// for the picture itself.
+    /// </summary>
+    /// <param name="jobId">The number of the job.</param>
+    /// <returns>The number of the picture.</returns>
+    private static uint JobIconId(uint jobId) => jobId switch
+    {
+        0 => 62571,
+        51 => 62116,
+        _ => 62100 + jobId,
+    };
 
     /// <summary> Builds the additional information rendered on a preset card. </summary>
     internal static PresetDetail BuildDetail(CustomComboPreset preset)

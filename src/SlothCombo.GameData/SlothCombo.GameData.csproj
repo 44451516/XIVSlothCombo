@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    The static data of the game.
+
+    The tables of the game are read once, when the program is built, and are
+    carried along with it as JSON. The runtime only looks the rows up, so it
+    does not need the files of the game to be present.
+
+    The rows are plain data, so the project carries no dependency of its own.
+  -->
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    <TargetFramework>net10.0</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
+    <AssemblyName>SlothCombo.GameData</AssemblyName>
+    <RootNamespace>SlothCombo.GameData</RootNamespace>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NoWarn>CS1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SlothCombo.Abstractions\SlothCombo.Abstractions.csproj" />
+  </ItemGroup>
+
+  <!--
+    The tables are carried along with the program. They are read from the
+    files next to the assembly of the runtime, so the folder that holds the
+    runtime also holds the data.
+
+    The tables are stored compressed: the plain text of all the languages adds
+    up to tens of megabytes, while the compressed tables are a good deal
+    smaller and the program only ever reads one language at a time.
+  -->
+  <ItemGroup>
+    <Content Include="Tables\**\*.json.gz" CopyToOutputDirectory="PreserveNewest" Link="GameData\%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+
+</Project>

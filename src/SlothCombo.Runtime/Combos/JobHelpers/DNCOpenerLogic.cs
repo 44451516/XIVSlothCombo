@@ -1,5 +1,5 @@
 using SlothCombo.Runtime.Gauges;
-using FFXIVClientStructs.FFXIV.Client.Game;
+using SlothCombo.Interop.Game;
 using SlothCombo.Combos.PvE;
 using SlothCombo.Core;
 using SlothCombo.CustomComboNS.Functions;

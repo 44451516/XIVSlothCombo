@@ -1,6 +1,6 @@
 using System;
 using SlothCombo.Abstractions;
-using FFXIVClientStructs.FFXIV.Client.Game;
+using SlothCombo.Interop.Game;
 using SlothCombo.Runtime.Services;
 
 namespace SlothCombo.Core

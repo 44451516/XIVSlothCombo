@@ -1,5 +1,5 @@
 using System.Linq;
-using FFXIVClientStructs.FFXIV.Client.Game;
+using SlothCombo.Interop.Game;
 using SlothCombo.Runtime.Services;
 
 namespace SlothCombo.Generated;

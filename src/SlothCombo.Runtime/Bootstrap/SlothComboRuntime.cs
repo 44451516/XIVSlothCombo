@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using SlothCombo.Abstractions;
 using SlothCombo.Combos.JobHelpers;
 using SlothCombo.Core;
 using SlothCombo.Data;
@@ -78,9 +79,9 @@ public static class SlothComboRuntime
             logger.Information("===== X I V S L O T H C O M B O =====");
             logger.Information($"Data folder: {options.DataFolder}");
 
-            ResolveAddresses(logger, options);
-
             var scanner = new SignatureScanner();
+            ResolveAddresses(logger, options, scanner);
+
             var hookFactory = new ReloadedHookFactory();
             var framework = new FrameworkService();
             _framework = framework;
@@ -116,7 +117,7 @@ public static class SlothComboRuntime
             Svc.Gauges = gauges;
             Service.BuddyList = new BuddyListService();
 
-            var data = new LuminaDataService(ResolveGameInstallPath(options));
+            var data = new GameDataService(GameDataService.ResolveRootFolder(), clientState.ClientLanguage);
             Service.DataManager = data;
             Svc.Data = data;
 
@@ -379,14 +380,17 @@ public static class SlothComboRuntime
     /// Resolves the addresses of the game.
     /// </summary>
     /// <remarks>
-    /// A few addresses of the struct library do not resolve on every build of
-    /// the game. Those are reported but do not stop the runtime, because the
-    /// features that need them are the only ones that break.
+    /// A few addresses of the game do not resolve on every build of it. Those
+    /// are reported but do not stop the runtime, because the features that need
+    /// them are the only ones that break.
     /// </remarks>
-    private static void ResolveAddresses(FileComboLogger logger, RuntimeOptions options)
+    /// <param name="logger">The logger the result is reported to.</param>
+    /// <param name="options">The options of the runtime.</param>
+    /// <param name="scanner">The scanner that looks for the patterns.</param>
+    private static void ResolveAddresses(FileComboLogger logger, RuntimeOptions options, ISignatureScanner scanner)
     {
         var cachePath = Path.Combine(options.DataFolder, SignatureResolver.CacheFileName);
-        if (SignatureResolver.Resolve(cachePath, out var unresolved))
+        if (SignatureResolver.Resolve(cachePath, scanner, out var unresolved))
         {
             logger.Information("All addresses of the game were resolved.");
             return;
@@ -397,26 +401,5 @@ public static class SlothComboRuntime
         {
             logger.Warning($"Unresolved address: {name}");
         }
-    }
-
-    /// <summary>
-    /// Works out the installation directory of the game.
-    /// </summary>
-    private static string ResolveGameInstallPath(RuntimeOptions options)
-    {
-        if (!string.IsNullOrWhiteSpace(options.GameInstallPath))
-        {
-            return options.GameInstallPath;
-        }
-
-        var detected = LuminaDataService.TryFindGameInstallPath();
-        if (string.IsNullOrEmpty(detected))
-        {
-            throw new InvalidOperationException(
-                "The installation directory of the game could not be found. " +
-                "It is needed to read the static game data.");
-        }
-
-        return detected;
     }
 }

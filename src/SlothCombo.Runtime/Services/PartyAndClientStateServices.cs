@@ -1,9 +1,8 @@
 using System;
 using System.Linq;
 using System.Numerics;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.Game.Group;
-using FFXIVClientStructs.FFXIV.Client.System.Framework;
+using SlothCombo.Interop.Game;
+using SlothCombo.Interop.UI;
 using SlothCombo.Abstractions;
 
 namespace SlothCombo.Runtime.Services;
@@ -76,7 +75,7 @@ internal sealed unsafe class PartyService : IPartyService
     }
 
     /// <summary>Gets the group of the player, or <c>null</c> when there is none.</summary>
-    private static GroupManager.Group* GetGroup()
+    private static Group* GetGroup()
     {
         var manager = GroupManager.Instance();
         return manager is null ? null : &manager->MainGroup;

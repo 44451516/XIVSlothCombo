@@ -3,7 +3,7 @@ using SlothCombo.Combos.PvE.Content;
 using SlothCombo.Core;
 using SlothCombo.CustomComboNS;
 using System;
-using FFXIVClientStructs.FFXIV.Client.Game;
+using SlothCombo.Interop.Game;
 using SlothCombo.Data;
 using SlothCombo.Extensions;
 using SlothCombo.Runtime.Services;

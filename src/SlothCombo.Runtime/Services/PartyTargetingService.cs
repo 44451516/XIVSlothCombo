@@ -1,6 +1,6 @@
 using System;
-using FFXIVClientStructs.FFXIV.Client.Game.Object;
-using FFXIVClientStructs.FFXIV.Client.System.Framework;
+using SlothCombo.Interop.Game;
+using SlothCombo.Interop.UI;
 using SlothCombo.Core;
 
 namespace SlothCombo.Runtime.Services;

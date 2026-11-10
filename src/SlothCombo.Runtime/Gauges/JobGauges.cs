@@ -1,31 +1,32 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using FFXIVClientStructs.FFXIV.Client.Game;
+using SlothCombo.Interop.Game;
+using JobGaugeManager = SlothCombo.Interop.Gauges.JobGaugeManager;
 using SlothCombo.Runtime.Gauges.Enums;
-using AstrologianGauge = FFXIVClientStructs.FFXIV.Client.Game.Gauge.AstrologianGauge;
-using BardGauge = FFXIVClientStructs.FFXIV.Client.Game.Gauge.BardGauge;
-using BlackMageGauge = FFXIVClientStructs.FFXIV.Client.Game.Gauge.BlackMageGauge;
-using DancerGauge = FFXIVClientStructs.FFXIV.Client.Game.Gauge.DancerGauge;
-using DarkKnightGauge = FFXIVClientStructs.FFXIV.Client.Game.Gauge.DarkKnightGauge;
-using DragoonGauge = FFXIVClientStructs.FFXIV.Client.Game.Gauge.DragoonGauge;
-using GunbreakerGauge = FFXIVClientStructs.FFXIV.Client.Game.Gauge.GunbreakerGauge;
-using MachinistGauge = FFXIVClientStructs.FFXIV.Client.Game.Gauge.MachinistGauge;
-using MonkGauge = FFXIVClientStructs.FFXIV.Client.Game.Gauge.MonkGauge;
-using NinjaGauge = FFXIVClientStructs.FFXIV.Client.Game.Gauge.NinjaGauge;
-using PaladinGauge = FFXIVClientStructs.FFXIV.Client.Game.Gauge.PaladinGauge;
-using PictomancerGauge = FFXIVClientStructs.FFXIV.Client.Game.Gauge.PictomancerGauge;
-using RedMageGauge = FFXIVClientStructs.FFXIV.Client.Game.Gauge.RedMageGauge;
-using ReaperGauge = FFXIVClientStructs.FFXIV.Client.Game.Gauge.ReaperGauge;
-using SageGauge = FFXIVClientStructs.FFXIV.Client.Game.Gauge.SageGauge;
-using SamuraiGauge = FFXIVClientStructs.FFXIV.Client.Game.Gauge.SamuraiGauge;
-using ScholarGauge = FFXIVClientStructs.FFXIV.Client.Game.Gauge.ScholarGauge;
-using SummonerGauge = FFXIVClientStructs.FFXIV.Client.Game.Gauge.SummonerGauge;
-using ViperGauge = FFXIVClientStructs.FFXIV.Client.Game.Gauge.ViperGauge;
-using WarriorGauge = FFXIVClientStructs.FFXIV.Client.Game.Gauge.WarriorGauge;
-using WhiteMageGauge = FFXIVClientStructs.FFXIV.Client.Game.Gauge.WhiteMageGauge;
-using FcsAetherFlags = FFXIVClientStructs.FFXIV.Client.Game.Gauge.AetherFlags;
-using FcsSongFlags = FFXIVClientStructs.FFXIV.Client.Game.Gauge.SongFlags;
+using AstrologianGauge = SlothCombo.Interop.Gauges.AstrologianGauge;
+using BardGauge = SlothCombo.Interop.Gauges.BardGauge;
+using BlackMageGauge = SlothCombo.Interop.Gauges.BlackMageGauge;
+using DancerGauge = SlothCombo.Interop.Gauges.DancerGauge;
+using DarkKnightGauge = SlothCombo.Interop.Gauges.DarkKnightGauge;
+using DragoonGauge = SlothCombo.Interop.Gauges.DragoonGauge;
+using GunbreakerGauge = SlothCombo.Interop.Gauges.GunbreakerGauge;
+using MachinistGauge = SlothCombo.Interop.Gauges.MachinistGauge;
+using MonkGauge = SlothCombo.Interop.Gauges.MonkGauge;
+using NinjaGauge = SlothCombo.Interop.Gauges.NinjaGauge;
+using PaladinGauge = SlothCombo.Interop.Gauges.PaladinGauge;
+using PictomancerGauge = SlothCombo.Interop.Gauges.PictomancerGauge;
+using RedMageGauge = SlothCombo.Interop.Gauges.RedMageGauge;
+using ReaperGauge = SlothCombo.Interop.Gauges.ReaperGauge;
+using SageGauge = SlothCombo.Interop.Gauges.SageGauge;
+using SamuraiGauge = SlothCombo.Interop.Gauges.SamuraiGauge;
+using ScholarGauge = SlothCombo.Interop.Gauges.ScholarGauge;
+using SummonerGauge = SlothCombo.Interop.Gauges.SummonerGauge;
+using ViperGauge = SlothCombo.Interop.Gauges.ViperGauge;
+using WarriorGauge = SlothCombo.Interop.Gauges.WarriorGauge;
+using WhiteMageGauge = SlothCombo.Interop.Gauges.WhiteMageGauge;
+using FcsAetherFlags = SlothCombo.Interop.Gauges.AetherFlags;
+using FcsSongFlags = SlothCombo.Interop.Gauges.SongFlags;
 
 namespace SlothCombo.Runtime.Gauges;
 
@@ -94,7 +95,7 @@ internal sealed unsafe class JobGaugeService
         get
         {
             var manager = JobGaugeManager.Instance();
-            return manager is null ? IntPtr.Zero : (IntPtr)(&manager->EmptyGauge);
+            return manager is null ? IntPtr.Zero : manager->SharedAddress;
         }
     }
 }

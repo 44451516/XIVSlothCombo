@@ -7,7 +7,7 @@ using SlothCombo.Abstractions;
 
 
 using Status = SlothCombo.Abstractions.IStatus;
-using FFXIVClientStructs.FFXIV.Client.Game;
+using SlothCombo.Interop.Game;
 using SlothCombo.Runtime.Services;
 
 namespace SlothCombo.Data

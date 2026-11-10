@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 
 using SlothCombo.Runtime.Services;
-using Lumina.Excel.Sheets;
+using SlothCombo.Abstractions.GameData;
 using SlothCombo.Combos.PvE;
 using SlothCombo.Translatezh;
 
@@ -152,16 +152,18 @@ namespace SlothCombo.Attributes
         public uint ClassJobCategory => JobIDToClassJobCategory(JobID);
         private int JobIDToRole(byte jobID)
         {
-            if (Service.DataManager.GetExcelSheet<ClassJob>().HasRow(jobID))
-                return Service.DataManager.GetExcelSheet<ClassJob>().GetRow(jobID).Role;
+            var row = Service.DataManager.GetTable<ClassJobRow>().GetRow(jobID);
+            if (row is not null)
+                return row.Role;
 
             return 0;
         }
 
         private uint JobIDToClassJobCategory(byte jobID)
         {
-            if (Svc.Data.GetExcelSheet<ClassJob>().HasRow(jobID))
-                return Svc.Data.GetExcelSheet<ClassJob>().GetRow(jobID).ClassJobCategory.RowId;
+            var row = Svc.Data.GetTable<ClassJobRow>().GetRow(jobID);
+            if (row is not null)
+                return row.ClassJobCategory;
 
             return 0;
         }
@@ -179,8 +181,7 @@ namespace SlothCombo.Attributes
         {
             if (ClassJobs.TryGetValue(key, out var job))
             {
-                // return job.Abbreviation.RawString;
-                return job.Abbreviation.ToString();
+                return job.Abbreviation;
             }
             else
             {
@@ -189,7 +190,8 @@ namespace SlothCombo.Attributes
         }
 
 
-        private static readonly Dictionary<uint, ClassJob> ClassJobs = Service.DataManager.GetExcelSheet<ClassJob>()!.ToDictionary(i => i.RowId, i => i);
+        private static readonly Dictionary<uint, ClassJobRow> ClassJobs =
+            Service.DataManager.GetTable<ClassJobRow>().Rows.ToDictionary(i => i.RowId, i => i);
    
         
         public static string JobIDToName(byte key)
@@ -202,11 +204,14 @@ namespace SlothCombo.Attributes
                 key = 08; //Set to Carpenter
             if (key is DOL.JobID) 
                 key = 16; //Set to Miner
-            if (ClassJobs.TryGetValue(key, out ClassJob job))
+            if (ClassJobs.TryGetValue(key, out var job))
             {
-                //Grab Category name for DOH/DOL, else the normal Name for the rest
-                // string jobname = key is 08 or 16 ? job.ClassJobCategory.Value.Name : job.Name;
-                string jobname = key is 08 or 16 ? job.ClassJobCategory.Value.Name.ToString() : job.Name.ToString();
+                // The crafting and the mining jobs share one combo each, so the
+                // name of the kind of the class is used for them instead of the
+                // name of the job itself.
+                var jobname = key is 08 or 16
+                    ? Service.DataManager.GetTable<ClassJobCategoryRow>().GetRow(job.ClassJobCategory)?.Name ?? job.Name
+                    : job.Name;
                 //Job names are all lowercase by default. This capitalizes based on regional rules
                 string cultureID = Svc.ClientState.ClientLanguage switch
                 {

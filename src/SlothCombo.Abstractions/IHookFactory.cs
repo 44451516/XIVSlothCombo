@@ -67,6 +67,20 @@ public interface ISignatureScanner
     /// <returns>The address of the match, or <c>IntPtr.Zero</c>.</returns>
     IntPtr ScanText(string signature);
 
+    /// <summary>
+    /// Scans the main module for the given signature and returns the place the
+    /// pattern was found, without resolving the call it may start with.
+    /// </summary>
+    /// <param name="signature">The signature to scan for.</param>
+    /// <returns>The address of the match, or <c>IntPtr.Zero</c>.</returns>
+    /// <remarks>
+    /// A pattern that starts with a call stands for the function the call goes
+    /// to, which <see cref="ScanText"/> resolves on its own. The layer that
+    /// knows the layout of the game needs the place the pattern was found
+    /// instead, because the distance that leads to the address is read there.
+    /// </remarks>
+    IntPtr ScanTextRaw(string signature);
+
     /// <summary>Scans the main module for the given signature and returns the address of a static.</summary>
     /// <param name="signature">The signature to scan for.</param>
     /// <param name="offset">The offset added to the matched address.</param>

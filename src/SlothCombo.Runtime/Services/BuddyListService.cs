@@ -1,8 +1,5 @@
 using System;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.Game.Character;
-using FFXIVClientStructs.FFXIV.Client.Game.Control;
-using FFXIVClientStructs.FFXIV.Client.Game.Object;
+using SlothCombo.Interop.Game;
 using SlothCombo.Abstractions;
 
 namespace SlothCombo.Runtime.Services;
@@ -46,7 +43,7 @@ internal sealed unsafe class BuddyListService : IBuddyList
         }
 
         var battleCharas = manager->BattleCharas;
-        if (battleCharas.Length == 0)
+        if (battleCharas is null)
         {
             return null;
         }

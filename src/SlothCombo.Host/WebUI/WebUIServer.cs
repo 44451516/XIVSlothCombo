@@ -282,7 +282,9 @@ internal sealed class WebUIServer : IDisposable
         context.Response.Headers.Add("Cache-Control", "no-cache");
         if (extension.Equals(".html", StringComparison.OrdinalIgnoreCase))
         {
-            context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; font-src 'self' data:; object-src 'none'; base-uri 'none'");
+            // The pictures of the game are taken from the hosts that serve the
+            // game data, so they have to be allowed to be loaded.
+            context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'; img-src 'self' data: https://cafemaker.wakingsands.com https://xivapi.com; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; font-src 'self' data:; object-src 'none'; base-uri 'none'");
             context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
         }
 

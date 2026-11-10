@@ -7,6 +7,8 @@ using SlothCombo.Core;
 using SlothCombo.CustomComboNS.Functions;
 using SlothCombo.Data;
 using SlothCombo.Runtime.Services;
+using ItemRow = SlothCombo.Abstractions.GameData.ItemRow;
+using ActionRow = SlothCombo.Abstractions.GameData.ActionRow;
 
 using SlothCombo.Runtime.WebUI;
 
@@ -304,14 +306,14 @@ internal static class TimelineHandler
             {
                 dto.ActionName = ActionWatching.GetItemName(action.ActionId);
 
-                var items = Service.DataManager.GetExcelSheet<Lumina.Excel.Sheets.Item>();
+                var items = Service.DataManager.GetTable<ItemRow>();
                 if (items.TryGetRow(action.ActionId, out var item)) dto.ActionIcon = item.Icon;
             }
             else
             {
                 dto.ActionName = ActionWatching.GetActionName(action.ActionId);
 
-                var actions = Service.DataManager.GetExcelSheet<Lumina.Excel.Sheets.Action>();
+                var actions = Service.DataManager.GetTable<ActionRow>();
                 if (actions.TryGetRow(action.ActionId, out var row)) dto.ActionIcon = row.Icon;
             }
         }

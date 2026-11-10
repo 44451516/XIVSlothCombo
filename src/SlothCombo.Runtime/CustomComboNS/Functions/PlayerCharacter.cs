@@ -1,10 +1,10 @@
 using SlothCombo.Abstractions;
 
 using SlothCombo.Runtime.Services;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using Lumina.Excel.Sheets;
-using Action = Lumina.Excel.Sheets.Action;
-using GameMain = FFXIVClientStructs.FFXIV.Client.Game.GameMain;
+using SlothCombo.Interop.Game;
+using SlothCombo.Interop.UI;
+using ActionRow = SlothCombo.Abstractions.GameData.ActionRow;
+using GameMain = SlothCombo.Interop.Game.GameMain;
 
 namespace SlothCombo.CustomComboNS.Functions
 {
@@ -39,7 +39,7 @@ namespace SlothCombo.CustomComboNS.Functions
         /// <returns> A value indicating a quest has been completed for a job action.</returns>
         public static unsafe bool IsActionUnlocked(uint id)
         {
-            var unlockLink = Svc.Data.GetExcelSheet<Action>().GetRow(id).UnlockLink.RowId;
+            var unlockLink = Svc.Data.GetTable<ActionRow>().GetRow(id)?.UnlockLink ?? 0;
             if (unlockLink == 0) return true;
             return UIState.Instance()->IsUnlockLinkUnlockedOrQuestCompleted(unlockLink);
         }

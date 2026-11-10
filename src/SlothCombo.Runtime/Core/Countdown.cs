@@ -1,6 +1,5 @@
 using System.Runtime.InteropServices;
-using FFXIVClientStructs.FFXIV.Client.System.Framework;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using SlothCombo.Interop.UI;
 
 namespace SlothCombo.Core
 {

@@ -7,36 +7,39 @@ using SlothCombo.Abstractions;
 using SlothCombo.Runtime.Hooking;
 using SlothCombo.Runtime.Services;
 
-using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.Game.Character;
-using FFXIVClientStructs.FFXIV.Client.Game.Object;
-using Lumina.Excel.Sheets;
+using SlothCombo.Interop;
+using SlothCombo.Interop.Game;
+using SlothCombo.Abstractions.GameData;
 using SlothCombo.Combos.PvE;
 using SlothCombo.Core;
 using SlothCombo.CustomComboNS.Functions;
-using Action = Lumina.Excel.Sheets.Action;
+using ActionRow = SlothCombo.Abstractions.GameData.ActionRow;
 using AST = SlothCombo.Combos.PvE.AST;
-using Status = Lumina.Excel.Sheets.Status;
-using Vector3Struct = FFXIVClientStructs.FFXIV.Common.Math.Vector3;
+using StatusRow = SlothCombo.Abstractions.GameData.StatusRow;
+using TraitRow = SlothCombo.Abstractions.GameData.TraitRow;
+using ItemRow = SlothCombo.Abstractions.GameData.ItemRow;
+using AozActionRow = SlothCombo.Abstractions.GameData.AozActionRow;
+using AozActionTransientRow = SlothCombo.Abstractions.GameData.AozActionTransientRow;
+using Vector3Struct = System.Numerics.Vector3;
 
 namespace SlothCombo.Data
 {
     public static class ActionWatching
     {
-        internal static Dictionary<uint, Action> ActionSheet = Svc.Data.GetExcelSheet<Action>()
-            .Where(i => i.RowId is not 7).ToDictionary(i => i.RowId, i => i);
+        internal static Dictionary<uint, ActionRow> ActionSheet = Svc.Data.GetTable<ActionRow>()
+            .Rows.Where(i => i.RowId is not 7).ToDictionary(i => i.RowId, i => i);
 
-        internal static Dictionary<uint, Status> StatusSheet =
-            Svc.Data.GetExcelSheet<Status>().ToDictionary(i => i.RowId, i => i);
+        internal static Dictionary<uint, StatusRow> StatusSheet =
+            Svc.Data.GetTable<StatusRow>().Rows.ToDictionary(i => i.RowId, i => i);
 
-        internal static Dictionary<uint, Trait> TraitSheet = Svc.Data.GetExcelSheet<Trait>()!
-            .Where(i => i.ClassJobCategory
-                .IsValid) //All player traits are assigned to a category. Chocobo and other garbage lacks this, thus excluded.
+        internal static Dictionary<uint, TraitRow> TraitSheet = Svc.Data.GetTable<TraitRow>()
+            .Rows
+            .Where(i => i.ClassJobCategory != 0) //All player traits are assigned to a category. Chocobo and other garbage lacks this, thus excluded.
             .ToDictionary(i => i.RowId, i => i);
 
 
-        internal static Dictionary<uint, Item> ItemsSheet =
-            Svc.Data.GetExcelSheet<Item>()!.ToDictionary(i => i.RowId, i => i);
+        internal static Dictionary<uint, ItemRow> ItemsSheet =
+            Svc.Data.GetTable<ItemRow>().Rows.ToDictionary(i => i.RowId, i => i);
 
 
         internal static readonly Dictionary<uint, long> ChargeTimestamps = [];
@@ -106,7 +109,7 @@ namespace SlothCombo.Data
 
             if (CustomComboFunctions.CustomTimelineIsEnable())
             {
-                if (actionType == (byte)FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action)
+                if (actionType == (byte)SlothCombo.Interop.Game.ActionType.Action)
                 {
                     CustomAction? customAction = CustomComboFunctions.CustomTimelineFindBy时间轴(actionId);
 
@@ -250,7 +253,7 @@ namespace SlothCombo.Data
             {
                 ActionSheet.TryGetValue(header->ActionId, out var sheet);
                 {
-                    switch (sheet.ActionCategory.Value.RowId)
+                    switch (sheet.ActionCategory)
                     {
                         case 2: //Spell
                             LastSpell = header->ActionId;
@@ -330,7 +333,7 @@ namespace SlothCombo.Data
         private static void TrackSentAction(ref ulong targetObjectId, byte actionType, uint actionId)
         {
             // Service.ChatGui.PrintError($"1 {actionType} - {actionId}");
-            if (actionType == (byte)FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action)
+            if (actionType == (byte)SlothCombo.Interop.Game.ActionType.Action)
             {
                 var customAction = new CustomAction();
                 customAction.ActionId = actionId;
@@ -397,7 +400,7 @@ namespace SlothCombo.Data
             // Service.ChatGui.PrintError($"{targetObjectId} -> {actionId} ->{actionType}");
             // if (CustomComboFunctions.CustomTimelineIsEnable())
             // {
-            //     if (actionType == (byte)FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action)
+            //     if (actionType == (byte)SlothCombo.Interop.Game.ActionType.Action)
             //     {
             //         CustomAction? customAction = CustomComboFunctions.CustomTimelineFindBy时间轴(actionId);
             //
@@ -635,7 +638,7 @@ namespace SlothCombo.Data
         }
 
         public static int GetLevel(uint id) =>
-            ActionSheet.TryGetValue(id, out var action) && action.ClassJobCategory.IsValid ? action.ClassJobLevel : 255;
+            ActionSheet.TryGetValue(id, out var action) && action.ClassJobCategory != 0 ? action.ClassJobLevel : 255;
 
         public static float GetActionCastTime(uint id) =>
             ActionSheet.TryGetValue(id, out var action) ? action.Cast100ms / (float)10 : 0;
@@ -651,19 +654,20 @@ namespace SlothCombo.Data
         public static int GetTraitLevel(uint id) => TraitSheet.TryGetValue(id, out var trait) ? trait.Level : 255;
 
         public static string GetActionName(uint id) =>
-            ActionSheet.TryGetValue(id, out var action) ? action.Name.ToString() : "UNKNOWN ABILITY";
+            ActionSheet.TryGetValue(id, out var action) ? action.Name : "UNKNOWN ABILITY";
 
         public static string GetItemName(uint id) =>
-            ItemsSheet.TryGetValue(id, out var item) ? item.Name.ToString() : "UNKNOWN ITEM";
+            ItemsSheet.TryGetValue(id, out var item) ? item.Name : "UNKNOWN ITEM";
 
         public static string GetStatusName(uint id) =>
-            StatusSheet.TryGetValue(id, out var status) ? status.Name.ToString() : "Unknown Status";
+            StatusSheet.TryGetValue(id, out var status) ? status.Name : "Unknown Status";
 
 
         public static string GetBLUIndex(uint id)
         {
-            var aozKey = Service.DataManager.GetExcelSheet<AozAction>()!.First(x => x.Action.RowId == id).RowId;
-            var index = Service.DataManager.GetExcelSheet<AozActionTransient>().GetRow(aozKey).Number;
+            var aozKey = Service.DataManager.GetTable<AozActionRow>().Rows
+                .First(x => x.Action == id).RowId;
+            var index = Service.DataManager.GetTable<AozActionTransientRow>().GetRow(aozKey)?.Number ?? 0;
 
             return $"#{index} ";
         }
@@ -678,7 +682,7 @@ namespace SlothCombo.Data
             (
                 status,
                 StatusSheet
-                    .Where(x => x.Value.Name.ToString().Equals(status, StringComparison.CurrentCultureIgnoreCase))
+                    .Where(x => x.Value.Name.Equals(status, StringComparison.CurrentCultureIgnoreCase))
                     .Select(x => x.Key).ToList()
             )
                 ? statusCache[status]
@@ -689,7 +693,7 @@ namespace SlothCombo.Data
         {
             if (!ActionSheet.TryGetValue(id, out var action)) return ActionAttackType.Unknown;
 
-            return action.ActionCategory.RowId switch
+            return action.ActionCategory switch
             {
                 2 => ActionAttackType.Spell,
                 3 => ActionAttackType.Weaponskill,
@@ -710,9 +714,9 @@ namespace SlothCombo.Data
     internal static unsafe class ActionManagerHelper
     {
         private static readonly IntPtr actionMgrPtr;
-        internal static IntPtr FpUseAction => (IntPtr)ActionManager.Addresses.UseAction.Value;
-        internal static IntPtr FpUseActionLocation => (IntPtr)ActionManager.Addresses.UseActionLocation.Value;
-        internal static IntPtr CheckActionResources => (IntPtr)ActionManager.Addresses.CheckActionResources.Value;
+        internal static IntPtr FpUseAction => (IntPtr)GameFunctions.Get(GameAddresses.UseAction);
+        internal static IntPtr FpUseActionLocation => (IntPtr)GameFunctions.Get(GameAddresses.UseActionLocation);
+        internal static IntPtr CheckActionResources => (IntPtr)GameFunctions.Get(GameAddresses.CheckActionResources);
 
         public static ushort CurrentSeq =>
             actionMgrPtr != IntPtr.Zero ? (ushort)Marshal.ReadInt16(actionMgrPtr + 0x110) : (ushort)0;

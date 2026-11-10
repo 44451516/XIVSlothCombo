@@ -1,5 +1,5 @@
 
-using FFXIVClientStructs.FFXIV.Client.Game;
+using SlothCombo.Interop.Game;
 using SlothCombo.Attributes;
 using SlothCombo.Combos;
 using SlothCombo.Combos.PvE;

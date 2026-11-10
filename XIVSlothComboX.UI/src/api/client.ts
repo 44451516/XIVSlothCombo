@@ -120,13 +120,6 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
   return envelope.data as T
 }
 
-/** Builds the address of a game icon. The token travels in the query string. */
-export function iconUrl(iconId: number, hd = false): string {
-  const token = resolveToken()
-  const query = `hd=${hd ? 1 : 0}${token ? `&t=${encodeURIComponent(token)}` : ''}`
-  return `/api/icon/${iconId}?${query}`
-}
-
 export const api = {
   get: <T>(path: string) => request<T>('GET', path),
 

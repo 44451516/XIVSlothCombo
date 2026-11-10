@@ -6,9 +6,9 @@ using SlothCombo.Abstractions;
 
 using SlothCombo.Runtime.Services;
 
-using FFXIVClientStructs.FFXIV.Client.Game.Object;
-using FFXIVClientStructs.FFXIV.Client.System.Framework;
-using Lumina.Excel.Sheets;
+using SlothCombo.Interop.Game;
+using SlothCombo.Interop.UI;
+using BNpcBaseRow = SlothCombo.Abstractions.GameData.BNpcBaseRow;
 using SlothCombo.Data;
 using BattleNpcSubKind = SlothCombo.Abstractions.BattleNpcSubKind;
 using ObjectKind = SlothCombo.Abstractions.ObjectKind;
@@ -205,7 +205,7 @@ namespace SlothCombo.CustomComboNS.Functions
             //if (checkMO && HasFriendlyTarget(tm.MouseOverTarget)) healTarget = tm.MouseOverTarget;
             if (checkMOPartyUI)
             {
-                // FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* t = PartyTargetingService.UITarget;
+                // SlothCombo.Interop.Game.GameObject* t = PartyTargetingService.UITarget;
                 GameObject* t = Framework.Instance()->GetUIModule()->GetPronounModule()->UiMouseOverTarget;
                 // if (t != null && t->ObjectID != 0)
                 if (t != null && t->GetGameObjectId() != 0)
@@ -260,7 +260,7 @@ namespace SlothCombo.CustomComboNS.Functions
                 return false; // Directional Disregard Effect (Patch 7.01)
             if (!NPCPositionals.ContainsKey(CurrentTarget.BaseId))
             {
-                if (Svc.Data.GetExcelSheet<BNpcBase>().TryGetRow(CurrentTarget.BaseId, out var bnpc))
+                if (Svc.Data.GetTable<BNpcBaseRow>().TryGetRow(CurrentTarget.BaseId, out var bnpc))
                     NPCPositionals[CurrentTarget.BaseId] = bnpc.IsOmnidirectional;
             }
             return !NPCPositionals[CurrentTarget.BaseId];
@@ -579,7 +579,7 @@ namespace SlothCombo.CustomComboNS.Functions
             }
         }
 
-        // internal unsafe static bool OutOfRange(uint actionID, IGameObject target) => ActionWatching.OutOfRange(actionID, (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)Service.ClientState.LocalPlayer.Address, (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)target.Address);
+        // internal unsafe static bool OutOfRange(uint actionID, IGameObject target) => ActionWatching.OutOfRange(actionID, (SlothCombo.Interop.Game.GameObject*)Service.ClientState.LocalPlayer.Address, (SlothCombo.Interop.Game.GameObject*)target.Address);
 
         internal unsafe static bool OutOfRange(uint actionID, IGameObject target) => ActionWatching.OutOfRange(actionID, Service.ObjectTable.LocalPlayer!, target);
     }

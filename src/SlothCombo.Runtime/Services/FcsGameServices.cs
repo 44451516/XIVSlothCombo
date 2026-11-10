@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.Game.Character;
-using FFXIVClientStructs.FFXIV.Client.Game.Control;
-using FFXIVClientStructs.FFXIV.Client.Game.Object;
+using SlothCombo.Interop.Game;
 using SlothCombo.Abstractions;
-using FcsGameObject = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
-using FcsObjectKind = FFXIVClientStructs.FFXIV.Client.Game.Object.ObjectKind;
-using FcsTargetableFlags = FFXIVClientStructs.FFXIV.Client.Game.Object.ObjectTargetableFlags;
-using FcsBattleNpcSubKind = FFXIVClientStructs.FFXIV.Client.Game.Object.BattleNpcSubKind;
+using FcsGameObject = SlothCombo.Interop.Game.GameObject;
+using FcsObjectKind = SlothCombo.Interop.Game.ObjectKind;
+using FcsTargetableFlags = SlothCombo.Interop.Game.ObjectTargetableFlags;
+using FcsBattleNpcSubKind = SlothCombo.Interop.Game.BattleNpcSubKind;
 
 namespace SlothCombo.Runtime.Services;
 
@@ -38,9 +35,9 @@ internal static unsafe class GameObjectLookup
             return null;
         }
 
-        foreach (var entry in manager->BattleCharas)
+        for (var index = 0; index < CharacterManager.BattleCharaCount; index++)
         {
-            BattleChara* chara = entry;
+            BattleChara* chara = manager->BattleCharas[index];
             if (chara is null)
             {
                 continue;
@@ -176,9 +173,9 @@ internal sealed unsafe class GameObjectAdapter : IBattleChara
         get
         {
             var mountedIds = Character.Mount.MountedEntityIds;
-            foreach (var entityId in mountedIds)
+            for (var index = 0; index < MountContainer.MountedEntityIdCount; index++)
             {
-                var found = GameObjectLookup.Find(entityId);
+                var found = GameObjectLookup.Find(mountedIds[index]);
                 if (found is not null)
                 {
                     return found;
@@ -380,9 +377,9 @@ internal sealed unsafe class ObjectTableService : IObjectTable
             }
 
             var result = new List<IGameObject>();
-            foreach (var entry in manager->BattleCharas)
+            for (var index = 0; index < CharacterManager.BattleCharaCount; index++)
             {
-                BattleChara* pointer = entry;
+                BattleChara* pointer = manager->BattleCharas[index];
                 if (pointer is not null)
                 {
                     result.Add(new GameObjectAdapter(pointer));
@@ -459,7 +456,7 @@ internal sealed unsafe class ConditionService : IConditionService, IDisposable
     {
         get
         {
-            var conditions = FFXIVClientStructs.FFXIV.Client.Game.Conditions.Instance();
+            var conditions = SlothCombo.Interop.Game.Conditions.Instance();
             if (conditions is null)
             {
                 return false;
@@ -530,7 +527,7 @@ internal sealed unsafe class TargetService : ITargetService
     public IGameObject? FocusTarget => Wrap(TargetSystem.Instance()->GetHardTarget());
 
     /// <inheritdoc/>
-    public IGameObject? MouseOverTarget => Wrap(TargetSystem.Instance()->GetMouseOverObject(0, 0));
+    public IGameObject? MouseOverTarget => Wrap(TargetSystem.Instance()->MouseOverTarget);
 
     private static IGameObject? Wrap(FcsGameObject* pointer)
     {

@@ -3,10 +3,10 @@
 // using SlothCombo.Runtime.Gauges.Enums;
 // using SlothCombo.Runtime.Gauges;
 // using SlothCombo.Runtime.Services;
-// using FFXIVClientStructs.FFXIV.Client.Game.Gauge;
+// using SlothCombo.Interop.Game.Gauge;
 // using SlothCombo.Runtime.Services;
-// using CanvasFlags = FFXIVClientStructs.FFXIV.Client.Game.Gauge.CanvasFlags;
-// using CreatureFlags = FFXIVClientStructs.FFXIV.Client.Game.Gauge.CreatureFlags;
+// using CanvasFlags = SlothCombo.Interop.Game.Gauge.CanvasFlags;
+// using CreatureFlags = SlothCombo.Interop.Game.Gauge.CreatureFlags;
 //
 //
 // namespace SlothCombo.Data;

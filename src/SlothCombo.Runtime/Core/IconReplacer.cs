@@ -5,8 +5,9 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 
 
-using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
+using SlothCombo.Interop;
+using SlothCombo.Interop.Game;
+using SlothCombo.Interop.UI;
 using SlothCombo.Abstractions;
 using SlothCombo.Combos.PvE;
 using SlothCombo.CustomComboNS;
@@ -43,7 +44,7 @@ namespace SlothCombo.Core
             
             
             // getIconHook = Service.GameInteropProvider.HookFromAddress<GetIconDelegate>(ActionManager.Addresses.GetAdjustedActionId.Value, GetIconDetour);
-            getIconHook = Service.GameInteropProvider.HookFromAddress<GetIconDelegate>( ActionManager.Addresses.GetAdjustedActionId.Value, GetIconDetour);
+            getIconHook = Service.GameInteropProvider.HookFromAddress<GetIconDelegate>(GameFunctions.Get(GameAddresses.GetAdjustedActionId), GetIconDetour);
             // getIconHook = Service.GameInteropProvider.HookFromSignature<GetIconDelegate>(HookAddress.GetAdjustedActionId, GetIconDetour);
             getIconHook.Enable();
             

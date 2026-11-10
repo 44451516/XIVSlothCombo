@@ -1,6 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
-using FFXIVClientStructs.FFXIV.Client.System.Framework;
+using SlothCombo.Interop.UI;
 using SlothCombo.Abstractions;
 using SlothCombo.Runtime.Services;
 

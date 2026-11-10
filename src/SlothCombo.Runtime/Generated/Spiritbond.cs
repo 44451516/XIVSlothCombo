@@ -1,7 +1,7 @@
 using SlothCombo.Runtime.Services;
 
-using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Component.GUI;
+using SlothCombo.Interop.Game;
+using SlothCombo.Interop.UI;
 using System;
 using SlothCombo.Abstractions;
 
@@ -180,12 +180,12 @@ namespace Artisan.RawInformation
                         var values = stackalloc AtkValue[2];
                         values[0] = new()
                         {
-                            Type = FFXIVClientStructs.FFXIV.Component.GUI.AtkValueType.Int,
+                            Type = SlothCombo.Interop.UI.AtkValueType.Int,
                             Int = 2,
                         };
                         values[1] = new()
                         {
-                            Type = FFXIVClientStructs.FFXIV.Component.GUI.AtkValueType.UInt,
+                            Type = SlothCombo.Interop.UI.AtkValueType.UInt,
                             UInt = 0,
                         };
 

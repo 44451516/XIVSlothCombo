@@ -1,5 +1,5 @@
 using System;
-using FFXIVClientStructs.FFXIV.Client.Game;
+using SlothCombo.Interop.Game;
 
 namespace SlothCombo.Data
 {

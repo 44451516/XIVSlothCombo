@@ -1,11 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FFXIVClientStructs.FFXIV.Client.Game;
+using SlothCombo.Interop.Game;
 using SlothCombo.CustomComboNS.Functions;
 using SlothCombo.Data;
 using SlothCombo.Runtime.Services;
-using Action = Lumina.Excel.Sheets.Action;
+using ActionRow = SlothCombo.Abstractions.GameData.ActionRow;
+using ActionCategoryRow = SlothCombo.Abstractions.GameData.ActionCategoryRow;
+using LogMessageRow = SlothCombo.Abstractions.GameData.LogMessageRow;
+using QuestRow = SlothCombo.Abstractions.GameData.QuestRow;
+using TerritoryTypeRow = SlothCombo.Abstractions.GameData.TerritoryTypeRow;
+using PlaceNameRow = SlothCombo.Abstractions.GameData.PlaceNameRow;
 using Status = SlothCombo.Abstractions.IStatus;
 
 using SlothCombo.Runtime.WebUI;
@@ -80,7 +85,7 @@ internal static class DebugHandler
             {
                 job = localPlayer.ClassJob.Value.NameEnglish,
                 jobId = localPlayer.ClassJob.RowId,
-                zone = Service.DataManager.GetExcelSheet<Lumina.Excel.Sheets.TerritoryType>()?.FirstOrDefault(x => x.RowId == Service.ClientState.TerritoryType).PlaceName.Value.Name,
+                zone = ResolveZoneName(),
                 zoneId = Service.ClientState.TerritoryType,
                 inPvP = CustomComboFunctions.InPvP(),
                 inCombat = CustomComboFunctions.InCombat(),
@@ -169,13 +174,13 @@ internal static class DebugHandler
         var jobId = Service.ClientState?.ClassJobRowId ?? 0;
         var classId = CustomComboFunctions.JobIDs.JobToClass(jobId);
 
-        var actions = Service.DataManager.GetExcelSheet<Action>()
-            .Where(x => x.IsPlayerAction && (x.ClassJob.RowId == classId || x.ClassJob.RowId == jobId))
+        var actions = Service.DataManager.GetTable<ActionRow>().Rows
+            .Where(x => x.IsPlayerAction && (x.ClassJob == classId || x.ClassJob == jobId))
             .OrderBy(x => x.ClassJobLevel)
             .Select(x => new
             {
                 id = x.RowId,
-                name = x.Name.ToString(),
+                name = x.Name,
                 level = x.ClassJobLevel,
                 isPvp = x.IsPvP,
             })
@@ -186,7 +191,7 @@ internal static class DebugHandler
 
     private static unsafe object BuildActionDetail(uint actionId)
     {
-        var sheet = Service.DataManager.GetExcelSheet<Action>();
+        var sheet = Service.DataManager.GetTable<ActionRow>();
         if (!sheet.TryGetRow(actionId, out var action)) return new { found = false };
 
         var actionStatus = ActionManager.Instance()->GetActionStatus(ActionType.Action, actionId);
@@ -195,20 +200,47 @@ internal static class DebugHandler
         {
             found = true,
             id = action.RowId,
-            name = action.Name.ToString(),
+            name = action.Name,
             level = action.ClassJobLevel,
             isPvp = action.IsPvP,
             iconId = action.Icon,
             status = actionStatus.ToString(),
-            statusText = Service.DataManager.GetExcelSheet<Lumina.Excel.Sheets.LogMessage>().GetRow(actionStatus).Text.ExtractText(),
-            actionType = action.ActionCategory.Value.Name.ToString(),
-            quest = action.UnlockLink.RowId == 0 ? null : Service.DataManager.GetExcelSheet<Lumina.Excel.Sheets.Quest>().GetRow(action.UnlockLink.RowId).Name.ExtractText(),
+            statusText = Service.DataManager.GetTable<LogMessageRow>().GetRow(actionStatus)?.Text,
+            actionType = ResolveActionCategoryName(action.ActionCategory),
+            quest = action.UnlockLink == 0 ? null : Service.DataManager.GetTable<QuestRow>().GetRow(action.UnlockLink)?.Name,
             baseRecast = $"{action.Recast100ms / 10f}s",
             maxCharges = action.MaxCharges,
             timeSinceLastUse = ActionWatching.ActionTimestamps.ContainsKey(actionId)
                 ? $"{(Environment.TickCount64 - ActionWatching.ActionTimestamps[actionId]) / 1000f:F2}"
                 : null,
         };
+    }
+
+    /// <summary>
+    /// Resolves the name of the kind of the given action.
+    /// </summary>
+    /// <param name="categoryId">The number of the kind of the action.</param>
+    /// <returns>The name of the kind, or an empty string.</returns>
+    private static string ResolveActionCategoryName(uint categoryId)
+    {
+        var row = Service.DataManager.GetTable<ActionCategoryRow>().GetRow(categoryId);
+        return row?.Name ?? string.Empty;
+    }
+
+    /// <summary>
+    /// Resolves the name of the area the player is in.
+    /// </summary>
+    /// <returns>The name of the area, or <c>null</c> when it is not known.</returns>
+    private static string? ResolveZoneName()
+    {
+        var territory = Service.DataManager.GetTable<TerritoryTypeRow>().GetRow(Service.ClientState.TerritoryType);
+        if (territory is null)
+        {
+            return null;
+        }
+
+        var place = Service.DataManager.GetTable<PlaceNameRow>().GetRow(territory.PlaceName);
+        return place?.Name;
     }
 #endif
 }

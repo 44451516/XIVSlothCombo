@@ -1,5 +1,5 @@
 using System;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using SlothCombo.Interop.UI;
 using SlothCombo.Runtime.Services;
 
 namespace SlothCombo.CustomComboNS.Functions

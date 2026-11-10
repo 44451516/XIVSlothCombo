@@ -41,6 +41,7 @@ internal sealed unsafe class SignatureScanner : ISignatureScanner
     private readonly IntPtr _textBase;
     private readonly int _textSize;
     private readonly Dictionary<string, IntPtr> _resolved = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, IntPtr> _raw = new(StringComparer.Ordinal);
 
     /// <summary>Creates a scanner for the module of the current process.</summary>
     public SignatureScanner()
@@ -67,8 +68,24 @@ internal sealed unsafe class SignatureScanner : ISignatureScanner
             return cached;
         }
 
-        var address = Scan(signature);
-        _resolved[signature] = address;
+        var address = ScanRaw(signature);
+        var result = FollowRelativeCall(address);
+        _resolved[signature] = result;
+        return result;
+    }
+
+    /// <inheritdoc/>
+    public IntPtr ScanTextRaw(string signature)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(signature);
+
+        if (_raw.TryGetValue(signature, out var cached))
+        {
+            return cached;
+        }
+
+        var address = ScanRaw(signature);
+        _raw[signature] = address;
         return address;
     }
 
@@ -93,7 +110,7 @@ internal sealed unsafe class SignatureScanner : ISignatureScanner
     /// </summary>
     /// <param name="signature">The pattern to search for.</param>
     /// <returns>The address of the match, or <c>IntPtr.Zero</c>.</returns>
-    private IntPtr Scan(string signature)
+    private IntPtr ScanRaw(string signature)
     {
         var (needle, wildcard) = Parse(signature);
 
@@ -142,7 +159,7 @@ internal sealed unsafe class SignatureScanner : ISignatureScanner
 
             if (Matches(text.Slice(start), needle, wildcard))
             {
-                return FollowRelativeCall(_moduleBase + start);
+                return _moduleBase + start;
             }
 
             search = candidate + 1;

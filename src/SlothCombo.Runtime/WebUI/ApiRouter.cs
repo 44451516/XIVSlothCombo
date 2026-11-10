@@ -59,10 +59,6 @@ internal static class ApiRouter
                 await TimelineHandler.HandleAsync(request, response, dispatcher).ConfigureAwait(false);
                 return;
 
-            case "icon":
-                await IconHandler.HandleAsync(request, response, dispatcher).ConfigureAwait(false);
-                return;
-
             case "debug":
                 await DebugHandler.HandleAsync(request, response, dispatcher).ConfigureAwait(false);
                 return;

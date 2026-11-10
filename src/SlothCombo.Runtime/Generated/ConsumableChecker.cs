@@ -2,10 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Artisan.GameInterop;
 using SlothCombo.Runtime.Services;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.System.Framework;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
-using Lumina.Excel.Sheets;
+using SlothCombo.Interop.Game;
+using SlothCombo.Interop.UI;
+using ItemRow = SlothCombo.Abstractions.GameData.ItemRow;
+using EventItemRow = SlothCombo.Abstractions.GameData.EventItemRow;
+using ItemActionRow = SlothCombo.Abstractions.GameData.ItemActionRow;
+using ItemFoodRow = SlothCombo.Abstractions.GameData.ItemFoodRow;
 
 namespace SlothCombo.Generated
 {
@@ -23,18 +25,18 @@ namespace SlothCombo.Generated
         {
             itemContextMenuAgent =
                 Framework.Instance()->UIModule->GetAgentModule()->GetAgentByInternalId(AgentId.InventoryContext);
-            Usables = Svc.Data.GetExcelSheet<Item>().Where(i => i.ItemAction.RowId > 0)
-                .ToDictionary(i => i.RowId, i => i.Name.ToString().ToLower())
-                .Concat(Svc.Data.GetExcelSheet<EventItem>().Where(i => i.Action.RowId > 0)
-                    .ToDictionary(i => i.RowId, i => i.Name.ToString().ToLower()))
+            Usables = Svc.Data.GetTable<ItemRow>().Rows.Where(i => i.ItemAction > 0)
+                .ToDictionary(i => i.RowId, i => i.Name.ToLower())
+                .Concat(Svc.Data.GetTable<EventItemRow>().Rows.Where(i => i.Action > 0)
+                    .ToDictionary(i => i.RowId, i => i.Name.ToLower()))
                 .ToDictionary(kv => kv.Key, kv => kv.Value);
-            Food = Svc.Data.GetExcelSheet<Item>().Where(IsFood).Select(x => (x.RowId, x.Name.ToString())).ToArray();
-            Pots = Svc.Data.GetExcelSheet<Item>().Where(IsCraftersPot).Select(x => (x.RowId, x.Name.ToString()))
+            Food = Svc.Data.GetTable<ItemRow>().Rows.Where(IsFood).Select(x => (x.RowId, x.Name)).ToArray();
+            Pots = Svc.Data.GetTable<ItemRow>().Rows.Where(IsCraftersPot).Select(x => (x.RowId, x.Name))
                 .ToArray();
-            Manuals = Svc.Data.GetExcelSheet<Item>().Where(IsManual).Select(x => (x.RowId, x.Name.ToString()))
+            Manuals = Svc.Data.GetTable<ItemRow>().Rows.Where(IsManual).Select(x => (x.RowId, x.Name))
                 .ToArray();
-            SquadronManuals = Svc.Data.GetExcelSheet<Item>().Where(IsSquadronManual)
-                .Select(x => (x.RowId, x.Name.ToString())).ToArray();
+            SquadronManuals = Svc.Data.GetTable<ItemRow>().Rows.Where(IsSquadronManual)
+                .Select(x => (x.RowId, x.Name)).ToArray();
         }
 
         internal static (uint Id, string Name)[] GetFood(bool inventoryOnly = false, bool hq = false)
@@ -70,31 +72,35 @@ namespace SlothCombo.Generated
             return SquadronManuals;
         }
 
-        internal static ItemFood? GetItemConsumableProperties(Item item, bool hq)
+        internal static ItemFoodRow? GetItemConsumableProperties(ItemRow item, bool hq)
         {
-            var action = item.ItemAction.Value;
+            var action = Svc.Data.GetTable<ItemActionRow>().GetRow(item.ItemAction);
+            if (action is null)
+            {
+                return null;
+            }
 
             // [0] = status, [1] = extra == ItemFood row, [2] = duration
             if (hq)
             {
-                var actionParams = action.DataHQ; // Collection<ushort>
-                if (actionParams[0] is not 48 and not 49)
+                var actionParams = action.DataHq;
+                if (actionParams.Length < 2 || actionParams[0] is not 48 and not 49)
                     return null; // not 'well fed' or 'medicated'
-                return Svc.Data.GetExcelSheet<ItemFood>()?.GetRow(actionParams[1]);
+                return Svc.Data.GetTable<ItemFoodRow>().GetRow(actionParams[1]);
             }
             else
             {
-                var actionParams = action.Data; // Collection<ushort>
-                if (actionParams[0] is not 48 and not 49)
+                var actionParams = action.Data;
+                if (actionParams.Length < 2 || actionParams[0] is not 48 and not 49)
                     return null; // not 'well fed' or 'medicated'
-                return Svc.Data.GetExcelSheet<ItemFood>()?.GetRow(actionParams[1]);
+                return Svc.Data.GetTable<ItemFoodRow>().GetRow(actionParams[1]);
             }
         }
 
 
-        internal static bool IsFood(Item item)
+        internal static bool IsFood(ItemRow item)
         {
-            if (item.ItemUICategory.RowId == 46)
+            if (item.ItemUICategory == 46)
             {
                 var consumable = GetItemConsumableProperties(item, false);
                 return consumable != null; // cp/craftsmanship/control
@@ -103,9 +109,9 @@ namespace SlothCombo.Generated
             return false;
         }
 
-        internal static bool IsCraftersFood(Item item)
+        internal static bool IsCraftersFood(ItemRow item)
         {
-            if (item.ItemUICategory.RowId == 45 || item.ItemUICategory.RowId == 46)
+            if (item.ItemUICategory is 45 or 46)
             {
                 var consumable = GetItemConsumableProperties(item, false);
                 return consumable != null; // cp/craftsmanship/control
@@ -114,35 +120,35 @@ namespace SlothCombo.Generated
             return false;
         }
 
-        internal static bool IsCraftersPot(Item item)
+        internal static bool IsCraftersPot(ItemRow item)
         {
-            if (item.ItemUICategory.RowId != 44)
+            if (item.ItemUICategory != 44)
                 return false; // not a 'medicine'
 
             var consumable = GetItemConsumableProperties(item, false);
 
             return consumable != null &&
-                   consumable.Value.Params.Any(p =>
-                       p.BaseParam.RowId is 11 or 70 or 71 or 69
+                   consumable.BaseParam.Any(p =>
+                       p is 11 or 70 or 71 or 69
                            or 68); // cp/craftsmanship/control/increased spiritbond/reduced durability loss
         }
 
-        internal static bool IsManual(Item item)
+        internal static bool IsManual(ItemRow item)
         {
-            if (item.ItemUICategory.RowId != 63)
+            if (item.ItemUICategory != 63)
                 return false; // not 'other'
 
-            var action = item.ItemAction.Value;
-            return action.RowId == 816 && action.Data[0] is 300 or 301 or 1751 or 5329;
+            var action = Svc.Data.GetTable<ItemActionRow>().GetRow(item.ItemAction);
+            return action is not null && action.Data.Length > 0 && action.RowId == 816 && action.Data[0] is 300 or 301 or 1751 or 5329;
         }
 
-        internal static bool IsSquadronManual(Item item)
+        internal static bool IsSquadronManual(ItemRow item)
         {
-            if (item.ItemUICategory.RowId != 63)
+            if (item.ItemUICategory != 63)
                 return false; // not 'other'
 
-            var action = item.ItemAction.Value;
-            return action.RowId == 816 && action.Data[0] is 2291 or 2292 or 2293 or 2294;
+            var action = Svc.Data.GetTable<ItemActionRow>().GetRow(item.ItemAction);
+            return action is not null && action.Data.Length > 0 && action.RowId == 816 && action.Data[0] is 2291 or 2292 or 2293 or 2294;
         }
 
 

@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using FFXIVClientStructs.Interop.Generated;
-using InteropGenerator.Runtime;
+using SlothCombo.Abstractions;
+using SlothCombo.Interop;
 
 namespace SlothCombo.Runtime.Bootstrap;
 
@@ -12,72 +10,45 @@ namespace SlothCombo.Runtime.Bootstrap;
 /// </summary>
 /// <remarks>
 /// <para>
-/// FFXIVClientStructs resolves every address it uses from signatures that live in
-/// the library itself. Dalamud normally performs that resolution when it loads a
-/// plugin, which is exactly the dependency this project removes: here the
-/// resolution is driven explicitly by <see cref="Resolver"/>.
+/// The addresses are written down as patterns of the bytes that lead to them,
+/// and the patterns are searched for in the code of the game when the runtime
+/// starts. The layer that holds the patterns is the one that talks to the game,
+/// so this class only drives it.
 /// </para>
 /// <para>
 /// The resolver accepts a JSON cache, which is what makes the runtime able to
-/// survive a game patch that the upstream struct library has not caught up with
-/// yet: the cached module relative offsets are reused, and only the entries that
-/// no longer resolve have to be repaired by hand.
+/// survive a game patch: the addresses that still resolve are taken from the
+/// file and only the ones that broke are searched for again.
 /// </para>
 /// </remarks>
 public static class SignatureResolver
 {
     /// <summary>The name of the cache file inside the runtime data folder.</summary>
-    public const string CacheFileName = "sigcache.json";
+    public const string CacheFileName = GameAddressTable.CacheFileName;
 
     /// <summary>
-    /// The cache version.
-    /// </summary>
-    /// <remarks>
-    /// The resolver drops the whole cache when the version changes. Bumping it
-    /// is the supported way to invalidate addresses that were repaired by hand
-    /// for a specific game build.
-    /// </remarks>
-    public const string CacheVersion = "1";
-
-    /// <summary>
-    /// Resolves all struct library addresses.
+    /// Resolves all the addresses of the game.
     /// </summary>
     /// <param name="cachePath">
     /// The path of the JSON cache to read and write. The resolver creates the
     /// file itself when the addresses resolve for the first time.
     /// </param>
+    /// <param name="scanner">The scanner that looks for the patterns.</param>
     /// <param name="unresolved">
-    /// Receives the names of the signatures that could not be resolved.
+    /// Receives the names of the addresses that could not be resolved.
     /// </param>
-    /// <returns><c>true</c> when every required address resolved.</returns>
-    public static bool Resolve(string cachePath, out IReadOnlyList<string> unresolved)
+    /// <returns><c>true</c> when every address resolved.</returns>
+    public static bool Resolve(string cachePath, ISignatureScanner scanner, out IReadOnlyList<string> unresolved)
     {
         ArgumentException.ThrowIfNullOrEmpty(cachePath);
+        ArgumentNullException.ThrowIfNull(scanner);
 
-        var cache = new FileInfo(cachePath);
-        var directory = cache.Directory;
-        if (directory is not null && !directory.Exists)
-        {
-            directory.Create();
-        }
+        // The cache lets the runtime reuse previously resolved addresses, which
+        // keeps the start fast and lets a patched cache survive a game update
+        // that broke some of the patterns.
+        var resolved = GameFunctions.Resolve(cachePath, scanner);
 
-        var resolver = Resolver.GetInstance;
-
-        // Passing the cache lets the resolver reuse previously resolved
-        // addresses, which keeps startup fast and lets a patched cache survive
-        // a game update that broke some of the upstream signatures.
-        resolver.Setup(version: CacheVersion, cacheFile: cache);
-
-        Addresses.Register();
-        resolver.Resolve();
-
-        var failed = resolver.Addresses
-            .Where(address => address.Value == 0)
-            .Select(address => address.Name)
-            .ToList();
-
-        unresolved = failed;
-
-        return failed.Count == 0;
+        unresolved = GameFunctions.Unresolved;
+        return resolved;
     }
 }

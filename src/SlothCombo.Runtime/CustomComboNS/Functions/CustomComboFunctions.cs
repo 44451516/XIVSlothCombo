@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Common.Math;
+using SlothCombo.Interop.Game;
 using SlothCombo.Combos.PvE;
 using SlothCombo.Core;
 using SlothCombo.Data;
@@ -234,7 +233,7 @@ namespace SlothCombo.CustomComboNS.Functions
             
             if (customAction.ActionId.ActionReady())
             {
-                System.Numerics.Vector3 vector3 = new Vector3();
+                System.Numerics.Vector3 vector3 = new System.Numerics.Vector3();
                 vector3.X = customAction.Vector3.X;
                 vector3.Y = customAction.Vector3.Y;
                 vector3.Z = customAction.Vector3.Z;

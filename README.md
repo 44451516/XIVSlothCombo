@@ -5,6 +5,10 @@
 > **当前形态：独立程序。**
 > 不再依赖 Dalamud，也不需要在游戏里安装任何插件。发版节奏由本仓库自己决定，
 > 不受上游 Dalamud / FFXIVClientStructs 的版本发布约束。
+>
+> **三方依赖已全部移除。** FFXIVClientStructs、Lumina、Lumina.Excel 都不再引用：
+> 游戏结构与函数地址由本仓库自己的 `src/SlothCombo.Interop/` 承担，游戏数据表由
+> `src/SlothCombo.GameData/` 读随程序发布的静态表。仓库里不再有 FCS 子模块。
 
 ---
 
@@ -30,7 +34,8 @@
 │    └─ hostfxr → SlothCombo.Loader.dll                               │
 │         └─ 把 SlothCombo.Runtime.dll 装进可卸载的 AssemblyLoadContext│
 │              ├─ Hook ActionManager.GetAdjustedActionId 改写技能选择  │
-│              ├─ FCS 读游戏数据、Lumina 读 Sheet                     │
+│              ├─ SlothCombo.Interop 读游戏状态、解析函数地址          │
+│              ├─ SlothCombo.GameData 读随程序发布的静态表            │
 │              ├─ 管道服务端：把请求派发到游戏主线程再执行             │
 │              └─ API 语义：presets / value / config / timeline / icon│
 └────────────────────────────────────────────────────────────────────┘
@@ -40,6 +45,9 @@
 
 - **注入是必须的**。连招的核心是改写「按了哪个键最终释放哪个技能」，这只能在游戏进程内
   Hook `ActionManager.GetAdjustedActionId` 做到，纯外部进程做不到。
+- **不依赖任何游戏相关的三方库**。游戏结构与函数地址由 `src/SlothCombo.Interop/`
+  自己承担，游戏数据表由 `src/SlothCombo.GameData/` 读随程序发布的静态表。
+  游戏更新导致地址失效时，改的是本仓库里的签名表，不等上游发版。
 - **设置界面跑在浏览器里**。Host 进程负责 HTTP 服务、静态资源与鉴权；所有需要游戏状态的
   接口由 Host 通过命名管道转给游戏内运行时，运行时再派发到游戏主线程执行。
 - **一套 .NET 运行时**。Host 与游戏内运行时共用安装包里的 `shared/Microsoft.NETCore.App`，
@@ -52,16 +60,17 @@
 
 | 路径 | 说明 |
 | --- | --- |
-| `src/SlothCombo.Abstractions/` | 跨进程契约：IPC 请求/响应/帧协议、抽象接口 |
+| `src/SlothCombo.Abstractions/` | 跨进程契约：IPC 请求/响应/帧协议、抽象接口、游戏表的行类型 |
+| `src/SlothCombo.Interop/` | 与游戏对话的那一层：结构体布局、虚表、签名与地址解析 |
+| `src/SlothCombo.GameData/` | 游戏静态表的读取：按客户端语言读 JSON，只查表 |
 | `src/SlothCombo.Boot/` | 注入进游戏的原生 C 引导库（clang 编译），负责拉起托管运行时 |
 | `src/SlothCombo.Loader/` | 常驻加载器：把运行时装进可卸载上下文，实现热重载 |
 | `src/SlothCombo.Runtime/` | 游戏内托管运行时：连招逻辑、Hook、游戏数据、WebUI API |
 | `src/SlothCombo.Host/` | 独立主程序：注入器、HTTP 服务、管道客户端 |
 | `src/Directory.Build.props` | 独立程序的共享编译设置 |
-| `Directory.Build.targets` | 定向压制子模块工程的警告 |
+| `tools/GameDataBuilder/` | 静态表生成器：从公开数据源生成 JSON 表（不进安装包） |
 | `docs/ACCEPTANCE.md` | 验收清单：本机已验证项 / 需真实游戏验证项 |
 | `build/publish.ps1` | 一键装配 `dist/` 安装包 |
-| `docs/ACCEPTANCE.md` | 验收清单：本机已验证项 / 需真实游戏验证项 |
 | `XIVSlothComboX.UI/` | Vue 3 + TypeScript + Vite + Naive UI 前端工程 |
 
 > 旧 Dalamud 插件工程 `XIVSlothComboX/` 已从仓库移除。它的代码早已整体并入
@@ -126,6 +135,7 @@ dist/
 ├── host/fxr/<版本>/hostfxr.dll  供引导库寻找运行时
 ├── shared/Microsoft.NETCore.App/<版本>/   .NET 运行时本体
 ├── game/                        游戏内托管运行时（SlothCombo.Runtime.*）
+│   └── GameData/<语言>/*.json.gz 游戏静态表（压缩存放）
 └── wwwroot/                     设置页前端构建产物
 ```
 
@@ -174,15 +184,30 @@ Host 与游戏，不会留下半残的安装目录。
 ```powershell
 dotnet build XIVSlothCombo.sln -c Release          # 整仓
 
+dotnet build src\SlothCombo.Interop\SlothCombo.Interop.csproj -c Release
+dotnet build src\SlothCombo.GameData\SlothCombo.GameData.csproj -c Release
 dotnet build src\SlothCombo.Runtime\SlothCombo.Runtime.csproj -c Release
 dotnet build src\SlothCombo.Host\SlothCombo.Host.csproj -c Release
 dotnet build src\SlothCombo.Loader\SlothCombo.Loader.csproj -c Release
 dotnet build src\SlothCombo.Boot\SlothCombo.Boot.csproj -c Release
 ```
 
-共享的编译设置放在 `src/Directory.Build.props`。它刻意**不放在仓库根目录**：根目录的文件会同时作用到 `lib/` 下的子模块工程上，
-会改变它们的编译行为。子模块的警告在根目录的 `Directory.Build.targets` 里按工程名定向压制，
-子模块工作区保持 pristine。
+共享的编译设置放在 `src/Directory.Build.props`。它刻意**不放在仓库根目录**：根目录的文件会同时作用到
+仓库根下的其它工程上，会改变它们的编译行为。
+
+### 重新生成游戏静态表
+
+游戏数据表是预先生成好的，随程序一起发布。游戏改版后要重新生成：
+
+```powershell
+dotnet run --project tools\GameDataBuilder -c Release -- `
+    "src\SlothCombo.GameData\Tables" chs en ja de fr ko
+```
+
+工具从公开数据源拉取每个表，转换成 JSON，再压成 `.json.gz`。每写完一张表，工具会立刻用
+运行时的读法把它读回来，读不出来的表不会留在仓库里。生成器不在安装包里。
+
+表的内容只保留程序用得到的列，值为默认的行会被整行略过，因此体积只有原始数据的一小部分。
 
 ### 验证
 
@@ -208,8 +233,9 @@ dotnet build src\SlothCombo.Boot\SlothCombo.Boot.csproj -c Release
 | GET/POST | `/api/value` | 按 `key` + `type` 读写配置项 |
 | GET/PATCH | `/api/config` | 顶层配置 |
 | GET/POST | `/api/timeline` | 时间轴列表与编辑动作 |
-| GET | `/api/icon/{id}` | 游戏图标（PNG） |
 | GET | `/api/debug/*` | 诊断信息，仅 Debug 构建 |
+
+接口只传图标的**编号**，图片本身由前端按编号去取（见「图标是从哪来的」）。
 
 `type` 取值：`int` / `float` / `bool` / `boolArray` / `intArray`。
 
@@ -232,28 +258,60 @@ dotnet build src\SlothCombo.Boot\SlothCombo.Boot.csproj -c Release
 
 ## 依赖分层
 
-从 Dalamud 插件迁过来的时候，依赖被切成三层：
+从 Dalamud 插件迁过来的时候，依赖被切成三层；现在前三层里只剩框架层是「移除」，
+另外两层换成了本仓库自己的实现：
 
-| 层 | 内容 | 态度 |
+| 层 | 内容 | 现状 |
 | --- | --- | --- |
-| 可替换库层 | FFXIVClientStructs、Lumina | 直接引用，上游跟不上时用「本地缓存 + 人工补丁」兜底 |
+| 结构体层 | FFXIVClientStructs | **自己实现**：`src/SlothCombo.Interop/` 只抄需要的结构体、虚表与签名 |
+| 数据表层 | Lumina | **自己实现**：`src/SlothCombo.GameData/` 读预先生成好的静态表 |
 | 服务层 | ECommons | **不整体引入**，只把实际用到的约 60 处 `Svc.*` 换成 `src/SlothCombo.Runtime/Services/Svc.cs` 的本地实现 |
 | 框架层 | Dalamud | **完全移除**，不保留 `Dalamud.dll` / `Dalamud.Bindings.*` / `ImGuiScene.dll` 任何运行时依赖 |
 
-### FCS 签名滞后的兜底
+### 结构体层怎么做的
 
-`SignatureResolver` 负责在运行时按签名解析函数地址。签名找不到时不直接崩，
-而是走人工补丁路径：把新签名登记进 `src/SlothCombo.Runtime/Bootstrap/SignatureResolver.cs`
-的补丁表，或在 `Core/PluginAddressResolver.cs` 里加一条兜底地址。
-这样一次游戏版本更新只需要补几行代码，不必等上游发版。
+`src/SlothCombo.Interop/` 里只有程序真正用到的那部分游戏结构：
+
+- 结构体的字段偏移、虚表索引都写在代码里，来源是 FFXIVClientStructs 的公开实现，
+  但代码是本仓库自己的，不引入那个库；
+- 函数地址靠签名在游戏进程里现扫，结果写进 `addresses.json` 缓存，下次启动直接复用；
+- 签名对不上的游戏版本，改的是本仓库里的签名表，不用等上游发版。
+
+签名扫不到时不直接崩，而是记进运行日志，由对应功能自己降级。
+
+### 数据表层怎么做的
+
+游戏数据表由 `tools/GameDataBuilder/` 从公开数据源预先生成，压成 `.json.gz` 随程序发布：
+
+- 运行时只按客户端语言读一份表，查表即可，不需要游戏安装目录里的文件；
+- 表里只保留程序用得到的列，值为默认的行整行略过，六种语言加起来约 10MB；
+- 生成器每写完一张表就立刻读回来校验，读不出来的表不会留在仓库里。
+
+### 图标是从哪来的
+
+程序不读游戏文件，也就拿不到图标里的像素。图标**编号**来自静态表，图片本身由
+设置页按编号去公开图床取，做法和 [souma 的 overlay](https://souma.diemoe.net/ff14-overlay-vue/)
+一致：
+
+```
+https://<图床>/i/<文件夹>/<编号>.png
+```
+
+编号就是图片在游戏文件里的编号，文件夹则是编号去掉末三位：编号 `215001` 的
+图片在 `215000/215001.png`。高清版在文件名后加 `_hr1`。
+
+前端先取国际站 `xivapi.com`（png，直连），失败再退回国服社区维护的镜像
+`cafemaker.wakingsands.com`（webp），两处都取不到就显示占位块。后端只传编号，
+不再有 `/api/icon/{id}` 这个接口。
 
 ---
 
 ## 已知限制
 
-- **图标接口暂时返回 404**。`.tex` 的像素解码在迁移中降级了：Dalamud 的
-  `GetRgbaImageData` 已不可用，Lumina 7.6 没有等价 API，自写 BCn 解码尚未实现。
-  前端会显示占位图，其余功能不受影响。补齐方式见 `docs/ACCEPTANCE.md` 的 B10。
+- **图标取自外部的公开图床**。程序不读游戏文件，本地也解不出 `.tex` 的像素，
+  所以图标按编号去公开图床取（见「图标是从哪来的」）。断网时图标全缺，
+  版本刚更新的新技能图标在图床同步之前也会缺，这两种情况都显示占位块，
+  其余功能不受影响。
 - **注入链路只做过非游戏进程的验证**。整条 `rundll32 → hostfxr → 托管运行时` 链路已实测跑通，
   但 Hook 稳定性、游戏内接口的真实返回、WebUI 的实际交互，仍需在真实游戏进程中验证。
   逐项验收步骤见 [`docs/ACCEPTANCE.md`](docs/ACCEPTANCE.md)。
@@ -262,18 +320,24 @@ dotnet build src\SlothCombo.Boot\SlothCombo.Boot.csproj -c Release
   代码继续漂移。原先只服务旧插件的零调用代码（`RepoCheck`、`LuminaSheets`、
   `ActionEffectHeader`、`DutySchedule`、`MCHOpenerLogic94` 等）已一并清除。
 - **`ECommons` 子模块已从解决方案中移除**。它引用的 Dalamud 侧 FCS / Lumina 版本
-  与当前 `lib/FFXIVClientStructs` 不匹配，独立编译会报 11 个错（与本仓库改动无关，
-  属于子模块版本错配）。独立程序不依赖 ECommons——原先那约 60 处 `Svc.*` 已由
-  `src/SlothCombo.Runtime/Services/Svc.cs` 就地替代。需要时可重新加回解决方案。
+  与本仓库不再匹配，独立编译会报错。独立程序不依赖 ECommons——原先那约 60 处 `Svc.*`
+  已由 `src/SlothCombo.Runtime/Services/Svc.cs` 就地替代。
 - **「自动消耗」类功能（自动精炼、自动吃食物）目前只有实现，没有驱动**。它们的代码
   （`Generated/Spiritbond.cs`、`Generated/AutoItem.cs`）与设置项都还在，但旧插件里
   驱动它们的每帧逻辑随插件一起被移除，独立程序尚未补上对应的 tick 处理。
   设置页上的这些开关暂时不会有实际效果。
+- **结构体与签名只覆盖程序用到的部分**。`src/SlothCombo.Interop/` 是按需抄出来的，
+  不是完整的游戏结构库。要接新的游戏状态时，在那一层补结构与签名，
+  不要把上游库加回来。
 
 ---
 
 ## 致谢
 
-- [FFXIVClientStructs](https://github.com/aers/FFXIVClientStructs) —— 游戏内部结构定义
-- [Lumina](https://github.com/xivdev/lumina) —— 游戏数据表读取
+- [FFXIVClientStructs](https://github.com/aers/FFXIVClientStructs) —— 游戏内部结构定义，
+  本仓库的 `src/SlothCombo.Interop/` 抄自它的公开实现
+- [xivdev/ffxiv-datamining](https://github.com/Souma-Sumire/ffxiv-datamining-hexcode-mixed) ——
+  游戏数据表的公开数据源，静态表由它生成
+- [souma 的 ff14-overlay-vue](https://github.com/Souma-Sumire/ff14-overlay-vue) ——
+  图标的取法参考自它，用的也是它那一套图床
 - [Dalamud](https://github.com/goatcorp/Dalamud) 与 [ECommons](https://github.com/FFXIVClientStructs/ECommons) —— 本项目前身的框架与工具

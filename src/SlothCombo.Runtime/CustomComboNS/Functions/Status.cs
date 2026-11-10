@@ -1,7 +1,5 @@
 using SlothCombo.Abstractions;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.Game.Character;
-using FFXIVClientStructs.FFXIV.Client.Game.Object;
+using SlothCombo.Interop.Game;
 using SlothCombo.Data;
 using SlothCombo.Runtime.Services;
 using Status = SlothCombo.Abstractions.IStatus;
