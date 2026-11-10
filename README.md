@@ -63,7 +63,9 @@
 | `build/publish.ps1` | 一键装配 `dist/` 安装包 |
 | `docs/ACCEPTANCE.md` | 验收清单：本机已验证项 / 需真实游戏验证项 |
 | `XIVSlothComboX.UI/` | Vue 3 + TypeScript + Vite + Naive UI 前端工程 |
-| `XIVSlothComboX/` | 旧 Dalamud 插件工程（保留中，见文末「遗留」一节） |
+
+> 旧 Dalamud 插件工程 `XIVSlothComboX/` 已从仓库移除。它的代码早已整体并入
+> `src/SlothCombo.Runtime/`，CI 也只构建 `src/` 下的独立程序。
 
 ---
 
@@ -142,7 +144,7 @@ dist/
 ```powershell
 cd XIVSlothComboX.UI
 npm ci
-npm run build:only     # 产物输出到 ../XIVSlothComboX/WebUI/wwwroot
+npm run build:only     # 产物输出到 ./wwwroot
 ```
 
 `npm run build` 会额外跑 `vue-tsc --noEmit` 做类型检查；`npm run build:only` 只打包，
@@ -170,7 +172,7 @@ Host 与游戏，不会留下半残的安装目录。
 ### 单独构建某个工程
 
 ```powershell
-dotnet build XIVSlothCombo.sln -c Release          # 整仓（插件 + 独立程序）
+dotnet build XIVSlothCombo.sln -c Release          # 整仓
 
 dotnet build src\SlothCombo.Runtime\SlothCombo.Runtime.csproj -c Release
 dotnet build src\SlothCombo.Host\SlothCombo.Host.csproj -c Release
@@ -180,9 +182,8 @@ dotnet build tests\SlothCombo.Tests\SlothCombo.Tests.csproj -c Release
 ```
 
 共享的编译设置放在 `src/Directory.Build.props`（测试工程通过 `tests/Directory.Build.props`
-引入同一份）。它刻意**不放在仓库根目录**：根目录的文件会同时作用到旧 Dalamud 插件和
-`lib/` 下的子模块工程上，会改变它们的编译行为（`ImplicitUsings` 一开，旧插件的
-`Timer` 就会二义性）。子模块的警告在根目录的 `Directory.Build.targets` 里按工程名定向压制，
+引入同一份）。它刻意**不放在仓库根目录**：根目录的文件会同时作用到 `lib/` 下的子模块工程上，
+会改变它们的编译行为。子模块的警告在根目录的 `Directory.Build.targets` 里按工程名定向压制，
 子模块工作区保持 pristine。
 
 ### 测试
@@ -267,12 +268,18 @@ npm test           # vitest
 - **注入链路只做过非游戏进程的验证**。整条 `rundll32 → hostfxr → 托管运行时` 链路已实测跑通，
   但 Hook 稳定性、游戏内接口的真实返回、WebUI 的实际交互，仍需在真实游戏进程中验证。
   逐项验收步骤见 [`docs/ACCEPTANCE.md`](docs/ACCEPTANCE.md)。
-- **插件工程 `XIVSlothComboX/` 仍在仓库中**，是迁移过程中的遗留产物，CI 不再构建它。
-  它的 WebUI 副本与 `src/SlothCombo.Runtime/WebUI/` 内容重复，清理时机留待后续决定。
+- **插件工程 `XIVSlothComboX/` 已从仓库移除**。它的代码早已整体并入
+  `src/SlothCombo.Runtime/`，CI 也只构建 `src/` 下的独立程序，保留一份副本只会让两处
+  代码继续漂移。原先只服务旧插件的零调用代码（`RepoCheck`、`LuminaSheets`、
+  `ActionEffectHeader`、`DutySchedule`、`MCHOpenerLogic94` 等）已一并清除。
 - **`ECommons` 子模块已从解决方案中移除**。它引用的 Dalamud 侧 FCS / Lumina 版本
   与当前 `lib/FFXIVClientStructs` 不匹配，独立编译会报 11 个错（与本仓库改动无关，
   属于子模块版本错配）。独立程序不依赖 ECommons——原先那约 60 处 `Svc.*` 已由
   `src/SlothCombo.Runtime/Services/Svc.cs` 就地替代。需要时可重新加回解决方案。
+- **「自动消耗」类功能（自动精炼、自动吃食物）目前只有实现，没有驱动**。它们的代码
+  （`Generated/Spiritbond.cs`、`Generated/AutoItem.cs`）与设置项都还在，但旧插件里
+  驱动它们的每帧逻辑随插件一起被移除，独立程序尚未补上对应的 tick 处理。
+  设置页上的这些开关暂时不会有实际效果。
 
 ---
 

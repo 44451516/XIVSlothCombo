@@ -21,10 +21,9 @@
 | A6 | 注入引导链可用 | `rundll32 dist\SlothCombo.Boot.dll,SlothComboBootRundll32` | hostfxr → Loader → 可卸载上下文里的托管运行时全部执行到（非游戏进程因无 sqpack 按预期报「拒绝启动」） |
 | A7 | PE 导出表解析正确 | `PeExportTest` | 通过 |
 | A8 | 命名管道 IPC 往返 | `IpcTest`（真实管道） | 通过 |
-| A9 | 旧 Dalamud 插件工程仍可编译 | `dotnet build XIVSlothComboX -c Release` | 0 错误（24 条既有文档警告） |
-| A10 | FCS 子模块未被污染 | `git -C lib\FFXIVClientStructs status` | 干净 |
-| A11 | 热重载加载器 | `LoaderTest`（测试工程内） | 同一构建不重复启动；新构建会先停旧的；卸载后旧 DLL 可删除（文件锁释放） |
-| A12 | 游戏占用时仍可构建 | 占用 dist 中任意文件后运行 `.\build\publish.ps1` | 未变化的占用文件被跳过；变化了的占用文件会列名并中止（不留半残安装） |
+| A9 | FCS 子模块未被污染 | `git -C lib\FFXIVClientStructs status` | 干净 |
+| A10 | 热重载加载器 | `LoaderTest`（测试工程内） | 同一构建不重复启动；新构建会先停旧的；卸载后旧 DLL 可删除（文件锁释放） |
+| A11 | 游戏占用时仍可构建 | 占用 dist 中任意文件后运行 `.\build\publish.ps1` | 未变化的占用文件被跳过；变化了的占用文件会列名并中止（不留半残安装） |
 
 ### A4 的测试覆盖
 

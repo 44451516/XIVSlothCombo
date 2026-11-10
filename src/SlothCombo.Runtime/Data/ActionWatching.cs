@@ -730,24 +730,4 @@ namespace SlothCombo.Data
 
         static ActionManagerHelper() => actionMgrPtr = (IntPtr)ActionManager.Instance();
     }
-
-    [StructLayout(LayoutKind.Explicit)]
-    public struct ActionEffectHeader
-    {
-        [FieldOffset(0x0)] public long TargetObjectId;
-
-        [FieldOffset(0x8)] public uint ActionId;
-
-        [FieldOffset(0x14)] public uint UnkObjectId;
-
-        [FieldOffset(0x18)] public ushort Sequence;
-
-        [FieldOffset(0x1A)] public ushort Unk_1A;
-
-        [FieldOffset(0X1C)] public ushort AnimationId;
-
-        [FieldOffset(0X1F)] public byte Type;
-
-        [FieldOffset(0x21)] public byte TargetCount;
-    }
 }

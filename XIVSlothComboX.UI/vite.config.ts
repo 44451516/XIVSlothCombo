@@ -13,9 +13,9 @@ interface WebUiInfo {
 }
 
 /**
- * The plugin writes the port and the access token of its local web server into the
- * Dalamud configuration folder. The dev server uses it to proxy the API and to hand
- * the token to the client.
+ * The program writes the port and the access token of its local web server into
+ * its data folder. The dev server uses it to proxy the API and to hand the
+ * token to the client.
  */
 function infoFileCandidates(): string[] {
   const candidates: string[] = []
@@ -23,14 +23,8 @@ function infoFileCandidates(): string[] {
   const override = process.env.SLOTH_WEBUI_INFO
   if (override) candidates.push(override)
 
-  candidates.push(resolve(projectRoot, '..', 'XIVSlothComboX', 'WebUI', 'sloth-webui.json'))
-
   const appData = process.env.APPDATA
   if (appData) {
-    for (const launcher of ['XIVLauncherCN', 'XIVLauncher']) {
-      candidates.push(resolve(appData, launcher, 'XIVSlothComboX', 'sloth-webui.json'))
-    }
-
     // The standalone program keeps its description in its own folder.
     candidates.push(resolve(appData, 'XIVSlothComboX', 'sloth-webui.json'))
   }
@@ -105,7 +99,7 @@ export default defineConfig(() => {
         : undefined,
     },
     build: {
-      outDir: resolve(projectRoot, '..', 'XIVSlothComboX', 'WebUI', 'wwwroot'),
+      outDir: resolve(projectRoot, 'wwwroot'),
       emptyOutDir: true,
       assetsDir: '.',
       modulePreload: { polyfill: false },

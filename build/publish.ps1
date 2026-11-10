@@ -221,10 +221,10 @@ Invoke-Step 'Building the library that is loaded into the game.' {
 }
 
 # The page of the settings is built from the sources of the frontend. The
-# build writes its files into the folder the plugin used, which is then taken
+# build writes its files into the folder of the frontend, which is then taken
 # over by the installation.
 $uiFolder = Join-Path $root 'XIVSlothComboX.UI'
-$wwwroot = Join-Path $root 'XIVSlothComboX\WebUI\wwwroot'
+$wwwroot = Join-Path $root 'XIVSlothComboX.UI\wwwroot'
 
 if (Get-Command npm -ErrorAction SilentlyContinue) {
     Invoke-Step 'Building the page of the settings.' {
