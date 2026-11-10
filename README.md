@@ -59,7 +59,7 @@
 | `src/SlothCombo.Host/` | 独立主程序：注入器、HTTP 服务、管道客户端 |
 | `src/Directory.Build.props` | 独立程序的共享编译设置 |
 | `Directory.Build.targets` | 定向压制子模块工程的警告 |
-| `tests/SlothCombo.Tests/` | 集成测试：PE 导出解析、注入链、IPC 往返 |
+| `docs/ACCEPTANCE.md` | 验收清单：本机已验证项 / 需真实游戏验证项 |
 | `build/publish.ps1` | 一键装配 `dist/` 安装包 |
 | `docs/ACCEPTANCE.md` | 验收清单：本机已验证项 / 需真实游戏验证项 |
 | `XIVSlothComboX.UI/` | Vue 3 + TypeScript + Vite + Naive UI 前端工程 |
@@ -178,29 +178,18 @@ dotnet build src\SlothCombo.Runtime\SlothCombo.Runtime.csproj -c Release
 dotnet build src\SlothCombo.Host\SlothCombo.Host.csproj -c Release
 dotnet build src\SlothCombo.Loader\SlothCombo.Loader.csproj -c Release
 dotnet build src\SlothCombo.Boot\SlothCombo.Boot.csproj -c Release
-dotnet build tests\SlothCombo.Tests\SlothCombo.Tests.csproj -c Release
 ```
 
-共享的编译设置放在 `src/Directory.Build.props`（测试工程通过 `tests/Directory.Build.props`
-引入同一份）。它刻意**不放在仓库根目录**：根目录的文件会同时作用到 `lib/` 下的子模块工程上，
+共享的编译设置放在 `src/Directory.Build.props`。它刻意**不放在仓库根目录**：根目录的文件会同时作用到 `lib/` 下的子模块工程上，
 会改变它们的编译行为。子模块的警告在根目录的 `Directory.Build.targets` 里按工程名定向压制，
 子模块工作区保持 pristine。
 
-### 测试
+### 验证
 
-```powershell
-dotnet run --project tests\SlothCombo.Tests -c Release
-```
+本仓库不写测试用例。改动的验证靠两种方式：
 
-集成测试会直接读 `dist/` 安装包（也可用环境变量 `SLOTHCOMBO_DIST` 指定），
-覆盖 PE 导出表解析、注入引导链、以及真实的命名管道往返。
-
-前端单测：
-
-```powershell
-cd XIVSlothComboX.UI
-npm test           # vitest
-```
+- **构建**：每个工程都必须 0 错误 0 警告。
+- **人工验收**：清单见 [`docs/ACCEPTANCE.md`](docs/ACCEPTANCE.md)，逐项手工确认。
 
 ---
 

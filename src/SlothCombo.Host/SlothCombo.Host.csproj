@@ -35,9 +35,4 @@
     <ProjectReference Include="..\SlothCombo.Abstractions\SlothCombo.Abstractions.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <!-- The tests check the parts that the program uses to reach the game. -->
-    <InternalsVisibleTo Include="SlothCombo.Tests" />
-  </ItemGroup>
-
 </Project>

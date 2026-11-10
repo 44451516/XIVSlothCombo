@@ -10,12 +10,6 @@
     The loader sits in the default load context of the game for the rest of
     the session, so it must not pull anything in that the runtime is meant to
     own. It talks to the runtime through reflection alone.
-
-    The tests load a stand-in of the runtime through the same code path, so
-    they need to see the internals of the loader.
   -->
-  <ItemGroup>
-    <InternalsVisibleTo Include="SlothCombo.Tests" />
-  </ItemGroup>
 
 </Project>

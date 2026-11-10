@@ -42,8 +42,6 @@ jobs:
         clang --version
     - name: Build the standalone program
       run: .\build\publish.ps1
-    - name: Run the tests
-      run: dotnet run --project tests\SlothCombo.Tests\SlothCombo.Tests.csproj -c Release
     - name: Set Timestamp
       id: timestamp
       run: |

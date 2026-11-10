@@ -10,11 +10,9 @@ XIVSlothCombo.sln.DotSettings.user
 XIVSlothCombo.sln.DotSettings
 .qoder/
 
-# The standalone program under src/ and tests/.
+# The standalone program under src/.
 src/**/bin/
 src/**/obj/
-tests/**/bin/
-tests/**/obj/
 build/**/bin/
 build/**/obj/
 

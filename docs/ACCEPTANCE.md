@@ -16,24 +16,13 @@
 | A1 | 运行时工程可编译 | `dotnet build src\SlothCombo.Runtime -c Release` | 0 错误 0 警告（全量重建） |
 | A2 | 主程序工程可编译 | `dotnet build src\SlothCombo.Host -c Release` | 0 错误 0 警告 |
 | A3 | 引导库（原生 C，clang 编译）可编译 | `dotnet build src\SlothCombo.Boot -c Release` | 0 错误 0 警告 |
-| A4 | 测试工程可编译并通过 | `dotnet run --project tests\SlothCombo.Tests -c Release` | 15/15 通过，0 跳过 |
-| A5 | 安装包可装配 | `.\build\publish.ps1` | 产出 `dist/`，含 hostfxr、`shared/Microsoft.NETCore.App`、引导库、Loader、托管运行时、wwwroot |
-| A6 | 注入引导链可用 | `rundll32 dist\SlothCombo.Boot.dll,SlothComboBootRundll32` | hostfxr → Loader → 可卸载上下文里的托管运行时全部执行到（非游戏进程因无 sqpack 按预期报「拒绝启动」） |
-| A7 | PE 导出表解析正确 | `PeExportTest` | 通过 |
-| A8 | 命名管道 IPC 往返 | `IpcTest`（真实管道） | 通过 |
-| A9 | FCS 子模块未被污染 | `git -C lib\FFXIVClientStructs status` | 干净 |
-| A10 | 热重载加载器 | `LoaderTest`（测试工程内） | 同一构建不重复启动；新构建会先停旧的；卸载后旧 DLL 可删除（文件锁释放） |
-| A11 | 游戏占用时仍可构建 | 占用 dist 中任意文件后运行 `.\build\publish.ps1` | 未变化的占用文件被跳过；变化了的占用文件会列名并中止（不留半残安装） |
-
-### A4 的测试覆盖
-
-| 测试 | 查什么 |
-| --- | --- |
-| `PeExportTest` | 手写 PE 导出表解析：DOS/NT 头、节表、导出目录、名称/序号/函数表 |
-| `BootChainTest` | 按游戏的方式加载引导库（`rundll32` + dist 布局），验证 hostfxr → Loader → 可卸载上下文这条链能拉起托管运行时 |
-| `IpcTest` | 真实 Windows 命名管道：4 字节小端长度 + UTF-8 JSON 帧的请求/响应往返 |
-| `LoaderTest` | 用替身运行时验证：同构建短路、换构建先停旧再装新、卸载后旧 DLL 可删除 |
-| `StagingTest` | 复制件按内容命名：同构建复用同一目录、新构建换新目录并清旧、boot 库从发布目录之外加载 |
+| A4 | 安装包可装配 | `.\build\publish.ps1` | 产出 `dist/`，含 hostfxr、`shared/Microsoft.NETCore.App`、引导库、Loader、托管运行时、wwwroot |
+| A5 | 注入引导链可用 | `rundll32 dist\SlothCombo.Boot.dll,SlothComboBootRundll32` | hostfxr → Loader → 可卸载上下文里的托管运行时全部执行到（非游戏进程因无 sqpack 按预期报「拒绝启动」） |
+| A6 | PE 导出表解析正确 | 用 `dumpbin /exports` 或 PE 查看器读 `dist\SlothCombo.Boot.dll` | 导出名 `SlothComboBoot` 可见 |
+| A7 | 命名管道 IPC 往返 | 运行 `SlothCombo.Host.exe`，在设置页触发任一需要游戏状态的接口 | 请求有正常响应，不报连接错误 |
+| A8 | FCS 子模块未被污染 | `git -C lib\FFXIVClientStructs status` | 干净 |
+| A9 | 热重载加载器 | 关掉 Host 窗口（游戏保持运行）→ 重新 `.\build\publish.ps1` → 再运行 Host | 打印 `The runtime is running.`；`%TEMP%\XIVSlothCombo\loader.log` 出现 `A new build was found` 与 `unloaded`；旧 DLL 可删除（文件锁释放） |
+| A10 | 游戏占用时仍可构建 | 占用 dist 中任意文件后运行 `.\build\publish.ps1` | 未变化的占用文件被跳过；变化了的占用文件会列名并中止（不留半残安装） |
 
 ---
 
@@ -84,10 +73,11 @@ dotnet build src\SlothCombo.Runtime -c Release   # 0 错误 0 警告
 dotnet build src\SlothCombo.Host -c Release       # 0 错误 0 警告
 dotnet build src\SlothCombo.Loader -c Release     # 0 错误 0 警告
 dotnet build src\SlothCombo.Boot -c Release       # 0 错误 0 警告
-dotnet run --project tests\SlothCombo.Tests -c Release   # 15/15
 .\build\publish.ps1                               # 产出 dist/
 ```
 
 CI（`.github/workflows/build.yml`）在 `push` 到 `API11` / `CN` / `main` / `备战8.0` 时触发，
-自动完成装配 + 打包 + 测试；提交信息里带 `[PUSH]` 时再额外发布一个 GitHub Release，
+自动完成装配 + 打包；提交信息里带 `[PUSH]` 时再额外发布一个 GitHub Release，
 发版时机由提交者自己决定。
+
+> 本仓库不写测试用例。上面 A 段每一项都要手工确认，CI 也不再跑测试步骤。

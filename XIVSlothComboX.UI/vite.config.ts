@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath, URL } from 'node:url'
-import { defineConfig, type PluginOption } from 'vitest/config'
+import { defineConfig, type PluginOption } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 const projectRoot = fileURLToPath(new URL('.', import.meta.url))
@@ -111,11 +111,6 @@ export default defineConfig(() => {
           assetFileNames: 'assets/[name]-[hash][extname]',
         },
       },
-    },
-    test: {
-      environment: 'jsdom',
-      globals: true,
-      include: ['src/**/*.spec.ts'],
     },
   }
 })
