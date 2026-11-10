@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using SlothCombo.Abstractions;
 
 using SlothCombo.Runtime.Hooking;
+using SlothCombo.Runtime.Rotations;
 using SlothCombo.Runtime.Services;
 
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -224,6 +225,13 @@ namespace SlothCombo.Data
 
         private static unsafe void TrackReceivedActionEffect(uint casterEntityId, ActionEffectHandler.Header* header)
         {
+            if (header is not null &&
+                header->ActionType == (byte)FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action)
+            {
+                RotationEngine.ObserveAction(casterEntityId, header->ActionId,
+                    header->SourceSequence, header->GlobalSequence);
+            }
+
             if (!CustomComboFunctions.InCombat())
             {
                 CombatActions.Clear();
@@ -304,6 +312,8 @@ namespace SlothCombo.Data
         {
             try
             {
+                if (actionId is not (7 or 8))
+                    RotationEngine.NotifyActionSent(actionId, sequence);
                 TrackSentAction(ref targetObjectId, actionType, actionId);
             }
             catch (Exception ex)
@@ -394,6 +404,10 @@ namespace SlothCombo.Data
 
         private static unsafe void CheckForChangedTarget(uint actionId, ref ulong targetObjectId, byte actionType)
         {
+            var player = Service.ObjectTable.LocalPlayer;
+            if (player is not null && !Service.ClientState.IsPvP && RotationStore.IsV8(player.ClassJob.RowId))
+                return;
+
             // Service.ChatGui.PrintError($"{targetObjectId} -> {actionId} ->{actionType}");
             // if (CustomComboFunctions.CustomTimelineIsEnable())
             // {

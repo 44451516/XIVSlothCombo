@@ -3,8 +3,6 @@ using System.Linq;
 using Artisan.GameInterop;
 using SlothCombo.Runtime.Services;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.System.Framework;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel.Sheets;
 
 namespace SlothCombo.Generated
@@ -17,12 +15,9 @@ namespace SlothCombo.Generated
         internal static (uint Id, string Name)[] Manuals;
         internal static (uint Id, string Name)[] SquadronManuals;
         static Dictionary<uint, string> Usables;
-        static AgentInterface* itemContextMenuAgent;
 
         internal static void Init()
         {
-            itemContextMenuAgent =
-                Framework.Instance()->UIModule->GetAgentModule()->GetAgentByInternalId(AgentId.InventoryContext);
             Usables = Svc.Data.GetExcelSheet<Item>().Where(i => i.ItemAction.RowId > 0)
                 .ToDictionary(i => i.RowId, i => i.Name.ToString().ToLower())
                 .Concat(Svc.Data.GetExcelSheet<EventItem>().Where(i => i.Action.RowId > 0)

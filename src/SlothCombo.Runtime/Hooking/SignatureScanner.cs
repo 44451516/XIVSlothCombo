@@ -142,7 +142,7 @@ internal sealed unsafe class SignatureScanner : ISignatureScanner
 
             if (Matches(text.Slice(start), needle, wildcard))
             {
-                return FollowRelativeCall(_moduleBase + start);
+                return FollowRelativeCall(_textBase + start);
             }
 
             search = candidate + 1;

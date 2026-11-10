@@ -12,6 +12,7 @@ const config = useConfigStore()
 const navItems = computed(() => {
   const items = [
     { to: '/pve', label: 'PvE 功能' },
+    { to: '/v8', label: '8.0 专区' },
     { to: '/pvp', label: 'PvP 功能' },
     { to: '/timeline/edit', label: '时间轴编辑' },
     { to: '/timeline', label: '时间轴' },
@@ -25,19 +26,21 @@ const navItems = computed(() => {
 })
 
 onMounted(async () => {
+  const failures: string[] = []
   try {
     await meta.load()
   } catch (error) {
-    toastError(error instanceof Error ? error.message : String(error))
+    failures.push(`职业数据：${error instanceof Error ? error.message : String(error)}`)
   }
 
   // The top level configuration is needed by the feature list as well, so that
   // settings such as "hide the options of disabled features" apply right away.
   try {
     await config.load()
-  } catch {
-    // The settings page reports the problem itself.
+  } catch (error) {
+    failures.push(`设置：${error instanceof Error ? error.message : String(error)}`)
   }
+  if (failures.length) toastError(`本地服务初始化失败。${failures.join('；')}`)
 })
 </script>
 
@@ -76,7 +79,8 @@ onMounted(async () => {
 <style scoped>
 .shell {
   display: flex;
-  height: 100%;
+  height: 100vh;
+  height: 100dvh;
   min-height: 0;
 }
 
@@ -100,7 +104,7 @@ onMounted(async () => {
 
 .shell-title {
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0;
 }
 
 .shell-version {
@@ -151,5 +155,48 @@ onMounted(async () => {
 
 .shell-spin {
   margin: 40px auto;
+}
+
+@media (max-width: 640px) {
+  .shell {
+    flex-direction: column;
+  }
+
+  .shell-nav {
+    flex: 0 0 auto;
+    min-width: 0;
+    gap: 8px;
+    padding: 10px 12px;
+    border-right: 0;
+    border-bottom: 1px solid var(--sloth-border-soft);
+  }
+
+  .shell-brand {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 8px;
+    padding: 0;
+    border-bottom: 0;
+  }
+
+  .shell-links {
+    flex: 0 0 auto;
+    flex-direction: row;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .shell-link {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .shell-foot {
+    display: none;
+  }
+
+  .shell-main {
+    padding: 12px;
+  }
 }
 </style>

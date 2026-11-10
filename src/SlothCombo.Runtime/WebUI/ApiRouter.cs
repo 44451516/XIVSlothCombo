@@ -59,6 +59,10 @@ internal static class ApiRouter
                 await TimelineHandler.HandleAsync(request, response, dispatcher).ConfigureAwait(false);
                 return;
 
+            case "rotations":
+                await RotationHandler.HandleAsync(request, response, dispatcher).ConfigureAwait(false);
+                return;
+
             case "icon":
                 await IconHandler.HandleAsync(request, response, dispatcher).ConfigureAwait(false);
                 return;

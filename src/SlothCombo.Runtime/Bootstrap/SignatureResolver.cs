@@ -1,9 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text.Json;
 using FFXIVClientStructs.Interop.Generated;
 using InteropGenerator.Runtime;
+using SlothCombo.Runtime.Services;
+using GameFramework = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework;
 
 namespace SlothCombo.Runtime.Bootstrap;
 
@@ -18,10 +23,9 @@ namespace SlothCombo.Runtime.Bootstrap;
 /// resolution is driven explicitly by <see cref="Resolver"/>.
 /// </para>
 /// <para>
-/// The resolver accepts a JSON cache, which is what makes the runtime able to
-/// survive a game patch that the upstream struct library has not caught up with
-/// yet: the cached module relative offsets are reused, and only the entries that
-/// no longer resolve have to be repaired by hand.
+/// The resolver accepts a JSON cache whose offsets are only valid for the
+/// executable and struct library that produced them. A game or library update
+/// invalidates those offsets before any game state is read.
 /// </para>
 /// </remarks>
 public static class SignatureResolver
@@ -30,14 +34,13 @@ public static class SignatureResolver
     public const string CacheFileName = "sigcache.json";
 
     /// <summary>
-    /// The cache version.
+    /// The cache format version.
     /// </summary>
     /// <remarks>
-    /// The resolver drops the whole cache when the version changes. Bumping it
-    /// is the supported way to invalidate addresses that were repaired by hand
-    /// for a specific game build.
+    /// The executable fingerprint and struct library MVID are appended to this
+    /// version. Bumping it also invalidates the cache for an unchanged build.
     /// </remarks>
-    public const string CacheVersion = "1";
+    public const string CacheVersion = "2";
 
     /// <summary>
     /// Resolves all struct library addresses.
@@ -61,12 +64,11 @@ public static class SignatureResolver
             directory.Create();
         }
 
-        var resolver = Resolver.GetInstance;
+        var version = GetCacheVersion();
+        LogCacheState(cache, version);
 
-        // Passing the cache lets the resolver reuse previously resolved
-        // addresses, which keeps startup fast and lets a patched cache survive
-        // a game update that broke some of the upstream signatures.
-        resolver.Setup(version: CacheVersion, cacheFile: cache);
+        var resolver = Resolver.GetInstance;
+        resolver.Setup(version: version, cacheFile: cache);
 
         Addresses.Register();
         resolver.Resolve();
@@ -79,5 +81,56 @@ public static class SignatureResolver
         unresolved = failed;
 
         return failed.Count == 0;
+    }
+
+    private static string GetCacheVersion()
+    {
+        try
+        {
+            using var process = Process.GetCurrentProcess();
+            using var module = process.MainModule
+                ?? throw new InvalidOperationException("The game executable could not be located.");
+            using var stream = File.OpenRead(module.FileName);
+            var executableHash = Convert.ToHexString(SHA256.HashData(stream));
+            var structsMvid = typeof(GameFramework).Assembly.ManifestModule.ModuleVersionId;
+            return $"{CacheVersion}:{executableHash}:{structsMvid:N}";
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException(
+                "The game executable fingerprint could not be read; refusing to reuse signature addresses.", ex);
+        }
+    }
+
+    private static void LogCacheState(FileInfo cache, string version)
+    {
+        Service.PluginLog?.Information($"Signature cache fingerprint: {version}");
+
+        if (!cache.Exists)
+        {
+            Service.PluginLog?.Information("No signature cache was found; scanning the game executable.");
+            return;
+        }
+
+        try
+        {
+            using var stream = cache.OpenRead();
+            using var json = JsonDocument.Parse(stream);
+            if (json.RootElement.TryGetProperty("Version", out var cachedVersion) &&
+                cachedVersion.ValueKind == JsonValueKind.String &&
+                cachedVersion.GetString() == version)
+            {
+                Service.PluginLog?.Information("The signature cache fingerprint matches the current build.");
+                return;
+            }
+
+            Service.PluginLog?.Information(
+                "The signature cache fingerprint changed; discarding cached addresses and scanning the game executable.");
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException or InvalidOperationException)
+        {
+            Service.PluginLog?.Warning(
+                $"The signature cache could not be read; scanning the game executable instead: {ex.Message}");
+        }
     }
 }

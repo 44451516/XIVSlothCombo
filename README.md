@@ -113,6 +113,38 @@ SlothCombo.Host [选项]
 | `boot-status.json` / `boot-error.txt` | 最近一次注入的结果与失败原因 |
 | `logs/` | 运行日志 |
 
+### 8.0 专区与独立编辑器
+
+“8.0”是自定义循环专区的名称，不代表已经适配尚未核验的游戏版本。
+设置页在 PvE 后提供独立的 **8.0 专区**，每个战斗职业分别选择旧 PvE 或 8.0 模式。
+选择 8.0 模式后，即使停止执行，也不会回退到旧职业循环或旧时间轴；原有配置不会删除。
+
+完整编排项目位于独立目录 `C:\UGit\FF14\XIVRotationEditor`，不加入本解决方案或安装包。
+编辑器离线编辑文件，不连接 Host、不发现设置页令牌。两边交换以下版本化 JSON 文件：
+
+| 文件后缀 | 内容 |
+| --- | --- |
+| `.rotation.json` | 单个运行方案、声明参数及参数值，不包含运行开关和实时进度 |
+| `.rotation-project.json` | 多方案工程、节点布局与人工调试快照，仅供独立编辑器 |
+| `.rotation-catalog.json` | 职业资料、字段说明、版本与来源，仅作为静态资料 |
+
+在编辑器导出运行方案后，在专区导入并选择对应职业的方案、调整声明参数，再手动开始。
+导入、切换、修改参数前会停止执行，保存后必须重新开始；启动及热重载不会恢复自动运行。
+默认急停键为 `Ctrl+Alt+F12`，可在专区更改。请先检查目标、规则与同步等级，再开始。
+战士、白魔示例不默认开启，也不是最佳循环承诺。
+
+采集器优先保存 Garland 中文资料；XIVAPI 固定版本数据仅作国际服参考。
+国服精确客户端版本尚未认证，目录必须保留参考标记；灰机访问受限和复杂机制审核缺口
+不会用其他版本的数值静默补齐。采集、打包和来源记录见独立项目的 `docs/CATALOG.md`。
+
+自动执行的真实游戏验收，包括手动接管、目标与复活、地面技能、倒计时、热重载和
+至少 10 分钟稳定性，必须按 `docs/ACCEPTANCE.md` 完成。构建成功不等于这些行为已验证。
+
+当前运行能力仍有保守限制：地面技能只允许自身或当前敌方目标锚点且要求存在当前敌方目标，
+尚不支持友方地面锚点；部分无法分类的自身动作在没有敌方目标时拒绝执行。
+所有战前动作都要求有效倒计时和显式 `allowPrepull` 授权。停止阻止后续提交，
+不会取消已发出的动作或原生读条。这些限制不是已经完成完整游戏适配的承诺。
+
 ---
 
 ## 安装包布局
@@ -208,7 +240,11 @@ dotnet build src\SlothCombo.Boot\SlothCombo.Boot.csproj -c Release
 | GET/POST | `/api/value` | 按 `key` + `type` 读写配置项 |
 | GET/PATCH | `/api/config` | 顶层配置 |
 | GET/POST | `/api/timeline` | 时间轴列表与编辑动作 |
-| GET | `/api/icon/{id}` | 游戏图标（PNG） |
+| GET/POST | `/api/rotations` | 8.0 方案、逐职业模式、选择与声明参数 |
+| GET | `/api/rotations/catalog` | 内嵌参考职业目录及 Runtime 字段类型 |
+| GET | `/api/rotations/state` | 8.0 引擎状态与能力限制 |
+| POST | `/api/rotations/control` | 开始、停止、复位及急停键配置；开始必须携带并匹配 `expectedJobId` |
+| GET | `/api/icon/{id}` | 旧本地图标接口（当前仍返回 404；设置页改为直连 XIVAPI） |
 | GET | `/api/debug/*` | 诊断信息，仅 Debug 构建 |
 
 `type` 取值：`int` / `float` / `bool` / `boolArray` / `intArray`。
@@ -242,18 +278,20 @@ dotnet build src\SlothCombo.Boot\SlothCombo.Boot.csproj -c Release
 
 ### FCS 签名滞后的兜底
 
-`SignatureResolver` 负责在运行时按签名解析函数地址。签名找不到时不直接崩，
-而是走人工补丁路径：把新签名登记进 `src/SlothCombo.Runtime/Bootstrap/SignatureResolver.cs`
-的补丁表，或在 `Core/PluginAddressResolver.cs` 里加一条兜底地址。
-这样一次游戏版本更新只需要补几行代码，不必等上游发版。
+`SignatureResolver` 负责在运行时按签名解析函数地址。缓存只用于同一游戏 EXE 和同一
+FCS 程序集：游戏 EXE 的 SHA-256、FCS 程序集 MVID 或缓存格式版本变化时自动重新扫描，
+不会把旧游戏的偏移用于新版本。无法读取指纹或缺少启动必需地址时，运行时拒绝启动并
+记录原因，不继续解引用或安装 Hook。其余未解析地址记录到日志，供本仓库跟进签名适配，
+不修改只读的 FCS 子模块。
 
 ---
 
 ## 已知限制
 
-- **图标接口暂时返回 404**。`.tex` 的像素解码在迁移中降级了：Dalamud 的
-  `GetRgbaImageData` 已不可用，Lumina 7.6 没有等价 API，自写 BCn 解码尚未实现。
-  前端会显示占位图，其余功能不受影响。补齐方式见 `docs/ACCEPTANCE.md` 的 B10。
+- **设置页图标需要访问 XIVAPI**。职业与技能图标由浏览器直接从
+  `https://v2.xivapi.com/api/asset` 获取 PNG，不经过游戏进程，也不发送本地会话令牌或
+  Referer。普通与高清图标分别使用 `.tex` 和 `_hr1.tex` 资源；无法联网或图片不存在时
+  显示等尺寸占位，不影响连招与配置。旧 `/api/icon/{id}` 接口保留，但设置页不再调用。
 - **注入链路只做过非游戏进程的验证**。整条 `rundll32 → hostfxr → 托管运行时` 链路已实测跑通，
   但 Hook 稳定性、游戏内接口的真实返回、WebUI 的实际交互，仍需在真实游戏进程中验证。
   逐项验收步骤见 [`docs/ACCEPTANCE.md`](docs/ACCEPTANCE.md)。

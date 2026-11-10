@@ -120,11 +120,14 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
   return envelope.data as T
 }
 
-/** Builds the address of a game icon. The token travels in the query string. */
+/** Builds a public XIVAPI asset URL without the local session token. */
 export function iconUrl(iconId: number, hd = false): string {
-  const token = resolveToken()
-  const query = `hd=${hd ? 1 : 0}${token ? `&t=${encodeURIComponent(token)}` : ''}`
-  return `/api/icon/${iconId}?${query}`
+  if (!Number.isSafeInteger(iconId) || iconId <= 0) return ''
+
+  const group = String(Math.floor(iconId / 1000) * 1000).padStart(6, '0')
+  const filename = `${String(iconId).padStart(6, '0')}${hd ? '_hr1' : ''}.tex`
+  const query = new URLSearchParams({ path: `ui/icon/${group}/${filename}`, format: 'png' })
+  return `https://v2.xivapi.com/api/asset?${query}`
 }
 
 export const api = {
