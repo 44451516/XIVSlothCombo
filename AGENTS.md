@@ -85,6 +85,7 @@ tools/GameDataBuilder/         静态表生成器：把公开数据转成 JSON �
 XIVSlothComboX.UI/             Vue 3 + TypeScript + Vite + Naive UI 前端
 build/publish.ps1              装配 dist/ 安装包
 docs/ACCEPTANCE.md             验收清单
+docs/ADDRESSES.md              内存地址清单（程序依赖游戏内存的所有位置）
 ```
 
 完整说明见 [`README.md`](README.md)。

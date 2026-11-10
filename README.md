@@ -70,6 +70,7 @@
 | `src/Directory.Build.props` | 独立程序的共享编译设置 |
 | `tools/GameDataBuilder/` | 静态表生成器：从公开数据源生成 JSON 表（不进安装包） |
 | `docs/ACCEPTANCE.md` | 验收清单：本机已验证项 / 需真实游戏验证项 |
+| `docs/ADDRESSES.md` | 内存地址清单：程序依赖游戏内存的所有位置与排查方法 |
 | `build/publish.ps1` | 一键装配 `dist/` 安装包 |
 | `XIVSlothComboX.UI/` | Vue 3 + TypeScript + Vite + Naive UI 前端工程 |
 
