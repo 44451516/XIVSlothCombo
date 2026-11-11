@@ -29,6 +29,10 @@ internal static class SheetColumns
         "IsPvP",
         "IsPlayerAction",
         "CanTargetParty",
+        "CanTargetSelf",
+        "CanTargetHostile",
+        "CanTargetAlly",
+        "TargetArea",
     ];
 
     /// <summary>The columns of the sheet of the kinds of the actions.</summary>
@@ -43,6 +47,7 @@ internal static class SheetColumns
         "Name",
         "Icon",
         "CanDispel",
+        "MaxStacks",
     ];
 
     /// <summary>The columns of the sheet of the items.</summary>
@@ -153,4 +158,10 @@ internal static class SheetColumns
 /// <summary>The name of a sheet and the columns that are carried over.</summary>
 /// <param name="Name">The name of the sheet.</param>
 /// <param name="Columns">The columns that are carried over.</param>
-internal readonly record struct SheetPlan(string Name, string[] Columns);
+/// <param name="GatheredJobs">
+/// The name of the field the classes of a kind are gathered into. The sheet of
+/// the kinds of the classes holds one column per class, so the classes of a
+/// kind are the columns of the row that are set. The field is only written
+/// when it is set, so it is empty for the sheets that do not gather it.
+/// </param>
+internal readonly record struct SheetPlan(string Name, string[] Columns, string? GatheredJobs = null);

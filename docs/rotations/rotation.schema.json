@@ -1,0 +1,98 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:xiv-rotation:schema:v1",
+  "title": "XIV Rotation Document v1",
+  "oneOf": [
+    { "$ref": "#/definitions/plan" },
+    { "$ref": "#/definitions/project" },
+    { "$ref": "#/definitions/catalog" }
+  ],
+  "definitions": {
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$" },
+    "scalar": { "anyOf": [{ "type": "number" }, { "type": "boolean" }] },
+    "value": {
+      "oneOf": [
+        { "type": "object", "additionalProperties": false, "required": ["kind", "value"], "properties": { "kind": { "const": "literal" }, "value": { "$ref": "#/definitions/scalar" } } },
+        { "type": "object", "additionalProperties": false, "required": ["kind", "path"], "properties": { "kind": { "const": "field" }, "path": { "type": "string", "minLength": 1, "maxLength": 160 } } },
+        { "type": "object", "additionalProperties": false, "required": ["kind", "id"], "properties": { "kind": { "enum": ["parameter", "variable"] }, "id": { "$ref": "#/definitions/id" } } }
+      ]
+    },
+    "condition": {
+      "oneOf": [
+        { "type": "object", "additionalProperties": false, "required": ["id", "kind", "value"], "properties": { "id": { "$ref": "#/definitions/id" }, "kind": { "const": "constant" }, "value": { "type": "boolean" } } },
+        { "type": "object", "additionalProperties": false, "required": ["id", "kind", "children"], "properties": { "id": { "$ref": "#/definitions/id" }, "kind": { "enum": ["all", "any"] }, "children": { "type": "array", "items": { "$ref": "#/definitions/condition" }, "minItems": 1, "maxItems": 64 } } },
+        { "type": "object", "additionalProperties": false, "required": ["id", "kind", "children"], "properties": { "id": { "$ref": "#/definitions/id" }, "kind": { "const": "not" }, "children": { "type": "array", "items": { "$ref": "#/definitions/condition" }, "minItems": 1, "maxItems": 1 } } },
+        { "type": "object", "additionalProperties": false, "required": ["id", "kind", "left", "op", "right"], "properties": { "id": { "$ref": "#/definitions/id" }, "kind": { "const": "compare" }, "left": { "$ref": "#/definitions/value" }, "op": { "enum": ["eq", "ne", "gt", "gte", "lt", "lte"] }, "right": { "$ref": "#/definitions/value" } } }
+      ]
+    },
+    "operation": {
+      "type": "object", "additionalProperties": false, "required": ["variableId", "operation", "value"],
+      "properties": { "variableId": { "$ref": "#/definitions/id" }, "operation": { "enum": ["set", "add"] }, "value": { "$ref": "#/definitions/value" } }
+    },
+    "operations": { "type": "array", "maxItems": 128, "items": { "$ref": "#/definitions/operation" } },
+    "target": {
+      "oneOf": [
+        { "type": "object", "additionalProperties": false, "required": ["kind"], "properties": { "kind": { "enum": ["current", "self", "lowestHp"] }, "dead": { "type": "boolean" } } },
+        { "type": "object", "additionalProperties": false, "required": ["kind", "slot"], "properties": { "kind": { "const": "partySlot" }, "slot": { "type": "integer", "minimum": 1, "maximum": 8 }, "dead": { "type": "boolean" } } },
+        { "type": "object", "additionalProperties": false, "required": ["kind", "role"], "properties": { "kind": { "const": "role" }, "role": { "enum": ["tank", "healer", "dps"] }, "dead": { "type": "boolean" } } }
+      ]
+    },
+    "action": {
+      "type": "object", "additionalProperties": false, "required": ["actionId", "target", "ground", "onSuccess"],
+      "properties": { "actionId": { "type": "integer", "minimum": 1, "maximum": 4294967295 }, "target": { "$ref": "#/definitions/target" }, "ground": { "enum": ["none", "self", "target"] }, "allowPrepull": { "type": "boolean" }, "onSuccess": { "$ref": "#/definitions/operations" } }
+    },
+    "rule": {
+      "type": "object", "additionalProperties": false, "required": ["id", "name", "enabled", "condition"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" }, "name": { "type": "string", "minLength": 1, "maxLength": 160 }, "enabled": { "type": "boolean" }, "condition": { "$ref": "#/definitions/condition" },
+        "action": { "$ref": "#/definitions/action" },
+        "sequence": {
+          "type": "object", "additionalProperties": false, "required": ["id", "loop", "timeoutMs", "timeoutPolicy", "steps"],
+          "properties": {
+            "id": { "$ref": "#/definitions/id" }, "loop": { "type": "boolean" }, "timeoutMs": { "type": "integer", "minimum": 50, "maximum": 300000, "default": 10000 }, "timeoutPolicy": { "enum": ["abort", "skip"] },
+            "steps": { "type": "array", "minItems": 1, "maxItems": 256, "items": { "type": "object", "additionalProperties": false, "required": ["id", "condition", "action"], "properties": { "id": { "$ref": "#/definitions/id" }, "condition": { "$ref": "#/definitions/condition" }, "action": { "$ref": "#/definitions/action" } } } }
+          }
+        }
+      },
+      "oneOf": [{ "required": ["action"], "not": { "required": ["sequence"] } }, { "required": ["sequence"], "not": { "required": ["action"] } }]
+    },
+    "phase": {
+      "type": "object", "additionalProperties": false, "required": ["id", "name", "onEnter", "transitions", "rules"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" }, "name": { "type": "string", "minLength": 1, "maxLength": 160 }, "onEnter": { "$ref": "#/definitions/operations" },
+        "transitions": { "type": "array", "maxItems": 128, "items": { "type": "object", "additionalProperties": false, "required": ["id", "toPhaseId", "condition"], "properties": { "id": { "$ref": "#/definitions/id" }, "toPhaseId": { "$ref": "#/definitions/id" }, "condition": { "$ref": "#/definitions/condition" } } } },
+        "rules": { "type": "array", "maxItems": 1000, "items": { "$ref": "#/definitions/rule" } }
+      }
+    },
+    "variable": {
+      "type": "object", "additionalProperties": false, "required": ["id", "name", "type", "default"],
+      "properties": { "id": { "$ref": "#/definitions/id" }, "name": { "type": "string", "minLength": 1, "maxLength": 80 }, "type": { "enum": ["number", "boolean"] }, "default": { "$ref": "#/definitions/scalar" } }
+    },
+    "parameter": {
+      "type": "object", "additionalProperties": false, "required": ["id", "name", "type", "default"],
+      "properties": { "id": { "$ref": "#/definitions/id" }, "name": { "type": "string", "minLength": 1, "maxLength": 80 }, "type": { "enum": ["number", "boolean"] }, "default": { "$ref": "#/definitions/scalar" }, "min": { "type": "number" }, "max": { "type": "number" } }
+    },
+    "plan": {
+      "type": "object", "additionalProperties": false,
+      "required": ["format", "version", "id", "name", "jobId", "entryPhaseId", "parameters", "parameterValues", "variables", "phases"],
+      "properties": {
+        "format": { "const": "xiv-rotation" }, "version": { "const": 1 }, "id": { "$ref": "#/definitions/id" }, "name": { "type": "string", "minLength": 1, "maxLength": 160 }, "jobId": { "type": "integer", "minimum": 1, "maximum": 4294967295 }, "entryPhaseId": { "$ref": "#/definitions/id" },
+        "parameters": { "type": "array", "maxItems": 128, "items": { "$ref": "#/definitions/parameter" } }, "parameterValues": { "type": "object", "propertyNames": { "$ref": "#/definitions/id" }, "additionalProperties": { "$ref": "#/definitions/scalar" } },
+        "variables": { "type": "array", "maxItems": 128, "items": { "$ref": "#/definitions/variable" } }, "phases": { "type": "array", "minItems": 1, "maxItems": 128, "items": { "$ref": "#/definitions/phase" } }
+      }
+    },
+    "snapshot": { "type": "object", "additionalProperties": false, "required": ["fields"], "properties": { "fields": { "type": "object", "maxProperties": 20000, "additionalProperties": { "$ref": "#/definitions/scalar" } } } },
+    "project": {
+      "type": "object", "additionalProperties": false, "required": ["format", "version", "plans", "layouts", "snapshots"],
+      "properties": {
+        "format": { "const": "xiv-rotation-project" }, "version": { "const": 1 }, "plans": { "type": "array", "maxItems": 256, "items": { "$ref": "#/definitions/plan" } },
+        "layouts": { "type": "object", "additionalProperties": { "type": "object", "additionalProperties": { "type": "object", "additionalProperties": false, "required": ["x", "y"], "properties": { "x": { "type": "number" }, "y": { "type": "number" } } } } }, "snapshots": { "type": "object", "additionalProperties": { "$ref": "#/definitions/snapshot" } }
+      }
+    },
+    "catalog": {
+      "type": "object", "required": ["format", "version", "jobs"],
+      "properties": { "format": { "const": "xiv-rotation-catalog" }, "version": { "const": 1 }, "jobs": { "type": "array", "maxItems": 128, "items": { "type": "object" } } },
+      "additionalProperties": true
+    }
+  }
+}

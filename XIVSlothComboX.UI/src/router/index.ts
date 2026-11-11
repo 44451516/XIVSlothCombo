@@ -3,6 +3,7 @@ import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-rou
 const routes: RouteRecordRaw[] = [
   { path: '/', redirect: '/pve' },
   { path: '/pve', name: 'pve', component: () => import('@/views/PvEView.vue') },
+  { path: '/v8', name: 'v8', component: () => import('@/views/RotationView.vue') },
   { path: '/pvp', name: 'pvp', component: () => import('@/views/PvPView.vue') },
   { path: '/timeline', name: 'timeline', component: () => import('@/views/TimelineMainView.vue') },
   {

@@ -18,7 +18,9 @@ namespace SlothCombo.Runtime.Bootstrap;
 /// <para>
 /// The resolver accepts a JSON cache, which is what makes the runtime able to
 /// survive a game patch: the addresses that still resolve are taken from the
-/// file and only the ones that broke are searched for again.
+/// file and only the ones that broke are searched for again. The cache carries
+/// the fingerprint of the game it was taken from, so a game that was updated
+/// does not get the offsets of the build it came from.
 /// </para>
 /// </remarks>
 public static class SignatureResolver

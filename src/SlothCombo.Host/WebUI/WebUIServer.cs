@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using SlothCombo.Abstractions;
@@ -179,7 +180,7 @@ internal sealed class WebUIServer : IDisposable
 
                 if (!_auth.Validate(token, origin, referer))
                 {
-                    await WriteJsonAsync(context, 401, "{\"ok\":false,\"error\":{\"code\":\"UNAUTHORIZED\",\"message\":\"会话已失效，请重新打开设置页\"}}").ConfigureAwait(false);
+                    await WriteErrorAsync(context, 401, "UNAUTHORIZED", "会话已失效，请重新打开设置页").ConfigureAwait(false);
                     return;
                 }
 
@@ -193,7 +194,15 @@ internal sealed class WebUIServer : IDisposable
         {
             try
             {
-                await WriteJsonAsync(context, 500, $"{{\"ok\":false,\"error\":{{\"code\":\"INTERNAL_ERROR\",\"message\":\"{ex.Message}\"}}}}").ConfigureAwait(false);
+                if (ex is IpcMessageTooLargeException)
+                {
+                    context.Response.KeepAlive = false;
+                    await WriteErrorAsync(context, 413, "IPC_MESSAGE_TOO_LARGE", ex.Message).ConfigureAwait(false);
+                }
+                else
+                {
+                    await WriteErrorAsync(context, 500, "INTERNAL_ERROR", ex.Message).ConfigureAwait(false);
+                }
             }
             catch (Exception)
             {
@@ -225,15 +234,16 @@ internal sealed class WebUIServer : IDisposable
             Body = await ReadBodyAsync(context).ConfigureAwait(false),
             Port = _auth.Port,
         };
+        IpcFraming.ValidateMessageSize(request);
 
         IpcResponse response;
         try
         {
             response = await _client.SendAsync(request, _cancellation.Token).ConfigureAwait(false);
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not IpcMessageTooLargeException)
         {
-            await WriteJsonAsync(context, 503, $"{{\"ok\":false,\"error\":{{\"code\":\"GAME_NOT_READY\",\"message\":\"游戏内的运行时没有应答：{ex.Message}\"}}}}").ConfigureAwait(false);
+            await WriteErrorAsync(context, 503, "GAME_NOT_READY", $"游戏内的运行时没有应答：{ex.Message}").ConfigureAwait(false);
             return;
         }
 
@@ -270,7 +280,7 @@ internal sealed class WebUIServer : IDisposable
         var file = ResolveFile(relative);
         if (file is null)
         {
-            await WriteJsonAsync(context, 404, $"{{\"ok\":false,\"error\":{{\"code\":\"NOT_FOUND\",\"message\":\"找不到 {relative}\"}}}}").ConfigureAwait(false);
+            await WriteErrorAsync(context, 404, "NOT_FOUND", $"找不到 {relative}").ConfigureAwait(false);
             return;
         }
 
@@ -284,7 +294,7 @@ internal sealed class WebUIServer : IDisposable
         {
             // The pictures of the game are taken from the hosts that serve the
             // game data, so they have to be allowed to be loaded.
-            context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'; img-src 'self' data: https://cafemaker.wakingsands.com https://xivapi.com; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; font-src 'self' data:; object-src 'none'; base-uri 'none'");
+            context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'; img-src 'self' data: https://v2.xivapi.com https://cafemaker.wakingsands.com https://xivapi.com; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; font-src 'self' data:; object-src 'none'; base-uri 'none'");
             context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
         }
 
@@ -323,13 +333,48 @@ internal sealed class WebUIServer : IDisposable
     /// </summary>
     private static async Task<string> ReadBodyAsync(HttpListenerContext context)
     {
+        if (context.Request.ContentLength64 > IpcFraming.MaxMessageLength)
+        {
+            throw new IpcMessageTooLargeException(context.Request.ContentLength64);
+        }
+
         if (!context.Request.HasEntityBody)
         {
             return string.Empty;
         }
 
-        using var reader = new StreamReader(context.Request.InputStream, context.Request.ContentEncoding ?? Encoding.UTF8);
+        using var input = context.Request.InputStream;
+        using var body = new MemoryStream();
+        var buffer = new byte[81920];
+        long total = 0;
+        while (true)
+        {
+            // Count raw bytes even for chunked input; read at most one byte beyond the capacity.
+            var remaining = (int)Math.Min(buffer.Length, IpcFraming.MaxMessageLength - total + 1);
+            var count = await input.ReadAsync(buffer.AsMemory(0, remaining)).ConfigureAwait(false);
+            if (count == 0)
+            {
+                break;
+            }
+
+            total += count;
+            if (total > IpcFraming.MaxMessageLength)
+            {
+                throw new IpcMessageTooLargeException(total);
+            }
+
+            body.Write(buffer, 0, count);
+        }
+
+        body.Position = 0;
+        using var reader = new StreamReader(body, context.Request.ContentEncoding ?? Encoding.UTF8);
         return await reader.ReadToEndAsync().ConfigureAwait(false);
+    }
+
+    private static Task WriteErrorAsync(HttpListenerContext context, int statusCode, string code, string message)
+    {
+        var json = JsonSerializer.Serialize(new { ok = false, error = new { code, message } });
+        return WriteJsonAsync(context, statusCode, json);
     }
 
     /// <summary>

@@ -18,7 +18,7 @@ namespace SlothCombo.Abstractions;
 public static class IpcFraming
 {
     /// <summary>The most a single message may be long.</summary>
-    private const int MaxMessageLength = 32 * 1024 * 1024;
+    public const int MaxMessageLength = 32 * 1024 * 1024;
 
     /// <summary>
     /// Reads a message.
@@ -33,7 +33,12 @@ public static class IpcFraming
         await ReadExactlyAsync(stream, length, token).ConfigureAwait(false);
 
         var size = BinaryPrimitives.ReadInt32LittleEndian(length);
-        if (size <= 0 || size > MaxMessageLength)
+        if (size > MaxMessageLength)
+        {
+            throw new IpcMessageTooLargeException(size);
+        }
+
+        if (size <= 0)
         {
             throw new InvalidDataException($"The message of {size} bytes is not a message that can be read.");
         }
@@ -50,6 +55,15 @@ public static class IpcFraming
         return message;
     }
 
+    /// <summary>Checks the complete UTF-8 JSON message, including string escaping and its envelope.</summary>
+    /// <typeparam name="T">The kind of the message.</typeparam>
+    /// <param name="message">The message that would be sent.</param>
+    /// <exception cref="IpcMessageTooLargeException">The serialized message exceeds the transport capacity.</exception>
+    public static void ValidateMessageSize<T>(T message)
+    {
+        _ = SerializeMessage(message);
+    }
+
     /// <summary>
     /// Writes a message.
     /// </summary>
@@ -59,7 +73,7 @@ public static class IpcFraming
     /// <param name="token">The token that stops the wait.</param>
     public static async Task WriteAsync<T>(Stream stream, T message, CancellationToken token)
     {
-        var payload = JsonSerializer.SerializeToUtf8Bytes(message);
+        var payload = SerializeMessage(message);
 
         var length = new byte[4];
         BinaryPrimitives.WriteInt32LittleEndian(length, payload.Length);
@@ -67,6 +81,17 @@ public static class IpcFraming
         await stream.WriteAsync(length, token).ConfigureAwait(false);
         await stream.WriteAsync(payload, token).ConfigureAwait(false);
         await stream.FlushAsync(token).ConfigureAwait(false);
+    }
+
+    private static byte[] SerializeMessage<T>(T message)
+    {
+        var payload = JsonSerializer.SerializeToUtf8Bytes(message);
+        if (payload.Length > MaxMessageLength)
+        {
+            throw new IpcMessageTooLargeException(payload.Length);
+        }
+
+        return payload;
     }
 
     /// <summary>
@@ -86,4 +111,24 @@ public static class IpcFraming
             read += count;
         }
     }
+}
+
+/// <summary>A request body or serialized pipe message exceeds the transport capacity.</summary>
+public sealed class IpcMessageTooLargeException : IOException
+{
+    /// <summary>Creates an error carrying the observed size and the applicable capacity.</summary>
+    /// <param name="messageSize">The number of bytes observed.</param>
+    /// <param name="maximumSize">The maximum number of bytes accepted.</param>
+    public IpcMessageTooLargeException(long messageSize, long maximumSize = IpcFraming.MaxMessageLength)
+        : base($"The payload of {messageSize} bytes exceeds the transport capacity of {maximumSize} bytes.")
+    {
+        MessageSize = messageSize;
+        MaximumSize = maximumSize;
+    }
+
+    /// <summary>The number of bytes observed.</summary>
+    public long MessageSize { get; }
+
+    /// <summary>The maximum number of bytes accepted.</summary>
+    public long MaximumSize { get; }
 }

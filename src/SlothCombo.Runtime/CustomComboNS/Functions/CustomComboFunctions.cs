@@ -6,6 +6,7 @@ using SlothCombo.Combos.PvE;
 using SlothCombo.Core;
 using SlothCombo.Data;
 using SlothCombo.Extensions;
+using SlothCombo.Runtime.Rotations;
 using SlothCombo.Runtime.Services;
 
 namespace SlothCombo.CustomComboNS.Functions
@@ -186,6 +187,9 @@ namespace SlothCombo.CustomComboNS.Functions
         public static bool CustomTimelineIsEnable()
         {
             if (LocalPlayer == null)
+                return false;
+
+            if (!Service.ClientState.IsPvP && RotationStore.IsV8(LocalPlayer.ClassJob.RowId))
                 return false;
 
             if (_CustomTimeline == null)

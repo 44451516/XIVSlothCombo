@@ -7,6 +7,7 @@ using SlothCombo.Data;
 using SlothCombo.Runtime.Services;
 using ActionRow = SlothCombo.Abstractions.GameData.ActionRow;
 using ActionCategoryRow = SlothCombo.Abstractions.GameData.ActionCategoryRow;
+using ClassJobRow = SlothCombo.Abstractions.GameData.ClassJobRow;
 using LogMessageRow = SlothCombo.Abstractions.GameData.LogMessageRow;
 using QuestRow = SlothCombo.Abstractions.GameData.QuestRow;
 using TerritoryTypeRow = SlothCombo.Abstractions.GameData.TerritoryTypeRow;
@@ -73,6 +74,10 @@ internal static class DebugHandler
         var localPlayer = Service.ObjectTable.LocalPlayer;
         if (localPlayer == null) return new { loggedIn = false };
 
+        var classJobSheet = Service.DataManager.GetTable<ClassJobRow>();
+        var jobRow = classJobSheet.GetRow(localPlayer.ClassJob.RowId);
+        var jobName = jobRow?.Name ?? string.Empty;
+
         var target = localPlayer.TargetObject;
         var isBattleChara = target is IBattleChara;
 
@@ -80,10 +85,10 @@ internal static class DebugHandler
         {
             loggedIn = true,
             statuses = BuildStatuses(localPlayer.StatusList, false),
-            targetStatuses = target is IBattleChara chara ? BuildStatuses(chara.StatusList, true) : new List<object>(),
+            targetStatuses = target is not null ? BuildStatuses(target.StatusList, true) : new List<object>(),
             player = new
             {
-                job = localPlayer.ClassJob.Value.NameEnglish,
+                job = jobName,
                 jobId = localPlayer.ClassJob.RowId,
                 zone = ResolveZoneName(),
                 zoneId = Service.ClientState.TerritoryType,
@@ -97,7 +102,7 @@ internal static class DebugHandler
                 objectKind = target?.ObjectKind.ToString(),
                 dataId = target?.BaseId,
                 isBattleChara = isBattleChara,
-                isPlayerCharacter = target is IPlayerCharacter,
+                isPlayerCharacter = target?.ObjectKind == ObjectKind.Pc,
                 distance = Math.Round(CustomComboFunctions.GetTargetDistance(), 2),
                 hitboxRadius = target?.HitboxRadius,
                 inMeleeRange = CustomComboFunctions.InMeleeRange(),
@@ -133,7 +138,9 @@ internal static class DebugHandler
                     .Select(member => new
                     {
                         name = member!.Name,
-                        job = (member as IPlayerCharacter)?.ClassJob.Value.Abbreviation ?? string.Empty,
+                        job = member.ObjectKind == ObjectKind.Pc
+                            ? classJobSheet.GetRow(member.ClassJob.RowId)?.Abbreviation ?? string.Empty
+                            : string.Empty,
                     })
                     .ToList(),
             },
@@ -159,7 +166,9 @@ internal static class DebugHandler
 
             list.Add(new
             {
-                source = status.SourceObject?.Name,
+                source = status.SourceId == 0
+                    ? null
+                    : Service.ObjectTable.Objects.FirstOrDefault(x => x.GameObjectId == status.SourceId)?.Name,
                 name = string.IsNullOrEmpty(name) ? status.StatusId.ToString() : name,
                 id = status.StatusId,
                 duration,
@@ -171,7 +180,7 @@ internal static class DebugHandler
 
     private static object BuildActionList()
     {
-        var jobId = Service.ClientState?.ClassJobRowId ?? 0;
+        var jobId = Service.ObjectTable.LocalPlayer?.ClassJob.RowId ?? 0;
         var classId = CustomComboFunctions.JobIDs.JobToClass(jobId);
 
         var actions = Service.DataManager.GetTable<ActionRow>().Rows

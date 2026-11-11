@@ -12,6 +12,7 @@ using SlothCombo.Abstractions;
 using SlothCombo.Combos.PvE;
 using SlothCombo.CustomComboNS;
 using SlothCombo.Runtime.Hooking;
+using SlothCombo.Runtime.Rotations;
 using SlothCombo.Runtime.Services;
 
 namespace SlothCombo.Core
@@ -23,8 +24,6 @@ namespace SlothCombo.Core
         
         private readonly INativeHook<IsIconReplaceableDelegate> isIconReplaceableHook;
         private readonly INativeHook<GetIconDelegate> getIconHook;
-
-        private IntPtr actionManager = IntPtr.Zero;
 
         /// <summary> Initializes a new instance of the <see cref="IconReplacer"/> class. </summary>
         public IconReplacer()
@@ -66,12 +65,14 @@ namespace SlothCombo.Core
         /// <summary> Calls the original hook. </summary>
         /// <param name="actionID"> Action ID. </param>
         /// <returns> The result from the hook. </returns>
-        internal uint OriginalHook(uint actionID) => getIconHook.Original(actionManager, actionID);
+        internal unsafe uint OriginalHook(uint actionID)
+        {
+            var manager = ActionManager.Instance();
+            return manager is null ? actionID : getIconHook.Original((IntPtr)manager, actionID);
+        }
 
         private unsafe uint GetIconDetour(IntPtr actionManager, uint actionID)
         {
-            this.actionManager = actionManager;
-
             // Service.PluginLog.Error($"{actionID}");
             // if (Service.Configuration.PerformanceMode)
             //     return OriginalHook(actionID);
@@ -79,6 +80,10 @@ namespace SlothCombo.Core
             try
             {
                 if (Service.ObjectTable.LocalPlayer == null)
+                    return OriginalHook(actionID);
+
+                if (!Service.ClientState.IsPvP &&
+                    RotationStore.IsV8(Service.ObjectTable.LocalPlayer.ClassJob.RowId))
                     return OriginalHook(actionID);
 
                 if (ClassLocked() || 

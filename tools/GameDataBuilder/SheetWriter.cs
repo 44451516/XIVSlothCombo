@@ -42,6 +42,16 @@ internal static class SheetWriter
             .Where(column => column.Index >= 0)
             .ToArray();
 
+        // The sheet of the kinds of the classes holds one column per class, so
+        // the classes of a kind are the columns of its row that are set.
+        var jobColumns = plan.GatheredJobs is null
+            ? []
+            : Enumerable.Range(0, sheet.Format.ColumnCount)
+                .Where(index => index > 0)
+                .Select(index => (Name: sheet.Format.NameAt(index), Index: index))
+                .Where(column => column.Name.Length > 0 && column.Name != plan.Name)
+                .ToArray();
+
         var writer = new StringBuilder();
         writer.Append('[');
 
@@ -93,12 +103,61 @@ internal static class SheetWriter
                 writer.Append(value);
             }
 
+            if (plan.GatheredJobs is not null)
+            {
+                WriteJobs(writer, sheet, row, jobColumns, plan.GatheredJobs);
+            }
+
             writer.Append('}');
         }
 
         writer.Append(']');
 
         return writer.ToString();
+    }
+
+    /// <summary>
+    /// Writes the classes that belong to a kind of class.
+    /// </summary>
+    /// <param name="writer">The writer the value is written to.</param>
+    /// <param name="sheet">The sheet the row belongs to.</param>
+    /// <param name="row">The row.</param>
+    /// <param name="columns">The columns that hold one class each.</param>
+    /// <param name="name">The name of the field the classes are written to.</param>
+    private static void WriteJobs(
+        StringBuilder writer,
+        SheetReader sheet,
+        string[] row,
+        (string Name, int Index)[] columns,
+        string name)
+    {
+        writer.Append(",\"");
+        writer.Append(ToCamelCase(name));
+        writer.Append("\":[");
+
+        var written = false;
+        foreach (var column in columns)
+        {
+            if (column.Index >= row.Length)
+            {
+                continue;
+            }
+
+            if (!string.Equals(row[column.Index], "True", StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            if (written)
+            {
+                writer.Append(',');
+            }
+
+            written = true;
+            WriteString(writer, column.Name);
+        }
+
+        writer.Append(']');
     }
 
     /// <summary>

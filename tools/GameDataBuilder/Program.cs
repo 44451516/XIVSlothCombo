@@ -35,7 +35,7 @@ internal static class Program
         new("Item", SheetColumns.Item),
         new("ItemAction", SheetColumns.ItemAction),
         new("ClassJob", SheetColumns.ClassJob),
-        new("ClassJobCategory", SheetColumns.ClassJobCategory),
+        new("ClassJobCategory", SheetColumns.ClassJobCategory, "jobs"),
         new("Trait", SheetColumns.Trait),
         new("Quest", SheetColumns.Quest),
         new("TerritoryType", SheetColumns.TerritoryType),

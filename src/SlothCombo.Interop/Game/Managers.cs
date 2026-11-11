@@ -68,6 +68,45 @@ public unsafe struct Conditions
 
     /// <summary>Gets a value indicating whether the player is diving.</summary>
     public bool Diving => this[81];
+
+    /// <summary>Gets a value indicating whether the player is on a mount.</summary>
+    public bool Mounted => this[4];
+
+    /// <summary>Gets a value indicating whether the player is crafting.</summary>
+    public bool Crafting => this[5];
+
+    /// <summary>Gets a value indicating whether the player is gathering.</summary>
+    public bool Gathering => this[6];
+
+    /// <summary>Gets a value indicating whether the player is a passenger of a mount.</summary>
+    public bool RidingPillion => this[10];
+
+    /// <summary>Gets a value indicating whether the player is between areas a second way.</summary>
+    public bool BetweenAreas51 => this[51];
+
+    /// <summary>Gets a value indicating whether the player is logging out.</summary>
+    public bool LoggingOut => this[53];
+
+    /// <summary>Gets a value indicating whether the player watches a cutscene.</summary>
+    public bool WatchingCutscene => this[58];
+
+    /// <summary>Gets a value indicating whether the player is in flight.</summary>
+    public bool InFlight => this[77];
+
+    /// <summary>Gets a value indicating whether the player watches a cutscene in battle.</summary>
+    public bool WatchingCutscene78 => this[78];
+
+    /// <summary>Gets a value indicating whether the player is being moved by the game.</summary>
+    public bool BeingMoved => this[70];
+
+    /// <summary>Gets a value indicating whether the player is playing a role.</summary>
+    public bool RolePlaying => this[90];
+
+    /// <summary>Gets a value indicating whether the duty recorder is playing.</summary>
+    public bool DutyRecorderPlayback => this[86];
+
+    /// <summary>Gets a value indicating whether the player pilots a mech.</summary>
+    public bool PilotingMech => this[102];
 }
 
 /// <summary>The objects the player has its eyes on.</summary>

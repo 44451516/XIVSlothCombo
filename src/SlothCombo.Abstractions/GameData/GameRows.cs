@@ -80,6 +80,22 @@ public sealed class ActionRow : GameRow
     /// <summary>Gets or sets a value indicating whether the action can be used on a party member.</summary>
     [JsonPropertyName("canTargetParty")]
     public bool CanTargetParty { get; set; }
+
+    /// <summary>Gets or sets a value indicating whether the action can be used on the player.</summary>
+    [JsonPropertyName("canTargetSelf")]
+    public bool CanTargetSelf { get; set; }
+
+    /// <summary>Gets or sets a value indicating whether the action can be used on an enemy.</summary>
+    [JsonPropertyName("canTargetHostile")]
+    public bool CanTargetHostile { get; set; }
+
+    /// <summary>Gets or sets a value indicating whether the action can be used on a friendly character.</summary>
+    [JsonPropertyName("canTargetAlly")]
+    public bool CanTargetAlly { get; set; }
+
+    /// <summary>Gets or sets a value indicating whether the action is placed on the ground.</summary>
+    [JsonPropertyName("targetArea")]
+    public bool TargetArea { get; set; }
 }
 
 /// <summary>A row of the table of the kinds of the actions.</summary>
@@ -104,6 +120,10 @@ public sealed class StatusRow : GameRow
     /// <summary>Gets or sets a value indicating whether the status can be dispelled.</summary>
     [JsonPropertyName("canDispel")]
     public bool CanDispel { get; set; }
+
+    /// <summary>Gets or sets the number of times the status may be on the same target.</summary>
+    [JsonPropertyName("maxStacks")]
+    public byte MaxStacks { get; set; }
 }
 
 /// <summary>A row of the table of the items.</summary>
@@ -167,11 +187,19 @@ public sealed class ClassJobRow : GameRow
 }
 
 /// <summary>A row of the table of the kinds of the classes.</summary>
+/// <remarks>
+/// The row carries the classes that belong to the kind, which is what tells
+/// whether a skill of one kind may be used by a class of another one.
+/// </remarks>
 public sealed class ClassJobCategoryRow : GameRow
 {
     /// <summary>Gets or sets the name of the kind of the class.</summary>
     [JsonPropertyName("name")]
     public string Name { get; set; } = string.Empty;
+
+    /// <summary>Gets or sets the abbreviations of the classes that belong to the kind.</summary>
+    [JsonPropertyName("jobs")]
+    public List<string> Jobs { get; set; } = [];
 }
 
 /// <summary>A row of the table of the traits.</summary>

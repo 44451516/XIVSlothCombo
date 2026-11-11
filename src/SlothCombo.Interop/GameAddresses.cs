@@ -123,6 +123,21 @@ public static class GameAddresses
     /// <summary>The function that points the player at an object.</summary>
     public const string TargetSystemSetHardTarget = "TargetSystemSetHardTarget";
 
+    /// <summary>The function that tells whether an action may be used on an object.</summary>
+    public const string CanUseActionOnTarget = "CanUseActionOnTarget";
+
+    /// <summary>The function that tells the time an action takes to be cast.</summary>
+    public const string GetAdjustedCastTime = "GetAdjustedCastTime";
+
+    /// <summary>The function that tells the time an action takes to be used again.</summary>
+    public const string GetRecastTime = "GetRecastTime";
+
+    /// <summary>The function that shoots a ray into the world of the game.</summary>
+    public const string RaycastMaterialFilter = "RaycastMaterialFilter";
+
+    /// <summary>The function that turns a placeholder into the object it stands for.</summary>
+    public const string ResolvePlaceholder = "ResolvePlaceholder";
+
     /// <summary>
     /// Fills the given table with the addresses of the game.
     /// </summary>
@@ -174,5 +189,10 @@ public static class GameAddresses
         table.Add(GameAddress.Member(TargetSystemGetSoftTarget, "E8 ?? ?? ?? ?? 48 3B C3 74 ?? B0 01"));
         table.Add(GameAddress.Member(TargetSystemGetHardTarget, "E8 ?? ?? ?? ?? 48 3B C7 75 ?? 32 C0"));
         table.Add(GameAddress.Member(TargetSystemSetHardTarget, "E8 ?? ?? ?? ?? 48 8B 5C 24 ?? 48 83 C4 30 5F C3 8B 83"));
+        table.Add(GameAddress.Member(CanUseActionOnTarget, "48 89 5C 24 ?? 57 48 81 EC 20 48 8B DA 48 8B F9 E8 ?? ?? ?? ?? 4C 8B C3"));
+        table.Add(GameAddress.Member(GetAdjustedCastTime, "E8 ?? ?? ?? ?? 8B D0 48 8B CF E8 ?? ?? ?? ?? 0F B7 55"));
+        table.Add(GameAddress.Member(GetRecastTime, "E8 ?? ?? ?? ?? 83 7F 58 01"));
+        table.Add(GameAddress.Member(RaycastMaterialFilter, "E8 ?? ?? ?? ?? 84 C0 41 0F B6 D6"));
+        table.Add(GameAddress.Member(ResolvePlaceholder, "E8 ?? ?? ?? ?? 48 8B 5C 24 ?? EB 0C"));
     }
 }

@@ -142,6 +142,10 @@ public unsafe struct ActionManager
     [FieldOffset(0x60)]
     public ComboDetail Combo;
 
+    /// <summary>Whether an action is waiting to be used.</summary>
+    [FieldOffset(0x68)]
+    public bool ActionQueued;
+
     /// <summary>The kind of the action that is queued.</summary>
     [FieldOffset(0x6C)]
     public ActionType QueuedActionType;
@@ -149,6 +153,10 @@ public unsafe struct ActionManager
     /// <summary>The action that is queued.</summary>
     [FieldOffset(0x70)]
     public uint QueuedActionId;
+
+    /// <summary>The action that is being aimed at a place.</summary>
+    [FieldOffset(0x90)]
+    public uint AreaTargetingActionId;
 
     /// <summary>The number of the action that was used last.</summary>
     [FieldOffset(0x120)]
@@ -330,6 +338,43 @@ public unsafe struct ActionManager
             GameFunctions.Get(GameAddresses.CheckActionResources);
 
         return function(StructPtr.Of(ref this), actionType, actionId, actionData);
+    }
+
+    /// <summary>Gives the time an action takes to be used again.</summary>
+    /// <param name="actionType">The kind of the action.</param>
+    /// <param name="actionId">The number of the action.</param>
+    /// <returns>The time in seconds.</returns>
+    public float GetRecastTime(ActionType actionType, uint actionId)
+    {
+        var function = (delegate* unmanaged<ActionManager*, ActionType, uint, float>)
+            GameFunctions.Get(GameAddresses.GetRecastTime);
+
+        return function(StructPtr.Of(ref this), actionType, actionId);
+    }
+
+    /// <summary>Gives the time an action takes to be cast.</summary>
+    /// <param name="actionType">The kind of the action.</param>
+    /// <param name="actionId">The number of the action.</param>
+    /// <param name="applyProcs">Whether the effects of the class are counted.</param>
+    /// <returns>The time in milliseconds.</returns>
+    public static int GetAdjustedCastTime(ActionType actionType, uint actionId, bool applyProcs = true)
+    {
+        var function = (delegate* unmanaged<ActionType, uint, bool, int>)
+            GameFunctions.Get(GameAddresses.GetAdjustedCastTime);
+
+        return function(actionType, actionId, applyProcs);
+    }
+
+    /// <summary>Tells whether an action may be used on an object.</summary>
+    /// <param name="actionId">The number of the action.</param>
+    /// <param name="target">The object the action is aimed at.</param>
+    /// <returns><c>true</c> when the action may be used on the object.</returns>
+    public static bool CanUseActionOnTarget(uint actionId, GameObject* target)
+    {
+        var function = (delegate* unmanaged<uint, GameObject*, bool>)
+            GameFunctions.Get(GameAddresses.CanUseActionOnTarget);
+
+        return function(actionId, target);
     }
 }
 

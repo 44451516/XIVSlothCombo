@@ -49,3 +49,24 @@ export function iconUrl(iconId: number, hd = false, host: string = iconHosts[0])
 
   return `${host}/i/${name}${suffix}.png`
 }
+
+/**
+ * Builds the address of a game icon on the XIVAPI asset service.
+ *
+ * The service serves the picture of the game files by their path, so the
+ * number of the icon becomes the path of the file that holds it. The answer
+ * is a png, which is what the setting page shows.
+ *
+ * @param iconId The number of the icon.
+ * @param hd Whether the picture in high resolution is wanted.
+ * @returns The address of the picture, or an empty string when there is none.
+ */
+export function iconAssetUrl(iconId: number, hd = false): string {
+  if (!Number.isSafeInteger(iconId) || iconId <= 0) return ''
+
+  const group = String(Math.floor(iconId / 1000) * 1000).padStart(6, '0')
+  const filename = `${String(iconId).padStart(6, '0')}${hd ? '_hr1' : ''}.tex`
+  const query = new URLSearchParams({ path: `ui/icon/${group}/${filename}`, format: 'png' })
+
+  return `https://v2.xivapi.com/api/asset?${query}`
+}

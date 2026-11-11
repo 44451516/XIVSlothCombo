@@ -44,6 +44,10 @@ public unsafe struct Framework
     [FieldOffset(0x2B68)]
     public UIModule* UIModule;
 
+    /// <summary>The collisions of the world of the game.</summary>
+    [FieldOffset(0x2B58)]
+    public Collision.BGCollisionModule* BGCollisionModule;
+
     /// <summary>Gets the framework of the game.</summary>
     /// <returns>The framework, or <c>null</c> when the game is not ready.</returns>
     public static Framework* Instance() => (Framework*)GameFunctions.Get(GameAddresses.Framework);
@@ -142,6 +146,14 @@ public unsafe struct UIModule
 [StructLayout(LayoutKind.Explicit, Size = 0x1018)]
 public unsafe struct AgentModule
 {
+    /// <summary>The module of the interface the agents belong to.</summary>
+    [FieldOffset(0x08)]
+    public UIModule* UIModule;
+
+    /// <summary>Whether the module is ready.</summary>
+    [FieldOffset(0x10)]
+    public byte Initialized;
+
     /// <summary>The agents themselves.</summary>
     [FieldOffset(0x20)]
     public AgentInterface** Agents;
@@ -269,6 +281,43 @@ public unsafe struct PronounModule
     /// <summary>The object the list of the party hovers over.</summary>
     [FieldOffset(0x0290)]
     public Game.GameObject* UiMouseOverTarget;
+
+    /// <summary>
+    /// Turns a placeholder into the object it stands for.
+    /// </summary>
+    /// <param name="placeholder">The placeholder, such as the name of a slot of the party.</param>
+    /// <param name="unknown0">An extra number of the game.</param>
+    /// <param name="unknown1">An extra number of the game.</param>
+    /// <param name="unknown2">An extra number of the game.</param>
+    /// <returns>The object the placeholder stands for, or <c>null</c> when there is none.</returns>
+    public Game.GameObject* ResolvePlaceholder(byte* placeholder, byte unknown0, byte unknown1, bool unknown2 = false)
+    {
+        var function = (delegate* unmanaged<PronounModule*, byte*, byte, byte, bool, Game.GameObject*>)
+            GameFunctions.Get(GameAddresses.ResolvePlaceholder);
+
+        return function(StructPtr.Of(ref this), placeholder, unknown0, unknown1, unknown2);
+    }
+}
+
+/// <summary>The agent of the dialog that sets the count down.</summary>
+/// <remarks>
+/// The agent holds the count down the player started, which is the time left
+/// before the battle that is being counted down begins.
+/// </remarks>
+[StructLayout(LayoutKind.Explicit, Size = 0x48)]
+public unsafe struct AgentCountDownSettingDialog
+{
+    /// <summary>The time that is left.</summary>
+    [FieldOffset(0x28)]
+    public float TimeRemaining;
+
+    /// <summary>The time that was left a moment ago.</summary>
+    [FieldOffset(0x2C)]
+    public float PrevTimeRemaining;
+
+    /// <summary>Whether a count down is running.</summary>
+    [FieldOffset(0x38)]
+    public bool Active;
 }
 
 /// <summary>The data of the window that is loaded from a file.</summary>

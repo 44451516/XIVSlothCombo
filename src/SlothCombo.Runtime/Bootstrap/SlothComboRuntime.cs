@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using SlothCombo.Abstractions;
+using SlothCombo.Interop;
 using SlothCombo.Combos.JobHelpers;
 using SlothCombo.Core;
 using SlothCombo.Data;
@@ -10,6 +11,7 @@ using SlothCombo.Runtime.Gauges;
 using SlothCombo.Runtime.Hooking;
 using SlothCombo.Runtime.Ipc;
 using SlothCombo.Runtime.Logging;
+using SlothCombo.Runtime.Rotations;
 using SlothCombo.Runtime.Services;
 
 namespace SlothCombo.Runtime.Bootstrap;
@@ -43,6 +45,9 @@ public static class SlothComboRuntime
     private static FrameworkService? _framework;
     private static ConditionService? _condition;
     private static int _stoppedOnGameThread;
+    private static bool _actionWatchingStarted;
+    private static bool _cardHelperStarted;
+    private static bool _rotationStarted;
     private static bool _running;
 
     /// <summary>Gets a value indicating whether the runtime is running.</summary>
@@ -65,6 +70,8 @@ public static class SlothComboRuntime
             return true;
         }
 
+        Interlocked.Exchange(ref _stoppedOnGameThread, 0);
+
         try
         {
             Directory.CreateDirectory(options.DataFolder);
@@ -80,6 +87,7 @@ public static class SlothComboRuntime
 
             var scanner = new SignatureScanner();
             ResolveAddresses(logger, options, scanner);
+            ValidateStartupAddresses(logger, scanner);
 
             var hookFactory = new ReloadedHookFactory();
             var framework = new FrameworkService();
@@ -130,12 +138,27 @@ public static class SlothComboRuntime
             Service.ComboCache = new CustomComboCache();
             Service.IconReplacer = new IconReplacer();
 
+            _actionWatchingStarted = true;
             ActionWatching.Enable();
+            _cardHelperStarted = true;
             AST.Init();
+
+            // The optional engine must not prevent legacy features from loading.
+            try
+            {
+                RotationStore.Initialize(options.DataFolder);
+                _rotationStarted = true;
+                RotationEngine.Initialize(options.DataFolder);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "The rotation workspace is unavailable; automatic execution is disabled.");
+                Try("The rotation engine could not be stopped.", RotationEngine.Dispose);
+                _rotationStarted = false;
+            }
 
             // The tick hook goes last: from here on the runtime reacts to the
             // game on its own schedule.
-            Interlocked.Exchange(ref _stoppedOnGameThread, 0);
             _tickHook = new FrameworkTickHook(hookFactory, framework);
 
             // The program outside of the game asks the runtime to do the work
@@ -258,11 +281,27 @@ public static class SlothComboRuntime
         // away, so no listener is called while it is being torn down.
         Try("The update loop could not be stopped.", () => _framework?.Suspend());
 
+        if (_rotationStarted)
+        {
+            _rotationStarted = false;
+            Try("The rotation engine could not be stopped.", RotationEngine.Dispose);
+        }
+
         Try("The condition service could not be stopped.", () => _condition?.Dispose());
 
-        Try("The card helper could not be stopped.", AST.Dispose);
+        if (_cardHelperStarted)
+        {
+            _cardHelperStarted = false;
+            Try("The card helper could not be stopped.", AST.Dispose);
+        }
 
-        Try("The action watching could not be stopped.", ActionWatching.Dispose);
+        // Calling a static cleanup method would otherwise initialize hooks
+        // even when startup failed before their dependencies were available.
+        if (_actionWatchingStarted)
+        {
+            _actionWatchingStarted = false;
+            Try("The action watching could not be stopped.", ActionWatching.Dispose);
+        }
 
         Try("The icon replacer could not be stopped.", () => Service.IconReplacer?.Dispose());
 
@@ -396,6 +435,55 @@ public static class SlothComboRuntime
         foreach (var name in unresolved)
         {
             logger.Warning($"Unresolved address: {name}");
+        }
+    }
+
+    /// <summary>
+    /// Checks the addresses the runtime cannot do without.
+    /// </summary>
+    /// <remarks>
+    /// The runtime installs hooks and reads game state as soon as it starts, so
+    /// an address that is missing takes the game down with it. The addresses
+    /// that are needed for that are checked before the first hook is placed,
+    /// so a game whose build is not supported is reported instead of crashing.
+    /// </remarks>
+    /// <param name="logger">The logger the result is reported to.</param>
+    /// <param name="scanner">The scanner that looks for the patterns.</param>
+    private static unsafe void ValidateStartupAddresses(FileComboLogger logger, ISignatureScanner scanner)
+    {
+        (string Name, nint Address)[] required =
+        [
+            ("Framework", GameFunctions.Get(GameAddresses.Framework)),
+            ("FrameworkVirtualTable", GameFunctions.Get(GameAddresses.FrameworkVirtualTable)),
+            ("ActionManager", GameFunctions.Get(GameAddresses.ActionManager)),
+            ("GetAdjustedActionId", GameFunctions.Get(GameAddresses.GetAdjustedActionId)),
+            ("UseActionLocation", GameFunctions.Get(GameAddresses.UseActionLocation)),
+            ("ActionEffectHandlerReceive", GameFunctions.Get(GameAddresses.ActionEffectHandlerReceive)),
+            ("IsActionIdReplaceable", scanner.ScanText(HookAddress.ActionIdReplaceable)),
+            ("SendAction", scanner.ScanText(HookAddress.SendAction)),
+        ];
+
+        foreach (var (name, address) in required)
+        {
+            RequireAddress(name, address);
+        }
+
+        // The resolved globals are checked before the first service reads game
+        // state, because a null pointer there takes the game down.
+        var framework = SlothCombo.Interop.UI.Framework.Instance();
+        RequireAddress("Framework instance pointer", (nint)framework);
+        RequireAddress(
+            "Framework.Tick",
+            (nint)SlothCombo.Interop.UI.Framework.StaticVirtualTablePointer->Tick);
+
+        void RequireAddress(string name, nint address)
+        {
+            logger.Debug($"Startup address: {name} 0x{address:X}");
+            if (address == 0)
+            {
+                throw new InvalidOperationException(
+                    $"The required game address '{name}' is unavailable; refusing to start the runtime.");
+            }
         }
     }
 }

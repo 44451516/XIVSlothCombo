@@ -1,0 +1,2 @@
+# Preserve the bytes used by rotation schema and catalog hashes.
+docs/rotations/*.json text eol=lf

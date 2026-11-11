@@ -35,7 +35,39 @@ public sealed class GameAddressTable
     /// version is the supported way to drop the addresses that were repaired
     /// by hand for a game that has been patched since.
     /// </remarks>
-    public const string CacheVersion = "1";
+    public const string CacheVersion = "2";
+
+    /// <summary>
+    /// The fingerprint of the game the addresses belong to.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The addresses of a game only hold for the build they were taken from, so
+    /// the file carries the fingerprint of that build. A game that was updated
+    /// produces a different fingerprint, which makes the file be ignored
+    /// instead of handing the offsets of the old game to the new one.
+    /// </para>
+    /// <para>
+    /// The fingerprint is the hash of the executable of the game, so it also
+    /// changes when the game is patched without the addresses being wrong.
+    /// </para>
+    /// </remarks>
+    private static string Fingerprint()
+    {
+        try
+        {
+            using var process = System.Diagnostics.Process.GetCurrentProcess();
+            using var module = process.MainModule
+                ?? throw new InvalidOperationException("The game executable could not be located.");
+            using var stream = File.OpenRead(module.FileName);
+            return Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(stream));
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException(
+                "The fingerprint of the game executable could not be read; refusing to reuse signature addresses.", ex);
+        }
+    }
 
     private readonly Dictionary<string, GameAddress> _addresses = new(StringComparer.Ordinal);
     private readonly Dictionary<string, nint> _cached = new(StringComparer.Ordinal);
@@ -75,7 +107,8 @@ public sealed class GameAddressTable
             Directory.CreateDirectory(directory);
         }
 
-        LoadCache(cachePath);
+        var fingerprint = Fingerprint();
+        LoadCache(cachePath, fingerprint);
 
         var failed = new List<string>();
         foreach (var address in _addresses.Values)
@@ -97,7 +130,7 @@ public sealed class GameAddressTable
         }
 
         Unresolved = failed;
-        SaveCache(cachePath);
+        SaveCache(cachePath, fingerprint);
 
         return failed.Count == 0;
     }
@@ -126,7 +159,8 @@ public sealed class GameAddressTable
     /// Reads the addresses of a previous run from the given file.
     /// </summary>
     /// <param name="cachePath">The path of the file.</param>
-    private void LoadCache(string cachePath)
+    /// <param name="fingerprint">The fingerprint of the game the addresses must belong to.</param>
+    private void LoadCache(string cachePath, string fingerprint)
     {
         if (!File.Exists(cachePath))
         {
@@ -138,6 +172,13 @@ public sealed class GameAddressTable
             var json = File.ReadAllText(cachePath);
             var cache = JsonSerializer.Deserialize<CacheFile>(json, CacheJsonOptions);
             if (cache is null || cache.Version != CacheVersion)
+            {
+                return;
+            }
+
+            // The addresses of another build of the game are of no use here,
+            // so the file is ignored when it belongs to a different one.
+            if (!string.Equals(cache.Fingerprint, fingerprint, StringComparison.Ordinal))
             {
                 return;
             }
@@ -158,11 +199,12 @@ public sealed class GameAddressTable
     /// Writes the addresses of this run to the given file.
     /// </summary>
     /// <param name="cachePath">The path of the file.</param>
-    private void SaveCache(string cachePath)
+    /// <param name="fingerprint">The fingerprint of the game the addresses belong to.</param>
+    private void SaveCache(string cachePath, string fingerprint)
     {
         try
         {
-            var cache = new CacheFile { Version = CacheVersion, Addresses = [] };
+            var cache = new CacheFile { Version = CacheVersion, Fingerprint = fingerprint, Addresses = [] };
 
             foreach (var address in _addresses.Values)
             {
@@ -186,6 +228,9 @@ public sealed class GameAddressTable
     {
         /// <summary>Gets or sets the version of the file.</summary>
         public string Version { get; set; } = string.Empty;
+
+        /// <summary>Gets or sets the fingerprint of the game the addresses belong to.</summary>
+        public string Fingerprint { get; set; } = string.Empty;
 
         /// <summary>Gets or sets the addresses.</summary>
         public Dictionary<string, long> Addresses { get; set; } = new(StringComparer.Ordinal);

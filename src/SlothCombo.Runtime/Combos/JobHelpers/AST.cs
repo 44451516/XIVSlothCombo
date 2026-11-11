@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SlothCombo.Abstractions;
 using SlothCombo.Runtime.Gauges.Enums;
+using SlothCombo.Runtime.Rotations;
 using SlothCombo.Runtime.Services;
 
 using SlothCombo.CustomComboNS.Functions;
@@ -21,6 +22,12 @@ namespace SlothCombo.Combos.JobHelpers
         {
             if (Svc.Objects.LocalPlayer is null || Svc.Objects.LocalPlayer.ClassJob.RowId != 33)
                 return;
+
+            if (!Svc.ClientState.IsPvP && RotationStore.IsV8(33))
+            {
+                AST_QuickTargetCards.SelectedRandomMember = null;
+                return;
+            }
 
             if (Svc.Condition[ConditionFlag.BetweenAreas] || Svc.Condition[ConditionFlag.Unconscious])
             {

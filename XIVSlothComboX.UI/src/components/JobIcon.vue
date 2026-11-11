@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { iconHosts, iconUrl } from '@/api/icons'
+import { iconAssetUrl, iconHosts, iconUrl } from '@/api/icons'
 
 const props = withDefaults(
   defineProps<{
@@ -11,29 +11,39 @@ const props = withDefaults(
   { size: 24, hd: false },
 )
 
-/** The host the picture is taken from. It moves on when a host cannot be reached. */
-const host = ref(iconHosts[0])
+/**
+ * The places the picture is taken from, in the order they are tried.
+ *
+ * The first one is the asset service of the international host, which hands
+ * the picture of the game files out as a png. The ones after it are the hosts
+ * that serve the pictures of the game data, which are used when the service
+ * cannot be reached.
+ */
+const sources = computed(() => {
+  const asset = iconAssetUrl(props.iconId, props.hd)
+  return asset ? [asset, ...iconHosts.map((host) => iconUrl(props.iconId, props.hd, host))] : []
+})
 
-/** Set once every host has failed, so that the placeholder is shown. */
+/** The source that is tried at the moment. */
+const current = ref(0)
+
+/** Set once every source has failed, so that the placeholder is shown. */
 const failed = ref(false)
 
 watch(
   () => props.iconId,
   () => {
-    host.value = iconHosts[0]
+    current.value = 0
     failed.value = false
   },
 )
 
-const source = computed(() =>
-  props.iconId > 0 && !failed.value ? iconUrl(props.iconId, props.hd, host.value) : '',
-)
+const source = computed(() => (failed.value ? '' : (sources.value[current.value] ?? '')))
 
-/** Moves on to the next host when the picture cannot be loaded. */
+/** Moves on to the next source when the picture cannot be loaded. */
 function onError() {
-  const next = iconHosts.indexOf(host.value) + 1
-  if (next < iconHosts.length) {
-    host.value = iconHosts[next]
+  if (current.value + 1 < sources.value.length) {
+    current.value += 1
     return
   }
 
@@ -43,12 +53,13 @@ function onError() {
 
 <template>
   <img
-    v-if="source"
+    v-if="source && !failed"
     class="sloth-icon"
     :src="source"
     :style="{ width: `${size}px`, height: `${size}px` }"
     alt=""
     loading="lazy"
+    referrerpolicy="no-referrer"
     @error="onError"
   />
   <span v-else class="sloth-icon sloth-icon-fallback" :style="{ width: `${size}px`, height: `${size}px` }" />
