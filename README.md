@@ -210,7 +210,13 @@ Host 与游戏，不会留下半残的安装目录。
 > **构建依赖**：.NET 10 SDK、Node.js（前端），以及 PATH 上的 `clang`（引导库）。
 > 引导库 `src/SlothCombo.Boot/boot.c` 是原生 C，用 clang（如 llvm-mingw，默认目标
 > `x86_64-w64-windows-gnu`）编译成 DLL，**不再需要 MSVC / Windows SDK / NativeAOT**。
-> 可用 `-p:ClangCompiler=<路径>` 指定其它 clang。
+> 可用 `-p:ClangCompiler=<路径>` 指定其它 clang。llvm-mingw 装起来是这样：
+>
+> ```powershell
+> winget install --id MartinStorsjo.LLVM-MinGW.UCRT --exact --source winget
+> ```
+>
+> 装完要重开一个终端，PATH 才会带上它。
 
 ### 单独构建某个工程
 

@@ -1,11 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project>
 
   <!--
     The boot library is loaded into the game, which has no runtime of its
     own. It is a native DLL built ahead of time with clang (llvm-mingw), so
     it needs neither MSVC nor the Windows SDK. The C# pipeline of the SDK is
     turned off; the only output is the native library that boot.c produces.
+
+    The SDK is imported by hand because the C# compiler has to be turned off
+    after the targets of the SDK have been imported. The implicit import of
+    the SDK puts those targets after this file, and a target that is defined
+    before them is replaced by them.
   -->
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>SlothCombo.Boot</AssemblyName>
@@ -26,18 +33,36 @@
          llvm-mingw is installed; it can be overridden with -p:ClangCompiler=. -->
     <ClangCompiler Condition="'$(ClangCompiler)' == ''">clang</ClangCompiler>
     <BootSource>$(MSBuildProjectDirectory)\boot.c</BootSource>
-    <BootOutput>$(OutputPath)$(AssemblyName).dll</BootOutput>
   </PropertyGroup>
 
-  <!-- The C# compiler has nothing to do: the output is native. -->
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+
+  <!-- The C# compiler has nothing to say about this project. It would build
+       an empty assembly of its own, which then has to be thrown away again,
+       and it would warn about having no sources at all. -->
   <Target Name="CoreCompile" />
 
-  <Target Name="BuildNativeBoot" AfterTargets="Build">
-    <MakeDir Directories="$(OutputPath)" />
+  <!-- The native library is written where the C# compiler would have put the
+       assembly of this project. The build and the publish then carry it along
+       the way they carry every other file of a project, instead of this
+       project having to copy it by hand.
+
+       The path is worked out when the build runs and not when this file is
+       read: the OutputPath and the IntermediateOutputPath properties only
+       become known once the targets of the SDK have been imported, which
+       happens after this file. -->
+  <Target Name="ResolveBootOutput">
+    <PropertyGroup>
+      <BootOutput>$(IntermediateOutputPath)$(TargetFileName)</BootOutput>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="BuildNativeBoot" BeforeTargets="CopyFilesToOutputDirectory" DependsOnTargets="ResolveBootOutput">
+    <MakeDir Directories="$(IntermediateOutputPath)" />
     <Exec Command="&quot;$(ClangCompiler)&quot; -shared -O2 -Wall -Wextra -o &quot;$(BootOutput)&quot; &quot;$(BootSource)&quot; -lkernel32" />
   </Target>
 
-  <Target Name="PublishNativeBoot" AfterTargets="Publish">
+  <Target Name="PublishNativeBoot" AfterTargets="Publish" DependsOnTargets="ResolveBootOutput">
     <MakeDir Directories="$(PublishDir)" />
     <Copy SourceFiles="$(BootOutput)" DestinationFolder="$(PublishDir)" />
   </Target>
