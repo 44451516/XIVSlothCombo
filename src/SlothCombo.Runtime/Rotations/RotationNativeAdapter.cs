@@ -108,7 +108,7 @@ internal static unsafe class RotationNativeAdapter
         return agent->TimeRemaining;
     }
 
-    public static (uint Id, double Cooldown, uint Charges, bool Ready) ActionState(uint requested, ulong target)
+    public static (uint Id, double Cooldown, uint Charges, bool Ready) ActionState(uint requested)
     {
         if (!Available)
             throw new RotationUnavailableException("native-action-api-unavailable");
@@ -123,7 +123,36 @@ internal static unsafe class RotationNativeAdapter
         if (!float.IsFinite(total) || !float.IsFinite(elapsed))
             throw new RotationUnavailableException("invalid-cooldown");
         return (id, Math.Max(0, total - elapsed), manager->GetCurrentCharges(id),
-            manager->GetActionStatus(ActionType.Action, id, target) == 0);
+            manager->GetActionStatus(ActionType.Action, id) == 0);
+    }
+
+    public static bool ActionUnlocked(uint requested, IGameObject player)
+    {
+        var row = Service.DataManager.GetTable<ActionRow>().GetRow(requested)
+            ?? throw new RotationUnavailableException($"action-unavailable:{requested}");
+        if (!row.IsPlayerAction || row.IsPvP || row.ClassJobCategory == 0 ||
+            row.ActionCategory is not (2 or 3 or 4) ||
+            !BelongsToJob(row.ClassJobCategory, player.ClassJob.RowId))
+            return false;
+        if (row.ClassJobLevel > player.Level)
+            return false;
+        if (row.UnlockLink == 0)
+            return true;
+        if (GameFunctions.Get(GameAddresses.UIState) == 0 ||
+            GameFunctions.Get(GameAddresses.IsUnlockLinkUnlockedOrQuestCompleted) == 0)
+            throw new RotationUnavailableException("action-unlock-api-unavailable");
+        var ui = UIState.Instance();
+        if (ui is null)
+            throw new RotationUnavailableException("action-unlock-api-unavailable");
+        return ui->IsUnlockLinkUnlockedOrQuestCompleted(row.UnlockLink);
+    }
+
+    public static double ActionResourceCost(uint adjusted)
+    {
+        if (GameFunctions.Get(GameAddresses.GetActionCost) == 0)
+            throw new RotationUnavailableException("action-cost-api-unavailable");
+        var cost = ActionManager.GetActionCost(ActionType.Action, adjusted, 0, 0, 0, 0);
+        return cost >= 0 ? cost : throw new RotationUnavailableException($"action-cost-unavailable:{adjusted}");
     }
 
     public static bool TryPrepare(JsonObject action, IGameObject player, out RotationSubmission? submission, out string reason)

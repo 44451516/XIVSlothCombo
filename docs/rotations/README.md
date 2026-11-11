@@ -100,6 +100,8 @@ Runtime 将异常交给主线程 Update 安全停止整个引擎；不继续低�
 | `party.count/lowestHp` | number |
 | `action.<ID>.ready` | boolean |
 | `action.<ID>.cooldown/charges` | number |
+| `action.<ID>.adjustedId/resourceCost/weaveWindow` | number |
+| `action.<ID>.unlocked/usedThisCombat`、`weave.allowed` | boolean |
 | `status.self.<ID>.remaining/stacks`、`status.target.<ID>.remaining/stacks` | number |
 | `status.self.<ID>.mine`、`status.target.<ID>.mine` | boolean |
 | `gauge.<Name>` | 按 Runtime Gauge 标量属性的真实类型确定，区分 boolean/number，不接受任意名称 |
@@ -107,6 +109,16 @@ Runtime 将异常交给主线程 Update 安全停止整个引擎；不继续低�
 大小写敏感。动态动作、状态 ID 必须是非零 uint。
 `RotationValidator.GetFieldType` 提供与校验一致的字段类型；catalog 响应中的
 `runtimeFields` 和 `runtimeFieldPatterns` 导出该类型表。
+`adjustedId` 是当前游戏原生映射的动作 ID；`resourceCost` 是该动作当前原生资源消耗，
+不是固定 MP 消耗。`unlocked` 依据当前职业、等级和解锁条件判断，不代替最终原生状态检查。
+`ready` 读取不指定目标的原生动作状态，实际目标合法性、距离与视线在提交前另行检查。
+`usedThisCombat` 包含运行时观察到的玩家手动和自动动作，在脱战或玩家、职业、区域变化时清空；
+它不会凭空补全 Runtime 开始观察之前的历史。
+`weaveWindow` 是指定 GCD 动作的冷却剩余减去当前剩余读条秒数，
+与 `weave.allowed`（已观察到本场 GCD、读条不超过 0.5 秒、连续能力技少于两次）组合使用。
+`weaveWindow` 的 ID 必须映射到公共 GCD 组（58）的战技或魔法，其他动作不能充当插窗基准；
+静态表无法确认类别时该字段不可用，引擎安全停止。
+这些字段仅描述候选窗口；真正提交仍受原生读条、动画锁、目标与动作状态限制。
 例如 `gauge.HasDarkArts` 为 boolean，`gauge.Blood`、`gauge.Ammo` 为 number。
 量谱数组、指针及非标量属性不在白名单内；当前职业无法提供的字段由引擎拒绝，
 不能以零值冒充。目录不是客户端版本认证依据。

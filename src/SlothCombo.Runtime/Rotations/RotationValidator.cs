@@ -47,6 +47,7 @@ public static class RotationValidator
             ["combo.remaining"] = "number",
             ["countdown.remaining"] = "number",
             ["lastAction"] = "number",
+            ["weave.allowed"] = "boolean",
             ["party.count"] = "number",
             ["party.lowestHp"] = "number",
         });
@@ -175,10 +176,10 @@ public static class RotationValidator
     {
         if (FieldTypes.TryGetValue(path, out var type)) return type;
         if (GaugeFieldTypes.TryGetValue(path, out type)) return type;
-        var action = Regex.Match(path, @"^action\.([1-9][0-9]{0,9})\.(ready|cooldown|charges)$",
+        var action = Regex.Match(path, @"^action\.([1-9][0-9]{0,9})\.(ready|cooldown|charges|adjustedId|resourceCost|unlocked|usedThisCombat|weaveWindow)$",
             RegexOptions.CultureInvariant | RegexOptions.NonBacktracking);
         if (action.Success && uint.TryParse(action.Groups[1].Value, out _))
-            return action.Groups[2].Value == "ready" ? "boolean" : "number";
+            return action.Groups[2].Value is "ready" or "unlocked" or "usedThisCombat" ? "boolean" : "number";
         var status = Regex.Match(path, @"^status\.(self|target)\.([1-9][0-9]{0,9})\.(remaining|stacks|mine)$",
             RegexOptions.CultureInvariant | RegexOptions.NonBacktracking);
         if (status.Success && uint.TryParse(status.Groups[2].Value, out _))

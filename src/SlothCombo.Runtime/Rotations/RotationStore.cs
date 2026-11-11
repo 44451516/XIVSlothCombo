@@ -241,6 +241,11 @@ public static class RotationStore
             new JsonObject { ["path"] = "action.<ID>.ready", ["type"] = "boolean" },
             new JsonObject { ["path"] = "action.<ID>.cooldown", ["type"] = "number" },
             new JsonObject { ["path"] = "action.<ID>.charges", ["type"] = "number" },
+            new JsonObject { ["path"] = "action.<ID>.adjustedId", ["type"] = "number" },
+            new JsonObject { ["path"] = "action.<ID>.resourceCost", ["type"] = "number" },
+            new JsonObject { ["path"] = "action.<ID>.unlocked", ["type"] = "boolean" },
+            new JsonObject { ["path"] = "action.<ID>.usedThisCombat", ["type"] = "boolean" },
+            new JsonObject { ["path"] = "action.<ID>.weaveWindow", ["type"] = "number" },
             new JsonObject { ["path"] = "status.self|target.<ID>.remaining", ["type"] = "number" },
             new JsonObject { ["path"] = "status.self|target.<ID>.stacks", ["type"] = "number" },
             new JsonObject { ["path"] = "status.self|target.<ID>.mine", ["type"] = "boolean" });

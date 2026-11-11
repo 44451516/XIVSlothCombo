@@ -4,6 +4,7 @@ using SlothCombo.Abstractions;
 using SlothCombo.Interop.Game;
 using SlothCombo.Runtime.Gauges;
 using SlothCombo.Runtime.Services;
+using ActionRow = SlothCombo.Abstractions.GameData.ActionRow;
 using StatusRow = SlothCombo.Abstractions.GameData.StatusRow;
 
 namespace SlothCombo.Runtime.Rotations;
@@ -12,13 +13,18 @@ internal sealed unsafe class RotationSnapshot
 {
     private readonly IGameObject _player;
     private readonly IGameObject? _target;
+    private readonly Func<uint, bool> _usedThisCombat;
+    private readonly Func<int> _consecutiveAbilities;
     private readonly Dictionary<string, object> _values = new(StringComparer.Ordinal);
     private readonly Dictionary<string, IStatus[]> _statuses = new(StringComparer.Ordinal);
 
-    public RotationSnapshot(IGameObject player, uint lastAction, float? countdown)
+    public RotationSnapshot(IGameObject player, uint lastAction, float? countdown,
+        Func<uint, bool> usedThisCombat, Func<int> consecutiveAbilities)
     {
         _player = player;
         _target = Service.TargetManager.Target;
+        _usedThisCombat = usedThisCombat;
+        _consecutiveAbilities = consecutiveAbilities;
         var manager = ActionManager.Instance();
         if (manager is null)
             throw new RotationUnavailableException("action-manager-unavailable");
@@ -48,6 +54,8 @@ internal sealed unsafe class RotationSnapshot
             return Checked(path, cached);
         object value;
         var parts = path.Split('.');
+        if (path == "weave.allowed")
+            return _values[path] = WeaveAllowed();
         if (path is "target.hpPercent" or "target.distance")
         {
             if (_target is null || _target.Address == IntPtr.Zero)
@@ -59,10 +67,24 @@ internal sealed unsafe class RotationSnapshot
         }
         if (parts.Length == 3 && parts[0] == "action" && uint.TryParse(parts[1], out var action))
         {
-            var state = RotationNativeAdapter.ActionState(action, _target?.GameObjectId ?? _player.GameObjectId);
+            if (parts[2] == "usedThisCombat")
+                return _values[path] = _usedThisCombat(action);
+            if (parts[2] == "unlocked")
+                return _values[path] = RotationNativeAdapter.ActionUnlocked(action, _player);
+            var state = RotationNativeAdapter.ActionState(action);
             _values[$"action.{action}.ready"] = state.Ready;
             _values[$"action.{action}.cooldown"] = state.Cooldown;
             _values[$"action.{action}.charges"] = (double)state.Charges;
+            _values[$"action.{action}.adjustedId"] = (double)state.Id;
+            if (parts[2] == "resourceCost")
+                _values[path] = RotationNativeAdapter.ActionResourceCost(state.Id);
+            if (parts[2] == "weaveWindow")
+            {
+                if (!Service.DataManager.GetTable<ActionRow>().TryGetRow(state.Id, out var row) ||
+                    row.ActionCategory is not (2 or 3) || row.CooldownGroup != 58)
+                    throw new RotationUnavailableException($"weave-gcd-unavailable:{action}");
+                _values[path] = state.Cooldown - CastRemaining();
+            }
             return _values.TryGetValue(path, out var result) ? Checked(path, result)
                 : throw new RotationUnavailableException($"unsupported-field:{path}");
         }
@@ -109,6 +131,24 @@ internal sealed unsafe class RotationSnapshot
             ? throw new RotationUnavailableException($"non-finite-field:{path}") : value;
 
     public void ObserveLastAction(uint action) => _values["lastAction"] = (double)action;
+
+    private double CastRemaining()
+    {
+        var manager = ActionManager.Instance();
+        if (manager is null || !float.IsFinite(manager->CastTimeTotal) ||
+            !float.IsFinite(manager->CastTimeElapsed) ||
+            manager->CastTimeTotal < 0 || manager->CastTimeElapsed < 0)
+            throw new RotationUnavailableException("invalid-native-cast-time");
+        return Math.Max(0, manager->CastTimeTotal - manager->CastTimeElapsed);
+    }
+
+    private bool WeaveAllowed()
+    {
+        var count = _consecutiveAbilities();
+        if (count < 0)
+            throw new RotationUnavailableException("action-history-unavailable");
+        return count < 2 && CastRemaining() <= 0.5;
+    }
 
     private static double Stacks(uint id, IStatus? status)
     {

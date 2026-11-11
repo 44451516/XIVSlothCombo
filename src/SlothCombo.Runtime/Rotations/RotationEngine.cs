@@ -6,6 +6,7 @@ using System.Text.Json.Nodes;
 using SlothCombo.Abstractions;
 using SlothCombo.Runtime.Hooking;
 using SlothCombo.Runtime.Services;
+using ActionRow = SlothCombo.Abstractions.GameData.ActionRow;
 
 namespace SlothCombo.Runtime.Rotations;
 
@@ -61,6 +62,9 @@ public static class RotationEngine
     private static ActiveSequence? _sequence;
     private static readonly Stack<ActiveSequence> SuspendedSequences = new();
     private static readonly HashSet<string> UnavailableFields = new(StringComparer.Ordinal);
+    private static readonly HashSet<uint> UsedThisCombat = [];
+    private static bool _combatHistoryActive;
+    private static int _consecutiveAbilities;
     private static float? _countdown;
 
     public static bool IsSubmitting => Volatile.Read(ref _isSubmitting) != 0 &&
@@ -336,6 +340,7 @@ public static class RotationEngine
         }
         _jobId = job;
         RefreshObservedPlayer(player);
+        RefreshCombatHistory(Service.Condition[ConditionFlag.InCombat]);
         UnavailableFields.Clear();
         if (!OwnsJob(job))
         {
@@ -377,7 +382,8 @@ public static class RotationEngine
             ResetEncounter("countdown-finished:waiting-for-next-pull");
             return;
         }
-        _snapshot = new RotationSnapshot(player, _lastAction, _countdown);
+        _snapshot = new RotationSnapshot(player, _lastAction, _countdown,
+            action => UsedThisCombat.Contains(action), () => _consecutiveAbilities);
         ConsumeObservations(now);
         if (!_running)
             return;
@@ -631,12 +637,25 @@ public static class RotationEngine
         ReceivedOrder.Enqueue(receipt);
         if (ReceivedOrder.Count > 128)
             Received.Remove(ReceivedOrder.Dequeue());
+        if (_combatHistoryActive)
+            UsedThisCombat.Add(observation.Action);
         // Global sequences wrap; late or duplicate effects must not replace a newer local observation.
         if (_lastActionGlobalSequence == 0 || unchecked((int)(observation.Global - _lastActionGlobalSequence)) > 0)
         {
             _lastActionGlobalSequence = observation.Global;
             _lastAction = observation.Action;
             _snapshot?.ObserveLastAction(observation.Action);
+            if (_combatHistoryActive)
+            {
+                if (!Service.DataManager.GetTable<ActionRow>().TryGetRow(observation.Action, out var row))
+                    _consecutiveAbilities = -1;
+                else if (row.ActionCategory is 2 or 3)
+                    _consecutiveAbilities = 0;
+                else if (row.ActionCategory == 4 && _consecutiveAbilities >= 0)
+                    _consecutiveAbilities = Math.Min(2, _consecutiveAbilities + 1);
+                else
+                    _consecutiveAbilities = -1;
+            }
         }
         return true;
     }
@@ -679,7 +698,17 @@ public static class RotationEngine
             return;
         var player = Service.ObjectTable.LocalPlayer;
         RefreshObservedPlayer(player);
+        RefreshCombatHistory(Service.Condition[ConditionFlag.InCombat]);
         _jobId = player?.ClassJob.RowId ?? 0;
+    }
+
+    private static void RefreshCombatHistory(bool combat)
+    {
+        if (combat == _combatHistoryActive)
+            return;
+        UsedThisCombat.Clear();
+        _consecutiveAbilities = combat ? 2 : 0;
+        _combatHistoryActive = combat;
     }
 
     private static void RefreshObservedPlayer(IGameObject? player)
@@ -704,6 +733,9 @@ public static class RotationEngine
             Received.Clear();
             ReceivedOrder.Clear();
             Volatile.Write(ref _localEntityId, entity);
+            UsedThisCombat.Clear();
+            _consecutiveAbilities = 0;
+            _combatHistoryActive = false;
         }
     }
 
@@ -719,6 +751,9 @@ public static class RotationEngine
             _lastActionGlobalSequence = 0;
             _lastAction = 0;
             _hasObservedPlayer = false;
+            UsedThisCombat.Clear();
+            _consecutiveAbilities = 0;
+            _combatHistoryActive = false;
         }
     }
 
